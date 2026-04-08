@@ -1,195 +1,173 @@
-import { useState } from "react";
-import { useNavigate } from "react-router-dom";
-import { LABORWERTE } from "../data/laborwerte";
-import { SUPPLEMENTS } from "../data/supplements";
-import "./Home.css";
-
-const BEISPIELSUCHEN = [
-  "TSH", "Vitamin D", "Ferritin", "Magnesium", "Omega-3", "HbA1c", "CRP"
-];
+import { useState, useEffect, useRef } from 'react'
+import { useNavigate } from 'react-router-dom'
+import { sucheGlobal } from '../lib/queries'
+import './Home.css'
 
 export default function Home() {
-  const [query, setQuery] = useState("");
-  const [results, setResults] = useState([]);
-  const navigate = useNavigate();
+  const [query, setQuery] = useState('')
+  const [results, setResults] = useState({ laborwerte: [], supplements: [] })
+  const [loading, setLoading] = useState(false)
+  const [error, setError] = useState(null)
+  const [showResults, setShowResults] = useState(false)
+  const navigate = useNavigate()
+  const debounceRef = useRef(null)
+  const wrapperRef = useRef(null)
 
-  const handleSearch = (q) => {
-    const term = q.toLowerCase().trim();
-    setQuery(q);
-    if (!term) { setResults([]); return; }
+  useEffect(() => {
+    function handleClickOutside(e) {
+      if (wrapperRef.current && !wrapperRef.current.contains(e.target)) {
+        setShowResults(false)
+      }
+    }
+    document.addEventListener('mousedown', handleClickOutside)
+    return () => document.removeEventListener('mousedown', handleClickOutside)
+  }, [])
 
-    const lw = LABORWERTE.filter(
-      (l) => l.name.toLowerCase().includes(term) || l.vollname.toLowerCase().includes(term) || l.panel?.toLowerCase().includes(term)
-    ).map((l) => ({ ...l, typ: "laborwert" }));
+  useEffect(() => {
+    if (debounceRef.current) clearTimeout(debounceRef.current)
 
-    const supp = SUPPLEMENTS.filter(
-      (s) => s.name.toLowerCase().includes(term) || s.wissenschaftlich.toLowerCase().includes(term) || s.kategorie.toLowerCase().includes(term)
-    ).map((s) => ({ ...s, typ: "supplement" }));
+    if (query.trim().length < 2) {
+      setResults({ laborwerte: [], supplements: [] })
+      setShowResults(false)
+      return
+    }
 
-    setResults([...lw, ...supp].slice(0, 6));
-  };
+    debounceRef.current = setTimeout(async () => {
+      setLoading(true)
+      setError(null)
+      try {
+        const data = await sucheGlobal(query)
+        setResults(data)
+        setShowResults(true)
+      } catch (err) {
+        console.error(err)
+        setError('Suche momentan nicht verfügbar.')
+      } finally {
+        setLoading(false)
+      }
+    }, 300)
 
-  const handleSelect = (item) => {
-    if (item.typ === "laborwert") navigate(`/laborwerte/${item.slug}`);
-    else navigate(`/supplements/${item.slug}`);
-    setQuery("");
-    setResults([]);
-  };
+    return () => clearTimeout(debounceRef.current)
+  }, [query])
+
+  const hasResults =
+    results.laborwerte.length > 0 || results.supplements.length > 0
+
+  function handleSelect(type, id) {
+    setShowResults(false)
+    setQuery('')
+    if (type === 'laborwert') navigate(`/laborwerte/${id}`)
+    if (type === 'supplement') navigate(`/supplements/${id}`)
+  }
 
   return (
     <div className="home">
-      <section className="hero">
-        <div className="hero-inner container">
-          <div className="hero-badge">Beta · Kostenlos · Werbefrei</div>
-          <h1 className="hero-title">
-            Es gibt einen Moment, in dem man<br />
-            <em>aufhört zu googeln</em><br />
-            und anfängt zu verstehen.
-          </h1>
-          <p className="hero-subtitle">
-            Evidenzbasierte Gesundheitsinformation auf Deutsch. Laborwerte, Supplements, 
-            Medikamente und Arztbriefe — verstehen, nicht raten.
-          </p>
+      <div className="home-hero">
+        <p className="home-eyebrow">Evidenzbasierte Gesundheitsinformation</p>
+        <h1 className="home-headline">
+          Es gibt einen Moment, in dem man aufhört zu googeln
+          <span className="home-headline-accent"> und anfängt zu verstehen.</span>
+        </h1>
+        <p className="home-subline">
+          Laborwerte einordnen. Supplements verstehen. Studien lesen. Arztbriefe
+          entschlüsseln — ohne Werbung, ohne Affiliate.
+        </p>
 
-          <div className="search-wrap">
-            <div className="search-box">
-              <svg className="search-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                <circle cx="11" cy="11" r="8" /><path d="m21 21-4.35-4.35" />
-              </svg>
-              <input
-                className="search-input"
-                type="text"
-                placeholder="Laborwert, Supplement, Medikament oder Diagnose suchen…"
-                value={query}
-                onChange={(e) => handleSearch(e.target.value)}
-                autoFocus
-              />
-              {query && (
-                <button className="search-clear" onClick={() => { setQuery(""); setResults([]); }}>✕</button>
+        <div className="home-search-wrapper" ref={wrapperRef}>
+          <div className="home-search-bar">
+            <svg className="home-search-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+              <circle cx="11" cy="11" r="8" /><path d="m21 21-4.35-4.35" />
+            </svg>
+            <input
+              className="home-search-input"
+              type="text"
+              placeholder="Laborwert, Supplement, Symptom, Wirkstoff…"
+              value={query}
+              onChange={e => setQuery(e.target.value)}
+              onFocus={() => hasResults && setShowResults(true)}
+              autoComplete="off"
+              spellCheck={false}
+            />
+            {loading && <span className="home-search-spinner" />}
+          </div>
+
+          {showResults && (
+            <div className="home-search-results">
+              {error && <p className="home-search-error">{error}</p>}
+
+              {!error && !hasResults && (
+                <p className="home-search-empty">Keine Treffer für „{query}"</p>
+              )}
+
+              {results.laborwerte.length > 0 && (
+                <div className="home-search-group">
+                  <p className="home-search-group-label">Laborwerte</p>
+                  {results.laborwerte.map(lw => (
+                    <button
+                      key={lw.loinc_code}
+                      className="home-search-item"
+                      onClick={() => handleSelect('laborwert', lw.loinc_code)}
+                    >
+                      <span className="home-search-item-name">{lw.name}</span>
+                      {lw.kategorie && (
+                        <span className="home-search-item-meta">{lw.kategorie}</span>
+                      )}
+                    </button>
+                  ))}
+                </div>
+              )}
+
+              {results.supplements.length > 0 && (
+                <div className="home-search-group">
+                  <p className="home-search-group-label">Supplements</p>
+                  {results.supplements.map(s => (
+                    <button
+                      key={s.slug}
+                      className="home-search-item"
+                      onClick={() => handleSelect('supplement', s.slug)}
+                    >
+                      <span className="home-search-item-name">{s.name}</span>
+                      {s.gruppe && (
+                        <span className="home-search-item-meta">{s.gruppe}</span>
+                      )}
+                    </button>
+                  ))}
+                </div>
               )}
             </div>
-
-            {results.length > 0 && (
-              <div className="search-results">
-                {results.map((item) => (
-                  <button key={`${item.typ}-${item.id}`} className="result-item" onClick={() => handleSelect(item)}>
-                    <span className={`result-type result-type-${item.typ === "laborwert" ? "blue" : "green"}`}>
-                      {item.typ === "laborwert" ? "Laborwert" : "Supplement"}
-                    </span>
-                    <span className="result-name">{item.name}</span>
-                    <span className="result-sub">{item.typ === "laborwert" ? item.vollname : item.wissenschaftlich}</span>
-                  </button>
-                ))}
-              </div>
-            )}
-          </div>
-
-          <div className="beispiel-wrap">
-            <span className="beispiel-label">Zum Beispiel:</span>
-            {BEISPIELSUCHEN.map((b) => (
-              <button key={b} className="beispiel-tag" onClick={() => handleSearch(b)}>
-                {b}
-              </button>
-            ))}
-          </div>
+          )}
         </div>
-      </section>
 
-      <section className="features container">
-        <div className="features-grid">
-          {[
-            {
-              icon: "🔬",
-              title: "Laborwert-Lexikon",
-              desc: "200+ Laborwerte mit Referenzbereichen aus Deutschland, USA und Japan. Regler-System für internationalen Vergleich.",
-              to: "/laborwerte",
-              ready: true,
-            },
-            {
-              icon: "💊",
-              title: "Supplement-Kompass",
-              desc: "Evidenzbasierte Infos zu 150+ Supplements. Dosierung, Formen, Interaktionen — ohne Affiliate-Interessen.",
-              to: "/supplements",
-              ready: true,
-            },
-            {
-              icon: "📄",
-              title: "Arztbrief-Decoder",
-              desc: "Befunde und Entlassbriefe verständlich gemacht. Medizinisches Kauderwelsch auf Deutsch erklärt.",
-              to: "/arztbrief",
-              ready: false,
-            },
-            {
-              icon: "🏥",
-              title: "Krankheits-Lexikon",
-              desc: "500+ Erkrankungen erklärt — auf drei Sprachebenen. Vom Symptom zur Diagnose zur Behandlung.",
-              to: "/krankheiten",
-              ready: false,
-            },
-            {
-              icon: "💉",
-              title: "Medikamenten-Erklärer",
-              desc: "500+ Wirkstoffe erklärt. Beipackzettel-Decoder, Interaktionscheck — auch mit Supplements.",
-              to: "/medikamente",
-              ready: false,
-            },
-            {
-              icon: "🧭",
-              title: "Diagnose-Navigator",
-              desc: "Was als nächstes? Behandlungsstandards, Spezialisten-Suche, klinische Studien nach PLZ.",
-              to: "/navigator",
-              ready: false,
-            },
-          ].map((f) => (
-            <div
-              key={f.title}
-              className={`feature-card ${f.ready ? "feature-card-ready" : "feature-card-soon"}`}
-              onClick={() => f.ready && navigate(f.to)}
-            >
-              <span className="feature-icon">{f.icon}</span>
-              <div>
-                <h3 className="feature-title">
-                  {f.title}
-                  {!f.ready && <span className="feature-soon">Bald</span>}
-                </h3>
-                <p className="feature-desc">{f.desc}</p>
-              </div>
-            </div>
-          ))}
+        <div className="home-quick-links">
+          <button className="home-quick-link" onClick={() => navigate('/laborwerte')}>
+            🔬 Laborwerte
+          </button>
+          <button className="home-quick-link" onClick={() => navigate('/supplements')}>
+            💊 Supplements
+          </button>
         </div>
-      </section>
+      </div>
 
-      <section className="trust-section container">
-        <div className="trust-inner">
-          <div className="trust-item">
-            <span className="trust-icon">🚫</span>
-            <span>Keine Werbung</span>
-          </div>
-          <div className="trust-divider" />
-          <div className="trust-item">
-            <span className="trust-icon">🚫</span>
-            <span>Kein Affiliate</span>
-          </div>
-          <div className="trust-divider" />
-          <div className="trust-item">
-            <span className="trust-icon">📚</span>
-            <span>Quellentransparent</span>
-          </div>
-          <div className="trust-divider" />
-          <div className="trust-item">
-            <span className="trust-icon">🔒</span>
-            <span>Datenschutz-first</span>
-          </div>
-          <div className="trust-divider" />
-          <div className="trust-item">
-            <span className="trust-icon">🇩🇪</span>
-            <span>Server in Deutschland</span>
-          </div>
+      <div className="home-pillars">
+        <div className="home-pillar-card">
+          <div className="home-pillar-icon">🔬</div>
+          <h3>Laborwert-Lexikon</h3>
+          <p>Referenzbereiche aus DE, USA und Japan im Vergleich. Ursachen verstehen, Zusammenhänge erkennen.</p>
+          <button className="home-pillar-btn" onClick={() => navigate('/laborwerte')}>Zu den Laborwerten →</button>
         </div>
-        <p className="trust-disclaimer">
-          VitalWissen ersetzt keine ärztliche Beratung. Bei Notfällen: <strong>112</strong> anrufen.
-        </p>
-      </section>
+        <div className="home-pillar-card">
+          <div className="home-pillar-icon">💊</div>
+          <h3>Supplement-Kompass</h3>
+          <p>Evidenzbasierte Informationen zu Dosierung, Wirkform, Timing und Medikamenten-Interaktionen.</p>
+          <button className="home-pillar-btn" onClick={() => navigate('/supplements')}>Zu den Supplements →</button>
+        </div>
+        <div className="home-pillar-card home-pillar-card--coming">
+          <div className="home-pillar-icon">📄</div>
+          <h3>Arztbrief-Decoder</h3>
+          <p>Befunde, Entlassbriefe und Arztschreiben verständlich erklärt — datenschutzkonform.</p>
+          <span className="home-pillar-badge">In Entwicklung</span>
+        </div>
+      </div>
     </div>
-  );
+  )
 }

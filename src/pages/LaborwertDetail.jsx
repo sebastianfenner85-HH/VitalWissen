@@ -1,178 +1,253 @@
-import { useParams, useNavigate } from "react-router-dom";
-import { LABORWERTE } from "../data/laborwerte";
-import "./Laborwerte.css";
+import { useState, useEffect } from 'react'
+import { useParams, useNavigate } from 'react-router-dom'
+import { getLaborwertByCode } from '../lib/queries'
+import EvidenzAmpel from '../components/EvidenzAmpel'
+import './Laborwerte.css'
 
 const LEITLINIEN = [
-  { key: "de", flag: "🇩🇪", label: "DGKL (Deutschland)" },
-  { key: "usa", flag: "🇺🇸", label: "AACC (USA)" },
-  { key: "jp", flag: "🇯🇵", label: "JSCC (Japan)" },
-];
+  { key: 'de', label: 'Deutschland (DGKL)', farbe: '#0B6E4F' },
+  { key: 'usa', label: 'USA (AACC)', farbe: '#2563EB' },
+  { key: 'jp', label: 'Japan (JSCC)', farbe: '#DC2626' },
+]
 
 export default function LaborwertDetail() {
-  const { slug } = useParams();
-  const navigate = useNavigate();
-  const lw = LABORWERTE.find((l) => l.slug === slug);
+  const { code } = useParams()
+  const navigate = useNavigate()
+  const [lw, setLw] = useState(null)
+  const [loading, setLoading] = useState(true)
+  const [error, setError] = useState(null)
+  const [aktiveLeitlinie, setAktiveLeitlinie] = useState('de')
+  const [zeigeKinder, setZeigeKinder] = useState(false)
 
-  if (!lw) {
+  useEffect(() => {
+    async function load() {
+      try {
+        const data = await getLaborwertByCode(code)
+        setLw(data)
+      } catch (err) {
+        console.error(err)
+        setError('Laborwert nicht gefunden.')
+      } finally {
+        setLoading(false)
+      }
+    }
+    load()
+  }, [code])
+
+  if (loading) {
     return (
-      <div className="lw-detail">
-        <p>Laborwert nicht gefunden.</p>
-        <button onClick={() => navigate("/laborwerte")}>Zurück zur Übersicht</button>
+      <div className="laborwerte-loading">
+        <div className="spinner" />
+        <p>Wird geladen…</p>
       </div>
-    );
+    )
   }
 
-  const refs = { de: lw.ref_de, usa: lw.ref_usa, jp: lw.ref_jp };
+  if (error || !lw) {
+    return (
+      <div className="laborwerte-error">
+        <p>{error || 'Laborwert nicht gefunden.'}</p>
+        <button onClick={() => navigate('/laborwerte')}>← Zurück zur Liste</button>
+      </div>
+    )
+  }
 
-  // Calculate how much the ranges differ
-  const ranges = LEITLINIEN.map((l) => refs[l.key]);
-  const minValues = ranges.map((r) => r?.min).filter(Boolean);
-  const maxValues = ranges.map((r) => r?.max).filter(Boolean);
-  const rangesDiffer = Math.max(...maxValues) - Math.min(...maxValues) > 0.5;
+  // Referenzbereich aus DB-Spalten je nach gewählter Leitlinie
+  const ref = {
+    de: {
+      min: lw.referenz_de_min,
+      max: lw.referenz_de_max,
+      einheit: lw.referenz_de_einheit,
+      quelle: lw.referenz_de_quelle,
+    },
+    usa: {
+      min: lw.referenz_usa_min,
+      max: lw.referenz_usa_max,
+      einheit: lw.referenz_usa_einheit,
+      quelle: lw.referenz_usa_quelle,
+    },
+    jp: {
+      min: lw.referenz_jp_min,
+      max: lw.referenz_jp_max,
+      einheit: lw.referenz_jp_einheit,
+      quelle: lw.referenz_jp_quelle,
+    },
+  }
+
+  const aktivRef = zeigeKinder && lw.referenz_kinder
+    ? lw.referenz_kinder
+    : ref[aktiveLeitlinie]
+
+  const genderCtx = lw.gender_context || {}
+  const medEinfluss = lw.medikamenten_einfluss || []
+  const zusammenhaenge = lw.zusammenhaenge || []
 
   return (
-    <div style={{ minHeight: "100vh", background: "var(--bg)" }}>
-      <div className="lw-detail">
-        <button className="lw-detail-back" onClick={() => navigate("/laborwerte")}>
-          ← Zurück zu Laborwerte
-        </button>
+    <div className="laborwert-detail">
+      <button className="laborwert-back-btn" onClick={() => navigate('/laborwerte')}>
+        ← Alle Laborwerte
+      </button>
 
-        <div className="lw-detail-header">
-          <div className="lw-detail-meta">
-            <span className="lw-loinc">LOINC {lw.loinc}</span>
-            <span className="lw-panel-tag">{lw.panel}</span>
-            {lw.zyklusabhaengig && (
-              <span className="badge badge-yellow">🔄 Zyklusabhängig</span>
+      {lw.notfall_flag && (
+        <div className="laborwert-notfall-banner">
+          <strong>⚠ Notfallrelevant:</strong> Bei stark abweichenden Werten sofort ärztliche Hilfe
+          suchen. Im Notfall: <strong>112</strong>
+        </div>
+      )}
+
+      <div className="laborwert-detail-header">
+        <h1>{lw.name}</h1>
+        {lw.loinc_code && (
+          <span className="laborwert-loinc">LOINC {lw.loinc_code}</span>
+        )}
+        {lw.kategorie && <span className="laborwert-kategorie-badge">{lw.kategorie}</span>}
+      </div>
+
+      {lw.beschreibung && (
+        <p className="laborwert-beschreibung">{lw.beschreibung}</p>
+      )}
+
+      {/* Leitlinien-Regler */}
+      <div className="laborwert-leitlinien-block">
+        <div className="laborwert-leitlinien-tabs">
+          {LEITLINIEN.map(l => (
+            <button
+              key={l.key}
+              className={`laborwert-leitlinie-tab ${aktiveLeitlinie === l.key && !zeigeKinder ? 'active' : ''}`}
+              style={aktiveLeitlinie === l.key && !zeigeKinder ? { borderColor: l.farbe, color: l.farbe } : {}}
+              onClick={() => { setAktiveLeitlinie(l.key); setZeigeKinder(false) }}
+            >
+              {l.label}
+            </button>
+          ))}
+          {lw.referenz_kinder && (
+            <button
+              className={`laborwert-leitlinie-tab ${zeigeKinder ? 'active' : ''}`}
+              onClick={() => setZeigeKinder(true)}
+            >
+              Kinderwerte
+            </button>
+          )}
+        </div>
+
+        {aktivRef && (
+          <div className="laborwert-referenz-box">
+            <div className="laborwert-referenz-wert">
+              <span className="laborwert-referenz-label">Referenzbereich</span>
+              <span className="laborwert-referenz-value">
+                {aktivRef.min !== undefined && aktivRef.max !== undefined
+                  ? `${aktivRef.min} – ${aktivRef.max}`
+                  : aktivRef.min !== undefined
+                  ? `> ${aktivRef.min}`
+                  : aktivRef.max !== undefined
+                  ? `< ${aktivRef.max}`
+                  : '—'}
+                {aktivRef.einheit && ` ${aktivRef.einheit}`}
+              </span>
+            </div>
+            {aktivRef.quelle && (
+              <p className="laborwert-referenz-quelle">Quelle: {aktivRef.quelle}</p>
             )}
           </div>
-          <h1 className="lw-detail-title">{lw.name}</h1>
-          <p className="lw-detail-vollname">{lw.vollname}</p>
-
-          {lw.notfall_flag && (
-            <div className="notfall-banner">
-              <span>⚠️</span>
-              <span><strong>Notfallrelevant:</strong> {lw.notfall_beschreibung}</span>
-            </div>
-          )}
-        </div>
-
-        {/* Beschreibung */}
-        <div className="detail-section">
-          <p className="detail-section-title">Was ist das?</p>
-          <p className="beschreibung-text">{lw.beschreibung_laienhaft}</p>
-        </div>
-
-        {/* Referenzbereiche */}
-        <div className="detail-section">
-          <p className="detail-section-title">Referenzbereiche — 3 Leitlinien im Vergleich</p>
-          <div className="referenz-grid">
-            {LEITLINIEN.map((l) => {
-              const ref = refs[l.key];
-              if (!ref) return null;
-              return (
-                <div key={l.key} className="referenz-item">
-                  <span className="referenz-flag">{l.flag}</span>
-                  <div className="referenz-quelle">{l.label}</div>
-                  <div className="referenz-wert">{ref.min} – {ref.max}</div>
-                  <div className="referenz-einheit">{ref.einheit}</div>
-                  <div style={{ fontSize: "11px", color: "var(--text-muted)", marginTop: "6px" }}>{ref.quelle}</div>
-                </div>
-              );
-            })}
-          </div>
-          {rangesDiffer && (
-            <div className="referenz-diff">
-              💡 Die Referenzbereiche unterscheiden sich zwischen den Leitlinien — das ist normal. Dein Labor gibt den verwendeten Bereich auf dem Befund an.
-            </div>
-          )}
-          {lw.gender_context && (
-            <div style={{ marginTop: "16px", padding: "14px", background: "var(--surface-2)", borderRadius: "var(--radius-sm)" }}>
-              <p style={{ fontSize: "13px", fontWeight: "600", marginBottom: "8px" }}>🚻 Geschlechtsspezifische Unterschiede</p>
-              {Object.entries(lw.gender_context).map(([key, val]) => (
-                <p key={key} style={{ fontSize: "13px", color: "var(--text-light)", marginBottom: "4px" }}>
-                  <strong>{key === "maennlich" ? "♂ Männer" : key === "weiblich" ? "♀ Frauen" : "Postmenopause"}:</strong>{" "}
-                  {val.min}–{val.max} — {val.hinweis}
-                </p>
-              ))}
-            </div>
-          )}
-        </div>
-
-        {/* Ursachen */}
-        <div className="detail-section">
-          <p className="detail-section-title">Ursachen</p>
-          <div className="ursachen-grid">
-            <div>
-              <div className="ursachen-label" style={{ color: "#DC2626" }}>↑ Zu hoch</div>
-              <ul className="ursachen-list ursachen-hoch">
-                {lw.ursachen_hoch.map((u) => <li key={u}>{u}</li>)}
-              </ul>
-            </div>
-            <div>
-              <div className="ursachen-label" style={{ color: "#2563EB" }}>↓ Zu niedrig</div>
-              <ul className="ursachen-list ursachen-niedrig">
-                {lw.ursachen_niedrig.map((u) => <li key={u}>{u}</li>)}
-              </ul>
-            </div>
-          </div>
-        </div>
-
-        {/* Wann zum Arzt */}
-        <div className="detail-section">
-          <p className="detail-section-title">Wann zum Arzt?</p>
-          <div className="wann-arzt-box">{lw.wann_arzt}</div>
-        </div>
-
-        {/* Zusammenhänge */}
-        {lw.zusammenhaenge?.length > 0 && (
-          <div className="detail-section">
-            <p className="detail-section-title">Zusammenhänge mit anderen Werten</p>
-            <div className="zusammenhaenge-chips">
-              {lw.zusammenhaenge.map((z) => (
-                <span key={z} className="zusammenhaenge-chip">{z}</span>
-              ))}
-            </div>
-          </div>
         )}
+      </div>
 
-        {/* Einflüsse */}
-        {(lw.supplement_einfluss?.length > 0 || lw.medikament_einfluss?.length > 0) && (
-          <div className="detail-section">
-            <p className="detail-section-title">Was beeinflusst diesen Wert?</p>
-            <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "16px" }}>
-              {lw.supplement_einfluss?.length > 0 && (
-                <div>
-                  <p style={{ fontSize: "13px", fontWeight: "600", marginBottom: "8px", color: "var(--primary)" }}>💊 Supplements</p>
-                  {lw.supplement_einfluss.map((s) => (
-                    <span key={s} className="zusammenhaenge-chip" style={{ display: "inline-block", margin: "3px" }}>{s}</span>
-                  ))}
-                </div>
-              )}
-              {lw.medikament_einfluss?.length > 0 && (
-                <div>
-                  <p style={{ fontSize: "13px", fontWeight: "600", marginBottom: "8px", color: "#7C3AED" }}>💉 Medikamente</p>
-                  {lw.medikament_einfluss.map((m) => (
-                    <span key={m} className="zusammenhaenge-chip" style={{ display: "inline-block", margin: "3px" }}>{m}</span>
-                  ))}
-                </div>
-              )}
-            </div>
+      {/* Gender-Kontext */}
+      {(genderCtx.maennlich || genderCtx.weiblich) && (
+        <div className="laborwert-gender-block">
+          <h3>Geschlechtsspezifische Besonderheiten</h3>
+          <div className="laborwert-gender-grid">
+            {genderCtx.maennlich && (
+              <div className="laborwert-gender-card">
+                <strong>♂ Männer</strong>
+                <p>{genderCtx.maennlich}</p>
+              </div>
+            )}
+            {genderCtx.weiblich && (
+              <div className="laborwert-gender-card">
+                <strong>♀ Frauen</strong>
+                <p>{genderCtx.weiblich}</p>
+              </div>
+            )}
           </div>
-        )}
-
-        {/* Fachlicher Hintergrund */}
-        {lw.beschreibung_fachlich && (
-          <div className="detail-section" style={{ background: "var(--surface-2)" }}>
-            <p className="detail-section-title">Fachlicher Hintergrund</p>
-            <p className="beschreibung-text" style={{ fontSize: "14px" }}>{lw.beschreibung_fachlich}</p>
-          </div>
-        )}
-
-        {/* Disclaimer */}
-        <div style={{ padding: "20px", background: "var(--surface-2)", borderRadius: "var(--radius)", fontSize: "12px", color: "var(--text-muted)", lineHeight: "1.6", marginTop: "8px" }}>
-          <strong>Hinweis:</strong> Diese Informationen dienen der Aufklärung und ersetzen keine ärztliche Beratung. Laborwerte müssen immer im klinischen Kontext interpretiert werden. Bei Fragen zu deinen Befunden wende dich an deinen Arzt. Im Notfall: <strong>112</strong>.
         </div>
+      )}
+
+      {/* Ursachen */}
+      {(lw.ursachen_hoch || lw.ursachen_niedrig) && (
+        <div className="laborwert-ursachen-block">
+          <h3>Mögliche Ursachen</h3>
+          <div className="laborwert-ursachen-grid">
+            {lw.ursachen_hoch && (
+              <div className="laborwert-ursache-card laborwert-ursache-card--hoch">
+                <strong>↑ Erhöht</strong>
+                <p>{Array.isArray(lw.ursachen_hoch) ? lw.ursachen_hoch.join(', ') : lw.ursachen_hoch}</p>
+              </div>
+            )}
+            {lw.ursachen_niedrig && (
+              <div className="laborwert-ursache-card laborwert-ursache-card--niedrig">
+                <strong>↓ Erniedrigt</strong>
+                <p>{Array.isArray(lw.ursachen_niedrig) ? lw.ursachen_niedrig.join(', ') : lw.ursachen_niedrig}</p>
+              </div>
+            )}
+          </div>
+        </div>
+      )}
+
+      {/* Wann Arzt */}
+      {lw.wann_arzt && (
+        <div className="laborwert-wann-arzt">
+          <h3>Wann zum Arzt?</h3>
+          <p>{lw.wann_arzt}</p>
+        </div>
+      )}
+
+      {/* Zusammenhänge */}
+      {zusammenhaenge.length > 0 && (
+        <div className="laborwert-zusammenhaenge">
+          <h3>Zusammenhänge mit anderen Werten</h3>
+          <ul>
+            {zusammenhaenge.map((z, i) => (
+              <li key={i}>{typeof z === 'string' ? z : z.beschreibung}</li>
+            ))}
+          </ul>
+        </div>
+      )}
+
+      {/* Cross-Block: Supplements */}
+      <div className="laborwert-cross-block">
+        <h3>Supplements, die diesen Wert beeinflussen</h3>
+        {lw.supplement_bezug && lw.supplement_bezug.length > 0 ? (
+          <div className="laborwert-cross-items">
+            {lw.supplement_bezug.map((s, i) => (
+              <span key={i} className="laborwert-cross-tag">{s}</span>
+            ))}
+          </div>
+        ) : (
+          <p className="laborwert-cross-empty">Daten werden ergänzt.</p>
+        )}
+      </div>
+
+      {/* Cross-Block: Medikamente */}
+      <div className="laborwert-cross-block">
+        <h3>Medikamente, die diesen Wert beeinflussen</h3>
+        {medEinfluss.length > 0 ? (
+          <div className="laborwert-cross-items">
+            {medEinfluss.map((m, i) => (
+              <span key={i} className="laborwert-cross-tag">
+                {typeof m === 'string' ? m : m.name}
+              </span>
+            ))}
+          </div>
+        ) : (
+          <p className="laborwert-cross-empty">Daten werden ergänzt.</p>
+        )}
+      </div>
+
+      <div className="laborwert-disclaimer">
+        Diese Informationen ersetzen keine ärztliche Diagnose oder Behandlung.
+        Laborwerte müssen immer im klinischen Kontext bewertet werden.
       </div>
     </div>
-  );
+  )
 }

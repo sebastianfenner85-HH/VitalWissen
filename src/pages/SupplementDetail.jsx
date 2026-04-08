@@ -1,231 +1,251 @@
-import { useParams, useNavigate } from "react-router-dom";
-import { SUPPLEMENTS } from "../data/supplements";
-import EvidenzAmpel from "../components/EvidenzAmpel";
-import "./Supplements.css";
+import { useState, useEffect } from 'react'
+import { useParams, useNavigate } from 'react-router-dom'
+import { getSupplementBySlug } from '../lib/queries'
+import EvidenzAmpel from '../components/EvidenzAmpel'
+import './Supplements.css'
 
-const SCHWERE_CONFIG = {
-  hoch: { cls: "interaktion-hoch", badgeCls: "interaktion-schwere-badge", label: "HOCH", color: "#DC2626" },
-  moderat: { cls: "interaktion-moderat", badgeCls: "interaktion-schwere-badge", label: "MODERAT", color: "#D97706" },
-  niedrig: { cls: "interaktion-niedrig", badgeCls: "interaktion-schwere-badge", label: "GERING", color: "#6B7280" },
-};
-
-const BIOVERFU_CLS = (b) => {
-  if (b.startsWith("Sehr")) return "form-bioverfu-high";
-  if (b.startsWith("Hoch")) return "form-bioverfu-high";
-  if (b.startsWith("Moderat")) return "form-bioverfu-mid";
-  return "form-bioverfu-low";
-};
+const DOSIERUNGS_QUELLEN = [
+  { key: 'bfr', label: 'BfR (Deutschland)', farbe: '#0B6E4F' },
+  { key: 'nih', label: 'NIH (USA)', farbe: '#2563EB' },
+  { key: 'efsa', label: 'EFSA (EU)', farbe: '#7C3AED' },
+]
 
 export default function SupplementDetail() {
-  const { slug } = useParams();
-  const navigate = useNavigate();
-  const s = SUPPLEMENTS.find((s) => s.slug === slug);
+  const { slug } = useParams()
+  const navigate = useNavigate()
+  const [s, setS] = useState(null)
+  const [loading, setLoading] = useState(true)
+  const [error, setError] = useState(null)
+  const [aktiveQuelle, setAktiveQuelle] = useState('bfr')
 
-  if (!s) {
+  useEffect(() => {
+    async function load() {
+      try {
+        const data = await getSupplementBySlug(slug)
+        setS(data)
+      } catch (err) {
+        console.error(err)
+        setError('Supplement nicht gefunden.')
+      } finally {
+        setLoading(false)
+      }
+    }
+    load()
+  }, [slug])
+
+  if (loading) {
     return (
-      <div className="supp-detail">
-        <p>Supplement nicht gefunden.</p>
-        <button onClick={() => navigate("/supplements")}>Zurück zur Übersicht</button>
+      <div className="supplements-loading">
+        <div className="spinner" />
+        <p>Wird geladen…</p>
       </div>
-    );
+    )
   }
 
+  if (error || !s) {
+    return (
+      <div className="supplements-error">
+        <p>{error || 'Supplement nicht gefunden.'}</p>
+        <button onClick={() => navigate('/supplements')}>← Zurück zur Liste</button>
+      </div>
+    )
+  }
+
+  // Dosierungsdaten je Quelle
+  const dosierung = {
+    bfr: { wert: s.dosierung_bfr_wert, einheit: s.dosierung_bfr_einheit, hinweis: s.dosierung_bfr_hinweis },
+    nih: { wert: s.dosierung_nih_wert, einheit: s.dosierung_nih_einheit, hinweis: s.dosierung_nih_hinweis },
+    efsa: { wert: s.dosierung_efsa_wert, einheit: s.dosierung_efsa_einheit, hinweis: s.dosierung_efsa_hinweis },
+  }
+  const aktivDosierung = dosierung[aktiveQuelle]
+
+  const formen = s.formen_bioverfuegbarkeit || []
+  const kombinationen = s.kombinationen || []
+  const antagonisten = s.antagonisten || []
+  const qualitaet = s.qualitaetskriterien || []
+  const studien = s.studien || []
+  const medInteraktionen = s.medikamenten_interaktionen || []
+  const biomarker = s.biomarker_bezug || []
+
   return (
-    <div style={{ background: "var(--bg)", minHeight: "100vh" }}>
-      <div className="supp-detail">
-        <button className="supp-detail-back" onClick={() => navigate("/supplements")}>
-          ← Zurück zu Supplements
-        </button>
+    <div className="supplement-detail">
+      <button className="supplement-back-btn" onClick={() => navigate('/supplements')}>
+        ← Alle Supplements
+      </button>
 
-        {/* Header */}
-        <div>
-          <div style={{ display: "flex", alignItems: "center", gap: "10px", marginBottom: "10px" }}>
-            <span className="supp-kat-tag">{s.kategorie}</span>
-            <EvidenzAmpel level={s.evidenz_ampel} showDesc />
+      <div className="supplement-detail-header">
+        <h1>{s.name}</h1>
+        {s.gruppe && <span className="supplement-gruppe-badge">{s.gruppe}</span>}
+        {s.evidenz_ampel && (
+          <div className="supplement-detail-ampel">
+            <EvidenzAmpel level={s.evidenz_ampel} />
           </div>
-          <h1 className="supp-detail-title">{s.name}</h1>
-          <p className="supp-detail-wissenschaftlich">{s.wissenschaftlich}</p>
-        </div>
+        )}
+      </div>
 
-        {/* Wofür */}
-        <div className="supp-section">
-          <p className="supp-section-title">Wofür</p>
-          <p style={{ fontSize: "16px", lineHeight: "1.7", color: "var(--text-light)" }}>{s.wofuer}</p>
+      {/* 1. Wofür */}
+      {s.wozu && (
+        <div className="supplement-section">
+          <h2>Wofür wird es eingenommen?</h2>
+          <p>{s.wozu}</p>
         </div>
+      )}
 
-        {/* Dosierung */}
-        <div className="supp-section">
-          <p className="supp-section-title">Dosierung — 3 Quellen im Vergleich</p>
-          <div className="dosierung-grid">
-            {[
-              { org: "BfR (Deutschland)", key: "bfr" },
-              { org: "NIH (USA)", key: "nih" },
-              { org: "EFSA (Europa)", key: "efsa" },
-            ].map(({ org, key }) => (
-              <div key={key} className="dosierung-item">
-                <div className="dosierung-org">{org}</div>
-                <div className="dosierung-wert">{s.dosierung[key].wert}</div>
-                <div style={{ fontSize: "12px", color: "var(--text-muted)", marginTop: "4px" }}>{s.dosierung[key].einheit}</div>
-                <div className="dosierung-hinweis">{s.dosierung[key].hinweis}</div>
+      {/* 2. Dosierung — Regler */}
+      <div className="supplement-section">
+        <h2>Dosierung im Vergleich</h2>
+        <div className="supplement-dosierung-tabs">
+          {DOSIERUNGS_QUELLEN.map(q => (
+            <button
+              key={q.key}
+              className={`supplement-dosierung-tab ${aktiveQuelle === q.key ? 'active' : ''}`}
+              style={aktiveQuelle === q.key ? { borderColor: q.farbe, color: q.farbe } : {}}
+              onClick={() => setAktiveQuelle(q.key)}
+            >
+              {q.label}
+            </button>
+          ))}
+        </div>
+        {aktivDosierung?.wert ? (
+          <div className="supplement-dosierung-box">
+            <span className="supplement-dosierung-wert">
+              {aktivDosierung.wert}
+              {aktivDosierung.einheit ? ` ${aktivDosierung.einheit}` : ''}
+            </span>
+            {aktivDosierung.hinweis && (
+              <p className="supplement-dosierung-hinweis">{aktivDosierung.hinweis}</p>
+            )}
+          </div>
+        ) : (
+          <p className="supplement-dosierung-leer">Keine Daten für diese Quelle vorhanden.</p>
+        )}
+      </div>
+
+      {/* 3. Formen & Bioverfügbarkeit */}
+      {formen.length > 0 && (
+        <div className="supplement-section">
+          <h2>Formen & Bioverfügbarkeit</h2>
+          <div className="supplement-formen-grid">
+            {formen.map((f, i) => (
+              <div key={i} className="supplement-form-card">
+                <strong>{typeof f === 'string' ? f : f.name}</strong>
+                {f.bioverfuegbarkeit && <p>{f.bioverfuegbarkeit}</p>}
               </div>
             ))}
           </div>
-          {s.dosierung.ul && (
-            <div className="dosierung-ul">
-              ⚠ <strong>Obere Grenze (UL):</strong> {s.dosierung.ul.wert} {s.dosierung.ul.einheit} — {s.dosierung.ul.hinweis}
-            </div>
-          )}
         </div>
+      )}
 
-        {/* Formen */}
-        <div className="supp-section">
-          <p className="supp-section-title">Formen & Bioverfügbarkeit</p>
-          <div className="formen-list">
-            {s.formen.map((f) => (
-              <div
-                key={f.name}
-                className={`form-item ${f.empfohlen === true ? "empfohlen" : f.empfohlen === false ? "nicht-empfohlen" : ""}`}
-              >
-                <div style={{ flex: 1 }}>
-                  <div style={{ display: "flex", alignItems: "center", gap: "8px", marginBottom: "4px" }}>
-                    <span className="form-name">{f.name}</span>
-                    <span className={`form-bioverfu ${BIOVERFU_CLS(f.bioverfu)}`}>{f.bioverfu}</span>
-                  </div>
-                  <p className="form-hinweis">{f.hinweis}</p>
-                </div>
-                {f.empfohlen === true && <span style={{ color: "var(--green)", fontSize: "18px" }}>✓</span>}
-                {f.empfohlen === false && <span style={{ color: "#DC2626", fontSize: "18px" }}>✗</span>}
+      {/* 4. Timing */}
+      {s.timing && (
+        <div className="supplement-section">
+          <h2>Einnahme-Timing</h2>
+          <p>{s.timing}</p>
+        </div>
+      )}
+
+      {/* 5. Kombinationen & Antagonisten */}
+      {(kombinationen.length > 0 || antagonisten.length > 0) && (
+        <div className="supplement-section">
+          <h2>Kombinationen & Wechselwirkungen</h2>
+          <div className="supplement-kombi-grid">
+            {kombinationen.length > 0 && (
+              <div className="supplement-kombi-card supplement-kombi-card--positiv">
+                <strong>✓ Synergien</strong>
+                <ul>
+                  {kombinationen.map((k, i) => (
+                    <li key={i}>{typeof k === 'string' ? k : k.name}</li>
+                  ))}
+                </ul>
               </div>
+            )}
+            {antagonisten.length > 0 && (
+              <div className="supplement-kombi-card supplement-kombi-card--negativ">
+                <strong>✗ Antagonisten</strong>
+                <ul>
+                  {antagonisten.map((a, i) => (
+                    <li key={i}>{typeof a === 'string' ? a : a.name}</li>
+                  ))}
+                </ul>
+              </div>
+            )}
+          </div>
+        </div>
+      )}
+
+      {/* 6. Qualitätskriterien */}
+      {qualitaet.length > 0 && (
+        <div className="supplement-section">
+          <h2>Qualitätskriterien</h2>
+          <ul className="supplement-qualitaet-list">
+            {qualitaet.map((q, i) => (
+              <li key={i}>{typeof q === 'string' ? q : q.kriterium}</li>
             ))}
-          </div>
+          </ul>
         </div>
+      )}
 
-        {/* Timing */}
-        <div className="supp-section">
-          <p className="supp-section-title">Einnahmezeitpunkt</p>
-          <div style={{ background: "var(--primary-50)", padding: "14px 18px", borderRadius: "var(--radius-sm)", fontSize: "15px", color: "var(--primary-dark)", lineHeight: "1.6" }}>
-            ⏰ {s.timing}
-          </div>
-        </div>
-
-        {/* Kombinationen */}
-        <div className="supp-section">
-          <p className="supp-section-title">Kombinationen & Antagonismen</p>
-          <div className="kombi-grid">
-            <div>
-              <p className="kombi-label" style={{ color: "var(--green)" }}>✓ Synergien</p>
-              {s.kombinationen.synergien.map((k) => (
-                <div key={k.name} className="kombi-item">
-                  <span className="kombi-item-name">{k.name}</span>
-                  {k.hinweis}
-                </div>
-              ))}
-            </div>
-            <div>
-              <p className="kombi-label" style={{ color: "#DC2626" }}>⚠ Antagonisten</p>
-              {s.kombinationen.antagonisten.length > 0 ? s.kombinationen.antagonisten.map((k) => (
-                <div key={k.name} className="kombi-item">
-                  <span className="kombi-item-name">{k.name}</span>
-                  {k.hinweis}
-                </div>
-              )) : <p style={{ fontSize: "13px", color: "var(--text-muted)" }}>Keine bekannten Antagonisten</p>}
-            </div>
-          </div>
-        </div>
-
-        {/* Qualität */}
-        <div className="supp-section">
-          <p className="supp-section-title">Qualitätskriterien</p>
-          <div style={{ display: "flex", gap: "8px", flexWrap: "wrap", marginBottom: "12px" }}>
-            {s.qualitaet.kriterien.map((k) => (
-              <span key={k} className="badge badge-primary">✓ {k}</span>
-            ))}
-          </div>
-          <p style={{ fontSize: "14px", color: "var(--text-light)", lineHeight: "1.6" }}>
-            <strong>Worauf achten:</strong> {s.qualitaet.worauf_achten}
-          </p>
-        </div>
-
-        {/* Interaktionen */}
-        {s.interaktionen?.length > 0 && (
-          <div className="supp-section">
-            <p className="supp-section-title">Medikamenten-Interaktionen</p>
-            <div className="interaktion-list">
-              {s.interaktionen.map((i) => {
-                const cfg = SCHWERE_CONFIG[i.schwere] || SCHWERE_CONFIG.niedrig;
-                return (
-                  <div key={i.name} className={`interaktion-item ${cfg.cls}`}>
-                    <div style={{ flex: 1 }}>
-                      <div className="interaktion-name">{i.name}</div>
-                      <div className="interaktion-hinweis">{i.hinweis}</div>
-                    </div>
-                    <span className={cfg.badgeCls} style={{ background: "rgba(255,255,255,0.7)", color: cfg.color }}>
-                      {cfg.label}
-                    </span>
-                  </div>
-                );
-              })}
-            </div>
-            <p style={{ fontSize: "12px", color: "var(--text-muted)", marginTop: "12px" }}>
-              Immer den behandelnden Arzt oder Apotheker informieren, welche Supplements du einnimmst.
-            </p>
-          </div>
-        )}
-
-        {/* Relevante Laborwerte */}
-        {s.laborwerte?.length > 0 && (
-          <div className="supp-section">
-            <p className="supp-section-title">Relevante Laborwerte</p>
-            <div className="zusammenhaenge-chips" style={{ display: "flex", flexWrap: "wrap", gap: "8px" }}>
-              {s.laborwerte.map((l) => (
-                <span key={l} className="zusammenhaenge-chip"
-                  style={{
-                    background: "var(--surface-2)",
-                    border: "1px solid var(--border)",
-                    borderRadius: "999px",
-                    padding: "5px 14px",
-                    fontSize: "13px",
-                    color: "var(--text-light)"
-                  }}>
-                  🔬 {l}
-                </span>
-              ))}
-            </div>
-          </div>
-        )}
-
-        {/* Studien */}
-        {s.studien?.length > 0 && (
-          <div className="supp-section" style={{ background: "var(--surface-2)" }}>
-            <p className="supp-section-title">Wichtige Studien</p>
-            {s.studien.map((st) => (
-              <div key={st.pmid} style={{ padding: "12px", background: "white", borderRadius: "var(--radius-sm)", marginBottom: "8px", fontSize: "14px" }}>
-                <p style={{ fontWeight: "600", marginBottom: "4px" }}>{st.titel}</p>
-                <p style={{ color: "var(--text-light)", fontSize: "13px" }}>{st.ergebnis}</p>
-                <p style={{ color: "var(--text-muted)", fontSize: "12px", marginTop: "4px" }}>
-                  {st.quelle} ·{" "}
-                  <a href={`https://pubmed.ncbi.nlm.nih.gov/${st.pmid}`} target="_blank" rel="noopener noreferrer" style={{ color: "var(--primary)" }}>
-                    PubMed {st.pmid}
+      {/* 7. Studien */}
+      {studien.length > 0 && (
+        <div className="supplement-section">
+          <h2>Relevante Studien</h2>
+          <div className="supplement-studien-list">
+            {studien.map((st, i) => (
+              <div key={i} className="supplement-studie-item">
+                <p>{typeof st === 'string' ? st : st.titel}</p>
+                {st.pubmed_id && (
+                  <a
+                    href={`https://pubmed.ncbi.nlm.nih.gov/${st.pubmed_id}/`}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="supplement-studie-link"
+                  >
+                    PubMed → {st.pubmed_id}
                   </a>
-                </p>
+                )}
               </div>
             ))}
           </div>
+        </div>
+      )}
+
+      {/* Cross-Block: Biomarker */}
+      <div className="supplement-cross-block">
+        <h3>Relevante Laborwerte</h3>
+        {biomarker.length > 0 ? (
+          <div className="supplement-cross-items">
+            {biomarker.map((b, i) => (
+              <span key={i} className="supplement-cross-tag">
+                {typeof b === 'string' ? b : b.name}
+              </span>
+            ))}
+          </div>
+        ) : (
+          <p className="supplement-cross-empty">Daten werden ergänzt.</p>
         )}
+      </div>
 
-        {/* NIH ODS Link */}
-        <div className="supp-section" style={{ background: "var(--primary-50)", border: "1px solid var(--primary-100)" }}>
-          <p className="supp-section-title" style={{ color: "var(--primary)" }}>Primärquelle</p>
-          <a href={s.nih_ods_link} target="_blank" rel="noopener noreferrer" className="supp-nih-link">
-            📚 NIH Office of Dietary Supplements — Vollständige Fachinformation (englisch)
-          </a>
-        </div>
+      {/* Cross-Block: Medikamenten-Interaktionen */}
+      <div className="supplement-cross-block">
+        <h3>Medikamenten-Interaktionen</h3>
+        {medInteraktionen.length > 0 ? (
+          <div className="supplement-cross-items">
+            {medInteraktionen.map((m, i) => (
+              <div key={i} className="supplement-interaktion-item">
+                <strong>{typeof m === 'string' ? m : m.wirkstoff}</strong>
+                {m.beschreibung && <p>{m.beschreibung}</p>}
+              </div>
+            ))}
+          </div>
+        ) : (
+          <p className="supplement-cross-empty">Daten werden ergänzt.</p>
+        )}
+      </div>
 
-        {/* Disclaimer */}
-        <div style={{ padding: "20px", background: "var(--surface-2)", borderRadius: "var(--radius)", fontSize: "12px", color: "var(--text-muted)", lineHeight: "1.6", marginTop: "8px" }}>
-          <strong>Hinweis:</strong> Diese Informationen dienen der Aufklärung und ersetzen keine ärztliche Beratung. Supplements können Medikamente beeinflussen. Informiere deinen Arzt und Apotheker. Dosierungsangaben gelten für gesunde Erwachsene — bei Erkrankungen gelten andere Empfehlungen. Im Notfall: <strong>112</strong>.
-        </div>
+      <div className="supplement-disclaimer">
+        Diese Informationen ersetzen keine ärztliche Diagnose oder Behandlung.
+        Bitte spreche die Einnahme von Supplements mit einer Ärztin oder einem Arzt ab.
       </div>
     </div>
-  );
+  )
 }
