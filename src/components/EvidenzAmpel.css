@@ -1,0 +1,41 @@
+.ampel {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 5px 12px;
+  border-radius: 999px;
+  font-size: 13px;
+  font-weight: 500;
+}
+
+.ampel-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+
+.ampel-sm { font-size: 11px; padding: 3px 8px; }
+.ampel-sm .ampel-dot { width: 6px; height: 6px; }
+
+.ampel-green { background: var(--green-light); color: var(--green); }
+.ampel-green .ampel-dot { background: var(--green); }
+
+.ampel-yellow { background: var(--yellow-light); color: var(--yellow); }
+.ampel-yellow .ampel-dot { background: var(--yellow); }
+
+.ampel-orange { background: #FEE2E2; color: #DC2626; }
+.ampel-orange .ampel-dot { background: #DC2626; }
+
+.ampel-purple { background: #EDE9FE; color: #7C3AED; }
+.ampel-purple .ampel-dot { background: #7C3AED; }
+
+.ampel-gray { background: var(--surface-2); color: var(--text-light); }
+.ampel-gray .ampel-dot { background: var(--text-muted); }
+
+.ampel-desc {
+  font-size: 12px;
+  margin-top: 6px;
+  opacity: 0.8;
+  line-height: 1.4;
+}
