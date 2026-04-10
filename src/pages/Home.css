@@ -5,11 +5,15 @@
 /* ── Hero ─────────────────────────────────────────── */
 .home-hero {
   background: linear-gradient(160deg, #f0faf5 0%, #fafaf8 40%, #fffdf5 100%);
-  padding: 80px 24px 64px;
   border-bottom: 1px solid var(--border);
-  max-width: 740px;
-  margin: 0 auto;
+  padding: 80px 24px 64px;
   text-align: center;
+}
+
+.home-hero > * {
+  max-width: 740px;
+  margin-left: auto;
+  margin-right: auto;
 }
 
 .home-eyebrow {

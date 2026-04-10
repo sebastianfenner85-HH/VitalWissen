@@ -8,11 +8,12 @@ const CONFIG = {
   keine: { label: "Keine Evidenz", color: "gray", desc: "Keine aussagekräftigen Studien verfügbar." },
 };
 
-export default function EvidenzAmpel({ level, showDesc = false, size = "md" }) {
+export default function EvidenzAmpel({ level, showDesc = false, size = "md", compact = false }) {
   const config = CONFIG[level] || CONFIG.keine;
+  const resolvedSize = compact ? "sm" : size;
 
   return (
-    <div className={`ampel ampel-${config.color} ampel-${size}`}>
+    <div className={`ampel ampel-${config.color} ampel-${resolvedSize}`}>
       <span className="ampel-dot" />
       <span className="ampel-label">{config.label}</span>
       {showDesc && <p className="ampel-desc">{config.desc}</p>}

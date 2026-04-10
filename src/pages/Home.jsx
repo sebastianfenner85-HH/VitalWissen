@@ -108,7 +108,7 @@ export default function Home() {
                       className="home-search-item"
                       onClick={() => handleSelect('laborwert', lw.loinc_code)}
                     >
-                      <span className="home-search-item-name">{lw.name}</span>
+                      <span className="home-search-item-name">{lw.name_de}</span>
                       {lw.kategorie && (
                         <span className="home-search-item-meta">{lw.kategorie}</span>
                       )}
@@ -126,9 +126,9 @@ export default function Home() {
                       className="home-search-item"
                       onClick={() => handleSelect('supplement', s.slug)}
                     >
-                      <span className="home-search-item-name">{s.name}</span>
-                      {s.gruppe && (
-                        <span className="home-search-item-meta">{s.gruppe}</span>
+                      <span className="home-search-item-name">{s.name_de}</span>
+                      {s.kategorie && (
+                        <span className="home-search-item-meta">{s.kategorie}</span>
                       )}
                     </button>
                   ))}
