@@ -40,80 +40,104 @@ export default function SupplementsListe() {
 
   if (loading) {
     return (
-      <div className="supplements-loading">
-        <div className="spinner" />
-        <p>Supplements werden geladen…</p>
+      <div className="supp-page">
+        <div style={{ padding: '80px 24px', textAlign: 'center', color: 'var(--text-muted)' }}>
+          Supplements werden geladen…
+        </div>
       </div>
     )
   }
 
   if (error) {
     return (
-      <div className="supplements-error">
-        <p>{error}</p>
-        <button onClick={() => window.location.reload()}>Erneut versuchen</button>
+      <div className="supp-page">
+        <div style={{ padding: '80px 24px', textAlign: 'center' }}>
+          <p style={{ color: '#DC2626', marginBottom: 12 }}>{error}</p>
+          <button onClick={() => window.location.reload()}>Erneut versuchen</button>
+        </div>
       </div>
     )
   }
 
   return (
-    <div className="supplements-liste">
-      <div className="supplements-header">
-        <h1>Supplement-Kompass</h1>
-        <p className="supplements-subline">
-          Evidenzbasierte Informationen zu Dosierung, Wirkform, Timing und
-          Wechselwirkungen. Kein Affiliate, keine gesponserten Inhalte.
-        </p>
-      </div>
+    <div className="supp-page">
+      {/* Header */}
+      <div className="supp-header">
+        <div className="container">
+          <div className="supp-header-inner">
+            <div>
+              <h1 className="supp-title">Supplement-Kompass</h1>
+              <p className="supp-subtitle">
+                Evidenzbasierte Informationen zu Dosierung, Wirkform, Timing und
+                Wechselwirkungen. Kein Affiliate, keine gesponserten Inhalte.
+              </p>
+            </div>
+          </div>
 
-      <div className="supplements-controls">
-        <input
-          className="supplements-suche"
-          type="text"
-          placeholder="Supplement suchen…"
-          value={suche}
-          onChange={e => setSuche(e.target.value)}
-        />
-        <div className="supplements-filter">
-          {gruppen.map(g => (
-            <button
-              key={g}
-              className={`supplements-filter-btn ${filterGruppe === g ? 'active' : ''}`}
-              onClick={() => setFilterGruppe(g)}
-            >
-              {g}
-            </button>
-          ))}
+          {/* Filter-Zeile */}
+          <div className="supp-filter-row">
+            <div className="supp-search-box">
+              <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" strokeWidth="2">
+                <circle cx="8.5" cy="8.5" r="5.5" />
+                <path d="M14 14l3.5 3.5" strokeLinecap="round" />
+              </svg>
+              <input
+                type="text"
+                placeholder="Supplement suchen…"
+                value={suche}
+                onChange={e => setSuche(e.target.value)}
+              />
+            </div>
+            <div className="kat-filter">
+              {gruppen.map(g => (
+                <button
+                  key={g}
+                  className={`kat-btn ${filterGruppe === g ? 'active' : ''}`}
+                  onClick={() => setFilterGruppe(g)}
+                >
+                  {g}
+                </button>
+              ))}
+            </div>
+          </div>
         </div>
       </div>
 
-      {gefiltert.length === 0 ? (
-        <p className="supplements-empty">Keine Supplements gefunden.</p>
-      ) : (
-        <div className="supplements-grid">
-          {gefiltert.map(s => (
-            <button
-              key={s.slug}
-              className="supplement-card"
-              onClick={() => navigate(`/supplements/${s.slug}`)}
-            >
-              <h3 className="supplement-card-name">{s.name_de}</h3>
-              {s.kategorie && (
-                <span className="supplement-card-gruppe">{s.kategorie}</span>
-              )}
-              {s.wofuer_kurz && (
-                <p className="supplement-card-beschreibung">{s.wofuer_kurz}</p>
-              )}
-              {s.evidenz_ampel && (
-                <div className="supplement-card-ampel">
-                  <EvidenzAmpel level={s.evidenz_ampel} compact />
+      {/* Grid */}
+      <div className="supp-grid-wrap container">
+        <p className="supp-count">{gefiltert.length} Supplements</p>
+
+        {gefiltert.length === 0 ? (
+          <p style={{ color: 'var(--text-muted)' }}>Keine Supplements gefunden.</p>
+        ) : (
+          <div className="supp-grid">
+            {gefiltert.map(s => (
+              <button
+                key={s.slug}
+                className="supp-card"
+                onClick={() => navigate(`/supplements/${s.slug}`)}
+              >
+                <div className="supp-card-top">
+                  <div className="supp-name">{s.name_de}</div>
+                  {s.kategorie && (
+                    <span className="supp-kat-tag">{s.kategorie}</span>
+                  )}
                 </div>
-              )}
-              <span className="supplement-card-link">Detailansicht →</span>
-            </button>
-          ))}
-        </div>
-      )}
+                {s.wofuer_kurz && (
+                  <div className="supp-wofuer">{s.wofuer_kurz}</div>
+                )}
+                <div className="supp-card-footer">
+                  {s.evidenz_ampel
+                    ? <EvidenzAmpel level={s.evidenz_ampel} compact />
+                    : <span />
+                  }
+                  <span className="supp-arrow">→</span>
+                </div>
+              </button>
+            ))}
+          </div>
+        )}
+      </div>
     </div>
   )
 }
