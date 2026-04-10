@@ -85,7 +85,7 @@
   transform: translateY(-2px);
 }
 
-.supp-card-top { display: flex; align-items: center; gap: 8px; justify-content: space-between; }
+.supp-card-top { display: flex; align-items: flex-start; gap: 8px; justify-content: space-between; }
 
 .supp-kat-tag {
   font-size: 11px;

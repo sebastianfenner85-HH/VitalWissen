@@ -14,7 +14,7 @@ export default function App() {
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/laborwerte" element={<LaborwerteListe />} />
-        <Route path="/laborwerte/:slug" element={<LaborwertDetail />} />
+        <Route path="/laborwerte/:code" element={<LaborwertDetail />} />
         <Route path="/supplements" element={<SupplementsListe />} />
         <Route path="/supplements/:slug" element={<SupplementDetail />} />
         <Route path="*" element={<NotFound />} />
