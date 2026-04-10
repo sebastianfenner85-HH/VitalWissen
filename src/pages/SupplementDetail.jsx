@@ -59,13 +59,13 @@ export default function SupplementDetail() {
   }
   const aktivDosierung = dosierung[aktiveQuelle]
 
-  const formen = s.formen_bioverfuegbarkeit || []
-  const kombinationen = s.kombinationen || []
+  const formen = s.formen || []
+  const kombinationen = s.synergien || []
   const antagonisten = s.antagonisten || []
-  const qualitaet = s.qualitaetskriterien || []
+  const qualitaet = s.qualitaet_kriterien || []
   const studien = s.studien || []
-  const medInteraktionen = s.medikamenten_interaktionen || []
-  const biomarker = s.biomarker_bezug || []
+  const medInteraktionen = s.medikament_interaktionen || []
+  const biomarker = s.beeinflusste_laborwerte || []
 
   return (
     <div className="supplement-detail">
@@ -74,8 +74,11 @@ export default function SupplementDetail() {
       </button>
 
       <div className="supplement-detail-header">
-        <h1>{s.name}</h1>
-        {s.gruppe && <span className="supplement-gruppe-badge">{s.gruppe}</span>}
+        <h1>{s.name_de}</h1>
+        {s.wissenschaftlich && s.wissenschaftlich !== s.name_de && (
+          <p className="supplement-wissenschaftlich">{s.wissenschaftlich}</p>
+        )}
+        {s.kategorie && <span className="supplement-gruppe-badge">{s.kategorie}</span>}
         {s.evidenz_ampel && (
           <div className="supplement-detail-ampel">
             <EvidenzAmpel level={s.evidenz_ampel} />
@@ -84,10 +87,10 @@ export default function SupplementDetail() {
       </div>
 
       {/* 1. Wofür */}
-      {s.wozu && (
+      {s.wofuer && (
         <div className="supplement-section">
           <h2>Wofür wird es eingenommen?</h2>
-          <p>{s.wozu}</p>
+          <p>{s.wofuer}</p>
         </div>
       )}
 

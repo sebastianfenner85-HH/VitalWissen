@@ -53,24 +53,30 @@ export default function LaborwertDetail() {
   }
 
   // Referenzbereich aus DB-Spalten je nach gewählter Leitlinie
+  // DE hat geschlechtsspezifische Werte (m/w), USA+JP einheitlich
   const ref = {
     de: {
-      min: lw.referenz_de_min,
-      max: lw.referenz_de_max,
-      einheit: lw.referenz_de_einheit,
-      quelle: lw.referenz_de_quelle,
+      min_m: lw.ref_de_min_m,
+      max_m: lw.ref_de_max_m,
+      min_w: lw.ref_de_min_w,
+      max_w: lw.ref_de_max_w,
+      min: lw.ref_de_min_m ?? lw.ref_de_min_w,
+      max: lw.ref_de_max_m ?? lw.ref_de_max_w,
+      einheit: lw.ref_de_einheit,
+      quelle: lw.ref_de_quelle,
+      geschlechtsspezifisch: lw.ref_de_min_m !== lw.ref_de_min_w && lw.ref_de_min_w != null,
     },
     usa: {
-      min: lw.referenz_usa_min,
-      max: lw.referenz_usa_max,
-      einheit: lw.referenz_usa_einheit,
-      quelle: lw.referenz_usa_quelle,
+      min: lw.ref_usa_min,
+      max: lw.ref_usa_max,
+      einheit: lw.ref_usa_einheit,
+      quelle: lw.ref_usa_quelle,
     },
     jp: {
-      min: lw.referenz_jp_min,
-      max: lw.referenz_jp_max,
-      einheit: lw.referenz_jp_einheit,
-      quelle: lw.referenz_jp_quelle,
+      min: lw.ref_jp_min,
+      max: lw.ref_jp_max,
+      einheit: lw.ref_jp_einheit,
+      quelle: lw.ref_jp_quelle,
     },
   }
 
@@ -79,7 +85,7 @@ export default function LaborwertDetail() {
     : ref[aktiveLeitlinie]
 
   const genderCtx = lw.gender_context || {}
-  const medEinfluss = lw.medikamenten_einfluss || []
+  const medEinfluss = lw.medikament_einfluss || []
   const zusammenhaenge = lw.zusammenhaenge || []
 
   return (
@@ -96,15 +102,20 @@ export default function LaborwertDetail() {
       )}
 
       <div className="laborwert-detail-header">
-        <h1>{lw.name}</h1>
+        <h1>{lw.name_de}</h1>
+        {lw.vollname_de && lw.vollname_de !== lw.name_de && (
+          <p className="laborwert-vollname">{lw.vollname_de}</p>
+        )}
         {lw.loinc_code && (
           <span className="laborwert-loinc">LOINC {lw.loinc_code}</span>
         )}
-        {lw.kategorie && <span className="laborwert-kategorie-badge">{lw.kategorie}</span>}
+        {(lw.panel || lw.kategorie) && (
+          <span className="laborwert-kategorie-badge">{lw.panel || lw.kategorie}</span>
+        )}
       </div>
 
-      {lw.beschreibung && (
-        <p className="laborwert-beschreibung">{lw.beschreibung}</p>
+      {lw.beschreibung_laienhaft && (
+        <p className="laborwert-beschreibung">{lw.beschreibung_laienhaft}</p>
       )}
 
       {/* Leitlinien-Regler */}
@@ -132,19 +143,39 @@ export default function LaborwertDetail() {
 
         {aktivRef && (
           <div className="laborwert-referenz-box">
-            <div className="laborwert-referenz-wert">
-              <span className="laborwert-referenz-label">Referenzbereich</span>
-              <span className="laborwert-referenz-value">
-                {aktivRef.min !== undefined && aktivRef.max !== undefined
-                  ? `${aktivRef.min} – ${aktivRef.max}`
-                  : aktivRef.min !== undefined
-                  ? `> ${aktivRef.min}`
-                  : aktivRef.max !== undefined
-                  ? `< ${aktivRef.max}`
-                  : '—'}
-                {aktivRef.einheit && ` ${aktivRef.einheit}`}
-              </span>
-            </div>
+            {aktivRef.geschlechtsspezifisch ? (
+              <div className="laborwert-referenz-gender">
+                <div className="laborwert-referenz-wert">
+                  <span className="laborwert-referenz-label">♂ Männer</span>
+                  <span className="laborwert-referenz-value">
+                    {aktivRef.min_m != null && aktivRef.max_m != null
+                      ? `${aktivRef.min_m} – ${aktivRef.max_m}`
+                      : aktivRef.max_m != null ? `< ${aktivRef.max_m}` : '—'}
+                    {aktivRef.einheit && ` ${aktivRef.einheit}`}
+                  </span>
+                </div>
+                <div className="laborwert-referenz-wert">
+                  <span className="laborwert-referenz-label">♀ Frauen</span>
+                  <span className="laborwert-referenz-value">
+                    {aktivRef.min_w != null && aktivRef.max_w != null
+                      ? `${aktivRef.min_w} – ${aktivRef.max_w}`
+                      : aktivRef.max_w != null ? `< ${aktivRef.max_w}` : '—'}
+                    {aktivRef.einheit && ` ${aktivRef.einheit}`}
+                  </span>
+                </div>
+              </div>
+            ) : (
+              <div className="laborwert-referenz-wert">
+                <span className="laborwert-referenz-label">Referenzbereich</span>
+                <span className="laborwert-referenz-value">
+                  {aktivRef.min != null && aktivRef.max != null
+                    ? `${aktivRef.min} – ${aktivRef.max}`
+                    : aktivRef.min != null ? `> ${aktivRef.min}`
+                    : aktivRef.max != null ? `< ${aktivRef.max}` : '—'}
+                  {aktivRef.einheit && ` ${aktivRef.einheit}`}
+                </span>
+              </div>
+            )}
             {aktivRef.quelle && (
               <p className="laborwert-referenz-quelle">Quelle: {aktivRef.quelle}</p>
             )}
@@ -217,9 +248,9 @@ export default function LaborwertDetail() {
       {/* Cross-Block: Supplements */}
       <div className="laborwert-cross-block">
         <h3>Supplements, die diesen Wert beeinflussen</h3>
-        {lw.supplement_bezug && lw.supplement_bezug.length > 0 ? (
+        {lw.supplement_einfluss && lw.supplement_einfluss.length > 0 ? (
           <div className="laborwert-cross-items">
-            {lw.supplement_bezug.map((s, i) => (
+            {lw.supplement_einfluss.map((s, i) => (
               <span key={i} className="laborwert-cross-tag">{s}</span>
             ))}
           </div>
