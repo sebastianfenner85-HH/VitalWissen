@@ -4,15 +4,23 @@ import { supabase } from './supabase'
 
 export async function getLaborwerteListe() {
   const { data, error } = await supabase
-    .from('laborwerte_referenzen')
+    .from('laborwerte')
     .select(`
       loinc_code,
-      name,
+      slug,
+      name_de,
+      vollname_de,
       kategorie,
-      beschreibung,
-      notfall_flag
+      panel,
+      beschreibung_laienhaft,
+      notfall_flag,
+      ref_de_min_m,
+      ref_de_max_m,
+      ref_de_min_w,
+      ref_de_max_w,
+      ref_de_einheit
     `)
-    .order('name', { ascending: true })
+    .order('name_de', { ascending: true })
 
   if (error) throw error
   return data
@@ -20,7 +28,7 @@ export async function getLaborwerteListe() {
 
 export async function getLaborwertByCode(loincCode) {
   const { data, error } = await supabase
-    .from('laborwerte_referenzen')
+    .from('laborwerte')
     .select('*')
     .eq('loinc_code', loincCode)
     .single()
@@ -37,12 +45,12 @@ export async function getSupplementsListe() {
     .select(`
       id,
       slug,
-      name,
-      gruppe,
-      kurzbeschreibung,
+      name_de,
+      kategorie,
+      wofuer_kurz,
       evidenz_ampel
     `)
-    .order('name', { ascending: true })
+    .order('name_de', { ascending: true })
 
   if (error) throw error
   return data
@@ -68,15 +76,15 @@ export async function sucheGlobal(query) {
 
   const [laborwerteResult, supplementsResult] = await Promise.all([
     supabase
-      .from('laborwerte_referenzen')
-      .select('loinc_code, name, kategorie, beschreibung')
-      .or(`name.ilike.${term},beschreibung.ilike.${term}`)
+      .from('laborwerte')
+      .select('loinc_code, slug, name_de, kategorie, beschreibung_laienhaft')
+      .or(`name_de.ilike.${term},beschreibung_laienhaft.ilike.${term},vollname_de.ilike.${term}`)
       .limit(5),
 
     supabase
       .from('supplements')
-      .select('slug, name, gruppe, kurzbeschreibung')
-      .or(`name.ilike.${term},kurzbeschreibung.ilike.${term}`)
+      .select('slug, name_de, kategorie, wofuer_kurz')
+      .or(`name_de.ilike.${term},wofuer_kurz.ilike.${term}`)
       .limit(5),
   ])
 

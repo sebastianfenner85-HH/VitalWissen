@@ -26,16 +26,27 @@ export default function LaborwerteListe() {
     load()
   }, [])
 
-  const kategorien = ['Alle', ...new Set(laborwerte.map(lw => lw.kategorie).filter(Boolean))]
+  const kategorien = ['Alle', ...new Set(laborwerte.map(lw => lw.panel || lw.kategorie).filter(Boolean))]
 
   const gefiltert = laborwerte.filter(lw => {
-    const matchKategorie = filterKategorie === 'Alle' || lw.kategorie === filterKategorie
+    const matchKategorie = filterKategorie === 'Alle' || lw.panel === filterKategorie || lw.kategorie === filterKategorie
     const matchSuche =
       !suche ||
-      lw.name?.toLowerCase().includes(suche.toLowerCase()) ||
-      lw.beschreibung?.toLowerCase().includes(suche.toLowerCase())
+      lw.name_de?.toLowerCase().includes(suche.toLowerCase()) ||
+      lw.vollname_de?.toLowerCase().includes(suche.toLowerCase()) ||
+      lw.beschreibung_laienhaft?.toLowerCase().includes(suche.toLowerCase())
     return matchKategorie && matchSuche
   })
+
+  const formatRef = (lw) => {
+    const min = lw.ref_de_min_m ?? lw.ref_de_min_w
+    const max = lw.ref_de_max_m ?? lw.ref_de_max_w
+    const einheit = lw.ref_de_einheit
+    if (min != null && max != null) return `DE: ${min}–${max} ${einheit}`
+    if (max != null) return `DE: <${max} ${einheit}`
+    if (min != null) return `DE: >${min} ${einheit}`
+    return null
+  }
 
   if (loading) {
     return (
@@ -96,17 +107,25 @@ export default function LaborwerteListe() {
               className={`laborwert-card ${lw.notfall_flag ? 'laborwert-card--notfall' : ''}`}
               onClick={() => navigate(`/laborwerte/${lw.loinc_code}`)}
             >
-              {lw.notfall_flag && (
-                <span className="laborwert-notfall-badge">⚠ Notfallrelevant</span>
+              <div className="laborwert-card-meta">
+                <span className="laborwert-card-loinc">{lw.loinc_code}</span>
+                {(lw.panel || lw.kategorie) && (
+                  <span className="laborwert-card-kategorie">{lw.panel || lw.kategorie}</span>
+                )}
+                {lw.notfall_flag && (
+                  <span className="laborwert-notfall-badge">⚠ Notfallrelevant</span>
+                )}
+              </div>
+              <h3 className="laborwert-card-name">{lw.name_de}</h3>
+              {lw.vollname_de && lw.vollname_de !== lw.name_de && (
+                <p className="laborwert-card-vollname">{lw.vollname_de}</p>
               )}
-              <h3 className="laborwert-card-name">{lw.name}</h3>
-              {lw.kategorie && (
-                <span className="laborwert-card-kategorie">{lw.kategorie}</span>
+              {lw.beschreibung_laienhaft && (
+                <p className="laborwert-card-beschreibung">{lw.beschreibung_laienhaft.substring(0, 120)}…</p>
               )}
-              {lw.beschreibung && (
-                <p className="laborwert-card-beschreibung">{lw.beschreibung}</p>
+              {formatRef(lw) && (
+                <span className="laborwert-card-ref">{formatRef(lw)}</span>
               )}
-              <span className="laborwert-card-link">Detailansicht →</span>
             </button>
           ))}
         </div>

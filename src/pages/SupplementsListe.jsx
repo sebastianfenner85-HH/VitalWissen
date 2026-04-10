@@ -27,14 +27,14 @@ export default function SupplementsListe() {
     load()
   }, [])
 
-  const gruppen = ['Alle', ...new Set(supplements.map(s => s.gruppe).filter(Boolean))]
+  const gruppen = ['Alle', ...new Set(supplements.map(s => s.kategorie).filter(Boolean))]
 
   const gefiltert = supplements.filter(s => {
-    const matchGruppe = filterGruppe === 'Alle' || s.gruppe === filterGruppe
+    const matchGruppe = filterGruppe === 'Alle' || s.kategorie === filterGruppe
     const matchSuche =
       !suche ||
-      s.name?.toLowerCase().includes(suche.toLowerCase()) ||
-      s.kurzbeschreibung?.toLowerCase().includes(suche.toLowerCase())
+      s.name_de?.toLowerCase().includes(suche.toLowerCase()) ||
+      s.wofuer_kurz?.toLowerCase().includes(suche.toLowerCase())
     return matchGruppe && matchSuche
   })
 
@@ -97,12 +97,12 @@ export default function SupplementsListe() {
               className="supplement-card"
               onClick={() => navigate(`/supplements/${s.slug}`)}
             >
-              <h3 className="supplement-card-name">{s.name}</h3>
-              {s.gruppe && (
-                <span className="supplement-card-gruppe">{s.gruppe}</span>
+              <h3 className="supplement-card-name">{s.name_de}</h3>
+              {s.kategorie && (
+                <span className="supplement-card-gruppe">{s.kategorie}</span>
               )}
-              {s.kurzbeschreibung && (
-                <p className="supplement-card-beschreibung">{s.kurzbeschreibung}</p>
+              {s.wofuer_kurz && (
+                <p className="supplement-card-beschreibung">{s.wofuer_kurz}</p>
               )}
               {s.evidenz_ampel && (
                 <div className="supplement-card-ampel">
