@@ -115,6 +115,97 @@ Wichtig:
 
 
 # ─── Hilfsfunktionen ──────────────────────────────────────────────────────────
+
+def compute_filter_tags(icd10_code: str, haeufigkeit: str, notfall_flag: bool) -> list[str]:
+    """Berechnet filter_tags basierend auf ICD-10-Code, Häufigkeit und Notfall-Flag."""
+    tags = set()
+    code = icd10_code.upper()
+
+    # haeufig_de: Häufige/sehr häufige Erkrankungen in Deutschland
+    if haeufigkeit in ('Sehr häufig', 'Häufig', 'sehr_haeufig', 'haeufig'):
+        tags.add('haeufig_de')
+
+    # notfall: lebensbedrohliche Akutsituationen
+    if notfall_flag:
+        tags.add('notfall')
+
+    # akut: notfall + weitere akute Erkrankungen
+    if notfall_flag:
+        tags.add('akut')
+    elif any(code.startswith(p) for p in [
+        'J0','J1','A','B','I21','I26','I63','I64','K25','K26','K27','K35','K36','T','S','R0','R1'
+    ]):
+        tags.add('akut')
+
+    # chronisch: Chronische Erkrankungen nach ICD-Kategorie
+    chronic_prefixes = [
+        'I10','I11','I12','I13','I14','I15',  # Hypertonie
+        'I20','I21','I22','I23','I24','I25',  # KHK / IHD
+        'I40','I41','I42','I43','I44','I45','I46','I47','I48','I49',  # Herzrhythmus
+        'I50','I51','I52','I60','I61','I62','I63','I64','I65','I66','I67','I68','I69',
+        'I70','I71','I72','I73','I74','I75','I76','I77','I78','I79',  # Gefäße
+        'I80','I81','I82','I83','I84','I85','I86','I87','I88','I89',
+        'E10','E11','E12','E13','E14',  # Diabetes
+        'E03','E04','E05','E06','E07',  # Schilddrüse
+        'E60','E61','E63','E64','E65','E66','E67','E68',  # Mangelzustände / Adipositas
+        'E70','E71','E72','E73','E74','E75','E76','E77','E78','E79','E80',  # Stoffwechsel
+        'J40','J41','J42','J43','J44','J45','J46','J47',  # Chronische Atemwege
+        'M05','M06','M07','M08','M09',  # Arthritis
+        'M80','M81','M82','M83','M84','M85','M86','M87','M88','M89',  # Knochenkrankheiten
+        'N10','N11','N12','N13','N14','N15','N16','N17','N18','N19',  # Nierenerkrankungen
+        'N30','N31','N32','N33','N34','N35','N36','N37','N38','N39',
+        'F30','F31','F32','F33','F34','F35','F36','F37','F38','F39',  # Affektive Störungen
+        'F40','F41','F42','F43','F44','F45','F46','F47','F48',  # Neurotische Störungen
+        'F60','F61','F62','F63','F64','F65','F66','F67','F68','F69',
+        'K50','K51','K52','K53','K54','K55','K56','K57','K58','K59',  # Darmerkrankungen
+        'K70','K71','K72','K73','K74','K75','K76','K77',  # Lebererkrankungen
+        'G30','G31','G32','G33','G34','G35','G36','G37',  # Neurodegen.
+        'G40','G41',  # Epilepsie
+        'G60','G61','G62','G63',  # Neuropathien
+    ]:
+        if code.startswith(chronic_prefixes):
+            tags.add('chronisch')
+            break
+
+    # lebensstil: Durch Lebensstil maßgeblich beeinflussbar
+    lifestyle_prefixes = [
+        'E10','E11','E12','E13','E14',  # Diabetes
+        'E65','E66',  # Adipositas
+        'E70','E71','E72','E73','E74','E78','E79',  # Fettstoffwechsel / Gicht
+        'I10','I11','I12','I13','I14','I15',  # Hypertonie
+        'I20','I21','I22','I23','I24','I25',  # KHK
+        'I70','I73',  # PAVK / Arteriosklerose
+        'M54',  # Rückenschmerzen
+        'K70','K71','K72','K73','K74',  # Alkohol-Lebererkrankungen
+        'F10','F11','F12','F13','F14','F15','F16','F17','F18','F19',  # Sucht
+        'J40','J41','J42','J43','J44',  # COPD
+        'G47',  # Schlafstörungen
+        'N18',  # CKD (oft durch DM/HT)
+    ]:
+        if code.startswith(lifestyle_prefixes):
+            tags.add('lebensstil')
+            break
+
+    # fehldiagnose_haeufig: Häufig fehl- oder spätdiagnostizierte Erkrankungen
+    fehldiag_prefixes = [
+        'F30','F31','F32','F33','F34',  # Depression / Bipolar
+        'F40','F41','F42','F43','F44','F45',  # Angst / somatoforme Störungen
+        'E03','E04','E05','E06',  # Schilddrüse
+        'E10','E11',  # Diabetes
+        'M05','M06',  # Rheumatoide Arthritis
+        'D50','D51','D52','D53',  # Anämien
+        'I42','I43',  # Kardiomyopathie
+        'G35','G36',  # MS
+        'K50','K51','K58',  # IBD / IBS
+        'N30','N32','N39',  # Blasenerkrankungen (oft als Zystitis fehlgedeutet)
+    ]:
+        if code.startswith(fehldiag_prefixes):
+            tags.add('fehldiagnose_haeufig')
+            break
+
+    return sorted(list(tags))
+
+
 def make_slug(name_de: str) -> str:
     """Erstellt einen URL-sicheren Slug aus dem deutschen Namen."""
     s = name_de.lower()
@@ -297,6 +388,10 @@ def main():
             continue
 
         # Datensatz zusammenbauen
+        haeufigkeit   = data.get("haeufigkeit", "Häufig")
+        notfall_flag  = bool(data.get("notfall_flag", False))
+        filter_tags   = compute_filter_tags(icd10_code, haeufigkeit, notfall_flag)
+
         record = {
             "icd10_code":             icd10_code,
             "slug":                   slug,
@@ -311,8 +406,9 @@ def main():
             "behandlung":             data.get("behandlung", []),
             "prognose":               data.get("prognose", ""),
             "leben_mit":              data.get("leben_mit", ""),
-            "haeufigkeit":            data.get("haeufigkeit", "Häufig"),
-            "notfall_flag":           bool(data.get("notfall_flag", False)),
+            "haeufigkeit":            haeufigkeit,
+            "notfall_flag":           notfall_flag,
+            "filter_tags":            filter_tags,
             "gender_kontext":         {},
             "komorbiditaeten":        [],
             "verwandte_laborwerte":   [],
@@ -323,7 +419,7 @@ def main():
         }
 
         if upsert_krankheit(supabase, record):
-            print(f"         ✅ Gespeichert (haeufigkeit: {data.get('haeufigkeit')}, notfall: {data.get('notfall_flag')})")
+            print(f"         ✅ Gespeichert (haeufigkeit: {haeufigkeit}, notfall: {notfall_flag}, tags: {filter_tags})")
             stats["ok"] += 1
         else:
             stats["error"] += 1
