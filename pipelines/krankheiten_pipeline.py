@@ -285,6 +285,40 @@ def upsert_krankheit(supabase: Client, record: dict) -> bool:
         return False
 
 
+def run_bulk_tagging(supabase: Client) -> int:
+    """
+    Aktualisiert filter_tags für alle Einträge ohne Tags.
+    Basiert auf ICD-10-Code-Präfixen, haeufigkeit und notfall_flag.
+    Wird am Ende jedes Pipeline-Runs automatisch ausgeführt.
+    """
+    try:
+        result = supabase.table("krankheiten").select(
+            "id, icd10_code, haeufigkeit, notfall_flag, filter_tags"
+        ).execute()
+
+        updated = 0
+        for row in result.data:
+            existing = row.get("filter_tags") or []
+            if existing:
+                continue  # bereits getaggt, überspringen
+
+            tags = compute_filter_tags(
+                row.get("icd10_code", ""),
+                row.get("haeufigkeit", ""),
+                bool(row.get("notfall_flag", False))
+            )
+            if tags:
+                supabase.table("krankheiten").update(
+                    {"filter_tags": tags}
+                ).eq("id", row["id"]).execute()
+                updated += 1
+
+        return updated
+    except Exception as e:
+        print(f"⚠️  Bulk-Tagging Fehler: {e}")
+        return 0
+
+
 def get_existing_slugs(supabase: Client) -> set:
     """Lädt alle bereits vorhandenen Slugs aus Supabase."""
     try:
@@ -425,6 +459,12 @@ def main():
             stats["error"] += 1
 
         time.sleep(DELAY_SECONDS)
+
+    # ── Bulk-Tagging (alle ungetaggten Einträge nachtaggen) ───────────────────
+    if not args.dry_run:
+        print(f"\n🏷️  Bulk-Tagging läuft...")
+        tagged = run_bulk_tagging(supabase)
+        print(f"   {tagged} Einträge mit filter_tags versehen")
 
     # ── Zusammenfassung ───────────────────────────────────────────────────────
     print(f"\n{'='*60}")
