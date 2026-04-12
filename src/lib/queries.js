@@ -67,14 +67,47 @@ export async function getSupplementBySlug(slug) {
   return data
 }
 
+// ─── S5 — Krankheiten ────────────────────────────────────────────────────────
+
+export async function getKrankheitenListe() {
+  const { data, error } = await supabase
+    .from('krankheiten')
+    .select(`
+      id,
+      slug,
+      icd10_code,
+      name_de,
+      synonym_de,
+      kategorie,
+      beschreibung_laienhaft,
+      notfall_flag,
+      haeufigkeit
+    `)
+    .order('name_de', { ascending: true })
+
+  if (error) throw error
+  return data
+}
+
+export async function getKrankheitBySlug(slug) {
+  const { data, error } = await supabase
+    .from('krankheiten')
+    .select('*')
+    .eq('slug', slug)
+    .single()
+
+  if (error) throw error
+  return data
+}
+
 // ─── Suche (Home) ────────────────────────────────────────────────────────────
 
 export async function sucheGlobal(query) {
-  if (!query || query.trim().length < 2) return { laborwerte: [], supplements: [] }
+  if (!query || query.trim().length < 2) return { laborwerte: [], supplements: [], krankheiten: [] }
 
   const term = `%${query.trim()}%`
 
-  const [laborwerteResult, supplementsResult] = await Promise.all([
+  const [laborwerteResult, supplementsResult, krankheitenResult] = await Promise.all([
     supabase
       .from('laborwerte')
       .select('loinc_code, slug, name_de, kategorie, beschreibung_laienhaft')
@@ -86,13 +119,21 @@ export async function sucheGlobal(query) {
       .select('slug, name_de, kategorie, wofuer_kurz')
       .or(`name_de.ilike.${term},wofuer_kurz.ilike.${term}`)
       .limit(5),
+
+    supabase
+      .from('krankheiten')
+      .select('slug, name_de, kategorie, beschreibung_laienhaft, icd10_code')
+      .or(`name_de.ilike.${term},beschreibung_laienhaft.ilike.${term},icd10_code.ilike.${term}`)
+      .limit(5),
   ])
 
   if (laborwerteResult.error) throw laborwerteResult.error
   if (supplementsResult.error) throw supplementsResult.error
+  if (krankheitenResult.error) throw krankheitenResult.error
 
   return {
     laborwerte: laborwerteResult.data,
     supplements: supplementsResult.data,
+    krankheiten: krankheitenResult.data,
   }
 }

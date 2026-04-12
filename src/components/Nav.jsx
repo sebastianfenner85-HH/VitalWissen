@@ -7,7 +7,7 @@ export default function Nav() {
   const links = [
     { to: "/laborwerte", label: "Laborwerte" },
     { to: "/supplements", label: "Supplements" },
-    { to: "/krankheiten", label: "Krankheiten", soon: true },
+    { to: "/krankheiten", label: "Krankheiten" },
     { to: "/medikamente", label: "Medikamente", soon: true },
     { to: "/arztbrief", label: "Arztbrief-Decoder", soon: true },
   ];

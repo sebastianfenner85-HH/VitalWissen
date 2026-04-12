@@ -1,0 +1,478 @@
+/* ─── S5 Krankheits-Lexikon ───────────────────────────────────────────────── */
+
+/* Page wrapper */
+.krank-page {
+  min-height: 100vh;
+  background: var(--bg-light);
+}
+
+/* ── Header ─────────────────────────────────────────────────────────────── */
+.krank-header {
+  background: white;
+  border-bottom: 1px solid var(--border);
+  padding: 40px 0 0;
+}
+
+.krank-header-inner {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 24px;
+  margin-bottom: 24px;
+}
+
+.krank-title {
+  font-family: "Instrument Serif", serif;
+  font-size: clamp(26px, 4vw, 38px);
+  color: var(--text-dark);
+  margin: 0 0 10px;
+}
+
+.krank-subtitle {
+  font-size: 15px;
+  color: var(--text-muted);
+  max-width: 560px;
+  line-height: 1.65;
+  margin: 0;
+}
+
+/* ── Filter-Zeile ────────────────────────────────────────────────────────── */
+.krank-filter-row {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  flex-wrap: wrap;
+  padding-bottom: 20px;
+}
+
+.krank-search-box {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: var(--bg-light);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 8px 14px;
+  min-width: 260px;
+}
+
+.krank-search-box svg {
+  width: 16px;
+  height: 16px;
+  color: var(--text-muted);
+  flex-shrink: 0;
+}
+
+.krank-search-box input {
+  border: none;
+  background: transparent;
+  font-size: 14px;
+  color: var(--text-dark);
+  outline: none;
+  width: 100%;
+}
+
+.krank-search-box input::placeholder {
+  color: var(--text-muted);
+}
+
+/* Kategorie-Buttons */
+.krank-kat-filter {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.krank-kat-btn {
+  background: white;
+  border: 1px solid var(--border);
+  border-radius: 20px;
+  padding: 5px 14px;
+  font-size: 13px;
+  color: var(--text-light);
+  cursor: pointer;
+  transition: all 0.15s;
+  white-space: nowrap;
+}
+
+.krank-kat-btn:hover {
+  border-color: var(--primary);
+  color: var(--primary);
+}
+
+.krank-kat-btn.active {
+  background: var(--primary);
+  border-color: var(--primary);
+  color: white;
+  font-weight: 600;
+}
+
+/* ── Grid ────────────────────────────────────────────────────────────────── */
+.krank-grid-wrap {
+  padding: 32px 0 64px;
+}
+
+.krank-count {
+  font-size: 13px;
+  color: var(--text-muted);
+  margin-bottom: 20px;
+}
+
+.krank-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 16px;
+}
+
+/* ── Karte ───────────────────────────────────────────────────────────────── */
+.krank-card {
+  background: white;
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  padding: 20px;
+  text-align: left;
+  cursor: pointer;
+  transition: box-shadow 0.18s, transform 0.18s, border-color 0.18s;
+  width: 100%;
+}
+
+.krank-card:hover {
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+  transform: translateY(-2px);
+  border-color: var(--primary);
+}
+
+.krank-card-top {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 10px;
+  margin-bottom: 8px;
+}
+
+.krank-name {
+  font-size: 16px;
+  font-weight: 600;
+  color: var(--text-dark);
+  line-height: 1.3;
+}
+
+.krank-icd {
+  font-family: "DM Mono", monospace;
+  font-size: 11px;
+  color: var(--text-muted);
+  background: var(--bg-light);
+  border: 1px solid var(--border);
+  border-radius: 5px;
+  padding: 2px 7px;
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+
+.krank-beschreibung {
+  font-size: 13px;
+  color: var(--text-light);
+  line-height: 1.55;
+  margin-bottom: 14px;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.krank-card-footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+}
+
+.krank-kat-tag {
+  font-size: 12px;
+  background: #F0FAF5;
+  color: var(--primary);
+  border-radius: 12px;
+  padding: 3px 10px;
+  font-weight: 500;
+}
+
+.krank-notfall-badge {
+  font-size: 11px;
+  background: #FEF2F2;
+  color: #DC2626;
+  border-radius: 12px;
+  padding: 3px 9px;
+  font-weight: 600;
+}
+
+.krank-arrow {
+  font-size: 16px;
+  color: var(--primary);
+  font-weight: 600;
+  margin-left: auto;
+}
+
+/* ── Detail-Seite ────────────────────────────────────────────────────────── */
+.krank-detail {
+  max-width: 820px;
+  margin: 0 auto;
+  padding: 40px 24px 80px;
+}
+
+.krank-detail-back {
+  background: none;
+  border: none;
+  color: var(--primary);
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  padding: 0;
+  margin-bottom: 28px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.krank-detail-back:hover {
+  text-decoration: underline;
+}
+
+/* Header Block */
+.krank-detail-header {
+  margin-bottom: 32px;
+}
+
+.krank-detail-title {
+  font-family: "Instrument Serif", serif;
+  font-size: clamp(26px, 5vw, 38px);
+  color: var(--text-dark);
+  margin: 0 0 10px;
+  line-height: 1.2;
+}
+
+.krank-detail-synonym {
+  font-size: 14px;
+  color: var(--text-muted);
+  margin: 0 0 14px;
+  font-style: italic;
+}
+
+.krank-detail-meta {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 10px;
+}
+
+.krank-haeufigkeit {
+  font-size: 12px;
+  color: var(--text-muted);
+  background: var(--bg-light);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 3px 10px;
+}
+
+/* ── Sprachebenen-Toggle ─────────────────────────────────────────────────── */
+.krank-ebene-tabs {
+  display: flex;
+  gap: 4px;
+  background: var(--bg-light);
+  border-radius: 10px;
+  padding: 4px;
+  width: fit-content;
+  margin-bottom: 28px;
+  border: 1px solid var(--border);
+}
+
+.krank-ebene-btn {
+  background: none;
+  border: none;
+  border-radius: 7px;
+  padding: 7px 16px;
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--text-light);
+  cursor: pointer;
+  transition: all 0.15s;
+  white-space: nowrap;
+}
+
+.krank-ebene-btn.active {
+  background: white;
+  color: var(--primary);
+  font-weight: 700;
+  box-shadow: 0 1px 4px rgba(0,0,0,0.08);
+}
+
+.krank-ebene-btn:hover:not(.active) {
+  color: var(--text-dark);
+}
+
+/* ── Inhalts-Sections ────────────────────────────────────────────────────── */
+.krank-section {
+  background: white;
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  padding: 24px;
+  margin-bottom: 16px;
+}
+
+.krank-section-title {
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--text-muted);
+  margin: 0 0 14px;
+}
+
+.krank-section-text {
+  font-size: 15px;
+  line-height: 1.75;
+  color: var(--text-light);
+  margin: 0;
+}
+
+/* Symptome */
+.krank-symptom-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.krank-symptom-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  font-size: 14px;
+  color: var(--text-light);
+  line-height: 1.5;
+}
+
+.krank-symptom-item::before {
+  content: "•";
+  color: var(--primary);
+  font-weight: 700;
+  flex-shrink: 0;
+  margin-top: 1px;
+}
+
+.krank-symptom-item.warnsignal {
+  color: var(--text-dark);
+  font-weight: 500;
+}
+
+.krank-symptom-item.warnsignal::before {
+  content: "⚠";
+  color: #E53E3E;
+}
+
+/* Diagnostik + Behandlung (JSONB-Liste) */
+.krank-json-list {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.krank-json-item {
+  font-size: 14px;
+  line-height: 1.6;
+  color: var(--text-light);
+  padding-left: 16px;
+  border-left: 2px solid var(--primary-light, #B2DFCF);
+}
+
+.krank-json-item strong {
+  color: var(--text-dark);
+  display: block;
+  font-size: 14px;
+  margin-bottom: 2px;
+}
+
+/* Verknüpfungen */
+.krank-links-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.krank-link-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: #F0FAF5;
+  color: var(--primary);
+  border-radius: 20px;
+  padding: 5px 14px;
+  font-size: 13px;
+  font-weight: 500;
+  text-decoration: none;
+  border: 1px solid #B2DFCF;
+  cursor: pointer;
+  transition: background 0.15s;
+}
+
+.krank-link-chip:hover {
+  background: #D4F0E3;
+}
+
+/* Quellen */
+.krank-quellen-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.krank-quelle-item {
+  font-size: 13px;
+  color: var(--text-muted);
+}
+
+.krank-quelle-item a {
+  color: var(--primary);
+  text-decoration: none;
+}
+
+.krank-quelle-item a:hover {
+  text-decoration: underline;
+}
+
+/* Empty State */
+.krank-empty {
+  text-align: center;
+  padding: 60px 24px;
+  color: var(--text-muted);
+  font-size: 15px;
+}
+
+/* Responsive */
+@media (max-width: 600px) {
+  .krank-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .krank-header-inner {
+    flex-direction: column;
+  }
+
+  .krank-ebene-tabs {
+    width: 100%;
+    justify-content: stretch;
+  }
+
+  .krank-ebene-btn {
+    flex: 1;
+    text-align: center;
+    padding: 7px 8px;
+  }
+}

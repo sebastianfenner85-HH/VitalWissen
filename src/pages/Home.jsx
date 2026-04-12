@@ -5,7 +5,7 @@ import './Home.css'
 
 export default function Home() {
   const [query, setQuery] = useState('')
-  const [results, setResults] = useState({ laborwerte: [], supplements: [] })
+  const [results, setResults] = useState({ laborwerte: [], supplements: [], krankheiten: [] })
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState(null)
   const [showResults, setShowResults] = useState(false)
@@ -27,7 +27,7 @@ export default function Home() {
     if (debounceRef.current) clearTimeout(debounceRef.current)
 
     if (query.trim().length < 2) {
-      setResults({ laborwerte: [], supplements: [] })
+      setResults({ laborwerte: [], supplements: [], krankheiten: [] })
       setShowResults(false)
       return
     }
@@ -51,13 +51,14 @@ export default function Home() {
   }, [query])
 
   const hasResults =
-    results.laborwerte.length > 0 || results.supplements.length > 0
+    results.laborwerte.length > 0 || results.supplements.length > 0 || results.krankheiten.length > 0
 
   function handleSelect(type, id) {
     setShowResults(false)
     setQuery('')
-    if (type === 'laborwert') navigate(`/laborwerte/${id}`)
+    if (type === 'laborwert')  navigate(`/laborwerte/${id}`)
     if (type === 'supplement') navigate(`/supplements/${id}`)
+    if (type === 'krankheit')  navigate(`/krankheiten/${id}`)
   }
 
   return (
@@ -134,6 +135,24 @@ export default function Home() {
                   ))}
                 </div>
               )}
+
+              {results.krankheiten.length > 0 && (
+                <div className="home-search-group">
+                  <p className="home-search-group-label">Krankheiten</p>
+                  {results.krankheiten.map(k => (
+                    <button
+                      key={k.slug}
+                      className="home-search-item"
+                      onClick={() => handleSelect('krankheit', k.slug)}
+                    >
+                      <span className="home-search-item-name">{k.name_de}</span>
+                      {k.icd10_code && (
+                        <span className="home-search-item-meta">{k.icd10_code}</span>
+                      )}
+                    </button>
+                  ))}
+                </div>
+              )}
             </div>
           )}
         </div>
@@ -144,6 +163,9 @@ export default function Home() {
           </button>
           <button className="home-quick-link" onClick={() => navigate('/supplements')}>
             💊 Supplements
+          </button>
+          <button className="home-quick-link" onClick={() => navigate('/krankheiten')}>
+            🩺 Krankheiten
           </button>
         </div>
       </div>
@@ -160,6 +182,12 @@ export default function Home() {
           <h3>Supplement-Kompass</h3>
           <p>Evidenzbasierte Informationen zu Dosierung, Wirkform, Timing und Medikamenten-Interaktionen.</p>
           <button className="home-pillar-btn" onClick={() => navigate('/supplements')}>Zu den Supplements →</button>
+        </div>
+        <div className="home-pillar-card">
+          <div className="home-pillar-icon">🩺</div>
+          <h3>Krankheits-Lexikon</h3>
+          <p>Erkrankungen in drei Sprachebenen erklärt — von sehr einfach bis fachlich. Mit Symptomen, Diagnostik und Behandlung.</p>
+          <button className="home-pillar-btn" onClick={() => navigate('/krankheiten')}>Zu den Krankheiten →</button>
         </div>
         <div className="home-pillar-card home-pillar-card--coming">
           <div className="home-pillar-icon">📄</div>
