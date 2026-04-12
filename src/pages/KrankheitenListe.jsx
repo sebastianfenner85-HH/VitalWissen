@@ -3,11 +3,22 @@ import { useNavigate } from 'react-router-dom'
 import { getKrankheitenListe } from '../lib/queries'
 import './Krankheiten.css'
 
+const TAG_FILTER = [
+  { key: null,                label: 'Alle' },
+  { key: 'haeufig_de',       label: '🇩🇪 Häufig in DE' },
+  { key: 'chronisch',        label: '🔁 Chronisch' },
+  { key: 'akut',             label: '⚡ Akut' },
+  { key: 'notfall',          label: '🚨 Notfall' },
+  { key: 'lebensstil',       label: '🥗 Lebensstil' },
+  { key: 'fehldiagnose_haeufig', label: '🔍 Häufige Fehldiagnose' },
+]
+
 export default function KrankheitenListe() {
   const [krankheiten, setKrankheiten] = useState([])
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState(null)
   const [filterKat, setFilterKat] = useState('Alle')
+  const [filterTag, setFilterTag] = useState(null)
   const [suche, setSuche] = useState('')
   const navigate = useNavigate()
 
@@ -30,13 +41,14 @@ export default function KrankheitenListe() {
 
   const gefiltert = krankheiten.filter(k => {
     const matchKat = filterKat === 'Alle' || k.kategorie === filterKat
+    const matchTag = !filterTag || (Array.isArray(k.filter_tags) && k.filter_tags.includes(filterTag))
     const matchSuche =
       !suche ||
       k.name_de?.toLowerCase().includes(suche.toLowerCase()) ||
       k.beschreibung_laienhaft?.toLowerCase().includes(suche.toLowerCase()) ||
       k.icd10_code?.toLowerCase().includes(suche.toLowerCase()) ||
       k.synonym_de?.some(s => s.toLowerCase().includes(suche.toLowerCase()))
-    return matchKat && matchSuche
+    return matchKat && matchTag && matchSuche
   })
 
   if (loading) {
@@ -75,7 +87,7 @@ export default function KrankheitenListe() {
             </div>
           </div>
 
-          {/* Filter-Zeile */}
+          {/* Suchfeld */}
           <div className="krank-filter-row">
             <div className="krank-search-box">
               <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" strokeWidth="2">
@@ -89,17 +101,32 @@ export default function KrankheitenListe() {
                 onChange={e => setSuche(e.target.value)}
               />
             </div>
-            <div className="krank-kat-filter">
-              {kategorien.map(k => (
-                <button
-                  key={k}
-                  className={`krank-kat-btn ${filterKat === k ? 'active' : ''}`}
-                  onClick={() => setFilterKat(k)}
-                >
-                  {k}
-                </button>
-              ))}
-            </div>
+          </div>
+
+          {/* Tag-Filter (Schnellfilter) */}
+          <div className="krank-tag-filter">
+            {TAG_FILTER.map(t => (
+              <button
+                key={t.key ?? 'alle'}
+                className={`krank-tag-btn ${filterTag === t.key && filterKat === 'Alle' ? 'active' : ''}`}
+                onClick={() => { setFilterTag(t.key); setFilterKat('Alle') }}
+              >
+                {t.label}
+              </button>
+            ))}
+          </div>
+
+          {/* Kategorie-Filter */}
+          <div className="krank-kat-filter">
+            {kategorien.map(k => (
+              <button
+                key={k}
+                className={`krank-kat-btn ${filterKat === k && filterTag === null ? 'active' : ''}`}
+                onClick={() => { setFilterKat(k); setFilterTag(null) }}
+              >
+                {k}
+              </button>
+            ))}
           </div>
         </div>
       </div>
@@ -133,6 +160,12 @@ export default function KrankheitenListe() {
                   )}
                   {k.notfall_flag && (
                     <span className="krank-notfall-badge">⚡ Notfall</span>
+                  )}
+                  {k.filter_tags?.includes('haeufig_de') && (
+                    <span className="krank-haeufig-badge">🇩🇪</span>
+                  )}
+                  {k.filter_tags?.includes('fehldiagnose_haeufig') && (
+                    <span className="krank-fehldiag-badge">🔍</span>
                   )}
                   <span className="krank-arrow">→</span>
                 </div>

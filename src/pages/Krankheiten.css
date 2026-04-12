@@ -76,6 +76,38 @@
   color: var(--text-muted);
 }
 
+/* Tag-Filter (Schnellfilter) */
+.krank-tag-filter {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+  padding-bottom: 12px;
+}
+
+.krank-tag-btn {
+  background: white;
+  border: 1px solid var(--border);
+  border-radius: 20px;
+  padding: 5px 14px;
+  font-size: 13px;
+  color: var(--text-light);
+  cursor: pointer;
+  transition: all 0.15s;
+  white-space: nowrap;
+}
+
+.krank-tag-btn:hover {
+  border-color: var(--primary);
+  color: var(--primary);
+}
+
+.krank-tag-btn.active {
+  background: #0F4C35;
+  border-color: #0F4C35;
+  color: white;
+  font-weight: 600;
+}
+
 /* Kategorie-Buttons */
 .krank-kat-filter {
   display: flex;
@@ -203,6 +235,16 @@
   border-radius: 12px;
   padding: 3px 9px;
   font-weight: 600;
+}
+
+.krank-haeufig-badge {
+  font-size: 13px;
+  line-height: 1;
+}
+
+.krank-fehldiag-badge {
+  font-size: 13px;
+  line-height: 1;
 }
 
 .krank-arrow {

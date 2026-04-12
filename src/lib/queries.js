@@ -81,7 +81,8 @@ export async function getKrankheitenListe() {
       kategorie,
       beschreibung_laienhaft,
       notfall_flag,
-      haeufigkeit
+      haeufigkeit,
+      filter_tags
     `)
     .order('name_de', { ascending: true })
 
