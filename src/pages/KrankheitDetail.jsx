@@ -75,6 +75,10 @@ export default function KrankheitDetail() {
   const verwSupplements   = k.verwandte_supplements || []
   const synonyme          = k.synonym_de || []
 
+  // Nur Refs rendern, die tatsächlich in der DB existieren (= haben einen Klarnamen im Map)
+  const valLaborwerte  = verwLaborwerte.filter(code => laborwertNamen[code] !== undefined)
+  const valSupplements = verwSupplements.filter(s   => supplementNamen[s]   !== undefined)
+
   return (
     <div className="krank-detail">
       <button className="krank-detail-back" onClick={() => navigate('/krankheiten')}>
@@ -188,26 +192,26 @@ export default function KrankheitDetail() {
       )}
 
       {/* ── Verknüpfungen ──────────────────────────────────────────── */}
-      {(verwLaborwerte.length > 0 || verwSupplements.length > 0) && (
+      {(valLaborwerte.length > 0 || valSupplements.length > 0) && (
         <div className="krank-section">
           <p className="krank-section-title">Verwandte Einträge</p>
           <div className="krank-links-grid">
-            {verwLaborwerte.map(code => (
+            {valLaborwerte.map(code => (
               <button
                 key={code}
                 className="krank-link-chip"
                 onClick={() => navigate(`/laborwerte/${code}`)}
               >
-                🔬 {laborwertNamen[code] || code}
+                🔬 {laborwertNamen[code]}
               </button>
             ))}
-            {verwSupplements.map(s => (
+            {valSupplements.map(s => (
               <button
                 key={s}
                 className="krank-link-chip"
                 onClick={() => navigate(`/supplements/${s}`)}
               >
-                💊 {supplementNamen[s] || s}
+                💊 {supplementNamen[s]}
               </button>
             ))}
           </div>
