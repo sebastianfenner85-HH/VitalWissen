@@ -1,0 +1,281 @@
+{
+  "_meta": {
+    "version": "P6c-01a-rev3",
+    "paket": "Curated Verified Core 5",
+    "created_at": "2026-04-14",
+    "updated_at": "2026-04-14",
+    "write_status": "NOT_APPLIED",
+    "scope": "Read-only — 5 Krankheiten: E11, E03, D50, I10, F32",
+    "method": "Slugs und Quellen via Supabase REST API (Chrome JS, 14.04.2026) verifiziert. AWMF-Redirect-URLs via Browser-Navigation geprüft. Alle Quellen-Blocker (E03, D50, I10) via Browser-Navigation 14.04.2026 geschlossen.",
+    "quelle_primaer": [
+      "VITALWISSEN_CORE_BUILD_DUE_DILIGENCE.md (13.04.2026)",
+      "VITALWISSEN_CORE_BUILD_DELTA_AUDIT.md (13.04.2026)"
+    ],
+    "db_verification": {
+      "method": "Supabase REST API via Chrome JS — fetch gegen /rest/v1/krankheiten",
+      "timestamp": "2026-04-14",
+      "fields_queried": ["icd10_code", "slug", "quellen"]
+    },
+    "valid_loinc_codes_in_db": [
+      "1751-7", "1975-2", "1986-9", "1988-5", "1920-8", "1742-6",
+      "2075-0", "2085-9", "2089-1", "2093-3", "2132-9", "2143-6",
+      "2160-0", "2243-4", "2276-4", "2284-8", "2324-2", "2345-7",
+      "2498-4", "2502-3", "2571-8", "2777-1", "2823-3", "2839-9",
+      "2951-2", "2986-8", "3016-3", "3024-7", "3034-6", "3051-0",
+      "3084-1", "3091-6", "4537-7", "4544-3", "4548-4", "5762-5",
+      "5902-7", "6690-2", "6768-6", "8099-7", "10501-5", "10835-7",
+      "14635-7", "15067-2", "17861-6", "19123-9", "20448-7", "30522-7",
+      "31112-6", "33762-6", "33959-8", "62238-1", "75241-0", "718-7",
+      "777-3", "785-6", "786-4", "787-2", "789-8", "89579-7"
+    ],
+    "valid_supplement_slugs_in_db": [
+      "alpha-liponsaeure", "ashwagandha", "bcaa", "berberin", "beta-glucan",
+      "biotin", "chrom", "cla", "coenzym-q10", "echinacea", "eisen",
+      "folsaeure", "ginkgo", "hyaluronsaeure", "jod", "kalium-supplement",
+      "kalzium", "kreatin", "kupfer", "curcumin", "l-arginin", "l-carnitin",
+      "l-glutamin", "magnesium", "mangan", "mariendistel", "mct-oel",
+      "melatonin", "n-acetyl-cystein", "nadh", "vitamin-b3", "omega-3",
+      "vitamin-b5", "probiotika", "quercetin", "resveratrol", "rhodiola",
+      "selen", "silizium", "taurin", "vitamin-a", "vitamin-b1", "vitamin-b12",
+      "vitamin-b2", "vitamin-b6", "vitamin-c", "vitamin-d3", "vitamin-e",
+      "vitamin-k", "zink"
+    ],
+    "validator": "scripts/validate_p6c_verified_core.py"
+  },
+  "diseases": [
+    {
+      "icd10_code": "E11",
+      "slug": "diabetes-typ-2",
+      "slug_verified": true,
+      "slug_quelle": "Supabase REST API — krankheiten.slug, 14.04.2026",
+      "name_de": "Diabetes mellitus Typ 2",
+      "sources_curated": [
+        {
+          "typ": "Leitlinie",
+          "name": "NVL Diabetes mellitus Typ 2",
+          "url": "https://register.awmf.org/de/leitlinien/detail/057-001",
+          "url_in_db": "https://www.awmf.org/leitlinien/detail/ll/057-001.html",
+          "anker": "AWMF 057-001",
+          "verifiziert": true,
+          "url_geprueft": true,
+          "url_pruef_methode": "Browser-Navigation 14.04.2026 — Redirect auf register.awmf.org/de/leitlinien/detail/057-001 bestätigt",
+          "beleg": "Delta-Audit Abschnitt 2 + Browser-Verifikation 14.04.2026"
+        },
+        {
+          "typ": "Fachgesellschaft",
+          "name": "Deutsche Diabetes Gesellschaft (DDG)",
+          "url": "https://www.ddg.info",
+          "url_in_db": "https://www.ddg.info",
+          "anker": "DDG",
+          "verifiziert": false,
+          "url_geprueft": false,
+          "open_point": "DB-URL ist generische Startseite ddg.info — kein spezifischer Leitlinien- oder Seitenlink. Nicht als Quellenanker verwendbar ohne exakte Zielseite."
+        },
+        {
+          "typ": "Übersicht",
+          "name": "MedlinePlus Diabetes",
+          "url": "https://medlineplus.gov/diabetes.html",
+          "url_in_db": "https://medlineplus.gov/diabetes.html",
+          "anker": "MedlinePlus",
+          "verifiziert": false,
+          "url_geprueft": false,
+          "open_point": "Englischsprachige Quelle — für deutschsprachige Plattform nur nachrangig geeignet."
+        }
+      ],
+      "related_labs_curated": ["2345-7", "4548-4"],
+      "related_supplements_curated": ["magnesium", "omega-3", "vitamin-d3"],
+      "status_sources": "PARTIAL — 1 verifizierter exakter Anker (AWMF 057-001), 2 weitere generisch oder EN",
+      "status_labs": "CLEAN",
+      "status_supplements": "CLEAN",
+      "open_points": [
+        "DDG-URL: nur Startseite ddg.info — exakte Leitlinien-Seite (z.B. ddg.info/leitlinien/) muss verifiziert werden",
+        "MedlinePlus: englischsprachig, nachrangig"
+      ],
+      "changes_vs_db": {
+        "related_labs_removed": ["17856-6"],
+        "related_labs_added": [],
+        "related_supplements_renamed": [{"from": "vitamin-d", "to": "vitamin-d3"}],
+        "related_supplements_removed": [],
+        "sources_change": "AWMF-URL aktualisiert auf kanonische Redirect-URL (register.awmf.org)"
+      },
+      "last_verified_at": "2026-04-14"
+    },
+    {
+      "icd10_code": "E03",
+      "slug": "hypothyreose",
+      "slug_verified": true,
+      "slug_quelle": "Supabase REST API — krankheiten.slug, 14.04.2026",
+      "name_de": "Hypothyreose",
+      "sources_curated": [
+        {
+          "typ": "Leitlinie",
+          "name": "S2k-Leitlinie Erhöhter TSH-Wert in der Hausarztpraxis (AWMF 053-046)",
+          "url": "https://register.awmf.org/de/leitlinien/detail/053-046",
+          "url_in_db": "https://www.awmf.org",
+          "anker": "AWMF 053-046",
+          "verifiziert": true,
+          "url_geprueft": true,
+          "url_pruef_methode": "Browser-Navigation 14.04.2026 — register.awmf.org/de/leitlinien/detail/053-046 direkt aufgerufen, Seite '053-046 S2k-Leitlinie Erhöhter TSH-Wert in der Hausarztpraxis, Version 2.4, gültig bis 31.05.2027' bestätigt",
+          "beleg": "Hinweis: Keine dedizierte AWMF-Leitlinie mit Titel 'Hypothyreose' vorhanden. AWMF 053-046 ist die nächstliegende AWMF-registrierte Leitlinie für TSH-Erhöhung/Hypothyreose-Diagnostik."
+        },
+        {
+          "typ": "Fachgesellschaft",
+          "name": "Deutsche Gesellschaft für Endokrinologie e.V. — Schilddrüsenunterfunktion",
+          "url": "https://www.endokrinologie.net/krankheiten-schilddruese-unterfunktion.php",
+          "url_in_db": "https://www.endokrinologie.net",
+          "anker": "Deutsche Ges. f. Endokrinologie e.V.",
+          "verifiziert": true,
+          "url_geprueft": true,
+          "url_pruef_methode": "Browser-Navigation 14.04.2026 — Seite 'Schilddrüsenunterfunktion - www.endokrinologie.net' geladen, Inhalt zu Hypothyreose (Symptome, Ursachen, Diagnostik) bestätigt",
+          "beleg": "Exakte Krankheitsseite der Deutschen Gesellschaft für Endokrinologie e.V. zur Hypothyreose (endokrinologie.net). Hinweis: Kürzel 'DGE' vermieden — in anderen Kontexten steht 'DGE' für Deutsche Gesellschaft für Ernährung."
+        }
+      ],
+      "related_labs_curated": ["3016-3", "3051-0"],
+      "related_supplements_curated": ["selen", "jod", "vitamin-d3"],
+      "status_sources": "PARTIAL — 2 verifizierte exakte Anker (AWMF 053-046 + DGE Hypothyreose-Seite). BLOCKER geschlossen.",
+      "status_labs": "CLEAN",
+      "status_supplements": "CLEAN",
+      "open_points": [
+        "AWMF 053-046 hat Titel 'Erhöhter TSH-Wert in der Hausarztpraxis' — nicht explizit 'Hypothyreose'. Kein eigenes AWMF-Hypothyreose-Leitlinie existiert laut AWMF-Recherche 14.04.2026."
+      ],
+      "changes_vs_db": {
+        "related_labs_removed": [],
+        "related_labs_added": [],
+        "related_supplements_renamed": [{"from": "vitamin-d", "to": "vitamin-d3"}],
+        "related_supplements_removed": [],
+        "sources_change": "AWMF 053-046 und DGE-Endokrinologie-Seite als verifizierte exakte Anker gesetzt. Blocker E03 geschlossen 14.04.2026."
+      },
+      "last_verified_at": "2026-04-14"
+    },
+    {
+      "icd10_code": "D50",
+      "slug": "eisemangelanaemie",
+      "slug_verified": true,
+      "slug_quelle": "Supabase REST API — krankheiten.slug, 14.04.2026",
+      "name_de": "Eisenmangelanämie",
+      "sources_curated": [
+        {
+          "typ": "Leitlinie",
+          "name": "DGHO Onkopedia — Eisenmangel und Eisenmangelanämie",
+          "url": "https://www.onkopedia.com/de/onkopedia/guidelines/eisenmangel-und-eisenmangelanaemie/@@guideline/html/index.html",
+          "url_in_db": "https://www.dgho.de",
+          "anker": "DGHO Onkopedia Eisenmangel",
+          "verifiziert": true,
+          "url_geprueft": true,
+          "url_pruef_methode": "Browser-Navigation 14.04.2026 — Seite 'Eisenmangel und Eisenmangelanämie — Onkopedia' geladen, URL https://www.onkopedia.com/de/onkopedia/guidelines/eisenmangel-und-eisenmangelanaemie/@@guideline/html/index.html bestätigt",
+          "beleg": "Offizielle DGHO-Leitlinie auf Onkopedia-Portal. Aktualisiert April 2025 laut Google-Suchergebnis 14.04.2026."
+        }
+      ],
+      "related_labs_curated": [],
+      "related_supplements_curated": ["eisen", "vitamin-c", "vitamin-b12"],
+      "status_sources": "PARTIAL — 1 verifizierter exakter Anker (DGHO Onkopedia). BLOCKER geschlossen.",
+      "status_labs": "CLEAN",
+      "status_supplements": "CLEAN",
+      "open_points": [
+        "SLUG-HINWEIS: DB-Slug ist 'eisemangelanaemie' — fehlendes 'n' (sollte 'eisenmangelanaemie' sein). Typo in DB. Slug wurde exakt aus DB übernommen — nicht korrigiert. Slug-Korrektur wäre separater Fix außerhalb P6c-01a-Scope.",
+        "Laborwerte leer — klinisch naheliegende Codes (2276-4 Ferritin, 2498-4 Eisen Serum, 2502-3 Transferrinsättigung) sind in DB vorhanden, aber nicht als DB-Cross-Refs für D50 bestätigt. Nicht ergänzt."
+      ],
+      "changes_vs_db": {
+        "related_labs_removed": ["20570-8", "2601-3", "14627-4"],
+        "related_labs_added": [],
+        "related_supplements_renamed": [],
+        "related_supplements_removed": [],
+        "sources_change": "DGHO Onkopedia-URL als verifizierter exakter Anker gesetzt (statt generische dgho.de Startseite). Blocker D50 geschlossen 14.04.2026."
+      },
+      "last_verified_at": "2026-04-14"
+    },
+    {
+      "icd10_code": "I10",
+      "slug": "bluthochdruck",
+      "slug_verified": true,
+      "slug_quelle": "Supabase REST API — krankheiten.slug, 14.04.2026",
+      "name_de": "Bluthochdruck",
+      "sources_curated": [
+        {
+          "typ": "Internationale Leitlinie",
+          "name": "ESC/ESH Leitlinie Arterielle Hypertonie 2023",
+          "url": null,
+          "url_in_db": "https://www.escardio.org",
+          "anker": "ESC — escardio.org",
+          "verifiziert": false,
+          "url_geprueft": false,
+          "open_point": "DB-URL ist generische ESC-Startseite — exakte Leitlinien-URL nicht geprüft. Nicht als Quellenanker erforderlich, da DHL-Anker bereits verifiziert."
+        },
+        {
+          "typ": "Patienteninformation",
+          "name": "Deutsche Hochdruckliga — Bluthochdruck bei Erwachsenen und Kindern",
+          "url": "https://www.hochdruckliga.de/betroffene/bluthochdruck",
+          "url_in_db": "https://www.hochdruckliga.de",
+          "anker": "Deutsche Hochdruckliga DHL",
+          "verifiziert": true,
+          "url_geprueft": true,
+          "url_pruef_methode": "Browser-Navigation 14.04.2026 — Seite 'Bluthochdruck bei Erwachsenen und Kindern' auf hochdruckliga.de geladen, URL https://www.hochdruckliga.de/betroffene/bluthochdruck bestätigt",
+          "beleg": "Offizielle Patienteninformationsseite der Deutschen Hochdruckliga (DHL)"
+        }
+      ],
+      "related_labs_curated": ["2823-3"],
+      "related_supplements_curated": ["magnesium", "coenzym-q10", "omega-3"],
+      "status_sources": "PARTIAL — 1 verifizierter exakter Anker (DHL Hochdruckliga). BLOCKER geschlossen.",
+      "status_labs": "CLEAN",
+      "status_supplements": "CLEAN",
+      "open_points": [
+        "escardio.org: exakte ESC-2023-Leitlinien-URL nicht geprüft — nachrangig, da DHL-Anker ausreichend für APPLY"
+      ],
+      "changes_vs_db": {
+        "related_labs_removed": ["2708-6"],
+        "related_labs_added": [],
+        "related_supplements_renamed": [],
+        "related_supplements_removed": [],
+        "sources_change": "Deutsche Hochdruckliga spezifische Seite als verifizierter exakter Anker gesetzt. Blocker I10 geschlossen 14.04.2026."
+      },
+      "last_verified_at": "2026-04-14"
+    },
+    {
+      "icd10_code": "F32",
+      "slug": "depression",
+      "slug_verified": true,
+      "slug_quelle": "Supabase REST API — krankheiten.slug, 14.04.2026",
+      "name_de": "Depression",
+      "sources_curated": [
+        {
+          "typ": "Leitlinie",
+          "name": "S3-Leitlinie Unipolare Depression",
+          "url": "https://register.awmf.org/de/leitlinien/detail/038-013",
+          "url_in_db": "https://www.awmf.org/leitlinien/detail/ll/038-013.html",
+          "anker": "AWMF 038-013",
+          "verifiziert": true,
+          "url_geprueft": true,
+          "url_pruef_methode": "Browser-Navigation 14.04.2026 — Redirect auf register.awmf.org/de/leitlinien/detail/038-013 bestätigt",
+          "beleg": "Delta-Audit Abschnitt 2 + Browser-Verifikation 14.04.2026"
+        },
+        {
+          "typ": "Patienteninformation",
+          "name": "Stiftung Deutsche Depressionshilfe",
+          "url": null,
+          "url_in_db": "https://www.deutsche-depressionshilfe.de",
+          "anker": "DeprHilfe",
+          "verifiziert": false,
+          "url_geprueft": false,
+          "open_point": "DB-URL ist generische Startseite deutsche-depressionshilfe.de — kein spezifischer Seitenlink. Als Patienteninformation akzeptabel, aber exakte Seite sollte verifiziert werden."
+        }
+      ],
+      "related_labs_curated": [],
+      "related_supplements_curated": ["omega-3", "magnesium", "vitamin-d3"],
+      "status_sources": "PARTIAL — 1 verifizierter exakter Anker (AWMF 038-013), 1 generische Domain",
+      "status_labs": "CLEAN",
+      "status_supplements": "CLEAN",
+      "open_points": [
+        "deutsche-depressionshilfe.de: exakte Seite (z.B. /erkrankungen/depression/) sollte vor Apply verifiziert werden",
+        "IQWiG-Patienteninformation wäre wünschenswert — nicht in DB, nicht ergänzt"
+      ],
+      "changes_vs_db": {
+        "related_labs_removed": [],
+        "related_labs_added": [],
+        "related_supplements_renamed": [{"from": "vitamin-d", "to": "vitamin-d3"}],
+        "related_supplements_removed": [],
+        "sources_change": "AWMF-URL aktualisiert auf kanonische Redirect-URL (register.awmf.org)"
+      },
+      "last_verified_at": "2026-04-14"
+    }
+  ]
+}
