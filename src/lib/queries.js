@@ -101,6 +101,28 @@ export async function getKrankheitBySlug(slug) {
   return data
 }
 
+// ─── Name-Maps für Cross-Link-Auflösung (S5 Krankheitsdetail) ───────────────
+
+export async function getLaborwerteNameMap(codes) {
+  if (!codes || codes.length === 0) return {}
+  const { data, error } = await supabase
+    .from('laborwerte')
+    .select('loinc_code, name_de')
+    .in('loinc_code', codes)
+  if (error) throw error
+  return Object.fromEntries((data || []).map(r => [r.loinc_code, r.name_de]))
+}
+
+export async function getSupplementeNameMap(slugs) {
+  if (!slugs || slugs.length === 0) return {}
+  const { data, error } = await supabase
+    .from('supplements')
+    .select('slug, name_de')
+    .in('slug', slugs)
+  if (error) throw error
+  return Object.fromEntries((data || []).map(r => [r.slug, r.name_de]))
+}
+
 // ─── Suche (Home) ────────────────────────────────────────────────────────────
 
 export async function sucheGlobal(query) {

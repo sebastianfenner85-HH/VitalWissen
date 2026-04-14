@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react'
 import { useParams, useNavigate } from 'react-router-dom'
-import { getKrankheitBySlug } from '../lib/queries'
+import { getKrankheitBySlug, getLaborwerteNameMap, getSupplementeNameMap } from '../lib/queries'
 import './Krankheiten.css'
 
 const EBENEN = [
@@ -16,12 +16,22 @@ export default function KrankheitDetail() {
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState(null)
   const [ebene, setEbene] = useState('laienhaft')
+  const [laborwertNamen, setLaborwertNamen] = useState({})
+  const [supplementNamen, setSupplementNamen] = useState({})
 
   useEffect(() => {
     async function load() {
       try {
         const data = await getKrankheitBySlug(slug)
         setK(data)
+        const codes = data?.verwandte_laborwerte || []
+        const slugs = data?.verwandte_supplements || []
+        const [lwMap, suppMap] = await Promise.all([
+          getLaborwerteNameMap(codes).catch(() => ({})),
+          getSupplementeNameMap(slugs).catch(() => ({})),
+        ])
+        setLaborwertNamen(lwMap)
+        setSupplementNamen(suppMap)
       } catch (err) {
         console.error(err)
         setError('Krankheit nicht gefunden.')
@@ -188,16 +198,16 @@ export default function KrankheitDetail() {
                 className="krank-link-chip"
                 onClick={() => navigate(`/laborwerte/${code}`)}
               >
-                🔬 {code}
+                🔬 {laborwertNamen[code] || code}
               </button>
             ))}
-            {verwSupplements.map(slug => (
+            {verwSupplements.map(s => (
               <button
-                key={slug}
+                key={s}
                 className="krank-link-chip"
-                onClick={() => navigate(`/supplements/${slug}`)}
+                onClick={() => navigate(`/supplements/${s}`)}
               >
-                💊 {slug}
+                💊 {supplementNamen[s] || s}
               </button>
             ))}
           </div>
