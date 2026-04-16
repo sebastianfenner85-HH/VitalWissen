@@ -1,0 +1,278 @@
+.arztbrief-page {
+  padding: 48px 0 80px;
+}
+
+.arztbrief-header {
+  text-align: center;
+  margin-bottom: 40px;
+}
+
+.arztbrief-header h1 {
+  font-size: 48px;
+  margin: 14px 0 10px;
+  color: var(--text);
+}
+
+.arztbrief-sub {
+  color: var(--text-light);
+  max-width: 640px;
+  margin: 0 auto;
+  font-size: 17px;
+  line-height: 1.6;
+}
+
+.arztbrief-banner {
+  background: var(--primary-50);
+  border: 1px solid var(--primary-100);
+  border-radius: var(--radius);
+  padding: 20px 24px;
+  margin-bottom: 32px;
+}
+
+.arztbrief-banner-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-bottom: 12px;
+}
+
+.arztbrief-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 4px 12px;
+  border-radius: 999px;
+  font-size: 12px;
+  font-weight: 500;
+  letter-spacing: 0.02em;
+}
+
+.arztbrief-chip.ok {
+  background: var(--green-light);
+  color: var(--green);
+}
+
+.arztbrief-chip.ok::before {
+  content: "●";
+  font-size: 10px;
+}
+
+.arztbrief-chip.pending {
+  background: var(--surface-2);
+  color: var(--text-light);
+  border: 1px dashed var(--border-dark);
+}
+
+.arztbrief-chip.pending::before {
+  content: "○";
+  font-size: 10px;
+}
+
+.arztbrief-banner-text {
+  color: var(--text);
+  font-size: 14px;
+  line-height: 1.6;
+  margin: 0;
+}
+
+.arztbrief-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 20px;
+  margin-bottom: 20px;
+}
+
+.arztbrief-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 20px;
+  box-shadow: var(--shadow-sm);
+  display: flex;
+  flex-direction: column;
+}
+
+.arztbrief-card h2 {
+  font-size: 22px;
+  margin-bottom: 4px;
+  color: var(--text);
+}
+
+.arztbrief-card-sub {
+  color: var(--text-light);
+  font-size: 13px;
+  margin-bottom: 14px;
+  line-height: 1.5;
+}
+
+.arztbrief-textarea {
+  width: 100%;
+  min-height: 180px;
+  padding: 12px 14px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  background: var(--surface-2);
+  font-family: "DM Sans", system-ui, sans-serif;
+  font-size: 14px;
+  line-height: 1.6;
+  color: var(--text);
+  resize: vertical;
+  outline: none;
+  transition: border-color 0.15s, background 0.15s;
+}
+
+.arztbrief-textarea:focus {
+  border-color: var(--primary);
+  background: var(--surface);
+}
+
+.arztbrief-upload {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: var(--primary);
+  color: white;
+  padding: 10px 20px;
+  border-radius: var(--radius-sm);
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.15s, opacity 0.15s;
+  align-self: flex-start;
+}
+
+.arztbrief-upload:hover {
+  background: var(--primary-light);
+}
+
+.arztbrief-upload input {
+  display: none;
+}
+
+.arztbrief-upload input:disabled + span {
+  opacity: 0.7;
+  cursor: wait;
+}
+
+.arztbrief-alert {
+  padding: 14px 18px;
+  border-radius: var(--radius-sm);
+  margin-bottom: 20px;
+  font-size: 14px;
+  line-height: 1.5;
+  border: 1px solid transparent;
+}
+
+.arztbrief-alert.error {
+  background: var(--red-light);
+  color: var(--red);
+  border-color: var(--red);
+}
+
+.arztbrief-alert.warn {
+  background: var(--yellow-light);
+  color: var(--yellow);
+  border-color: var(--yellow);
+}
+
+.arztbrief-result {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 20px 24px;
+  margin-bottom: 32px;
+  box-shadow: var(--shadow-sm);
+}
+
+.arztbrief-result-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 12px;
+  gap: 12px;
+}
+
+.arztbrief-result-head h2 {
+  font-size: 22px;
+  color: var(--text);
+}
+
+.arztbrief-reset {
+  background: var(--surface-2);
+  border: 1px solid var(--border);
+  color: var(--text-light);
+  padding: 6px 14px;
+  border-radius: var(--radius-sm);
+  font-size: 13px;
+  transition: all 0.15s;
+}
+
+.arztbrief-reset:hover {
+  background: var(--surface);
+  color: var(--text);
+  border-color: var(--border-dark);
+}
+
+.arztbrief-text {
+  background: var(--surface-2);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  padding: 16px;
+  max-height: 420px;
+  overflow: auto;
+  white-space: pre-wrap;
+  word-break: break-word;
+  font-family: "DM Sans", system-ui, sans-serif;
+  font-size: 14px;
+  line-height: 1.7;
+  color: var(--text);
+}
+
+.arztbrief-empty {
+  color: var(--text-muted);
+  font-style: italic;
+  padding: 20px 0;
+  text-align: center;
+}
+
+.arztbrief-meta {
+  color: var(--text-muted);
+  font-size: 12px;
+  margin-top: 10px;
+}
+
+.arztbrief-next {
+  background: var(--surface-2);
+  border-radius: var(--radius);
+  padding: 24px;
+}
+
+.arztbrief-next h3 {
+  font-family: "Instrument Serif", serif;
+  font-size: 24px;
+  margin-bottom: 10px;
+  color: var(--text);
+}
+
+.arztbrief-next ol {
+  padding-left: 22px;
+  color: var(--text-light);
+  font-size: 14px;
+  line-height: 1.8;
+  margin-bottom: 10px;
+}
+
+.arztbrief-note {
+  color: var(--text-muted);
+  font-size: 13px;
+  font-style: italic;
+}
+
+@media (max-width: 768px) {
+  .arztbrief-grid {
+    grid-template-columns: 1fr;
+  }
+  .arztbrief-header h1 {
+    font-size: 36px;
+  }
+}

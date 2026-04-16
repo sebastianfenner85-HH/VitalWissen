@@ -9,7 +9,7 @@ export default function Nav() {
     { to: "/supplements", label: "Supplements" },
     { to: "/krankheiten", label: "Krankheiten" },
     { to: "/medikamente", label: "Medikamente", soon: true },
-    { to: "/arztbrief", label: "Arztbrief-Decoder", soon: true },
+    { to: "/arztbrief", label: "Arztbrief-Decoder", beta: true },
   ];
 
   return (
@@ -31,6 +31,7 @@ export default function Nav() {
             >
               {link.label}
               {link.soon && <span className="soon-tag">bald</span>}
+              {link.beta && <span className="beta-tag">beta</span>}
             </Link>
           ))}
         </div>
