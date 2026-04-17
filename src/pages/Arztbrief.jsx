@@ -3,32 +3,142 @@ import * as pdfjsLib from "pdfjs-dist";
 import pdfWorkerUrl from "pdfjs-dist/build/pdf.worker.min.mjs?url";
 import "./Arztbrief.css";
 
-// Worker wird lokal aus dem eigenen Build geladen (Vite ?url-Import).
-// Keine CDN, kein externer Request.
+// Worker lokal aus Build geladen — kein CDN, kein externer Request.
 pdfjsLib.GlobalWorkerOptions.workerSrc = pdfWorkerUrl;
+
+// ---------------------------------------------------------------------------
+// Hilfsfunktionen — alle lokal, kein Netzwerk mit Nutzerdaten
+// ---------------------------------------------------------------------------
+
+const ACCEPTED_EXT = [".pdf", ".png", ".jpg", ".jpeg"];
+
+function fileIsAccepted(file) {
+  const name = (file.name || "").toLowerCase();
+  return (
+    file.type === "application/pdf" ||
+    file.type === "image/png" ||
+    file.type === "image/jpeg" ||
+    ACCEPTED_EXT.some((ext) => name.endsWith(ext))
+  );
+}
+
+function fileIsPdf(file) {
+  return (
+    file.type === "application/pdf" ||
+    (file.name || "").toLowerCase().endsWith(".pdf")
+  );
+}
+
+/** Extrahiert Text-Layer aus ArrayBuffer. Gibt { text, pdfDoc } zurück. */
+async function extractTextLayer(arrayBuffer) {
+  const pdfDoc = await pdfjsLib.getDocument({ data: arrayBuffer }).promise;
+  let full = "";
+  for (let p = 1; p <= pdfDoc.numPages; p++) {
+    const page = await pdfDoc.getPage(p);
+    const content = await page.getTextContent();
+    const pageText = content.items
+      .map((i) => ("str" in i ? i.str : ""))
+      .join(" ")
+      .replace(/\s+/g, " ")
+      .trim();
+    if (pageText) full += (full ? "\n\n" : "") + pageText;
+  }
+  return { text: full.trim(), pdfDoc };
+}
+
+/**
+ * OCR einer PDF via pdfjs-Render → Canvas → Tesseract.js (WASM, lokal).
+ * Sprachmodell wird einmalig per CDN (jsDelivr) in den Browser geladen —
+ * ausschließlich das Modell, keinerlei Nutzerdaten verlassen das Gerät.
+ */
+async function ocrPdfDoc(pdfDoc, onPhase, onProgress) {
+  const { createWorker } = await import("tesseract.js");
+  onPhase("preparing");
+  const worker = await createWorker("deu+eng", 1, {
+    logger: (m) => {
+      if (m.status === "recognizing text") {
+        onPhase("running");
+        onProgress(Math.round(m.progress * 100));
+      }
+    },
+  });
+  try {
+    let full = "";
+    const n = pdfDoc.numPages;
+    for (let p = 1; p <= n; p++) {
+      onPhase("running");
+      const page = await pdfDoc.getPage(p);
+      const viewport = page.getViewport({ scale: 2.0 });
+      const canvas = document.createElement("canvas");
+      canvas.width = viewport.width;
+      canvas.height = viewport.height;
+      const ctx = canvas.getContext("2d");
+      await page.render({ canvasContext: ctx, viewport }).promise;
+      const { data } = await worker.recognize(canvas);
+      const pageText = (data.text || "").trim();
+      if (pageText) full += (full ? "\n\n" : "") + pageText;
+      // Fortschritt seitenbasiert
+      onProgress(Math.round((p / n) * 100));
+    }
+    return full;
+  } finally {
+    await worker.terminate();
+  }
+}
+
+/** OCR eines Bild-Files (PNG/JPG/JPEG) via Tesseract.js (WASM, lokal). */
+async function ocrImageFile(file, onPhase, onProgress) {
+  const { createWorker } = await import("tesseract.js");
+  onPhase("preparing");
+  const worker = await createWorker("deu+eng", 1, {
+    logger: (m) => {
+      if (m.status === "recognizing text") {
+        onPhase("running");
+        onProgress(Math.round(m.progress * 100));
+      }
+    },
+  });
+  try {
+    const { data } = await worker.recognize(file);
+    return (data.text || "").trim();
+  } finally {
+    await worker.terminate();
+  }
+}
+
+// ---------------------------------------------------------------------------
+// Komponente
+// ---------------------------------------------------------------------------
 
 export default function Arztbrief() {
   const [text, setText] = useState("");
-  const [source, setSource] = useState("idle"); // idle | paste | pdf
-  const [status, setStatus] = useState(null); // { type: "error" | "warn", message }
+  const [source, setSource] = useState("idle"); // idle | paste | pdf | ocr
+  const [status, setStatus] = useState(null);   // { type: "error"|"warn", message }
   const [loading, setLoading] = useState(false);
+  const [ocrPhase, setOcrPhase] = useState(null);    // null|"preparing"|"running"|"done"|"failed"
+  const [ocrProgress, setOcrProgress] = useState(0); // 0–100
   const fileRef = useRef(null);
 
-  async function handlePdf(e) {
+  function resetOcr() {
+    setOcrPhase(null);
+    setOcrProgress(0);
+  }
+
+  async function handleFile(e) {
     setStatus(null);
+    resetOcr();
     const file = e.target.files?.[0];
     if (!file) {
       setStatus({ type: "warn", message: "Keine Datei ausgewählt." });
       return;
     }
-    const nameLower = (file.name || "").toLowerCase();
-    const isPdf =
-      file.type === "application/pdf" || nameLower.endsWith(".pdf");
-    if (!isPdf) {
+
+    // F1 — nicht unterstütztes Format
+    if (!fileIsAccepted(file)) {
       setStatus({
         type: "error",
         message:
-          "Das ist keine PDF-Datei. Bitte wähle eine Datei mit der Endung .pdf.",
+          "Nicht unterstütztes Dateiformat. Bitte wähle eine PDF-, PNG- oder JPG-Datei.",
       });
       if (fileRef.current) fileRef.current.value = "";
       return;
@@ -36,42 +146,89 @@ export default function Arztbrief() {
 
     setLoading(true);
     try {
-      const buf = await file.arrayBuffer();
-      const pdf = await pdfjsLib.getDocument({ data: buf }).promise;
-      let full = "";
-      for (let p = 1; p <= pdf.numPages; p++) {
-        const page = await pdf.getPage(p);
-        const content = await page.getTextContent();
-        const pageText = content.items
-          .map((i) => ("str" in i ? i.str : ""))
-          .join(" ")
-          .replace(/\s+/g, " ")
-          .trim();
-        if (pageText) {
-          full += (full ? "\n\n" : "") + pageText;
+      if (fileIsPdf(file)) {
+        const buf = await file.arrayBuffer();
+        const { text: layerText, pdfDoc } = await extractTextLayer(buf);
+
+        if (layerText) {
+          // Pfad A — Text-Layer vorhanden (unveränderter P7-02-Pfad)
+          setText(layerText);
+          setSource("pdf");
+        } else {
+          // Pfad B — kein Text-Layer → lokal OCR
+          try {
+            const ocrText = await ocrPdfDoc(pdfDoc, setOcrPhase, setOcrProgress);
+            if (!ocrText) {
+              // F3 — OCR leer
+              setText("");
+              setSource("ocr");
+              resetOcr();
+              setStatus({
+                type: "warn",
+                message:
+                  "OCR hat keinen verwertbaren Text erkannt. Ist das Dokument gut lesbar und nicht zu klein gedruckt? Die Datei hat dein Gerät nicht verlassen.",
+              });
+            } else {
+              setText(ocrText);
+              setSource("ocr");
+              setOcrPhase("done");
+            }
+          } catch (ocrErr) {
+            // F2 — OCR technisch fehlgeschlagen
+            console.error("OCR (PDF) failed", ocrErr);
+            setText("");
+            setSource("idle");
+            setOcrPhase("failed");
+            setStatus({
+              type: "error",
+              message:
+                "Texterkennung (OCR) ist fehlgeschlagen. Bitte versuche es erneut. Die Datei hat dein Gerät nicht verlassen.",
+            });
+          }
+        }
+      } else {
+        // Bild-Datei (PNG/JPG/JPEG) → lokal OCR
+        try {
+          const ocrText = await ocrImageFile(file, setOcrPhase, setOcrProgress);
+          if (!ocrText) {
+            // F3 — OCR leer
+            setText("");
+            setSource("ocr");
+            resetOcr();
+            setStatus({
+              type: "warn",
+              message:
+                "OCR hat keinen verwertbaren Text erkannt. Ist das Bild scharf und gut ausgeleuchtet? Die Datei hat dein Gerät nicht verlassen.",
+            });
+          } else {
+            setText(ocrText);
+            setSource("ocr");
+            setOcrPhase("done");
+          }
+        } catch (ocrErr) {
+          // F2 — OCR technisch fehlgeschlagen
+          console.error("OCR (image) failed", ocrErr);
+          setText("");
+          setSource("idle");
+          setOcrPhase("failed");
+          setStatus({
+            type: "error",
+            message:
+              "Texterkennung (OCR) ist fehlgeschlagen. Bitte versuche es erneut. Die Datei hat dein Gerät nicht verlassen.",
+          });
         }
       }
-      if (!full.trim()) {
-        setText("");
-        setSource("pdf");
-        setStatus({
-          type: "warn",
-          message:
-            "Text-Layer nicht erkannt. OCR für Foto- und Scan-PDFs ist in dieser Vorversion noch nicht aktiv. Nichts wurde versendet.",
-        });
-      } else {
-        setText(full);
-        setSource("pdf");
-      }
     } catch (err) {
-      console.error("PDF extraction failed", err);
+      // Generischer Datei-Fehler (beschädigt, passwortgeschützt …)
+      console.error("File processing failed", err);
+      setText("");
+      setSource("idle");
+      resetOcr();
       setStatus({
         type: "error",
         message:
-          "Die PDF konnte nicht gelesen werden. Ist sie passwortgeschützt oder beschädigt? Die Datei hat dein Gerät nicht verlassen.",
+          "Die Datei konnte nicht gelesen werden. Ist sie passwortgeschützt oder beschädigt? Die Datei hat dein Gerät nicht verlassen.",
       });
-      setText("");
-      setSource("idle");
     } finally {
       setLoading(false);
       if (fileRef.current) fileRef.current.value = "";
@@ -83,14 +240,18 @@ export default function Arztbrief() {
     setText(value);
     setSource(value ? "paste" : "idle");
     setStatus(null);
+    resetOcr();
   }
 
   function handleReset() {
     setText("");
     setSource("idle");
     setStatus(null);
+    resetOcr();
     if (fileRef.current) fileRef.current.value = "";
   }
+
+  const ocrRunning = ocrPhase === "preparing" || ocrPhase === "running";
 
   return (
     <div className="arztbrief-page">
@@ -100,7 +261,7 @@ export default function Arztbrief() {
           <h1>Arztbrief-Decoder</h1>
           <p className="arztbrief-sub">
             Arztbriefe, Befunde und Entlassbriefe verständlich machen —
-            in dieser Vorversion zunächst ausschließlich als lokale Textvorschau.
+            in dieser Vorversion zunächst als lokale Textvorschau.
           </p>
         </header>
 
@@ -134,23 +295,52 @@ export default function Arztbrief() {
           </section>
 
           <section className="arztbrief-card">
-            <h2>PDF mit Text-Layer hochladen</h2>
+            <h2>Dokument oder Bild hochladen</h2>
             <p className="arztbrief-card-sub">
-              Nur für digitale Druck-PDFs (kein Scan, kein Foto, keine Handschrift).
-              Die Text-Extraktion läuft vollständig in deinem Browser.
+              PDF (mit oder ohne Text-Layer), PNG oder JPG.
+              Text-Extraktion und OCR laufen vollständig in deinem Browser.
             </p>
             <label className="arztbrief-upload">
               <input
                 ref={fileRef}
                 type="file"
-                accept="application/pdf,.pdf"
-                onChange={handlePdf}
-                disabled={loading}
+                accept="application/pdf,.pdf,image/png,.png,image/jpeg,.jpg,.jpeg"
+                onChange={handleFile}
+                disabled={loading || ocrRunning}
               />
-              <span>{loading ? "Lese PDF …" : "PDF auswählen"}</span>
+              <span>
+                {ocrRunning
+                  ? ocrPhase === "preparing"
+                    ? "OCR wird vorbereitet …"
+                    : `OCR läuft … ${ocrProgress} %`
+                  : loading
+                  ? "Lese Datei …"
+                  : "Datei auswählen"}
+              </span>
             </label>
           </section>
         </div>
+
+        {/* F4 — OCR-Statusanzeige (verhindert stilles Warten) */}
+        {ocrRunning && (
+          <div className="arztbrief-ocr-status" role="status" aria-live="polite">
+            <div className="arztbrief-ocr-label">
+              {ocrPhase === "preparing"
+                ? "Texterkennung (OCR) wird vorbereitet …"
+                : `Texterkennung läuft … ${ocrProgress} %`}
+            </div>
+            <div className="arztbrief-ocr-bar">
+              <div
+                className={`arztbrief-ocr-bar-fill${ocrPhase === "preparing" ? " indeterminate" : ""}`}
+                style={ocrPhase !== "preparing" ? { width: `${ocrProgress}%` } : undefined}
+              />
+            </div>
+            <p className="arztbrief-ocr-hint">
+              Die Texterkennung läuft vollständig in deinem Browser.
+              Bei größeren Dokumenten kann das einige Sekunden dauern.
+            </p>
+          </div>
+        )}
 
         {status && (
           <div
@@ -164,7 +354,7 @@ export default function Arztbrief() {
         <section className="arztbrief-result" aria-label="Vorschau">
           <div className="arztbrief-result-head">
             <h2>Vorschau</h2>
-            {text && (
+            {(text || ocrPhase === "failed") && (
               <button className="arztbrief-reset" onClick={handleReset}>
                 Zurücksetzen
               </button>
@@ -174,13 +364,17 @@ export default function Arztbrief() {
             <pre className="arztbrief-text">{text}</pre>
           ) : (
             <p className="arztbrief-empty">
-              Noch kein Text. Füge links Text ein oder lade rechts eine PDF hoch.
+              {ocrRunning
+                ? "Texterkennung läuft …"
+                : "Noch kein Text. Füge links Text ein oder lade rechts eine Datei hoch."}
             </p>
           )}
           {text && (
             <p className="arztbrief-meta">
               {source === "pdf"
-                ? "Quelle: lokal aus PDF extrahiert."
+                ? "Quelle: lokal aus PDF-Text-Layer extrahiert."
+                : source === "ocr"
+                ? "Quelle: lokal per OCR erkannt (Texterkennung im Browser)."
                 : "Quelle: eingefügter Text."}
               {" · "}
               Zeichen: {text.length.toLocaleString("de-DE")}
@@ -191,7 +385,6 @@ export default function Arztbrief() {
         <section className="arztbrief-next" aria-label="Ausblick">
           <h3>Was kommt als Nächstes</h3>
           <ol>
-            <li>OCR für Foto- und Scan-PDFs — weiterhin lokal im Browser.</li>
             <li>Anonymisierung persönlicher Daten — bevor irgendetwas das Gerät verlässt.</li>
             <li>KI-gestützte Dekodierung mit Zero-Retention-Vertrag.</li>
             <li>Parallelansicht mit Erklärungen und Verknüpfungen zu Laborwerten, Krankheiten, Medikamenten.</li>
