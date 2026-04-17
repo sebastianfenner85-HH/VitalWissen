@@ -3,10 +3,13 @@ import { useParams, useNavigate } from 'react-router-dom'
 import { getLaborwertByCode } from '../lib/queries'
 import './Laborwerte.css'
 
+// S1-BUILD-01: JP-Gating — JSCC-Daten noch nicht regulär exponiert.
+// JP-Karte wird nur gerendert wenn ref_jp_min oder ref_jp_max für diesen Eintrag vorhanden.
+// Sobald JSCC-Befüllung ≥40/60 Einträge erreicht (S1-BUILD-02+), kann dieses Gate entfallen.
 const LEITLINIEN = [
-  { key: 'de', label: '🇩🇪 DE', quelle: 'DGKL' },
-  { key: 'usa', label: '🇺🇸 USA', quelle: 'AACC' },
-  { key: 'jp', label: '🇯🇵 Japan', quelle: 'JSCC' },
+  { key: 'de',  label: '🇩🇪 DE',    quelle: 'DGKL' },
+  { key: 'usa', label: '🇺🇸 USA',   quelle: 'AACC' },
+  { key: 'jp',  label: '🇯🇵 Japan', quelle: 'JSCC' },
 ]
 
 function formatRef(min, max, einheit) {
@@ -68,10 +71,11 @@ export default function LaborwertDetail() {
     jp:  { min: lw.ref_jp_min,  max: lw.ref_jp_max,  einheit: lw.ref_jp_einheit,  quelle: lw.ref_jp_quelle  },
   }
 
-  const supplementEinfluss = lw.supplement_einfluss || []
-  const medEinfluss = lw.medikament_einfluss || []
-  const ursachenHoch = Array.isArray(lw.ursachen_hoch) ? lw.ursachen_hoch : (lw.ursachen_hoch ? [lw.ursachen_hoch] : [])
-  const ursachenNiedrig = Array.isArray(lw.ursachen_niedrig) ? lw.ursachen_niedrig : (lw.ursachen_niedrig ? [lw.ursachen_niedrig] : [])
+  // Defensive Array-Guards für alle JSONB-Felder
+  const supplementEinfluss = Array.isArray(lw.supplement_einfluss) ? lw.supplement_einfluss : []
+  const medEinfluss        = Array.isArray(lw.medikament_einfluss) ? lw.medikament_einfluss : []
+  const ursachenHoch       = Array.isArray(lw.ursachen_hoch)    ? lw.ursachen_hoch    : (lw.ursachen_hoch    ? [lw.ursachen_hoch]    : [])
+  const ursachenNiedrig    = Array.isArray(lw.ursachen_niedrig) ? lw.ursachen_niedrig : (lw.ursachen_niedrig ? [lw.ursachen_niedrig] : [])
 
   return (
     <div className="lw-detail">
@@ -79,6 +83,7 @@ export default function LaborwertDetail() {
         ← Alle Laborwerte
       </button>
 
+      {/* [1] Notfall-Banner — immer wenn flag, ganz oben */}
       {lw.notfall_flag && (
         <div className="notfall-banner">
           <strong>⚠ Notfallrelevant:</strong>&nbsp;Bei stark abweichenden Werten sofort ärztliche Hilfe
@@ -86,7 +91,7 @@ export default function LaborwertDetail() {
         </div>
       )}
 
-      {/* Header */}
+      {/* [2] Header — immer */}
       <div className="lw-detail-header">
         <h1 className="lw-detail-title">{lw.name_de}</h1>
         {lw.vollname_de && lw.vollname_de !== lw.name_de && (
@@ -100,17 +105,25 @@ export default function LaborwertDetail() {
         </div>
       </div>
 
+      {/* [3] Beschreibung laienhaft — nur bei Daten */}
       {lw.beschreibung_laienhaft && (
         <p className="beschreibung-text" style={{ marginBottom: 24 }}>{lw.beschreibung_laienhaft}</p>
       )}
 
-      {/* Referenzbereiche — 3-Spalten-Grid */}
+      {/* [4] Referenzbereiche — immer sichtbar.
+           JP-Gate (S1-BUILD-01): JP-Karte nur rendern wenn Datenbasis vorhanden.
+           DE + USA: zeigen "—" wenn leer (akzeptabel, reguläre Abdeckung erwartet).
+           JP: nicht als Leerfeld exponieren — JSCC-Befüllung noch offen. */}
       <div className="detail-section">
         <p className="detail-section-title">Referenzbereiche im Vergleich</p>
         <div className="referenz-grid">
           {LEITLINIEN.map(l => {
             const r = ref[l.key]
             const hatDaten = r.min != null || r.max != null || r.max_m != null || r.max_w != null
+
+            // JP-Gate: JP-Karte ausblenden wenn keine Daten vorhanden
+            if (l.key === 'jp' && !hatDaten) return null
+
             return (
               <div key={l.key} className="referenz-item">
                 <span className="referenz-flag">{l.label}</span>
@@ -140,7 +153,7 @@ export default function LaborwertDetail() {
         </div>
       </div>
 
-      {/* Ursachen */}
+      {/* [5] Ursachen — nur bei Daten */}
       {(ursachenHoch.length > 0 || ursachenNiedrig.length > 0) && (
         <div className="detail-section">
           <p className="detail-section-title">Mögliche Ursachen</p>
@@ -165,7 +178,7 @@ export default function LaborwertDetail() {
         </div>
       )}
 
-      {/* Wann zum Arzt */}
+      {/* [6] Wann zum Arzt — nur bei Daten */}
       {lw.wann_arzt && (
         <div className="detail-section">
           <p className="detail-section-title">Wann zum Arzt?</p>
@@ -173,34 +186,44 @@ export default function LaborwertDetail() {
         </div>
       )}
 
-      {/* Supplement-Einfluss */}
-      <div className="detail-section">
-        <p className="detail-section-title">Supplements, die diesen Wert beeinflussen</p>
-        {supplementEinfluss.length > 0 ? (
+      {/* [7] S5-Cross-Block "Relevante Erkrankungen" — Spec-Gate offen (Kuratierungsregel).
+           Implementierung in S1-BUILD-02. Hier bewusst ausgelassen. */}
+
+      {/* [8] S2-Cross-Block "Supplement-Einfluss" — nur bei Daten.
+           S1-BUILD-01: Fallback-Text entfernt. Block wird ausgeblendet wenn leer.
+           Chips sind aktuell Text-only (kein Slug-Link). Verlinkung folgt in S1-BUILD-02
+           nach supplement_einfluss-Slug-Migration. */}
+      {supplementEinfluss.length > 0 && (
+        <div className="detail-section">
+          <p className="detail-section-title">Supplements, die diesen Wert beeinflussen</p>
           <div className="zusammenhaenge-chips">
             {supplementEinfluss.map((s, i) => (
-              <span key={i} className="zusammenhaenge-chip">{typeof s === 'string' ? s : s.name}</span>
+              <span key={i} className="zusammenhaenge-chip">
+                {typeof s === 'string' ? s : (s.name ?? s.name_de ?? '')}
+              </span>
             ))}
           </div>
-        ) : (
-          <p style={{ fontSize: 13, color: 'var(--text-muted)' }}>Daten werden ergänzt.</p>
-        )}
-      </div>
+        </div>
+      )}
 
-      {/* Medikamenten-Einfluss */}
-      <div className="detail-section">
-        <p className="detail-section-title">Medikamente, die diesen Wert beeinflussen</p>
-        {medEinfluss.length > 0 ? (
+      {/* [9] S6-Cross-Block "Medikamenten-Einfluss" — nur bei Daten + S6 live.
+           S1-BUILD-01: Fallback-Text entfernt. Block wird ausgeblendet wenn leer.
+           S6 ist aktuell nicht live → Block bleibt für alle Einträge unsichtbar.
+           Aktivierung erfolgt in S1-BUILD-02 nach S6-Build + medikament_einfluss-Slug-Migration. */}
+      {medEinfluss.length > 0 && (
+        <div className="detail-section">
+          <p className="detail-section-title">Medikamente, die diesen Wert beeinflussen</p>
           <div className="zusammenhaenge-chips">
             {medEinfluss.map((m, i) => (
-              <span key={i} className="zusammenhaenge-chip">{typeof m === 'string' ? m : m.name}</span>
+              <span key={i} className="zusammenhaenge-chip">
+                {typeof m === 'string' ? m : (m.name ?? m.name_de ?? '')}
+              </span>
             ))}
           </div>
-        ) : (
-          <p style={{ fontSize: 13, color: 'var(--text-muted)' }}>Daten werden ergänzt.</p>
-        )}
-      </div>
+        </div>
+      )}
 
+      {/* [10] Disclaimer — immer letzter Block */}
       <p style={{ fontSize: 13, color: 'var(--text-muted)', marginTop: 32, textAlign: 'center' }}>
         Diese Informationen ersetzen keine ärztliche Diagnose. Laborwerte müssen immer im klinischen Kontext bewertet werden.
       </p>
