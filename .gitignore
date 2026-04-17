@@ -24,6 +24,10 @@ __pycache__/
 .venv/
 venv/
 
+# Tesseract-Assets (build-time generiert via prebuild, nicht im Repo)
+public/tesseract/
+public/tessdata/
+
 # Editor directories and files
 .vscode/*
 !.vscode/extensions.json

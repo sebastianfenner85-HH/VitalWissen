@@ -46,15 +46,24 @@ async function extractTextLayer(arrayBuffer) {
   return { text: full.trim(), pdfDoc };
 }
 
+// Lokale Pfade für same-origin OCR-Assets (aus prebuild in public/ bereitgestellt).
+// Kein CDN, kein Drittanbieter-Request — alle Dateien laufen über die eigene App-Origin.
+const TESSERACT_LOCAL = {
+  workerPath: "/tesseract/worker.min.js",
+  corePath: "/tesseract",      // Worker hängt z.B. /tesseract-core-simd-lstm.wasm.js an
+  langPath: "/tessdata",       // Worker lädt /tessdata/deu.traineddata.gz + /tessdata/eng.traineddata.gz
+  gzip: true,
+};
+
 /**
- * OCR einer PDF via pdfjs-Render → Canvas → Tesseract.js (WASM, lokal).
- * Sprachmodell wird einmalig per CDN (jsDelivr) in den Browser geladen —
- * ausschließlich das Modell, keinerlei Nutzerdaten verlassen das Gerät.
+ * OCR einer PDF via pdfjs-Render → Canvas → Tesseract.js (WASM, same-origin).
+ * Worker, WASM-Core und Sprachdaten kommen vollständig von der eigenen App-Origin.
  */
 async function ocrPdfDoc(pdfDoc, onPhase, onProgress) {
   const { createWorker } = await import("tesseract.js");
   onPhase("preparing");
   const worker = await createWorker("deu+eng", 1, {
+    ...TESSERACT_LOCAL,
     logger: (m) => {
       if (m.status === "recognizing text") {
         onPhase("running");
@@ -86,11 +95,12 @@ async function ocrPdfDoc(pdfDoc, onPhase, onProgress) {
   }
 }
 
-/** OCR eines Bild-Files (PNG/JPG/JPEG) via Tesseract.js (WASM, lokal). */
+/** OCR eines Bild-Files (PNG/JPG/JPEG) via Tesseract.js (WASM, same-origin). */
 async function ocrImageFile(file, onPhase, onProgress) {
   const { createWorker } = await import("tesseract.js");
   onPhase("preparing");
   const worker = await createWorker("deu+eng", 1, {
+    ...TESSERACT_LOCAL,
     logger: (m) => {
       if (m.status === "recognizing text") {
         onPhase("running");
