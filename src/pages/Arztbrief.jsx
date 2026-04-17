@@ -95,10 +95,26 @@ async function ocrPdfDoc(pdfDoc, onPhase, onProgress) {
   }
 }
 
-/** OCR eines Bild-Files (PNG/JPG/JPEG) via Tesseract.js (WASM, same-origin). */
+/**
+ * OCR eines Bild-Files (PNG/JPG/JPEG) via Tesseract.js (WASM, same-origin).
+ * Das File-Objekt wird zunächst im Hauptthread via createImageBitmap → Canvas
+ * konvertiert, bevor es an den Worker übergeben wird. Das verhindert Abstürze
+ * (RuntimeError: Aborted) die auftreten wenn der Vite-gebundelte Worker ein
+ * File-Objekt direkt zu verarbeiten versucht (URL.createObjectURL-Einschränkung
+ * im Worker-Kontext).
+ */
 async function ocrImageFile(file, onPhase, onProgress) {
   const { createWorker } = await import("tesseract.js");
   onPhase("preparing");
+
+  // File → ImageBitmap → Canvas (im Hauptthread, bevor Worker startet)
+  const imgBitmap = await createImageBitmap(file);
+  const canvas = document.createElement("canvas");
+  canvas.width = imgBitmap.width;
+  canvas.height = imgBitmap.height;
+  canvas.getContext("2d").drawImage(imgBitmap, 0, 0);
+  imgBitmap.close(); // Speicher freigeben
+
   const worker = await createWorker("deu+eng", 1, {
     ...TESSERACT_LOCAL,
     logger: (m) => {
@@ -109,7 +125,7 @@ async function ocrImageFile(file, onPhase, onProgress) {
     },
   });
   try {
-    const { data } = await worker.recognize(file);
+    const { data } = await worker.recognize(canvas);
     return (data.text || "").trim();
   } finally {
     await worker.terminate();
