@@ -1,3 +1,11 @@
+// S5-BUILD-01: Trust, Hub-Klarheit, Ehrlichkeits-Fix, Defensive Guards (P7C-Freeze)
+// Änderungen gegenüber Vorgänger:
+//   0.1 Disclaimer auf jeder S5-Detailseite (letzer Block, immer)
+//   0.2 "Verwandte Einträge" → zwei getrennte Blöcke [10] Laborwerte / [11] Supplements
+//   0.3 Array.isArray-Guards für alle JSONB-Array-Felder (statt field || [])
+//   0.4 Platzhalter-Kommentare [7] Sicherheitsblock + [12] S6-Block (intern, keine UI)
+//   0.5 Intern-Fälle (F06/L72/M13/R74/Z87): quellenExtern-Filter + ehrlicher Hinweis
+
 import { useState, useEffect } from 'react'
 import { useParams, useNavigate } from 'react-router-dom'
 import { getKrankheitBySlug, getLaborwerteNameMap, getSupplementeNameMap } from '../lib/queries'
@@ -24,8 +32,9 @@ export default function KrankheitDetail() {
       try {
         const data = await getKrankheitBySlug(slug)
         setK(data)
-        const codes = data?.verwandte_laborwerte || []
-        const slugs = data?.verwandte_supplements || []
+        // Array.isArray guards vor Übergabe an Name-Maps (P7C-Freeze 0.3)
+        const codes = Array.isArray(data?.verwandte_laborwerte) ? data.verwandte_laborwerte : []
+        const slugs = Array.isArray(data?.verwandte_supplements) ? data.verwandte_supplements : []
         const [lwMap, suppMap] = await Promise.all([
           getLaborwerteNameMap(codes).catch(() => ({})),
           getSupplementeNameMap(slugs).catch(() => ({})),
@@ -66,18 +75,28 @@ export default function KrankheitDetail() {
     fachlich:  k.beschreibung_fachlich,
   }
 
-  const symptome          = k.symptome || []
-  const diagnostik        = k.diagnostik || []
-  const behandlung        = k.behandlung || []
-  const weiterfuehrend    = k.weiterfuehrend || []
-  const quellen           = k.quellen || []
-  const verwLaborwerte    = k.verwandte_laborwerte || []
-  const verwSupplements   = k.verwandte_supplements || []
-  const synonyme          = k.synonym_de || []
+  // Defensive Array.isArray guards für alle JSONB-Array-Felder (P7C-Freeze 0.3)
+  // Ersetzt bisheriges `k.field || []` — robust gegen non-Array / null / inkonsistente JSONB-Zustände
+  const symptome        = Array.isArray(k.symptome)              ? k.symptome              : []
+  const diagnostik      = Array.isArray(k.diagnostik)            ? k.diagnostik            : []
+  const behandlung      = Array.isArray(k.behandlung)            ? k.behandlung            : []
+  const weiterfuehrend  = Array.isArray(k.weiterfuehrend)        ? k.weiterfuehrend        : []
+  const quellen         = Array.isArray(k.quellen)               ? k.quellen               : []
+  const verwLaborwerte  = Array.isArray(k.verwandte_laborwerte)  ? k.verwandte_laborwerte  : []
+  const verwSupplements = Array.isArray(k.verwandte_supplements) ? k.verwandte_supplements : []
+  const synonyme        = Array.isArray(k.synonym_de)            ? k.synonym_de            : []
+  // filter_tags: Guard vorhanden für künftige Logik (Fehldiagnose-Block, Stufe 1)
+  // const filterTags   = Array.isArray(k.filter_tags)           ? k.filter_tags           : []
 
-  // Nur Refs rendern, die tatsächlich in der DB existieren (= haben einen Klarnamen im Map)
+  // Nur Refs rendern, die tatsächlich in der DB existieren (= Klarname im Map vorhanden)
   const valLaborwerte  = verwLaborwerte.filter(code => laborwertNamen[code] !== undefined)
   const valSupplements = verwSupplements.filter(s   => supplementNamen[s]   !== undefined)
+
+  // Intern-Fälle Quellen-Logik (P7C-Freeze 0.5)
+  // quellenExtern: nur Einträge mit typ !== 'intern' — sichtbar im Quellenblock
+  // nurInternQuellen: quellen vorhanden aber ausschließlich intern (F06/L72/M13/R74/Z87)
+  const quellenExtern    = quellen.filter(q => q.typ !== 'intern')
+  const nurInternQuellen = quellen.length > 0 && quellenExtern.length === 0
 
   return (
     <div className="krank-detail">
@@ -85,21 +104,21 @@ export default function KrankheitDetail() {
         ← Alle Krankheiten
       </button>
 
-      {/* ── Header ─────────────────────────────────────────────────── */}
+      {/* [1] Header ──────────────────────────────────────────────────────────── */}
       <div className="krank-detail-header">
         <h1 className="krank-detail-title">{k.name_de}</h1>
         {synonyme.length > 0 && (
           <p className="krank-detail-synonym">Auch bekannt als: {synonyme.join(' · ')}</p>
         )}
         <div className="krank-detail-meta">
-          {k.icd10_code && <span className="krank-icd">{k.icd10_code}</span>}
-          {k.kategorie  && <span className="krank-kat-tag">{k.kategorie}</span>}
+          {k.icd10_code  && <span className="krank-icd">{k.icd10_code}</span>}
+          {k.kategorie   && <span className="krank-kat-tag">{k.kategorie}</span>}
           {k.haeufigkeit && <span className="krank-haeufigkeit">{k.haeufigkeit}</span>}
           {k.notfall_flag && <span className="krank-notfall-badge">⚡ Notfall-relevant</span>}
         </div>
       </div>
 
-      {/* ── Sprachebenen-Toggle ────────────────────────────────────── */}
+      {/* [2] Sprachebenen-Toggle ──────────────────────────────────────────────── */}
       <div className="krank-ebene-tabs">
         {EBENEN.map(e => (
           <button
@@ -112,7 +131,7 @@ export default function KrankheitDetail() {
         ))}
       </div>
 
-      {/* ── Beschreibung ───────────────────────────────────────────── */}
+      {/* [3] Beschreibung ────────────────────────────────────────────────────── */}
       {beschreibung[ebene] && (
         <div className="krank-section">
           <p className="krank-section-title">Was ist das?</p>
@@ -120,7 +139,7 @@ export default function KrankheitDetail() {
         </div>
       )}
 
-      {/* ── Symptome ───────────────────────────────────────────────── */}
+      {/* [4] Symptome & Warnsignale ──────────────────────────────────────────── */}
       {symptome.length > 0 && (
         <div className="krank-section">
           <p className="krank-section-title">Symptome & Warnsignale</p>
@@ -137,7 +156,7 @@ export default function KrankheitDetail() {
         </div>
       )}
 
-      {/* ── Diagnostik ─────────────────────────────────────────────── */}
+      {/* [5] Diagnostik ──────────────────────────────────────────────────────── */}
       {diagnostik.length > 0 && (
         <div className="krank-section">
           <p className="krank-section-title">Wie wird es diagnostiziert?</p>
@@ -152,7 +171,7 @@ export default function KrankheitDetail() {
         </div>
       )}
 
-      {/* ── Behandlung ─────────────────────────────────────────────── */}
+      {/* [6] Behandlung ──────────────────────────────────────────────────────── */}
       {behandlung.length > 0 && (
         <div className="krank-section">
           <p className="krank-section-title">Behandlung</p>
@@ -167,7 +186,7 @@ export default function KrankheitDetail() {
         </div>
       )}
 
-      {/* ── Prognose ───────────────────────────────────────────────── */}
+      {/* [7] Prognose ────────────────────────────────────────────────────────── */}
       {k.prognose && (
         <div className="krank-section">
           <p className="krank-section-title">Prognose</p>
@@ -175,7 +194,7 @@ export default function KrankheitDetail() {
         </div>
       )}
 
-      {/* ── Leben mit der Erkrankung ────────────────────────────────── */}
+      {/* [8] Leben mit der Erkrankung ────────────────────────────────────────── */}
       {k.leben_mit && (
         <div className="krank-section">
           <p className="krank-section-title">Leben mit der Erkrankung</p>
@@ -183,7 +202,7 @@ export default function KrankheitDetail() {
         </div>
       )}
 
-      {/* ── Geschlechtsspezifisches ────────────────────────────────── */}
+      {/* [9] Geschlechtsspezifische Besonderheiten ───────────────────────────── */}
       {k.gender_kontext?.hinweis && (
         <div className="krank-section">
           <p className="krank-section-title">Geschlechtsspezifische Besonderheiten</p>
@@ -191,10 +210,13 @@ export default function KrankheitDetail() {
         </div>
       )}
 
-      {/* ── Verknüpfungen ──────────────────────────────────────────── */}
-      {(valLaborwerte.length > 0 || valSupplements.length > 0) && (
+      {/* [Sicherheitsblock] — Spec-Gate offen; kein vorsicht-Feld im Schema → S5-BUILD-02 */}
+
+      {/* [10] S1-Cross-Block "Relevante Laborwerte" (P7C-Freeze 0.2) ──────────── */}
+      {/* Nur wenn valLaborwerte.length > 0 — kein Fallback-Text wenn leer */}
+      {valLaborwerte.length > 0 && (
         <div className="krank-section">
-          <p className="krank-section-title">Verwandte Einträge</p>
+          <p className="krank-section-title">Relevante Laborwerte</p>
           <div className="krank-links-grid">
             {valLaborwerte.map(code => (
               <button
@@ -205,6 +227,16 @@ export default function KrankheitDetail() {
                 🔬 {laborwertNamen[code]}
               </button>
             ))}
+          </div>
+        </div>
+      )}
+
+      {/* [11] S2-Cross-Block "Evidenzbasierte Supplements" (P7C-Freeze 0.2) ───── */}
+      {/* Nur wenn valSupplements.length > 0 — kein Fallback-Text wenn leer */}
+      {valSupplements.length > 0 && (
+        <div className="krank-section">
+          <p className="krank-section-title">Evidenzbasierte Supplements</p>
+          <div className="krank-links-grid">
             {valSupplements.map(s => (
               <button
                 key={s}
@@ -218,7 +250,9 @@ export default function KrankheitDetail() {
         </div>
       )}
 
-      {/* ── Weiterführend ──────────────────────────────────────────── */}
+      {/* [12] S6-Cross-Block "Standardmedikamente" — nach S6-Build; Stufe 2; kein Platzhalter sichtbar */}
+
+      {/* [15] Weiterführende Informationen ──────────────────────────────────── */}
       {weiterfuehrend.length > 0 && (
         <div className="krank-section">
           <p className="krank-section-title">Weiterführende Informationen</p>
@@ -238,12 +272,12 @@ export default function KrankheitDetail() {
         </div>
       )}
 
-      {/* ── Quellen ────────────────────────────────────────────────── */}
-      {quellen.length > 0 && (
+      {/* [16] Quellen — nur externe Quellen (typ !== 'intern') (P7C-Freeze 0.5) ── */}
+      {quellenExtern.length > 0 && (
         <div className="krank-section">
           <p className="krank-section-title">Quellen</p>
           <ul className="krank-quellen-list">
-            {quellen.map((q, i) => (
+            {quellenExtern.map((q, i) => (
               <li key={i} className="krank-quelle-item">
                 {q.url ? (
                   <a href={q.url} target="_blank" rel="noopener noreferrer">{q.name}</a>
@@ -256,6 +290,19 @@ export default function KrankheitDetail() {
           </ul>
         </div>
       )}
+
+      {/* [16b] Intern-Fälle: kein Quellenblock — ehrlicher Hinweis (P7C-Freeze 0.5) */}
+      {/* Greift wenn quellen nur intern-Einträge enthält (F06/L72/M13/R74/Z87) */}
+      {nurInternQuellen && (
+        <p style={{ fontSize: 13, color: 'var(--text-muted)', marginTop: 8, marginBottom: 0 }}>
+          Zu diesem ICD-Code liegen keine externen Quellen vor.
+        </p>
+      )}
+
+      {/* [18] Disclaimer — Pflicht auf jeder S5-Detailseite (P7C-Freeze 0.1) ──── */}
+      <p style={{ fontSize: 13, color: 'var(--text-muted)', marginTop: 32, textAlign: 'center' }}>
+        Diese Informationen ersetzen keine ärztliche Diagnose und keine medizinische Beratung. Bitte wende dich bei gesundheitlichen Beschwerden an eine Ärztin oder einen Arzt.
+      </p>
     </div>
   )
 }
