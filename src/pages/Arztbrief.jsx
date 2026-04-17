@@ -58,6 +58,12 @@ const TESSERACT_LOCAL = {
 /**
  * OCR einer PDF via pdfjs-Render → Canvas → Tesseract.js (WASM, same-origin).
  * Worker, WASM-Core und Sprachdaten kommen vollständig von der eigenen App-Origin.
+ *
+ * P7-02c-fix: Nach page.render() wird der Render-Canvas via createImageBitmap
+ * in einen frischen ocrCanvas kopiert (weißer Hintergrund, kein aktiver pdfjs-
+ * Renderkontext). Identisches Muster wie fix2 für Bilder — verhindert das
+ * 0%-Hängen des WASM-Workers wenn der Canvas noch einen aktiven pdfjs-
+ * Renderkontext trägt oder transparente (RGBA) Pixel enthält.
  */
 async function ocrPdfDoc(pdfDoc, onPhase, onProgress) {
   const { createWorker } = await import("tesseract.js");
@@ -78,12 +84,27 @@ async function ocrPdfDoc(pdfDoc, onPhase, onProgress) {
       onPhase("running");
       const page = await pdfDoc.getPage(p);
       const viewport = page.getViewport({ scale: 2.0 });
-      const canvas = document.createElement("canvas");
-      canvas.width = viewport.width;
-      canvas.height = viewport.height;
-      const ctx = canvas.getContext("2d");
+
+      // Render-Canvas: weißer Hintergrund vor pdfjs-Render verhindert
+      // transparente Pixel bei PDFs ohne expliziten Seitenhintergrund.
+      const renderCanvas = document.createElement("canvas");
+      renderCanvas.width = viewport.width;
+      renderCanvas.height = viewport.height;
+      const ctx = renderCanvas.getContext("2d");
+      ctx.fillStyle = "#ffffff";
+      ctx.fillRect(0, 0, renderCanvas.width, renderCanvas.height);
       await page.render({ canvasContext: ctx, viewport }).promise;
-      const { data } = await worker.recognize(canvas);
+
+      // Render-Canvas → ImageBitmap → frischer ocrCanvas (kein aktiver
+      // pdfjs-Kontext, clean für WASM-Worker — identisch fix2-Muster).
+      const imgBitmap = await createImageBitmap(renderCanvas);
+      const ocrCanvas = document.createElement("canvas");
+      ocrCanvas.width = imgBitmap.width;
+      ocrCanvas.height = imgBitmap.height;
+      ocrCanvas.getContext("2d").drawImage(imgBitmap, 0, 0);
+      imgBitmap.close();
+
+      const { data } = await worker.recognize(ocrCanvas);
       const pageText = (data.text || "").trim();
       if (pageText) full += (full ? "\n\n" : "") + pageText;
       // Fortschritt seitenbasiert
