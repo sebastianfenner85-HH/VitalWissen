@@ -4,10 +4,14 @@ import { getSupplementBySlug } from '../lib/queries'
 import EvidenzAmpel from '../components/EvidenzAmpel'
 import './Supplements.css'
 
+// S2-BUILD-01: Dosierungsquellen — semantisch korrekte Labels laut P7B-Freeze.
+// BfR/NIH/EFSA sind KEINE Therapiedosen. Alle drei sind Referenzwerte für die gesunde Bevölkerung.
+// NIH-Wert ist RDA (Recommended Dietary Allowance) — kein therapeutischer Wert.
+// BfR/EFSA sind für alle 51 Einträge noch leer (Pipeline befüllt nicht).
 const DOSIERUNGS_QUELLEN = [
-  { key: 'bfr', org: 'BfR (Deutschland)' },
-  { key: 'nih', org: 'NIH (USA)' },
-  { key: 'efsa', org: 'EFSA (EU)' },
+  { key: 'bfr',  label: 'BfR',  typ: 'D-A-CH-Referenzwert' },
+  { key: 'nih',  label: 'NIH',  typ: 'Empfehlung (allg. Bevölkerung)' },
+  { key: 'efsa', label: 'EFSA', typ: 'EU-Referenzwert' },
 ]
 
 export default function SupplementDetail() {
@@ -49,19 +53,30 @@ export default function SupplementDetail() {
     )
   }
 
+  // S2-BUILD-01: Defensive Array-Guards für alle JSONB-Felder.
+  // Verhindert Laufzeitfehler bei null/non-Array JSONB-Rückgaben.
+  const formen         = Array.isArray(s.formen)                   ? s.formen                   : []
+  const synergien      = Array.isArray(s.synergien)                ? s.synergien                : []
+  const antagonisten   = Array.isArray(s.antagonisten)             ? s.antagonisten             : []
+  const qualitaet      = Array.isArray(s.qualitaet_kriterien)      ? s.qualitaet_kriterien      : []
+  const studien        = Array.isArray(s.studien)                  ? s.studien                  : []
+  const medInteraktion = Array.isArray(s.medikament_interaktionen) ? s.medikament_interaktionen : []
+  const biomarker      = Array.isArray(s.beeinflusste_laborwerte)  ? s.beeinflusste_laborwerte  : []
+
+  // S2-BUILD-01: Studien-Filter — nur Studien mit validem Titel exponieren (kein PMID-only).
+  // Laut P7B-Freeze: "Studien: Nur bei Daten, nur mit validem Titel (nicht nur PMID)"
+  // Grund: PMID ohne Titel/Kontext ist keine sinnvolle Nutzerinformation.
+  const studienMitTitel = studien.filter(st =>
+    typeof st === 'string'
+      ? st.trim().length > 0
+      : (st.titel && st.titel.trim().length > 0)
+  )
+
   const dosierung = {
     bfr:  { wert: s.dosierung_bfr_wert,  einheit: s.dosierung_bfr_einheit,  hinweis: s.dosierung_bfr_hinweis  },
     nih:  { wert: s.dosierung_nih_wert,  einheit: s.dosierung_nih_einheit,  hinweis: s.dosierung_nih_hinweis  },
     efsa: { wert: s.dosierung_efsa_wert, einheit: s.dosierung_efsa_einheit, hinweis: s.dosierung_efsa_hinweis },
   }
-
-  const formen          = s.formen || []
-  const synergien       = s.synergien || []
-  const antagonisten    = s.antagonisten || []
-  const qualitaet       = s.qualitaet_kriterien || []
-  const studien         = s.studien || []
-  const medInteraktion  = s.medikament_interaktionen || []
-  const biomarker       = s.beeinflusste_laborwerte || []
 
   return (
     <div className="supp-detail">
@@ -69,7 +84,8 @@ export default function SupplementDetail() {
         ← Alle Supplements
       </button>
 
-      {/* Header */}
+      {/* [1] Header — immer.
+           Evidenzampel: nur wenn evidenz_ampel befüllt (kein leeres Badge). */}
       <div style={{ marginBottom: 32 }}>
         <h1 className="supp-detail-title">{s.name_de}</h1>
         {s.wissenschaftlich && s.wissenschaftlich !== s.name_de && (
@@ -81,7 +97,10 @@ export default function SupplementDetail() {
         </div>
       </div>
 
-      {/* Wofür */}
+      {/* [2] Wofür — nur bei Daten (s.wofuer Langtext befüllt).
+           S2-BUILD-01: wofuer_kurz wird NICHT als Fallback genutzt.
+           Begründung: Freeze-Blockvertrag definiert Bedingung als s.wofuer (Langtext).
+           wofuer_kurz-Fallback auf Detailseite ist bewusst offen → S2-BUILD-02. */}
       {s.wofuer && (
         <div className="supp-section">
           <p className="supp-section-title">Wofür wird es eingenommen?</p>
@@ -89,30 +108,53 @@ export default function SupplementDetail() {
         </div>
       )}
 
-      {/* Dosierung — 3-Spalten */}
+      {/* [3] Dosierungsblock — immer sichtbar, semantisch sauber laut P7B-Freeze.
+           S2-BUILD-01: Labels kennzeichnen Quellenart (Referenzwert, nicht Therapiedosis).
+           Drei Abschnitte per Freeze: [A] Referenzwerte, [B] UL, [C] Studien-Kontext (Stufe 1).
+           NIH-Wert ist RDA — explizit als allgemeine Bevölkerungsempfehlung gekennzeichnet.
+           BfR + EFSA aktuell leer für alle 51 Einträge — strukturell gezeigt, ehrlich leer. */}
       <div className="supp-section">
-        <p className="supp-section-title">Dosierung im Vergleich</p>
+        <p className="supp-section-title">Dosierung</p>
+        <p style={{ fontSize: 12, color: 'var(--text-muted)', marginBottom: 12, marginTop: -8 }}>
+          Referenzwerte für die gesunde Bevölkerung — keine Therapiedosen
+        </p>
+
+        {/* [3A] Referenzwerte-Grid */}
         <div className="dosierung-grid">
           {DOSIERUNGS_QUELLEN.map(q => {
             const d = dosierung[q.key]
             return (
               <div key={q.key} className="dosierung-item">
-                <p className="dosierung-org">{q.org}</p>
+                <p className="dosierung-org">{q.label}</p>
+                <p className="dosierung-hinweis" style={{ marginBottom: 6 }}>{q.typ}</p>
                 {d?.wert ? (
                   <>
                     <p className="dosierung-wert">{d.wert}{d.einheit ? ` ${d.einheit}` : ''}</p>
                     {d.hinweis && <p className="dosierung-hinweis">{d.hinweis}</p>}
                   </>
                 ) : (
-                  <p className="dosierung-wert" style={{ color: 'var(--text-muted)', fontSize: 14 }}>—</p>
+                  <p className="dosierung-wert" style={{ color: 'var(--text-muted)', fontSize: 12, fontWeight: 400 }}>
+                    Kein Referenzwert verfügbar
+                  </p>
                 )}
               </div>
             )
           })}
         </div>
+
+        {/* [3B] Obere sichere Grenze (UL) — nur wenn dosierung_ul_wert vorhanden.
+             S2-BUILD-01: Pflicht-Exponierung laut P7B-Freeze Stufe 0.2.
+             DB-Feld dosierung_ul_wert ist via select('*') mitgeladen.
+             UL ist eine Sicherheitsgrenze — nicht als Empfehlung kommunizieren. */}
+        {s.dosierung_ul_wert && (
+          <div className="dosierung-ul">
+            <strong>⚠ Obere sichere Grenze (nicht dauerhaft überschreiten):</strong>{' '}
+            {s.dosierung_ul_wert}{s.dosierung_ul_einheit ? ` ${s.dosierung_ul_einheit}` : ''} täglich (NIH/EFSA UL)
+          </div>
+        )}
       </div>
 
-      {/* Formen & Bioverfügbarkeit */}
+      {/* [4] Formen & Bioverfügbarkeit — nur bei Daten */}
       {formen.length > 0 && (
         <div className="supp-section">
           <p className="supp-section-title">Formen & Bioverfügbarkeit</p>
@@ -134,7 +176,7 @@ export default function SupplementDetail() {
         </div>
       )}
 
-      {/* Timing */}
+      {/* [5] Timing / Einnahme — nur bei Daten */}
       {s.timing && (
         <div className="supp-section">
           <p className="supp-section-title">Einnahme-Timing</p>
@@ -142,7 +184,7 @@ export default function SupplementDetail() {
         </div>
       )}
 
-      {/* Synergien & Antagonisten */}
+      {/* [6] Synergien & Antagonisten — nur bei Daten */}
       {(synergien.length > 0 || antagonisten.length > 0) && (
         <div className="supp-section">
           <p className="supp-section-title">Kombinationen & Wechselwirkungen</p>
@@ -173,7 +215,12 @@ export default function SupplementDetail() {
         </div>
       )}
 
-      {/* Qualitätskriterien */}
+      {/* [7] Sicherheits-/Vorsichtsblock — Spec-Gate offen.
+           Erfordert neues DB-Feld `vorsicht` (JSONB) + 4 Pflicht-Kontextfelder
+           (Schwangerschaft, Niere/Leber, Schilddrüse, Gerinnung).
+           Implementierung in S2-BUILD-02. Hier bewusst ausgelassen. */}
+
+      {/* [8] Qualitätskriterien — nur bei Daten */}
       {qualitaet.length > 0 && (
         <div className="supp-section">
           <p className="supp-section-title">Qualitätskriterien</p>
@@ -187,12 +234,15 @@ export default function SupplementDetail() {
         </div>
       )}
 
-      {/* Studien */}
-      {studien.length > 0 && (
+      {/* [9] Studien — nur wenn mindestens eine Studie mit validem Titel vorhanden.
+           S2-BUILD-01: studienMitTitel-Filter aktiv (PMID-only → nicht gezeigt).
+           Laut P7B-Freeze: PMIDs allein als Studien-Block sind No-Go (S2↔S3-Cross-Vertrag).
+           Studien-Kontext für Dosierung (Abschnitt C des Dosierungsblocks) ist Stufe 1. */}
+      {studienMitTitel.length > 0 && (
         <div className="supp-section">
           <p className="supp-section-title">Relevante Studien</p>
           <div style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
-            {studien.map((st, i) => (
+            {studienMitTitel.map((st, i) => (
               <div key={i} style={{ borderBottom: '1px solid var(--border)', paddingBottom: 12 }}>
                 <p style={{ fontSize: 14, color: 'var(--text-light)' }}>
                   {typeof st === 'string' ? st : st.titel}
@@ -214,10 +264,35 @@ export default function SupplementDetail() {
         </div>
       )}
 
-      {/* Medikamenten-Interaktionen */}
-      <div className="supp-section">
-        <p className="supp-section-title">Medikamenten-Interaktionen</p>
-        {medInteraktion.length > 0 ? (
+      {/* [10] S15-Zeitachsen-Block — nach S15-Build.
+           Implementierung wenn S15 live. Hier bewusst ausgelassen. */}
+
+      {/* [11] S1-Cross-Block "Relevante Laborwerte" — nur bei Daten.
+           S2-BUILD-01: Fallback-Text entfernt. Block ausgeblendet wenn leer.
+           Reihenfolge laut P7B-Freeze: Laborwerte (11) vor Medikamente (12).
+           Für alle 51 aktuellen Einträge: Block unsichtbar (beeinflusste_laborwerte leer).
+           Verlinkung zu S1-Detailseiten nach beeinflusste_laborwerte-Migration (Stufe 1). */}
+      {biomarker.length > 0 && (
+        <div className="supp-section">
+          <p className="supp-section-title">Relevante Laborwerte</p>
+          <div className="zusammenhaenge-chips">
+            {biomarker.map((b, i) => (
+              <span key={i} className="zusammenhaenge-chip">
+                {typeof b === 'string' ? b : (b.name_de ?? b.name ?? '')}
+              </span>
+            ))}
+          </div>
+        </div>
+      )}
+
+      {/* [12] S6-Cross-Block "Medikamenten-Interaktionen" — nur bei Daten.
+           S2-BUILD-01: Fallback-Text entfernt. Block ausgeblendet wenn leer.
+           Reihenfolge laut P7B-Freeze: Medikamente (12) nach Laborwerte (11).
+           Für alle 51 aktuellen Einträge: Block unsichtbar (medikament_interaktionen leer).
+           Aktivierung nach S6-Build + medikament_interaktionen-Befüllung (Stufe 2). */}
+      {medInteraktion.length > 0 && (
+        <div className="supp-section">
+          <p className="supp-section-title">Medikamenten-Interaktionen</p>
           <div className="interaktion-list">
             {medInteraktion.map((m, i) => {
               const schwere = typeof m === 'object' ? m.schwere : null
@@ -238,27 +313,10 @@ export default function SupplementDetail() {
               )
             })}
           </div>
-        ) : (
-          <p style={{ fontSize: 13, color: 'var(--text-muted)' }}>Daten werden ergänzt.</p>
-        )}
-      </div>
+        </div>
+      )}
 
-      {/* Relevante Laborwerte */}
-      <div className="supp-section">
-        <p className="supp-section-title">Relevante Laborwerte</p>
-        {biomarker.length > 0 ? (
-          <div className="zusammenhaenge-chips">
-            {biomarker.map((b, i) => (
-              <span key={i} className="zusammenhaenge-chip">
-                {typeof b === 'string' ? b : b.name}
-              </span>
-            ))}
-          </div>
-        ) : (
-          <p style={{ fontSize: 13, color: 'var(--text-muted)' }}>Daten werden ergänzt.</p>
-        )}
-      </div>
-
+      {/* [13] Disclaimer — immer letzter Block */}
       <p style={{ fontSize: 13, color: 'var(--text-muted)', marginTop: 32, textAlign: 'center' }}>
         Diese Informationen ersetzen keine ärztliche Diagnose. Bitte spreche die Einnahme von Supplements mit einer Ärztin oder einem Arzt ab.
       </p>
