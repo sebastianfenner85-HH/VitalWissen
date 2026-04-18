@@ -318,6 +318,68 @@
   line-height: 1.5;
 }
 
+/* ---- P7-03b — Anonymisierungs-UI --------------------------------------- */
+
+/* Laufende Anonymisierung */
+.arztbrief-anon-status {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  background: var(--primary-50);
+  border: 1px solid var(--primary-100);
+  border-radius: var(--radius-sm);
+  padding: 12px 18px;
+  margin-bottom: 16px;
+  font-size: 14px;
+  color: var(--primary);
+  font-weight: 500;
+}
+
+/* Spinner-Kreis für Anonymisierungs-Status */
+@keyframes anon-spin {
+  to { transform: rotate(360deg); }
+}
+
+.arztbrief-anon-spinner {
+  width: 16px;
+  height: 16px;
+  border: 2px solid var(--primary-100);
+  border-top-color: var(--primary);
+  border-radius: 50%;
+  flex-shrink: 0;
+  animation: anon-spin 0.8s linear infinite;
+}
+
+/* Badge über dem anonymisierten Text */
+.arztbrief-anon-badge {
+  background: var(--green-light);
+  color: var(--green);
+  border-radius: var(--radius-sm);
+  padding: 8px 14px;
+  font-size: 13px;
+  margin-bottom: 12px;
+  line-height: 1.5;
+}
+
+.arztbrief-anon-badge code {
+  background: rgba(0, 0, 0, 0.08);
+  border-radius: 3px;
+  padding: 1px 4px;
+  font-size: 12px;
+}
+
+/* Hinweis wenn 0 Ersetzungen */
+.arztbrief-anon-hint {
+  background: var(--yellow-light);
+  color: var(--yellow);
+  border: 1px solid var(--yellow);
+  border-radius: var(--radius-sm);
+  padding: 10px 14px;
+  font-size: 13px;
+  margin-top: 12px;
+  line-height: 1.5;
+}
+
 /* ---------------------------------------------------------------------- */
 
 @media (max-width: 768px) {
