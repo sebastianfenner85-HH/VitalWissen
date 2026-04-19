@@ -8,6 +8,8 @@ import SupplementsListe from "./pages/SupplementsListe";
 import SupplementDetail from "./pages/SupplementDetail";
 import KrankheitenListe from "./pages/KrankheitenListe";
 import KrankheitDetail from "./pages/KrankheitDetail";
+import ErnaehrungListe from "./pages/ErnaehrungListe";
+import ErnaehrungMusterDetail from "./pages/ErnaehrungMusterDetail";
 import Arztbrief from "./pages/Arztbrief";
 import "./styles/global.css";
 import "./components/Footer.css";
@@ -26,6 +28,8 @@ export default function App() {
             <Route path="/supplements/:slug" element={<SupplementDetail />} />
             <Route path="/krankheiten" element={<KrankheitenListe />} />
             <Route path="/krankheiten/:slug" element={<KrankheitDetail />} />
+            <Route path="/ernaehrung" element={<ErnaehrungListe />} />
+            <Route path="/ernaehrung/muster/:slug" element={<ErnaehrungMusterDetail />} />
             <Route path="/arztbrief" element={<Arztbrief />} />
             <Route path="*" element={<NotFound />} />
           </Routes>

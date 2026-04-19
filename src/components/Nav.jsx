@@ -10,6 +10,7 @@ export default function Nav() {
     { to: "/laborwerte", label: "Laborwerte" },
     { to: "/supplements", label: "Supplements" },
     { to: "/krankheiten", label: "Krankheiten" },
+    { to: "/ernaehrung", label: "Ernährung" },
     { to: "/medikamente", label: "Medikamente", soon: true },
     { to: "/arztbrief", label: "Arztbrief-Decoder", beta: true },
   ];

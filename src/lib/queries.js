@@ -123,6 +123,40 @@ export async function getSupplementeNameMap(slugs) {
   return Object.fromEntries((data || []).map(r => [r.slug, r.name_de]))
 }
 
+// ─── S18 — Ernährungskompass ──────────────────────────────────────────────────
+
+export async function getErnaehrungsmusterListe() {
+  const { data, error } = await supabase
+    .from('ernaehrungsmuster')
+    .select('id, slug, name_de, kurzbeschreibung')
+    .order('id', { ascending: true })
+
+  if (error) throw error
+  return data
+}
+
+export async function getErnaehrungsmusterBySlug(slug) {
+  const { data, error } = await supabase
+    .from('ernaehrungsmuster')
+    .select('*')
+    .eq('slug', slug)
+    .single()
+
+  if (error) throw error
+  return data
+}
+
+// Krankheiten-NameMap für S18-Crosslinks (S18 → S5)
+export async function getKrankheitenNameMap(slugs) {
+  if (!slugs || slugs.length === 0) return {}
+  const { data, error } = await supabase
+    .from('krankheiten')
+    .select('slug, name_de')
+    .in('slug', slugs)
+  if (error) throw error
+  return Object.fromEntries((data || []).map(r => [r.slug, r.name_de]))
+}
+
 // ─── Suche (Home) ────────────────────────────────────────────────────────────
 
 export async function sucheGlobal(query) {

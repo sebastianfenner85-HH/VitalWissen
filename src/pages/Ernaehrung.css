@@ -1,0 +1,453 @@
+/* S18 Ernährungskompass — CSS-Prefix: ern-* */
+
+/* ─── Übersichtsseite ─────────────────────────────────────────────────────── */
+
+.ern-page {
+  min-height: 70vh;
+}
+
+.ern-hero {
+  background: var(--primary-50);
+  border-bottom: 1px solid var(--primary-100);
+  padding: 48px 0 40px;
+}
+
+.ern-hero-inner {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 0 24px;
+}
+
+.ern-hero-label {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: var(--primary-100);
+  color: var(--primary);
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  padding: 4px 12px;
+  border-radius: 999px;
+  margin-bottom: 16px;
+}
+
+.ern-hero-title {
+  font-family: 'Instrument Serif', Georgia, serif;
+  font-size: clamp(28px, 5vw, 42px);
+  font-weight: 400;
+  color: var(--text);
+  margin-bottom: 12px;
+  line-height: 1.2;
+}
+
+.ern-hero-sub {
+  font-size: 16px;
+  color: var(--text-light);
+  max-width: 560px;
+  line-height: 1.65;
+}
+
+/* ─── Muster-Grid ─────────────────────────────────────────────────────────── */
+
+.ern-grid-section {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 40px 24px 64px;
+}
+
+.ern-section-title {
+  font-family: 'Instrument Serif', Georgia, serif;
+  font-size: 20px;
+  font-weight: 400;
+  color: var(--text);
+  margin-bottom: 8px;
+}
+
+.ern-section-sub {
+  font-size: 14px;
+  color: var(--text-muted);
+  margin-bottom: 28px;
+}
+
+.ern-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 20px;
+}
+
+.ern-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 24px;
+  cursor: pointer;
+  transition: box-shadow 0.18s, border-color 0.18s, transform 0.15s;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.ern-card:hover {
+  box-shadow: var(--shadow);
+  border-color: var(--primary-100);
+  transform: translateY(-2px);
+}
+
+.ern-card-icon {
+  font-size: 28px;
+  line-height: 1;
+  margin-bottom: 4px;
+}
+
+.ern-card-name {
+  font-family: 'Instrument Serif', Georgia, serif;
+  font-size: 20px;
+  font-weight: 400;
+  color: var(--text);
+  line-height: 1.25;
+}
+
+.ern-card-desc {
+  font-size: 14px;
+  color: var(--text-light);
+  line-height: 1.6;
+  flex: 1;
+}
+
+.ern-card-arrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--primary);
+  margin-top: 4px;
+}
+
+/* ─── Footer-Hinweis ──────────────────────────────────────────────────────── */
+
+.ern-scope-note {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 0 24px 48px;
+}
+
+.ern-scope-note p {
+  font-size: 13px;
+  color: var(--text-muted);
+  line-height: 1.6;
+  padding: 16px 20px;
+  background: var(--surface-2);
+  border-radius: var(--radius-sm);
+  border-left: 3px solid var(--border-dark);
+}
+
+/* ─── Ladestate ───────────────────────────────────────────────────────────── */
+
+.ern-loading {
+  padding: 80px 24px;
+  text-align: center;
+  color: var(--text-muted);
+}
+
+.ern-error {
+  padding: 80px 24px;
+  text-align: center;
+  color: var(--red);
+}
+
+/* ─── Detailseite ─────────────────────────────────────────────────────────── */
+
+.ern-detail-page {
+  min-height: 70vh;
+}
+
+.ern-detail-back {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 14px;
+  color: var(--text-light);
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 0;
+  transition: color 0.15s;
+}
+
+.ern-detail-back:hover {
+  color: var(--primary);
+}
+
+.ern-detail-hero {
+  background: var(--primary-50);
+  border-bottom: 1px solid var(--primary-100);
+  padding: 40px 0 36px;
+}
+
+.ern-detail-hero-inner {
+  max-width: 760px;
+  margin: 0 auto;
+  padding: 0 24px;
+}
+
+.ern-detail-nav {
+  margin-bottom: 20px;
+}
+
+.ern-detail-label {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: var(--primary-100);
+  color: var(--primary);
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  padding: 3px 10px;
+  border-radius: 999px;
+  margin-bottom: 14px;
+}
+
+.ern-detail-title {
+  font-family: 'Instrument Serif', Georgia, serif;
+  font-size: clamp(24px, 4vw, 36px);
+  font-weight: 400;
+  color: var(--text);
+  line-height: 1.2;
+  margin-bottom: 12px;
+}
+
+.ern-detail-intro {
+  font-size: 16px;
+  color: var(--text-light);
+  line-height: 1.7;
+  max-width: 640px;
+}
+
+/* ─── Content-Blocks ──────────────────────────────────────────────────────── */
+
+.ern-detail-content {
+  max-width: 760px;
+  margin: 0 auto;
+  padding: 40px 24px 80px;
+}
+
+.ern-block {
+  margin-bottom: 40px;
+  padding-bottom: 40px;
+  border-bottom: 1px solid var(--border);
+}
+
+.ern-block:last-child {
+  border-bottom: none;
+  margin-bottom: 0;
+  padding-bottom: 0;
+}
+
+.ern-block-title {
+  font-family: 'Instrument Serif', Georgia, serif;
+  font-size: 20px;
+  font-weight: 400;
+  color: var(--text);
+  margin-bottom: 14px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.ern-block-icon {
+  font-size: 18px;
+  opacity: 0.85;
+}
+
+.ern-block-text {
+  font-size: 15px;
+  color: var(--text-light);
+  line-height: 1.75;
+}
+
+/* ─── Prinzipien-Liste ────────────────────────────────────────────────────── */
+
+.ern-prinzip-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.ern-prinzip-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  font-size: 15px;
+  color: var(--text-light);
+  line-height: 1.6;
+}
+
+.ern-prinzip-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--primary);
+  flex-shrink: 0;
+  margin-top: 9px;
+}
+
+/* ─── Lebensmittel-Tags ───────────────────────────────────────────────────── */
+
+.ern-lm-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.ern-lm-tag {
+  background: var(--surface-2);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  padding: 5px 12px;
+  font-size: 13px;
+  color: var(--text-light);
+}
+
+/* ─── Crosslink-Chips (S5) ────────────────────────────────────────────────── */
+
+.ern-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.ern-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: var(--primary-50);
+  border: 1px solid var(--primary-100);
+  color: var(--primary);
+  border-radius: 999px;
+  padding: 5px 14px;
+  font-size: 13px;
+  font-weight: 500;
+  cursor: pointer;
+  text-decoration: none;
+  transition: background 0.15s, border-color 0.15s;
+}
+
+.ern-chip:hover {
+  background: var(--primary-100);
+  border-color: var(--primary);
+}
+
+.ern-no-crosslinks {
+  font-size: 14px;
+  color: var(--text-muted);
+  font-style: italic;
+}
+
+/* ─── Quellen ─────────────────────────────────────────────────────────────── */
+
+.ern-sources-list {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.ern-source-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  padding: 12px 16px;
+  background: var(--surface-2);
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--border);
+}
+
+.ern-source-typ {
+  display: inline-block;
+  background: var(--primary-100);
+  color: var(--primary);
+  font-size: 11px;
+  font-weight: 600;
+  padding: 2px 8px;
+  border-radius: 999px;
+  white-space: nowrap;
+  flex-shrink: 0;
+  margin-top: 2px;
+}
+
+.ern-source-link {
+  font-size: 14px;
+  color: var(--text-light);
+  line-height: 1.5;
+  text-decoration: none;
+  word-break: break-word;
+}
+
+.ern-source-link:hover {
+  color: var(--primary);
+  text-decoration: underline;
+}
+
+.ern-quellen-hinweis {
+  margin-top: 16px;
+  font-size: 12px;
+  color: var(--text-muted);
+  line-height: 1.5;
+  padding: 12px 16px;
+  background: var(--surface-2);
+  border-radius: var(--radius-sm);
+}
+
+/* ─── Mobile ──────────────────────────────────────────────────────────────── */
+
+@media (max-width: 640px) {
+  .ern-hero {
+    padding: 36px 0 28px;
+  }
+
+  .ern-grid-section {
+    padding: 32px 16px 48px;
+  }
+
+  .ern-hero-inner,
+  .ern-scope-note {
+    padding: 0 16px;
+  }
+
+  .ern-grid {
+    grid-template-columns: 1fr;
+    gap: 14px;
+  }
+
+  .ern-card {
+    padding: 20px;
+  }
+
+  .ern-detail-hero {
+    padding: 28px 0 24px;
+  }
+
+  .ern-detail-hero-inner {
+    padding: 0 16px;
+  }
+
+  .ern-detail-content {
+    padding: 28px 16px 60px;
+  }
+
+  .ern-block {
+    margin-bottom: 32px;
+    padding-bottom: 32px;
+  }
+
+  .ern-block-title {
+    font-size: 18px;
+  }
+}
