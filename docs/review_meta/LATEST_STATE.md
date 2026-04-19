@@ -7,7 +7,7 @@
 ## Datum und Gesamtstatus
 
 - **Datum:** 19.04.2026
-- **Projektstatus:** Phase B (Discovery / Konzept / Architektur-Freeze) → erste Phase-C-Bauten laufen
+- **Projektstatus:** Phase-B-Freeze abgeschlossen; erste Bauten gestartet (S4, S5, S18 Slice 1); Phase-C noch nicht systematisch geöffnet
 - **Review-Ablage-Stand:** P7D-08 initial erstellt
 
 ---
@@ -16,8 +16,8 @@
 
 | Bereich | Route | Status |
 |---------|-------|--------|
-| S1 — Supplements | `/supplements`, `/supplements/:slug` | ✅ live |
-| S2 — Laborwerte | `/laborwerte`, `/laborwerte/:slug` | ✅ live |
+| S1 — Laborwerte | `/laborwerte`, `/laborwerte/:slug` | ✅ live |
+| S2 — Supplements | `/supplements`, `/supplements/:slug` | ✅ live |
 | S4 — Arztbrief (beta) | `/arztbrief` | ✅ live (hinter Password-Gate) |
 | S5 — Krankheits-Lexikon | `/krankheiten`, `/krankheiten/:slug` | ✅ live |
 | S18 Slice 1 — Ernährungsmuster | `/ernaehrung`, `/ernaehrung/muster/:slug` | ✅ live |
@@ -78,7 +78,7 @@ Die Spezifikation für P7-04 liegt vor (`P7_04A_S4_LLM_PROXY_RELEASE_SPEC.md`). 
 
 Priorität (je eigenständiger Chat):
 1. **S18 Slice 2** — Nährstoffe (`P7D_06_S18_SPEC.md` als Spec)
-2. **S6-Freeze** — Scope-Schärfung Mikronährstoff-Datenbank
+2. **S6 Folgepaket** — Scope noch offen, eigenständiger Chat erforderlich
 3. **P7-04b** — LLM-Proxy (erst nach Mistral-ZDR-Antwort)
 
 ---

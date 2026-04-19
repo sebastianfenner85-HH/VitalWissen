@@ -71,14 +71,14 @@ Kurzfassung:
 - **Letzter Commit:** `8867f79` — P7D-07: S18 Slice 1 (Ernährungsmuster-Übersicht + Detailseite)
 - **Letzter Review-Ablage-Commit:** P7D-08 (dieser Push, 19.04.2026)
 - **DB-Stand:** supplements=51, laborwerte=60, krankheiten=221, ernaehrungsmuster=4
-- **Live-Bereiche:** S1 (Supplements), S2 (Laborwerte), S4 (Arztbrief/beta), S5 (Krankheits-Lexikon), S18-Slice1 (Ernährungsmuster)
+- **Live-Bereiche:** S1 (Laborwerte), S2 (Supplements), S4 (Arztbrief/beta), S5 (Krankheits-Lexikon), S18-Slice1 (Ernährungsmuster)
 
 ---
 
 ## 7. Nächster zulässiger Schritt
 
 - S18 Slice 2 (`P7D_06_S18_SPEC.md` als Spec-Grundlage) — eigenständiger Chat
-- S6-Freeze — eigenständiger Chat
+- S6 Folgepaket (Scope noch offen) — eigenständiger Chat
 - P7-04b (LLM-Proxy) — blockiert bis Mistral-ZDR-Antwort
 
 ---
