@@ -16,7 +16,7 @@
 
 | Bereich | Route | Status |
 |---------|-------|--------|
-| S1 — Laborwerte | `/laborwerte`, `/laborwerte/:slug` | ✅ live |
+| S1 — Laborwerte | `/laborwerte`, `/laborwerte/:code` | ✅ live |
 | S2 — Supplements | `/supplements`, `/supplements/:slug` | ✅ live |
 | S4 — Arztbrief (beta) | `/arztbrief` | ✅ live (hinter Password-Gate) |
 | S5 — Krankheits-Lexikon | `/krankheiten`, `/krankheiten/:slug` | ✅ live |
