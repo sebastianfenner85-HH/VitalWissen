@@ -120,11 +120,73 @@
   z-index: 50;
 }
 
-.home-search-error,
-.home-search-empty {
+.home-search-error {
   padding: 14px 18px;
   font-size: 14px;
   color: var(--text-muted);
+}
+
+/* ── Fallback / Empty State ───────────────────────── */
+.home-search-empty {
+  padding: 12px 18px 14px;
+}
+
+.home-search-empty-text {
+  font-size: 14px;
+  color: var(--text-muted);
+  margin: 0 0 8px 0;
+}
+
+.home-search-fallback-links {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.home-search-fallback-links button {
+  background: none;
+  border: none;
+  text-align: left;
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--primary);
+  cursor: pointer;
+  padding: 4px 0;
+  font-family: inherit;
+  transition: opacity 0.15s;
+}
+
+.home-search-fallback-links button:hover {
+  opacity: 0.7;
+}
+
+/* ── Notfall-Badge in Suchergebnissen ─────────────── */
+.home-search-notfall {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 16px;
+  height: 16px;
+  background: #ef4444;
+  color: white;
+  border-radius: 50%;
+  font-size: 10px;
+  font-weight: 700;
+  margin-left: 6px;
+  flex-shrink: 0;
+  vertical-align: middle;
+}
+
+/* ── Notfall-Hinweis Hero ─────────────────────────── */
+.home-notfall-hint {
+  font-size: 12px;
+  color: var(--text-muted);
+  margin: 0 auto 20px;
+  text-align: center;
+}
+
+.home-notfall-hint strong {
+  color: var(--text);
 }
 
 .home-search-group {
@@ -286,4 +348,27 @@
   letter-spacing: 0.04em;
   align-self: flex-start;
   margin-top: 4px;
+}
+
+.home-pillar-badge--beta {
+  background: var(--primary-100);
+  color: var(--primary);
+}
+
+.home-pillar-card--beta {
+  border-color: var(--border);
+}
+
+/* ── Mobile adjustments ───────────────────────────── */
+@media (max-width: 600px) {
+  .home-hero {
+    padding: 48px 16px 40px;
+  }
+  .home-subline {
+    font-size: 16px;
+  }
+  .home-pillars {
+    padding: 32px 16px 48px;
+    grid-template-columns: 1fr;
+  }
 }

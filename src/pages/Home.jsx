@@ -61,6 +61,12 @@ export default function Home() {
     if (type === 'krankheit')  navigate(`/krankheiten/${id}`)
   }
 
+  function handleFallbackNav(path) {
+    setShowResults(false)
+    setQuery('')
+    navigate(path)
+  }
+
   return (
     <div className="home">
       <div className="home-hero">
@@ -70,8 +76,8 @@ export default function Home() {
           <span className="home-headline-accent"> und anfängt zu verstehen.</span>
         </h1>
         <p className="home-subline">
-          Laborwerte einordnen. Supplements verstehen. Studien lesen. Arztbriefe
-          entschlüsseln — ohne Werbung, ohne Affiliate.
+          Krankheiten einordnen. Laborwerte verstehen. Supplements bewerten.
+          Arztbriefe entschlüsseln — ohne Werbung, ohne Affiliate.
         </p>
 
         <div className="home-search-wrapper" ref={wrapperRef}>
@@ -82,7 +88,7 @@ export default function Home() {
             <input
               className="home-search-input"
               type="text"
-              placeholder="Laborwert, Supplement, Symptom, Wirkstoff…"
+              placeholder="Symptom, Diagnose, Laborwert, Supplement…"
               value={query}
               onChange={e => setQuery(e.target.value)}
               onFocus={() => hasResults && setShowResults(true)}
@@ -97,7 +103,35 @@ export default function Home() {
               {error && <p className="home-search-error">{error}</p>}
 
               {!error && !hasResults && (
-                <p className="home-search-empty">Keine Treffer für „{query}"</p>
+                <div className="home-search-empty">
+                  <p className="home-search-empty-text">Kein direkter Treffer für „{query}"</p>
+                  <div className="home-search-fallback-links">
+                    <button onClick={() => handleFallbackNav('/krankheiten')}>Krankheiten durchsuchen →</button>
+                    <button onClick={() => handleFallbackNav('/laborwerte')}>Laborwerte durchsuchen →</button>
+                    <button onClick={() => handleFallbackNav('/supplements')}>Supplements durchsuchen →</button>
+                  </div>
+                </div>
+              )}
+
+              {results.krankheiten.length > 0 && (
+                <div className="home-search-group">
+                  <p className="home-search-group-label">Krankheiten &amp; Diagnosen</p>
+                  {results.krankheiten.map(k => (
+                    <button
+                      key={k.slug}
+                      className="home-search-item"
+                      onClick={() => handleSelect('krankheit', k.slug)}
+                    >
+                      <span className="home-search-item-name">
+                        {k.name_de}
+                        {k.notfall_flag && <span className="home-search-notfall" title="Akute Notfall-Relevanz">!</span>}
+                      </span>
+                      {k.icd10_code && (
+                        <span className="home-search-item-meta">{k.icd10_code}</span>
+                      )}
+                    </button>
+                  ))}
+                </div>
               )}
 
               {results.laborwerte.length > 0 && (
@@ -109,7 +143,10 @@ export default function Home() {
                       className="home-search-item"
                       onClick={() => handleSelect('laborwert', lw.loinc_code)}
                     >
-                      <span className="home-search-item-name">{lw.name_de}</span>
+                      <span className="home-search-item-name">
+                        {lw.name_de}
+                        {lw.notfall_flag && <span className="home-search-notfall" title="Kritischer Laborwert">!</span>}
+                      </span>
                       {lw.kategorie && (
                         <span className="home-search-item-meta">{lw.kategorie}</span>
                       )}
@@ -135,65 +172,52 @@ export default function Home() {
                   ))}
                 </div>
               )}
-
-              {results.krankheiten.length > 0 && (
-                <div className="home-search-group">
-                  <p className="home-search-group-label">Krankheiten</p>
-                  {results.krankheiten.map(k => (
-                    <button
-                      key={k.slug}
-                      className="home-search-item"
-                      onClick={() => handleSelect('krankheit', k.slug)}
-                    >
-                      <span className="home-search-item-name">{k.name_de}</span>
-                      {k.icd10_code && (
-                        <span className="home-search-item-meta">{k.icd10_code}</span>
-                      )}
-                    </button>
-                  ))}
-                </div>
-              )}
             </div>
           )}
         </div>
 
+        <p className="home-notfall-hint">
+          Notfall? Sofort <strong>112</strong> rufen — diese Plattform ersetzt keinen Arzt.
+        </p>
+
         <div className="home-quick-links">
+          <button className="home-quick-link" onClick={() => navigate('/krankheiten')}>
+            🩺 Krankheiten
+          </button>
           <button className="home-quick-link" onClick={() => navigate('/laborwerte')}>
             🔬 Laborwerte
           </button>
           <button className="home-quick-link" onClick={() => navigate('/supplements')}>
             💊 Supplements
           </button>
-          <button className="home-quick-link" onClick={() => navigate('/krankheiten')}>
-            🩺 Krankheiten
-          </button>
         </div>
       </div>
 
       <div className="home-pillars">
-        <div className="home-pillar-card">
-          <div className="home-pillar-icon">🔬</div>
-          <h3>Laborwert-Lexikon</h3>
-          <p>Referenzbereiche aus DE, USA und Japan im Vergleich. Ursachen verstehen, Zusammenhänge erkennen.</p>
-          <button className="home-pillar-btn" onClick={() => navigate('/laborwerte')}>Zu den Laborwerten →</button>
-        </div>
-        <div className="home-pillar-card">
-          <div className="home-pillar-icon">💊</div>
-          <h3>Supplement-Kompass</h3>
-          <p>Evidenzbasierte Informationen zu Dosierung, Wirkform, Timing und Medikamenten-Interaktionen.</p>
-          <button className="home-pillar-btn" onClick={() => navigate('/supplements')}>Zu den Supplements →</button>
-        </div>
-        <div className="home-pillar-card">
+        <div className="home-pillar-card" onClick={() => navigate('/krankheiten')}>
           <div className="home-pillar-icon">🩺</div>
           <h3>Krankheits-Lexikon</h3>
-          <p>Erkrankungen in drei Sprachebenen erklärt — von sehr einfach bis fachlich. Mit Symptomen, Diagnostik und Behandlung.</p>
-          <button className="home-pillar-btn" onClick={() => navigate('/krankheiten')}>Zu den Krankheiten →</button>
+          <p>221 Erkrankungen in drei Sprachebenen erklärt — von sehr einfach bis fachlich. Mit Symptomen, Diagnostik und Behandlung.</p>
+          <button className="home-pillar-btn" onClick={e => { e.stopPropagation(); navigate('/krankheiten') }}>Zu den Krankheiten →</button>
         </div>
-        <div className="home-pillar-card home-pillar-card--coming">
+        <div className="home-pillar-card" onClick={() => navigate('/laborwerte')}>
+          <div className="home-pillar-icon">🔬</div>
+          <h3>Laborwert-Lexikon</h3>
+          <p>60 Laborwerte mit Referenzbereichen aus DE, USA und Japan im Vergleich. Ursachen verstehen, Zusammenhänge erkennen.</p>
+          <button className="home-pillar-btn" onClick={e => { e.stopPropagation(); navigate('/laborwerte') }}>Zu den Laborwerten →</button>
+        </div>
+        <div className="home-pillar-card" onClick={() => navigate('/supplements')}>
+          <div className="home-pillar-icon">💊</div>
+          <h3>Supplement-Kompass</h3>
+          <p>51 Supplements mit Evidenz-Ampel, Dosierung, Wirkform, Timing und Medikamenten-Interaktionen.</p>
+          <button className="home-pillar-btn" onClick={e => { e.stopPropagation(); navigate('/supplements') }}>Zu den Supplements →</button>
+        </div>
+        <div className="home-pillar-card home-pillar-card--beta" onClick={() => navigate('/arztbrief')}>
           <div className="home-pillar-icon">📄</div>
           <h3>Arztbrief-Decoder</h3>
-          <p>Befunde, Entlassbriefe und Arztschreiben verständlich erklärt — datenschutzkonform.</p>
-          <span className="home-pillar-badge">In Entwicklung</span>
+          <p>Befunde, Entlassbriefe und Arztschreiben verständlich erklärt — vollständig lokal im Browser, datenschutzkonform.</p>
+          <button className="home-pillar-btn" onClick={e => { e.stopPropagation(); navigate('/arztbrief') }}>Zum Arztbrief-Decoder →</button>
+          <span className="home-pillar-badge home-pillar-badge--beta">Beta</span>
         </div>
       </div>
     </div>

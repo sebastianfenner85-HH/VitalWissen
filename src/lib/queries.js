@@ -133,8 +133,8 @@ export async function sucheGlobal(query) {
   const [laborwerteResult, supplementsResult, krankheitenResult] = await Promise.all([
     supabase
       .from('laborwerte')
-      .select('loinc_code, slug, name_de, kategorie, beschreibung_laienhaft')
-      .or(`name_de.ilike.${term},beschreibung_laienhaft.ilike.${term},vollname_de.ilike.${term}`)
+      .select('loinc_code, slug, name_de, kategorie, notfall_flag')
+      .or(`name_de.ilike.${term},vollname_de.ilike.${term}`)
       .limit(5),
 
     supabase
@@ -145,8 +145,8 @@ export async function sucheGlobal(query) {
 
     supabase
       .from('krankheiten')
-      .select('slug, name_de, kategorie, beschreibung_laienhaft, icd10_code')
-      .or(`name_de.ilike.${term},beschreibung_laienhaft.ilike.${term},icd10_code.ilike.${term}`)
+      .select('slug, name_de, icd10_code, notfall_flag')
+      .or(`name_de.ilike.${term},synonym_de.ilike.${term},icd10_code.ilike.${term}`)
       .limit(5),
   ])
 
