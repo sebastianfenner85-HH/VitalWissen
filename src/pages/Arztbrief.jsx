@@ -273,6 +273,23 @@ export default function Arztbrief() {
   }
 
   // -------------------------------------------------------------------------
+  // P7-04e — Zentraler Reset für neuen Analysekontext
+  // Muss vor jedem neuen Input-Einstiegspunkt aufgerufen werden.
+  // Verantwortlichkeiten:
+  //   1. Laufenden LLM-Request abbrechen (verhindert Late-Response in neuen Kontext)
+  //   2. LLM-State leeren (zeigt Dekodieren-Button wieder, räumt alte Ausgabe)
+  // Was NICHT zurückgesetzt wird: OCR, Anon, Source, PasteValue — das tun die
+  // Aufrufer selbst, damit kein unbeabsichtigter Voll-Reset entsteht.
+  // -------------------------------------------------------------------------
+  function resetForNewInput() {
+    if (llmAbortCtrlRef.current) {
+      llmAbortCtrlRef.current.abort();
+      llmAbortCtrlRef.current = null;
+    }
+    resetLlm();
+  }
+
+  // -------------------------------------------------------------------------
   // P7-04b/d — LLM-Proxy-Call
   // HARD GUARD: kein Call wenn anonStatus !== 'done' oder anonText leer
   // Kein Rohtext, kein File-Payload — ausschließlich anonText aus Worker-Ergebnis
@@ -361,6 +378,8 @@ export default function Arztbrief() {
   // Datei-Handler (PDF / Bild)
   // -------------------------------------------------------------------------
   async function handleFile(e) {
+    // P7-04e: Neuer Analysekontext — alten LLM-State und laufenden Call räumen
+    resetForNewInput();
     setStatus(null);
     resetOcr();
     resetAnon();
@@ -468,6 +487,8 @@ export default function Arztbrief() {
     const value = e.target.value;
     setPasteValue(value);
 
+    // P7-04e: Neuer Analysekontext — alten LLM-State und laufenden Call räumen
+    resetForNewInput();
     clearTimeout(debounceRef.current);
     resetAnon();
 
