@@ -168,6 +168,14 @@ export default function Arztbrief() {
   const [anonText, setAnonText] = useState("");
   const [anonReport, setAnonReport] = useState(null);
 
+  // --- P7-04b LLM-Dekodierung State
+  // llmStatus: null | "loading" | "done" | "error"
+  // llmResult: strukturierte JSON-Antwort vom Proxy
+  // llmError: technische Fehlermeldung (keine PII)
+  const [llmStatus, setLlmStatus] = useState(null);
+  const [llmResult, setLlmResult] = useState(null);
+  const [llmError, setLlmError] = useState(null);
+
   // --- Refs
   const fileRef = useRef(null);
   const workerRef = useRef(null);
@@ -254,6 +262,61 @@ export default function Arztbrief() {
     setAnonStatus(null);
     setAnonText("");
     setAnonReport(null);
+  }
+
+  function resetLlm() {
+    setLlmStatus(null);
+    setLlmResult(null);
+    setLlmError(null);
+  }
+
+  // -------------------------------------------------------------------------
+  // P7-04b — LLM-Proxy-Call
+  // HARD GUARD: kein Call wenn anonStatus !== 'done' oder anonText leer
+  // Kein Rohtext, kein File-Payload — ausschließlich anonText aus Worker-Ergebnis
+  // -------------------------------------------------------------------------
+  async function handleDecode() {
+    // Sicherheits-Guard — kein Call bei nicht abgeschlossener Anonymisierung
+    if (anonStatus !== "done" || !anonText || anonText.trim().length === 0) {
+      return;
+    }
+
+    setLlmStatus("loading");
+    setLlmResult(null);
+    setLlmError(null);
+
+    let resp;
+    try {
+      resp = await fetch("/.netlify/functions/llm-proxy", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        // Ausschließlich anonymisierter Text — kein Rohtext, keine Datei-Referenz
+        body: JSON.stringify({ anonymizedText: anonText }),
+      });
+    } catch (_err) {
+      setLlmStatus("error");
+      setLlmError("Verbindung fehlgeschlagen. Bitte Internetverbindung prüfen und erneut versuchen.");
+      return;
+    }
+
+    let data;
+    try {
+      data = await resp.json();
+    } catch (_e) {
+      setLlmStatus("error");
+      setLlmError("Keine lesbare Antwort vom Analysedienst.");
+      return;
+    }
+
+    if (!resp.ok || !data?.ok) {
+      setLlmStatus("error");
+      // Fehlermeldung aus Server-Response — enthält keine PII (Proxy-Garantie)
+      setLlmError(data?.error || "Analysedienst nicht verfügbar. Bitte erneut versuchen.");
+      return;
+    }
+
+    setLlmResult(data);
+    setLlmStatus("done");
   }
 
   // -------------------------------------------------------------------------
@@ -394,6 +457,7 @@ export default function Arztbrief() {
     setStatus(null);
     resetOcr();
     resetAnon();
+    resetLlm();
     clearTimeout(debounceRef.current);
     if (fileRef.current) fileRef.current.value = "";
   }
@@ -437,7 +501,7 @@ export default function Arztbrief() {
           <div className="arztbrief-banner-row">
             <span className="arztbrief-chip ok">Lokal im Browser</span>
             <span className="arztbrief-chip ok">Anonymisierung aktiv (lokal)</span>
-            <span className="arztbrief-chip pending">Noch keine KI-Dekodierung</span>
+            <span className="arztbrief-chip pending">KI-Dekodierung Beta (P7-04b)</span>
           </div>
           <p className="arztbrief-banner-text">
             Dein Text verlässt dein Gerät in dieser Vorversion <strong>nicht</strong>.
@@ -589,6 +653,130 @@ export default function Arztbrief() {
             </p>
           ) : null}
         </section>
+
+        {/* ------------------------------------------------------------------ */}
+        {/* P7-04b — LLM-Dekodierung Trigger + Ergebnis                         */}
+        {/* Bedingung: nur wenn anonStatus === 'done' && anonText vorhanden       */}
+        {/* Kein Call mit Rohtext, kein Call bei nicht fertiggestellter Anon     */}
+        {/* ------------------------------------------------------------------ */}
+        {showAnonResult && (
+          <section className="arztbrief-decode-section" aria-label="KI-Dekodierung">
+            <div className="arztbrief-decode-header">
+              <h2>KI-Dekodierung</h2>
+              <p className="arztbrief-decode-sub">
+                Der anonymisierte Text wird an einen gesicherten Analysedienst gesendet.
+                Kein Originaltext, keine Dateien — ausschließlich der anonymisierte Text.
+              </p>
+            </div>
+
+            {llmStatus !== "done" && (
+              <button
+                className="arztbrief-decode-btn"
+                onClick={handleDecode}
+                disabled={llmStatus === "loading"}
+                aria-busy={llmStatus === "loading"}
+              >
+                {llmStatus === "loading" ? (
+                  <>
+                    <span className="arztbrief-llm-spinner" aria-hidden="true" />
+                    Analysiere …
+                  </>
+                ) : (
+                  "Dekodieren"
+                )}
+              </button>
+            )}
+
+            {llmStatus === "loading" && (
+              <div className="arztbrief-llm-loading" role="status" aria-live="polite">
+                <span className="arztbrief-llm-spinner" aria-hidden="true" />
+                <span>Anonymisierter Text wird analysiert … (Mistral, Zero-Retention)</span>
+              </div>
+            )}
+
+            {llmStatus === "error" && llmError && (
+              <div className="arztbrief-llm-error" role="alert">
+                <strong>Analysefehler:</strong> {llmError}
+                <button
+                  className="arztbrief-decode-btn arztbrief-decode-btn--retry"
+                  onClick={handleDecode}
+                  style={{ marginTop: "12px", display: "block" }}
+                >
+                  Erneut versuchen
+                </button>
+              </div>
+            )}
+
+            {llmStatus === "done" && llmResult?.result && (
+              <div className="arztbrief-llm-result">
+                <div className="arztbrief-llm-result-header">
+                  <span className="arztbrief-llm-result-badge">Analyse abgeschlossen</span>
+                  <span className="arztbrief-llm-provider">
+                    {llmResult.provider} · {llmResult.model}
+                  </span>
+                </div>
+
+                {llmResult.result.worum_geht_es && (
+                  <div className="arztbrief-llm-block">
+                    <div className="arztbrief-llm-block-title">Worum geht es</div>
+                    <p>{llmResult.result.worum_geht_es}</p>
+                  </div>
+                )}
+
+                {llmResult.result.kurzfassung && (
+                  <div className="arztbrief-llm-block">
+                    <div className="arztbrief-llm-block-title">Kurzfassung</div>
+                    <p>{llmResult.result.kurzfassung}</p>
+                  </div>
+                )}
+
+                {llmResult.result.begriffe?.length > 0 && (
+                  <div className="arztbrief-llm-block">
+                    <div className="arztbrief-llm-block-title">Fachbegriffe erklärt</div>
+                    <div className="arztbrief-llm-begriffe">
+                      {llmResult.result.begriffe.map((b, i) => (
+                        <div key={i} className="arztbrief-llm-begriffe-item">
+                          <span className="arztbrief-llm-begriffe-term">{b.begriff}</span>
+                          <span className="arztbrief-llm-begriffe-def">{b.erklaerung}</span>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                )}
+
+                {llmResult.result.naechste_fragen?.length > 0 && (
+                  <div className="arztbrief-llm-block">
+                    <div className="arztbrief-llm-block-title">Mögliche Fragen an deinen Arzt</div>
+                    <ul className="arztbrief-llm-list">
+                      {llmResult.result.naechste_fragen.map((f, i) => (
+                        <li key={i}>{f}</li>
+                      ))}
+                    </ul>
+                  </div>
+                )}
+
+                {llmResult.result.warnhinweise?.length > 0 && (
+                  <div className="arztbrief-llm-block">
+                    <div className="arztbrief-llm-block-title">Hinweise zur Analyse</div>
+                    <ul className="arztbrief-llm-list arztbrief-llm-warn-list">
+                      {llmResult.result.warnhinweise.map((w, i) => (
+                        <li key={i}>{w}</li>
+                      ))}
+                    </ul>
+                  </div>
+                )}
+
+                <div className="arztbrief-llm-block arztbrief-llm-disclaimer">
+                  <p>
+                    Diese Analyse dient ausschließlich zur Orientierung und ersetzt keine
+                    ärztliche Beratung. VitalWissen stellt keine Diagnosen und gibt keine
+                    Therapieempfehlungen.
+                  </p>
+                </div>
+              </div>
+            )}
+          </section>
+        )}
 
         {/* ------------------------------------------------------------------ */}
         {/* Ausblick / Hinweis                                                   */}
