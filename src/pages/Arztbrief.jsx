@@ -490,7 +490,7 @@ export default function Arztbrief() {
           <h1>Arztbrief-Decoder</h1>
           <p className="arztbrief-sub">
             Arztbriefe, Befunde und Entlassbriefe verständlich machen —
-            in dieser Vorversion zunächst als lokale Textvorschau mit Anonymisierung.
+            in dieser Vorversion: lokale Anonymisierung und KI-gestützte Erklärung (Beta).
           </p>
         </header>
 
@@ -504,10 +504,14 @@ export default function Arztbrief() {
             <span className="arztbrief-chip pending">KI-Dekodierung Beta (P7-04b)</span>
           </div>
           <p className="arztbrief-banner-text">
-            Dein Text verlässt dein Gerät in dieser Vorversion <strong>nicht</strong>.
-            Texterkennung und Anonymisierung laufen vollständig in deinem Browser.
-            Es wird nichts gespeichert, nichts an einen Server, eine Datenbank
-            oder einen KI-Dienst geschickt. Beim Neuladen der Seite ist alles wieder leer.
+            Text-Upload, PDF-Extraktion, OCR und Anonymisierung laufen vollständig
+            in deinem Browser — kein Netzwerkzugriff für diese Schritte.{" "}
+            Erst nach explizitem Klick auf <strong>„Dekodieren"</strong> wird
+            ausschließlich der anonymisierte Text an einen server-seitigen Analysedienst
+            übermittelt (Mistral, Zero Data Retention, ZDR-Bestätigung 20.04.2026).
+            Es werden kein Originaltext, keine Dateien und kein Rohinhalt übertragen.
+            Standardmäßig keine Speicherung von Input oder Output durch den Analysedienst.
+            Beim Neuladen der Seite ist der lokale Zustand zurückgesetzt.
           </p>
         </section>
 
@@ -787,7 +791,10 @@ export default function Arztbrief() {
             <li>
               <strong>Anonymisierung</strong> persönlicher Daten — läuft jetzt lokal in deinem Browser. ✓
             </li>
-            <li>KI-gestützte Dekodierung mit Zero-Retention-Vertrag.</li>
+            <li>
+              <strong>KI-gestützte Dekodierung</strong> — implementiert (Beta, P7-04b).
+              Nach „Dekodieren": anonymisierter Text → server-seitiger Proxy → Mistral (ZDR). ✓
+            </li>
             <li>
               Parallelansicht mit Erklärungen und Verknüpfungen zu Laborwerten,
               Krankheiten, Medikamenten.

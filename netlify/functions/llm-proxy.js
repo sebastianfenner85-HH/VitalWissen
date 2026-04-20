@@ -2,7 +2,8 @@
  * P7-04b — Netlify Function: LLM-Proxy für VitalWissen S4 Arztbrief-Decoder
  *
  * Sicherheitsgarantien (bindend, P7-04a/E + P7-04c):
- * - Empfängt AUSSCHLIESSLICH anonymisierten Text (kein Rohtext, kein File-Payload)
+ * - Empfängt den vom Client gesendeten String (regulärer UI-Pfad: nur anonymisierter Text via Hard-Guard)
+ * - Serverseitig: Payload-Format + Schema validiert — inhaltliche Anonymisierung serverseitig nicht beweisbar
  * - API-Key liegt ausschließlich server-seitig (Netlify ENV — nie im Client-Bundle)
  * - Kein Logging von anonymizedText oder decodedText
  * - Keine Speicherung von Input oder Output (Zero-Retention)
