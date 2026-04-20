@@ -180,6 +180,8 @@ export default function Arztbrief() {
   const fileRef = useRef(null);
   const workerRef = useRef(null);
   const debounceRef = useRef(null);
+  // P7-04d: AbortController für laufenden Proxy-Call (client-seitiger Timeout + Cleanup)
+  const llmAbortCtrlRef = useRef(null);
 
   // -------------------------------------------------------------------------
   // Worker: Lifecycle (einmalig beim Mount, Teardown beim Unmount)
@@ -271,15 +273,39 @@ export default function Arztbrief() {
   }
 
   // -------------------------------------------------------------------------
-  // P7-04b — LLM-Proxy-Call
+  // P7-04b/d — LLM-Proxy-Call
   // HARD GUARD: kein Call wenn anonStatus !== 'done' oder anonText leer
   // Kein Rohtext, kein File-Payload — ausschließlich anonText aus Worker-Ergebnis
+  //
+  // P7-04d Hardening:
+  // - Guard gegen parallele Calls (llmStatus === 'loading' → early return)
+  // - AbortController mit 26s Client-Timeout (vor Netlify-Rand bei 30s)
+  // - Saubere Timeout-Fehlermeldung ohne PII
+  // - Cleanup von laufenden Requests bei neuem Call oder Reset
   // -------------------------------------------------------------------------
+
+  // P7-04d: Client-seitiger Timeout-Wert (ms) — sollte > server-seitiger Abort (22s)
+  // und < Netlify Function Timeout (30s) liegen
+  const LLM_CLIENT_TIMEOUT_MS = 26000;
+
   async function handleDecode() {
+    // P7-04d: Guard gegen parallele Calls — verhindert Mehrfach-Trigger
+    if (llmStatus === "loading") return;
+
     // Sicherheits-Guard — kein Call bei nicht abgeschlossener Anonymisierung
     if (anonStatus !== "done" || !anonText || anonText.trim().length === 0) {
       return;
     }
+
+    // P7-04d: Vorherigen Call abbrechen, falls noch aktiv (z.B. bei Retry)
+    if (llmAbortCtrlRef.current) {
+      llmAbortCtrlRef.current.abort();
+    }
+
+    // P7-04d: Neuen AbortController + 26s Client-Timeout aufsetzen
+    const controller = new AbortController();
+    llmAbortCtrlRef.current = controller;
+    const timeoutId = setTimeout(() => controller.abort(), LLM_CLIENT_TIMEOUT_MS);
 
     setLlmStatus("loading");
     setLlmResult(null);
@@ -292,11 +318,23 @@ export default function Arztbrief() {
         headers: { "Content-Type": "application/json" },
         // Ausschließlich anonymisierter Text — kein Rohtext, keine Datei-Referenz
         body: JSON.stringify({ anonymizedText: anonText }),
+        signal: controller.signal,
       });
     } catch (_err) {
+      clearTimeout(timeoutId);
+      llmAbortCtrlRef.current = null;
+      if (_err.name === "AbortError") {
+        // P7-04d: Timeout-Fall — saubere, technische Meldung ohne PII
+        setLlmStatus("error");
+        setLlmError("Zeitüberschreitung: Der Analysedienst hat nicht rechtzeitig geantwortet. Bitte erneut versuchen.");
+        return;
+      }
       setLlmStatus("error");
       setLlmError("Verbindung fehlgeschlagen. Bitte Internetverbindung prüfen und erneut versuchen.");
       return;
+    } finally {
+      clearTimeout(timeoutId);
+      llmAbortCtrlRef.current = null;
     }
 
     let data;
@@ -452,6 +490,11 @@ export default function Arztbrief() {
   // Reset
   // -------------------------------------------------------------------------
   function handleReset() {
+    // P7-04d: Laufenden LLM-Request abbrechen (falls aktiv)
+    if (llmAbortCtrlRef.current) {
+      llmAbortCtrlRef.current.abort();
+      llmAbortCtrlRef.current = null;
+    }
     setPasteValue("");
     setSource("idle");
     setStatus(null);

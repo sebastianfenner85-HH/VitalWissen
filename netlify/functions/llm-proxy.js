@@ -1,7 +1,8 @@
 /**
- * P7-04b — Netlify Function: LLM-Proxy für VitalWissen S4 Arztbrief-Decoder
+ * P7-04d — Netlify Function: LLM-Proxy für VitalWissen S4 Arztbrief-Decoder
+ * (Hardening-Update — Performance- und Stabilitätshärtung)
  *
- * Sicherheitsgarantien (bindend, P7-04a/E + P7-04c):
+ * Sicherheitsgarantien (bindend, P7-04a/E + P7-04c — unverändert):
  * - Empfängt den vom Client gesendeten String (regulärer UI-Pfad: nur anonymisierter Text via Hard-Guard)
  * - Serverseitig: Payload-Format + Schema validiert — inhaltliche Anonymisierung serverseitig nicht beweisbar
  * - API-Key liegt ausschließlich server-seitig (Netlify ENV — nie im Client-Bundle)
@@ -14,6 +15,13 @@
  * ZDR-Grundlage: schriftliche Support-Mail 20.04.2026, Scale Plan, Inputs + Outputs
  * Zulässiger Pfad: ausschließlich Mistral stateless API (kein Le Chat, keine stateful APIs,
  *                  keine Labs models — P7-04c/C.1)
+ *
+ * P7-04d Hardening-Änderungen:
+ * - Modell: mistral-large-latest → mistral-small-latest (Primärhebel Latenz)
+ * - max_tokens: 2000 → 800 (Sekundärhebel Latenz + Completion-Steuerung)
+ * - System-Prompt: verschlankt, Mengenlimits explizit (Prompt-Token-Reduktion)
+ * - AbortController: 22s server-seitiger Timeout auf Mistral-Fetch (verhindert
+ *   unkontrolliertes Warten bis Netlify-Rand bei 30s)
  */
 
 // ---------------------------------------------------------------------------
@@ -21,8 +29,19 @@
 // ---------------------------------------------------------------------------
 
 const MISTRAL_API_URL = "https://api.mistral.ai/v1/chat/completions";
-const DEFAULT_MODEL = "mistral-large-latest";
+
+// P7-04d: mistral-small-latest statt mistral-large-latest
+// Begründung: Aufgabe (strukturiertes JSON, 5 Felder, Laienerklärung) erfordert
+// kein Flagship-Modell. mistral-small-latest ist mehrsprachig, JSON-mode-fähig
+// und für Instruktionsfolgen ausgelegt. ZDR-Bestätigung gilt modellunabhängig
+// für die stateless API (Scale Plan).
+const DEFAULT_MODEL = "mistral-small-latest";
+
 const MAX_TEXT_LENGTH = 50000;  // P7-04a/E.5: max 50.000 Zeichen
+
+// P7-04d: Server-seitiger Abort-Timeout (ms) — verhindert Hängen bis Netlify-Rand
+// Netlify Function Timeout: 30s → Mistral-Abort bei 22s → 8s Puffer für Overhead
+const MISTRAL_TIMEOUT_MS = 22000;
 
 // Erlaubte Request-Felder (Whitelist — P7-04a/E.1)
 const ALLOWED_FIELDS = new Set(["anonymizedText", "requestId"]);
@@ -35,36 +54,32 @@ const FORBIDDEN_PATTERNS = [
 ];
 
 // ---------------------------------------------------------------------------
-// System-Instruction (server-seitig fest — P7-04b-Auftrag)
-// Erzwingt: Laien-Erklärung, kein Diagnostizieren, kein Therapie-Rat,
-//           strukturiertes JSON-Output, keine Halluzinationen
+// System-Instruction (server-seitig fest — P7-04d Hardening)
+// P7-04d: verschlankt von ~290 auf ~150 Wörter, Mengenlimits explizit gesetzt.
+// Fachlicher Kern bleibt vollständig erhalten (alle 5 Pflichtfelder, gleiche
+// Sicherheitsregeln, gleiche Qualitätsanforderungen).
 // ---------------------------------------------------------------------------
 
-const SYSTEM_PROMPT = `Du bist ein medizinischer Laien-Erklärer für die Plattform VitalWissen. Deine einzige Aufgabe ist es, anonymisierten deutschen Arztbrief-Text für Laien verständlich zu erklären.
+const SYSTEM_PROMPT = `Du bist ein medizinischer Laien-Erklärer für VitalWissen. Erkläre anonymisierten deutschen Arztbrief-Text für medizinische Laien verständlich.
 
 BINDENDE REGELN:
-- Kein Diagnostizieren. Keine Diagnose-Aussagen oder -Bestätigungen.
-- Keine Therapieanweisungen, keine Behandlungsempfehlungen.
-- Keine Notfall-Einschätzungen (weder Über- noch Untereskalation).
-- Unbekannte oder nicht eindeutig interpretierbare Stellen: explizit als unklar markieren.
-- Sachlich, knapp, nicht dramatisierend.
-- Nur den vorliegenden anonymisierten Text interpretieren.
-- Keine Quellen, Studien oder Literatur erfinden oder halluzinieren.
-- Keine zusätzlichen Patientendaten oder Informationen erfinden.
-- Platzhalter wie [NAME], [ADRESSE], [GEBURTSDATUM] etc. im Text sind Anonymisierungen — sie als solche benennen, nicht spekulieren was dahinter steht.
+- Kein Diagnostizieren, keine Therapieanweisungen, keine Notfall-Einschätzungen.
+- Unklare oder nicht eindeutig interpretierbare Stellen explizit als unklar markieren.
+- Platzhalter wie [NAME], [ADRESSE], [GEBURTSDATUM] im Text sind Anonymisierungen — benennen, nicht spekulieren.
+- Sachlich, knapp, keine erfundenen Informationen, Quellen oder Studien.
+- Nur den vorliegenden Text interpretieren — nichts Zusätzliches erfinden.
 
-AUSGABE:
-Gib deine Antwort AUSSCHLIESSLICH als valides JSON in exakt diesem Schema zurück. Kein Text außerhalb des JSON. Kein Markdown. Keine Codeblöcke.
+AUSGABE: Ausschließlich valides JSON ohne Text außerhalb des JSON-Objekts. Kein Markdown, keine Codeblöcke.
 
 {
-  "kurzfassung": "Sachliche Kurzfassung in 2-3 Sätzen auf Laiensprache.",
-  "begriffe": [
-    { "begriff": "Fachbegriff aus dem Text", "erklaerung": "Kurze Erklärung für Laien" }
-  ],
-  "worum_geht_es": "Worum geht es in diesem Dokument? (1 Satz)",
-  "naechste_fragen": ["Sinnvolle Frage an den Arzt"],
-  "warnhinweise": ["Hinweis auf Einschränkungen oder Grenzen dieser Analyse"]
-}`;
+  "worum_geht_es": "1 kurzer Satz zum Dokument",
+  "kurzfassung": "Max. 2 Sätze Zusammenfassung in einfacher Sprache",
+  "begriffe": [{ "begriff": "Fachbegriff", "erklaerung": "1 Satz Erklärung für Laien" }],
+  "naechste_fragen": ["Konkrete Frage an den Arzt"],
+  "warnhinweise": ["Hinweis auf Grenzen dieser Analyse"]
+}
+
+Mengenlimits: begriffe max. 6 Einträge · naechste_fragen max. 4 Einträge · warnhinweise max. 3 Einträge.`;
 
 // ---------------------------------------------------------------------------
 // Handler
@@ -143,7 +158,17 @@ export const handler = async (event, _context) => {
     return { statusCode: 503, body: JSON.stringify({ ok: false, error: "Dienst vorübergehend nicht verfügbar" }), headers };
   }
 
+  // P7-04d: MISTRAL_MODEL ENV-Override behält Priorität (erlaubt Rollback auf large ohne Code-Änderung)
   const model = process.env.MISTRAL_MODEL || DEFAULT_MODEL;
+
+  // ---------------------------------------------------------------------------
+  // P7-04d: AbortController — server-seitiger Mistral-Timeout
+  // Verhindert unkontrolliertes Warten bis zum Netlify-Function-Rand (30s).
+  // Abort bei 22s → sauberer HTTP 504 statt ungraceful Netlify-Timeout.
+  // AbortController: nativ in Node.js 18+ (Netlify Functions Standard-Runtime).
+  // ---------------------------------------------------------------------------
+  const mistralAbortCtrl = new AbortController();
+  const mistralTimeoutId = setTimeout(() => mistralAbortCtrl.abort(), MISTRAL_TIMEOUT_MS);
 
   // --- Mistral stateless API aufrufen
   // SICHERHEITS-INVARIANTE: Kein Logging von anonymizedText hier oder danach.
@@ -151,6 +176,7 @@ export const handler = async (event, _context) => {
   try {
     mistralResp = await fetch(MISTRAL_API_URL, {
       method: "POST",
+      signal: mistralAbortCtrl.signal,
       headers: {
         "Content-Type": "application/json",
         "Authorization": `Bearer ${apiKey}`,
@@ -163,12 +189,23 @@ export const handler = async (event, _context) => {
         ],
         response_format: { type: "json_object" },
         temperature: 0.2,
-        max_tokens: 2000,
+        max_tokens: 800,  // P7-04d: 2000 → 800 (reicht für 5-Feld-Schema sicher aus)
       }),
     });
   } catch (_fetchErr) {
+    clearTimeout(mistralTimeoutId);
+    // P7-04d: AbortError = Timeout-Fall → 504 statt 502
+    if (_fetchErr.name === "AbortError") {
+      return {
+        statusCode: 504,
+        body: JSON.stringify({ ok: false, error: "Analysedienst hat nicht rechtzeitig geantwortet. Bitte erneut versuchen." }),
+        headers,
+      };
+    }
     // Kein PII, kein API-Key in Fehlermeldung
     return { statusCode: 502, body: JSON.stringify({ ok: false, error: "Verbindung zum Analysedienst fehlgeschlagen. Bitte erneut versuchen." }), headers };
+  } finally {
+    clearTimeout(mistralTimeoutId);
   }
 
   if (!mistralResp.ok) {
