@@ -175,6 +175,8 @@ export default function Arztbrief() {
   const [llmStatus, setLlmStatus] = useState(null);
   const [llmResult, setLlmResult] = useState(null);
   const [llmError, setLlmError] = useState(null);
+  // P7-05: Zeitstempel der abgeschlossenen Analyse (für Result-Header)
+  const [llmTimestamp, setLlmTimestamp] = useState(null);
 
   // --- Refs
   const fileRef = useRef(null);
@@ -270,6 +272,7 @@ export default function Arztbrief() {
     setLlmStatus(null);
     setLlmResult(null);
     setLlmError(null);
+    setLlmTimestamp(null);
   }
 
   // -------------------------------------------------------------------------
@@ -372,6 +375,7 @@ export default function Arztbrief() {
 
     setLlmResult(data);
     setLlmStatus("done");
+    setLlmTimestamp(new Date()); // P7-05: Zeitstempel für Result-Header
   }
 
   // -------------------------------------------------------------------------
@@ -535,13 +539,38 @@ export default function Arztbrief() {
   const showAnonRunning = anonStatus === "running";
   const showAnonFailed = anonStatus === "failed";
 
-  // Quell-Label für Meta-Zeile
+  // Quell-Label für Meta-Zeile + Result-Header
   const sourceLabel =
     source === "pdf"
       ? "lokal aus PDF-Text-Layer extrahiert"
       : source === "ocr"
       ? "lokal per OCR erkannt (Browser)"
       : "eingefügter Text";
+
+  // P7-05 — Schritt-Status für Stepper
+  const stepAnonStatus =
+    anonStatus === "done" ? "done" :
+    anonStatus === "running" ? "active" :
+    anonStatus === "failed" ? "error" : "pending";
+
+  const stepLlmStatus =
+    llmStatus === "done" ? "done" :
+    llmStatus === "loading" ? "active" :
+    llmStatus === "error" ? "error" :
+    anonStatus === "done" ? "ready" : "pending";
+
+  // P7-05 — Kontextbewusstes Reset-Label
+  const resetLabel = llmStatus === "done" ? "Neuen Arztbrief analysieren" : "Zurücksetzen";
+
+  // P7-05 — Leeres Ergebnis (alle 5 Felder leer/fehlen)
+  const llmResultData = llmResult?.result ?? null;
+  const llmHasContent = !!(
+    llmResultData?.worum_geht_es ||
+    llmResultData?.kurzfassung ||
+    llmResultData?.begriffe?.length ||
+    llmResultData?.naechste_fragen?.length ||
+    llmResultData?.warnhinweise?.length
+  );
 
   // -------------------------------------------------------------------------
   // Render
@@ -565,7 +594,7 @@ export default function Arztbrief() {
           <div className="arztbrief-banner-row">
             <span className="arztbrief-chip ok">Lokal im Browser</span>
             <span className="arztbrief-chip ok">Anonymisierung aktiv (lokal)</span>
-            <span className="arztbrief-chip pending">KI-Dekodierung Beta (P7-04b)</span>
+            <span className="arztbrief-chip pending">KI-Dekodierung Beta</span>
           </div>
           <p className="arztbrief-banner-text">
             Text-Upload, PDF-Extraktion, OCR und Anonymisierung laufen vollständig
@@ -578,6 +607,33 @@ export default function Arztbrief() {
             Beim Neuladen der Seite ist der lokale Zustand zurückgesetzt.
           </p>
         </section>
+
+        {/* ------------------------------------------------------------------ */}
+        {/* P7-05 — Schritt-Indikator (nur sichtbar wenn Input aktiv)           */}
+        {/* ------------------------------------------------------------------ */}
+        {source !== "idle" && (
+          <div className="arztbrief-stepper" aria-label="Analyseschritte">
+            <div className="arztbrief-step done">
+              <span className="arztbrief-step-dot" />
+              <span className="arztbrief-step-label">Eingabe</span>
+            </div>
+            <div className="arztbrief-step-line" />
+            <div className={`arztbrief-step ${stepAnonStatus}`}>
+              <span className="arztbrief-step-dot" />
+              <span className="arztbrief-step-label">Anonymisiert</span>
+            </div>
+            <div className="arztbrief-step-line" />
+            <div className={`arztbrief-step ${stepLlmStatus}`}>
+              <span className="arztbrief-step-dot" />
+              <span className="arztbrief-step-label">KI-Analyse</span>
+            </div>
+            <div className="arztbrief-step-line" />
+            <div className={`arztbrief-step ${llmStatus === "done" ? "done" : "pending"}`}>
+              <span className="arztbrief-step-dot" />
+              <span className="arztbrief-step-label">Ergebnis</span>
+            </div>
+          </div>
+        )}
 
         {/* ------------------------------------------------------------------ */}
         {/* Eingabe-Karten                                                       */}
@@ -682,7 +738,7 @@ export default function Arztbrief() {
             <h2>Anonymisierter Text</h2>
             {(hasContent || showAnonFailed) && (
               <button className="arztbrief-reset" onClick={handleReset}>
-                Zurücksetzen
+                {resetLabel}
               </button>
             )}
           </div>
@@ -699,6 +755,7 @@ export default function Arztbrief() {
               <div className="arztbrief-anon-badge" aria-label="Hinweis zur Anonymisierung">
                 Persönliche Daten wurden lokal ersetzt · Platzhalter z. B.{" "}
                 <code>[NAME]</code>, <code>[ADRESSE]</code>, <code>[GEBURTSDATUM]</code>
+                {" "}· Freie Namensnennungen im Fließtext können vereinzelt übersehen werden — bitte prüfen.
               </div>
               <pre className="arztbrief-text">{anonText}</pre>
               <p className="arztbrief-meta">
@@ -775,34 +832,56 @@ export default function Arztbrief() {
               </div>
             )}
 
-            {llmStatus === "done" && llmResult?.result && (
+            {llmStatus === "done" && llmResultData && (
               <div className="arztbrief-llm-result">
+
+                {/* P7-05 — Result Header: Kontext + Zeitstempel + Provider */}
                 <div className="arztbrief-llm-result-header">
-                  <span className="arztbrief-llm-result-badge">Analyse abgeschlossen</span>
-                  <span className="arztbrief-llm-provider">
-                    {llmResult.provider} · {llmResult.model}
-                  </span>
+                  <div className="arztbrief-llm-result-header-left">
+                    <span className="arztbrief-llm-result-badge">Analyse abgeschlossen</span>
+                    <span className="arztbrief-llm-source-chip">{sourceLabel}</span>
+                  </div>
+                  <div className="arztbrief-llm-result-header-right">
+                    {llmTimestamp && (
+                      <span className="arztbrief-llm-timestamp">
+                        {llmTimestamp.toLocaleTimeString("de-DE", { hour: "2-digit", minute: "2-digit" })}
+                      </span>
+                    )}
+                    <span className="arztbrief-llm-provider">{llmResult.provider} · {llmResult.model}</span>
+                  </div>
                 </div>
 
-                {llmResult.result.worum_geht_es && (
+                {/* Leeres Ergebnis — robuste Behandlung */}
+                {!llmHasContent && (
                   <div className="arztbrief-llm-block">
-                    <div className="arztbrief-llm-block-title">Worum geht es</div>
-                    <p>{llmResult.result.worum_geht_es}</p>
+                    <p className="arztbrief-llm-empty-result">
+                      Die Analyse hat kein verwertbares Ergebnis zurückgegeben. Bitte versuche es erneut.
+                    </p>
                   </div>
                 )}
 
-                {llmResult.result.kurzfassung && (
+                {/* P7-05 — Hero: Worum geht es (prominenteste Sektion) */}
+                {llmResultData.worum_geht_es && (
+                  <div className="arztbrief-llm-hero">
+                    <div className="arztbrief-llm-hero-label">Worum geht es</div>
+                    <p className="arztbrief-llm-hero-text">{llmResultData.worum_geht_es}</p>
+                  </div>
+                )}
+
+                {/* Kurzfassung */}
+                {llmResultData.kurzfassung && (
                   <div className="arztbrief-llm-block">
                     <div className="arztbrief-llm-block-title">Kurzfassung</div>
-                    <p>{llmResult.result.kurzfassung}</p>
+                    <p>{llmResultData.kurzfassung}</p>
                   </div>
                 )}
 
-                {llmResult.result.begriffe?.length > 0 && (
+                {/* Fachbegriffe erklärt */}
+                {llmResultData.begriffe?.length > 0 && (
                   <div className="arztbrief-llm-block">
                     <div className="arztbrief-llm-block-title">Fachbegriffe erklärt</div>
                     <div className="arztbrief-llm-begriffe">
-                      {llmResult.result.begriffe.map((b, i) => (
+                      {llmResultData.begriffe.map((b, i) => (
                         <div key={i} className="arztbrief-llm-begriffe-item">
                           <span className="arztbrief-llm-begriffe-term">{b.begriff}</span>
                           <span className="arztbrief-llm-begriffe-def">{b.erklaerung}</span>
@@ -812,65 +891,54 @@ export default function Arztbrief() {
                   </div>
                 )}
 
-                {llmResult.result.naechste_fragen?.length > 0 && (
-                  <div className="arztbrief-llm-block">
-                    <div className="arztbrief-llm-block-title">Mögliche Fragen an deinen Arzt</div>
-                    <ul className="arztbrief-llm-list">
-                      {llmResult.result.naechste_fragen.map((f, i) => (
+                {/* P7-05 — Fragen für den Arzt: eigener Block mit Pfeil-Liste */}
+                {llmResultData.naechste_fragen?.length > 0 && (
+                  <div className="arztbrief-llm-block arztbrief-llm-block--fragen">
+                    <div className="arztbrief-llm-block-title">Fragen für deinen nächsten Arzttermin</div>
+                    <ul className="arztbrief-llm-list arztbrief-llm-fragen-list">
+                      {llmResultData.naechste_fragen.map((f, i) => (
                         <li key={i}>{f}</li>
                       ))}
                     </ul>
                   </div>
                 )}
 
-                {llmResult.result.warnhinweise?.length > 0 && (
-                  <div className="arztbrief-llm-block">
-                    <div className="arztbrief-llm-block-title">Hinweise zur Analyse</div>
-                    <ul className="arztbrief-llm-list arztbrief-llm-warn-list">
-                      {llmResult.result.warnhinweise.map((w, i) => (
+                {/* P7-05 — Warnhinweise: ruhig und neutral, kein Rot */}
+                {llmResultData.warnhinweise?.length > 0 && (
+                  <div className="arztbrief-llm-block arztbrief-llm-block--info">
+                    <div className="arztbrief-llm-block-title">Hinweise zu dieser Analyse</div>
+                    <ul className="arztbrief-llm-list">
+                      {llmResultData.warnhinweise.map((w, i) => (
                         <li key={i}>{w}</li>
                       ))}
                     </ul>
                   </div>
                 )}
 
-                <div className="arztbrief-llm-block arztbrief-llm-disclaimer">
-                  <p>
-                    Diese Analyse dient ausschließlich zur Orientierung und ersetzt keine
-                    ärztliche Beratung. VitalWissen stellt keine Diagnosen und gibt keine
-                    Therapieempfehlungen.
-                  </p>
+                {/* P7-05 — Trust Frame: sichtbar, ruhig, keine Fußnote */}
+                <div className="arztbrief-llm-trust">
+                  <span className="arztbrief-llm-trust-icon" aria-hidden="true">ℹ</span>
+                  <div className="arztbrief-llm-trust-body">
+                    <strong>Verständnishilfe — keine Diagnose</strong>
+                    <p>Diese KI-Erklärung hilft dir, deinen Arztbrief besser zu verstehen. Sie ersetzt keine ärztliche Beratung, stellt keine Diagnose und gibt keine Therapieempfehlung. Besprich alle Fragen immer mit deinem Arzt oder dem Praxisteam.</p>
+                  </div>
                 </div>
+
               </div>
             )}
           </section>
         )}
 
         {/* ------------------------------------------------------------------ */}
-        {/* Ausblick / Hinweis                                                   */}
+        {/* P7-05 — CTA: Neuen Arztbrief analysieren                            */}
         {/* ------------------------------------------------------------------ */}
-        <section className="arztbrief-next" aria-label="Ausblick">
-          <h3>Was kommt als Nächstes</h3>
-          <ol>
-            <li>
-              <strong>Anonymisierung</strong> persönlicher Daten — läuft jetzt lokal in deinem Browser. ✓
-            </li>
-            <li>
-              <strong>KI-gestützte Dekodierung</strong> — implementiert (Beta, P7-04b).
-              Nach „Dekodieren": anonymisierter Text → server-seitiger Proxy → Mistral (ZDR). ✓
-            </li>
-            <li>
-              Parallelansicht mit Erklärungen und Verknüpfungen zu Laborwerten,
-              Krankheiten, Medikamenten.
-            </li>
-          </ol>
-          <p className="arztbrief-note">
-            Sicherheit zuerst, Funktionen danach. Die Anonymisierung erkennt strukturierte
-            Personendaten (Namen, Adressen, Geburtsdaten, Nummern). Freie Personenreferenzen
-            im Fließtext können vereinzelt übersehen werden — bitte den Text im Zweifelsfall
-            selbst prüfen.
-          </p>
-        </section>
+        {llmStatus === "done" && (
+          <div className="arztbrief-new-analysis">
+            <button className="arztbrief-new-analysis-btn" onClick={handleReset}>
+              Neuen Arztbrief analysieren
+            </button>
+          </div>
+        )}
       </div>
     </div>
   );
