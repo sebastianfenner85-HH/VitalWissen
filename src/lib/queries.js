@@ -157,6 +157,87 @@ export async function getKrankheitenNameMap(slugs) {
   return Object.fromEntries((data || []).map(r => [r.slug, r.name_de]))
 }
 
+// ─── S6 — Wirkstoff-Lexikon ──────────────────────────────────────────────────
+
+export async function getWirkstoffeListe() {
+  const { data, error } = await supabase
+    .from('wirkstoffe')
+    .select(`
+      id,
+      slug,
+      name_de,
+      synonyme,
+      atc_code,
+      wirkstoffklasse,
+      indikationen,
+      zulassung_de,
+      otc_status,
+      filter_tags
+    `)
+    .order('name_de', { ascending: true })
+
+  if (error) throw error
+  return data ?? []
+}
+
+export async function getWirkstoffBySlug(slug) {
+  const { data, error } = await supabase
+    .from('wirkstoffe')
+    .select('*')
+    .eq('slug', slug)
+    .single()
+
+  if (error) throw error
+  return data
+}
+
+// S5 → S6: Wirkstoffe die für eine Krankheit relevant sind (ICD-10-Code)
+// Wird in KrankheitDetail für den Standardmedikamente-Block verwendet
+export async function getWirkstoffeByKrankheit(icd10Code) {
+  if (!icd10Code) return []
+  const { data, error } = await supabase
+    .from('wirkstoffe')
+    .select('slug, name_de, wirkstoffklasse, otc_status')
+    .contains('verwandte_krankheiten', [icd10Code])
+    .order('name_de', { ascending: true })
+    .limit(8)
+
+  if (error) {
+    console.warn('getWirkstoffeByKrankheit:', error.message)
+    return []
+  }
+  return data ?? []
+}
+
+// S2 → S6: Wirkstoffe die Wechselwirkungen mit einem Supplement haben
+// Wird in SupplementDetail für den Medikamenten-Block verwendet (Slice 1 vorbereitet)
+export async function getWirkstoffeBySupp(suppSlug) {
+  if (!suppSlug) return []
+  const { data, error } = await supabase
+    .from('wirkstoffe')
+    .select('slug, name_de, wirkstoffklasse')
+    .contains('verwandte_supplements', [suppSlug])
+    .order('name_de', { ascending: true })
+    .limit(8)
+
+  if (error) {
+    console.warn('getWirkstoffeBySupp:', error.message)
+    return []
+  }
+  return data ?? []
+}
+
+// Name-Map für S6-Crosslinks: ICD-10-Codes → { icd: { name_de, slug } }
+export async function getKrankheitenDetailMap(icdCodes) {
+  if (!icdCodes || icdCodes.length === 0) return {}
+  const { data, error } = await supabase
+    .from('krankheiten')
+    .select('icd10_code, name_de, slug')
+    .in('icd10_code', icdCodes)
+  if (error) throw error
+  return Object.fromEntries((data || []).map(r => [r.icd10_code, { name_de: r.name_de, slug: r.slug }]))
+}
+
 // ─── Suche (Home) ────────────────────────────────────────────────────────────
 
 export async function sucheGlobal(query) {
