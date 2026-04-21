@@ -8,7 +8,7 @@
 
 import { useState, useEffect } from 'react'
 import { useParams, useNavigate } from 'react-router-dom'
-import { getKrankheitBySlug, getLaborwerteNameMap, getSupplementeNameMap, getWirkstoffeByKrankheit } from '../lib/queries'
+import { getKrankheitBySlug, getLaborwerteNameMap, getSupplementeNameMap } from '../lib/queries'
 import './Krankheiten.css'
 
 const EBENEN = [
@@ -26,7 +26,6 @@ export default function KrankheitDetail() {
   const [ebene, setEbene] = useState('laienhaft')
   const [laborwertNamen, setLaborwertNamen] = useState({})
   const [supplementNamen, setSupplementNamen] = useState({})
-  const [standardMedikamente, setStandardMedikamente] = useState([])
 
   useEffect(() => {
     async function load() {
@@ -36,14 +35,12 @@ export default function KrankheitDetail() {
         // Array.isArray guards vor Übergabe an Name-Maps (P7C-Freeze 0.3)
         const codes = Array.isArray(data?.verwandte_laborwerte) ? data.verwandte_laborwerte : []
         const slugs = Array.isArray(data?.verwandte_supplements) ? data.verwandte_supplements : []
-        const [lwMap, suppMap, medList] = await Promise.all([
+        const [lwMap, suppMap] = await Promise.all([
           getLaborwerteNameMap(codes).catch(() => ({})),
           getSupplementeNameMap(slugs).catch(() => ({})),
-          getWirkstoffeByKrankheit(data?.icd10_code).catch(() => []),
         ])
         setLaborwertNamen(lwMap)
         setSupplementNamen(suppMap)
-        setStandardMedikamente(medList)
       } catch (err) {
         console.error(err)
         setError('Krankheit nicht gefunden.')
@@ -253,27 +250,7 @@ export default function KrankheitDetail() {
         </div>
       )}
 
-      {/* [12] S6-Cross-Block "Standardmedikamente" */}
-      {standardMedikamente.length > 0 && (
-        <div className="krank-section">
-          <p className="krank-section-title">Häufig eingesetzte Wirkstoffe</p>
-          <p className="krank-section-subtext" style={{ fontSize: 13, color: 'var(--text-muted)', marginBottom: 12 }}>
-            Auf Basis offizieller Zulassungsdaten — keine Therapieempfehlung.
-            Apotheke oder Arzt für individuelle Beratung.
-          </p>
-          <div className="krank-links-grid">
-            {standardMedikamente.map(med => (
-              <button
-                key={med.slug}
-                className="krank-link-chip"
-                onClick={() => navigate(`/medikamente/${med.slug}`)}
-              >
-                💊 {med.name_de}
-              </button>
-            ))}
-          </div>
-        </div>
-      )}
+      {/* [12] S6-Cross-Block "Standardmedikamente" — nach S6-Build; Stufe 2; kein Platzhalter sichtbar */}
 
       {/* [15] Weiterführende Informationen ──────────────────────────────────── */}
       {weiterfuehrend.length > 0 && (
