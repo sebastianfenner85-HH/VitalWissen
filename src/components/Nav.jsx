@@ -11,7 +11,7 @@ export default function Nav() {
     { to: "/supplements", label: "Supplements" },
     { to: "/krankheiten", label: "Krankheiten" },
     { to: "/ernaehrung", label: "Ernährung" },
-    { to: "/medikamente", label: "Medikamente", soon: true },
+    { to: "/medikamente", label: "Medikamente" },
     { to: "/arztbrief", label: "Arztbrief-Decoder", beta: true },
   ];
 
