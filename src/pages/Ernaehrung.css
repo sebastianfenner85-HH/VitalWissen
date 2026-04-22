@@ -144,6 +144,24 @@
   border-left: 3px solid var(--border-dark);
 }
 
+/* ─── Disclaimer ──────────────────────────────────────────────────────────── */
+
+.ern-disclaimer {
+  max-width: 760px;
+  margin: 0 auto;
+  padding: 0 24px 48px;
+}
+
+.ern-disclaimer p {
+  font-size: 13px;
+  color: var(--text-muted);
+  line-height: 1.6;
+  padding: 16px 20px;
+  background: var(--surface-2);
+  border-radius: var(--radius-sm);
+  border-left: 3px solid var(--border-dark);
+}
+
 /* ─── Ladestate ───────────────────────────────────────────────────────────── */
 
 .ern-loading {

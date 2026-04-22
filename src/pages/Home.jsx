@@ -190,6 +190,12 @@ export default function Home() {
           <button className="home-quick-link" onClick={() => navigate('/supplements')}>
             💊 Supplements
           </button>
+          <button className="home-quick-link" onClick={() => navigate('/medikamente')}>
+            🧪 Medikamente
+          </button>
+          <button className="home-quick-link" onClick={() => navigate('/ernaehrung')}>
+            🥦 Ernährung
+          </button>
         </div>
       </div>
 
@@ -211,6 +217,18 @@ export default function Home() {
           <h3>Supplement-Kompass</h3>
           <p>51 Supplements mit Evidenz-Ampel, Dosierung, Wirkform, Timing und Medikamenten-Interaktionen.</p>
           <button className="home-pillar-btn" onClick={e => { e.stopPropagation(); navigate('/supplements') }}>Zu den Supplements →</button>
+        </div>
+        <div className="home-pillar-card" onClick={() => navigate('/medikamente')}>
+          <div className="home-pillar-icon">🧪</div>
+          <h3>Medikamenten-Lexikon</h3>
+          <p>50 Wirkstoffe mit Dosierung, Nebenwirkungen, Wechselwirkungen und Zulassungsinformationen — von EMA und BfArM.</p>
+          <button className="home-pillar-btn" onClick={e => { e.stopPropagation(); navigate('/medikamente') }}>Zu den Medikamenten →</button>
+        </div>
+        <div className="home-pillar-card" onClick={() => navigate('/ernaehrung')}>
+          <div className="home-pillar-icon">🥦</div>
+          <h3>Ernährungskompass</h3>
+          <p>Evidenzbasierte Ernährungsmuster — mediterrane Ernährung, DASH und mehr. Mit Bezug zu Erkrankungen.</p>
+          <button className="home-pillar-btn" onClick={e => { e.stopPropagation(); navigate('/ernaehrung') }}>Zum Ernährungskompass →</button>
         </div>
         <div className="home-pillar-card home-pillar-card--beta" onClick={() => navigate('/arztbrief')}>
           <div className="home-pillar-icon">📄</div>

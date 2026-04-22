@@ -209,6 +209,15 @@ export default function ErnaehrungMusterDetail() {
         )}
 
       </div>
+
+      {/* Disclaimer */}
+      <div className="ern-disclaimer">
+        <p>
+          Diese Informationen ersetzen keine ärztliche oder ernährungsmedizinische Beratung.
+          Bei Erkrankungen, Medikamenteneinnahme oder besonderen gesundheitlichen Situationen
+          stets Rücksprache mit der behandelnden Ärztin oder dem Arzt halten.
+        </p>
+      </div>
     </div>
   )
 }
