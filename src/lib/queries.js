@@ -157,6 +157,40 @@ export async function getKrankheitenNameMap(slugs) {
   return Object.fromEntries((data || []).map(r => [r.slug, r.name_de]))
 }
 
+// S18 — Nährstoffe
+export async function getNaehrstoffListe() {
+  const { data, error } = await supabase
+    .from('naehrstoffe')
+    .select('slug, name_de, kategorie, kurzbeschreibung')
+    .order('kategorie', { ascending: true })
+    .order('name_de', { ascending: true })
+
+  if (error) throw error
+  return data ?? []
+}
+
+export async function getNaehrstoffBySlug(slug) {
+  const { data, error } = await supabase
+    .from('naehrstoffe')
+    .select('*')
+    .eq('slug', slug)
+    .single()
+
+  if (error) throw error
+  return data
+}
+
+export async function getNaehrstoffeByKategorie(kategorie) {
+  const { data, error } = await supabase
+    .from('naehrstoffe')
+    .select('slug, name_de, kategorie, kurzbeschreibung')
+    .eq('kategorie', kategorie)
+    .order('name_de', { ascending: true })
+
+  if (error) throw error
+  return data ?? []
+}
+
 // ─── S6 — Wirkstoff-Lexikon ──────────────────────────────────────────────────
 
 export async function getWirkstoffeListe() {

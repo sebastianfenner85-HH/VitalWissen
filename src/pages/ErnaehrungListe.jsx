@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
-import { getErnaehrungsmusterListe } from '../lib/queries'
+import { getErnaehrungsmusterListe, getNaehrstoffListe } from '../lib/queries'
 import './Ernaehrung.css'
 
 const MUSTER_ICONS = {
@@ -10,8 +10,19 @@ const MUSTER_ICONS = {
   'eiweissbetonte-ernaehrung':    '🥩',
 }
 
+const KATEGORIE_ICON = {
+  'Vitamin':        '🧬',
+  'Mineralstoff':   '⚗️',
+  'Makronährstoff': '🌾',
+  'Pflanzenstoff':  '🌿',
+}
+
+// Reihenfolge der Kategorien
+const KATEGORIE_ORDER = ['Vitamin', 'Mineralstoff', 'Makronährstoff', 'Pflanzenstoff']
+
 export default function ErnaehrungListe() {
   const [muster, setMuster] = useState([])
+  const [naehrstoffe, setNaehrstoffe] = useState([])
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState(null)
   const navigate = useNavigate()
@@ -19,17 +30,27 @@ export default function ErnaehrungListe() {
   useEffect(() => {
     async function load() {
       try {
-        const data = await getErnaehrungsmusterListe()
-        setMuster(data)
+        const [musterData, naehrstoffData] = await Promise.all([
+          getErnaehrungsmusterListe(),
+          getNaehrstoffListe(),
+        ])
+        setMuster(musterData)
+        setNaehrstoffe(naehrstoffData)
       } catch (err) {
         console.error(err)
-        setError('Ernährungsmuster konnten nicht geladen werden.')
+        setError('Inhalte konnten nicht geladen werden.')
       } finally {
         setLoading(false)
       }
     }
     load()
   }, [])
+
+  // Nährstoffe nach Kategorie gruppieren
+  const naehrstoffeByKategorie = KATEGORIE_ORDER.reduce((acc, kat) => {
+    acc[kat] = naehrstoffe.filter(n => n.kategorie === kat)
+    return acc
+  }, {})
 
   if (loading) {
     return (
@@ -55,13 +76,54 @@ export default function ErnaehrungListe() {
           <div className="ern-hero-label">🥦 S18 Ernährungskompass</div>
           <h1 className="ern-hero-title">Ernährung verstehen</h1>
           <p className="ern-hero-sub">
-            Ernährungsmuster strukturiert und evidenzbasiert — was steckt dahinter,
-            für wen ist was sinnvoll, und wie setzt man es im Alltag um.
+            Nährstoffe, Ernährungsmuster und ihre Wirkung — evidenzbasiert und
+            verständlich erklärt.
           </p>
         </div>
       </div>
 
-      {/* Grid */}
+      {/* Nährstoff-Lexikon */}
+      <div className="ern-naehrstoff-section">
+        <h2 className="ern-section-title">Nährstoff-Lexikon</h2>
+        <p className="ern-section-sub">
+          {naehrstoffe.length} Nährstoffe — Tagesbedarf, Quellen, Mangel-Symptome und Erkrankungs-Bezüge
+        </p>
+
+        {naehrstoffe.length === 0 ? (
+          <p style={{ color: 'var(--text-muted)', fontSize: '14px' }}>
+            Noch keine Nährstoffe in der Datenbank.
+          </p>
+        ) : (
+          <div className="ern-naehrstoff-kategorien">
+            {KATEGORIE_ORDER.filter(kat => naehrstoffeByKategorie[kat].length > 0).map(kat => (
+              <div key={kat}>
+                <h3 className="ern-naehrstoff-gruppe-title">
+                  <span>{KATEGORIE_ICON[kat]}</span>
+                  {kat}e
+                </h3>
+                <div className="ern-naehrstoff-grid">
+                  {naehrstoffeByKategorie[kat].map((n) => (
+                    <div
+                      key={n.slug}
+                      className="ern-naehrstoff-card"
+                      onClick={() => navigate(`/ernaehrung/naehrstoff/${n.slug}`)}
+                      role="button"
+                      tabIndex={0}
+                      onKeyDown={(e) => e.key === 'Enter' && navigate(`/ernaehrung/naehrstoff/${n.slug}`)}
+                    >
+                      <div className="ern-naehrstoff-card-name">{n.name_de}</div>
+                      <div className="ern-naehrstoff-card-desc">{n.kurzbeschreibung}</div>
+                      <div className="ern-naehrstoff-card-arrow">Mehr erfahren →</div>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            ))}
+          </div>
+        )}
+      </div>
+
+      {/* Ernährungsmuster */}
       <div className="ern-grid-section">
         <h2 className="ern-section-title">Ernährungsmuster</h2>
         <p className="ern-section-sub">
@@ -98,8 +160,8 @@ export default function ErnaehrungListe() {
       {/* Scope-Hinweis */}
       <div className="ern-scope-note">
         <p>
-          <strong>Hinweis:</strong> Dieser Bereich zeigt aktuell ausgewählte Ernährungsmuster
-          mit evidenzbasierter Einordnung. Nährstoffe, Lebensmittel und Zusatzstoffe
+          <strong>Hinweis:</strong> Der Ernährungskompass zeigt evidenzbasierte Nährstoff-Profile und
+          ausgewählte Ernährungsmuster. Lebensmittel, Zusatzstoffe und personalisierte Empfehlungen
           werden in späteren Ausbaustufen ergänzt. VitalWissen ersetzt keine ärztliche oder
           ernährungstherapeutische Beratung.
         </p>
