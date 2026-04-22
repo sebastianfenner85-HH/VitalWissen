@@ -272,6 +272,41 @@ export async function getKrankheitenDetailMap(icdCodes) {
   return Object.fromEntries((data || []).map(r => [r.icd10_code, { name_de: r.name_de, slug: r.slug }]))
 }
 
+// S5 → S18: Nährstoffe die einen ICD-10-Code in erkrankungs_bezug referenzieren
+// JSONB-Containment via filter 'cs' (Supabase PostgREST @> Operator)
+export async function getNaehrstoffeByIcdCode(icdCode) {
+  if (!icdCode) return []
+  const { data, error } = await supabase
+    .from('naehrstoffe')
+    .select('slug, name_de, kategorie')
+    .filter('erkrankungs_bezug', 'cs', JSON.stringify([{ icd_code: icdCode }]))
+    .order('name_de', { ascending: true })
+    .limit(5)
+
+  if (error) {
+    console.warn('getNaehrstoffeByIcdCode:', error.message)
+    return []
+  }
+  return data ?? []
+}
+
+// S5 → S18: Ernährungsmuster die einen Krankheits-Slug in verwandte_krankheiten haben
+export async function getMusterByKrankheitSlug(krankheitSlug) {
+  if (!krankheitSlug) return []
+  const { data, error } = await supabase
+    .from('ernaehrungsmuster')
+    .select('slug, name_de')
+    .contains('verwandte_krankheiten', [krankheitSlug])
+    .order('name_de', { ascending: true })
+    .limit(3)
+
+  if (error) {
+    console.warn('getMusterByKrankheitSlug:', error.message)
+    return []
+  }
+  return data ?? []
+}
+
 // ─── Suche (Home) ────────────────────────────────────────────────────────────
 
 export async function sucheGlobal(query) {

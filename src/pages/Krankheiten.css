@@ -489,6 +489,64 @@
   background: #E0E7FF;
 }
 
+/* S18-Cross-Block [13]: Ernährung im Kontext — Subgruppen + Chips */
+.krank-ern-subgroup {
+  margin-bottom: 14px;
+}
+
+.krank-ern-subgroup:last-child {
+  margin-bottom: 0;
+}
+
+.krank-ern-sublabel {
+  font-size: 11px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--text-muted);
+  margin: 0 0 8px;
+}
+
+/* Nährstoff-Chips: amber */
+.krank-ern-chip {
+  display: inline-flex;
+  align-items: center;
+  background: #FFF7ED;
+  color: #92400E;
+  border-radius: 20px;
+  padding: 5px 14px;
+  font-size: 13px;
+  font-weight: 500;
+  border: 1px solid #FED7AA;
+  cursor: pointer;
+  transition: background 0.15s;
+  white-space: nowrap;
+}
+
+.krank-ern-chip:hover {
+  background: #FEE4C0;
+}
+
+/* Muster-Chips: teal */
+.krank-muster-chip {
+  display: inline-flex;
+  align-items: center;
+  background: #F0FDFA;
+  color: #134E4A;
+  border-radius: 20px;
+  padding: 5px 14px;
+  font-size: 13px;
+  font-weight: 500;
+  border: 1px solid #99F6E4;
+  cursor: pointer;
+  transition: background 0.15s;
+  white-space: nowrap;
+}
+
+.krank-muster-chip:hover {
+  background: #CCFBF1;
+}
+
 /* Quellen */
 .krank-quellen-list {
   list-style: none;

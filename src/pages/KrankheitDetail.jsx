@@ -7,10 +7,12 @@
 //   0.5 Intern-Fälle (F06/L72/M13/R74/Z87): quellenExtern-Filter + ehrlicher Hinweis
 // S6-03: S5→S6 Cross-Block „Häufig eingesetzte Wirkstoffe" (S6-03, 22.04.2026)
 //   1.0 [12] S6-Block mit getWirkstoffeByKrankheit — nur DB-verifizierte Treffer, ausblenden wenn leer
+// S18-Build-03: S5→S18 Cross-Block „Ernährung im Kontext" (S18-Build-03, 22.04.2026)
+//   2.0 [13] S18-Block mit getNaehrstoffeByIcdCode + getMusterByKrankheitSlug — ausblenden wenn beide leer
 
 import { useState, useEffect } from 'react'
 import { useParams, useNavigate } from 'react-router-dom'
-import { getKrankheitBySlug, getLaborwerteNameMap, getSupplementeNameMap, getWirkstoffeByKrankheit } from '../lib/queries'
+import { getKrankheitBySlug, getLaborwerteNameMap, getSupplementeNameMap, getWirkstoffeByKrankheit, getNaehrstoffeByIcdCode, getMusterByKrankheitSlug } from '../lib/queries'
 import './Krankheiten.css'
 
 const EBENEN = [
@@ -29,6 +31,8 @@ export default function KrankheitDetail() {
   const [laborwertNamen, setLaborwertNamen] = useState({})
   const [supplementNamen, setSupplementNamen] = useState({})
   const [wirkstoffe, setWirkstoffe] = useState([])
+  const [naehrstoffeS18, setNaehrstoffeS18] = useState([])
+  const [musterS18, setMusterS18] = useState([])
 
   useEffect(() => {
     async function load() {
@@ -38,14 +42,18 @@ export default function KrankheitDetail() {
         // Array.isArray guards vor Übergabe an Name-Maps (P7C-Freeze 0.3)
         const codes = Array.isArray(data?.verwandte_laborwerte) ? data.verwandte_laborwerte : []
         const slugs = Array.isArray(data?.verwandte_supplements) ? data.verwandte_supplements : []
-        const [lwMap, suppMap, wList] = await Promise.all([
+        const [lwMap, suppMap, wList, naehrList, musterList] = await Promise.all([
           getLaborwerteNameMap(codes).catch(() => ({})),
           getSupplementeNameMap(slugs).catch(() => ({})),
           getWirkstoffeByKrankheit(data?.icd10_code).catch(() => []),
+          getNaehrstoffeByIcdCode(data?.icd10_code).catch(() => []),
+          getMusterByKrankheitSlug(slug).catch(() => []),
         ])
         setLaborwertNamen(lwMap)
         setSupplementNamen(suppMap)
         setWirkstoffe(wList)
+        setNaehrstoffeS18(naehrList)
+        setMusterS18(musterList)
       } catch (err) {
         console.error(err)
         setError('Krankheit nicht gefunden.')
@@ -271,6 +279,48 @@ export default function KrankheitDetail() {
               </button>
             ))}
           </div>
+        </div>
+      )}
+
+      {/* [13] S18-Cross-Block "Ernährung im Kontext" (S18-Build-03, 22.04.2026) ─── */}
+      {/* Nährstoffe via ICD-Code (erkrankungs_bezug @> [{icd_code}]) — max 5      */}
+      {/* Muster via Krankheits-Slug (verwandte_krankheiten @> [slug]) — max 3     */}
+      {/* Block absent wenn beide Listen leer — kein Empty-State, kein Dummy       */}
+      {(naehrstoffeS18.length > 0 || musterS18.length > 0) && (
+        <div className="krank-section">
+          <p className="krank-section-title">Ernährung im Kontext</p>
+          {naehrstoffeS18.length > 0 && (
+            <div className="krank-ern-subgroup">
+              <p className="krank-ern-sublabel">Relevante Nährstoffe</p>
+              <div className="krank-links-grid">
+                {naehrstoffeS18.map(n => (
+                  <button
+                    key={n.slug}
+                    className="krank-ern-chip"
+                    onClick={() => navigate(`/ernaehrung/naehrstoff/${n.slug}`)}
+                  >
+                    {n.name_de}
+                  </button>
+                ))}
+              </div>
+            </div>
+          )}
+          {musterS18.length > 0 && (
+            <div className="krank-ern-subgroup">
+              <p className="krank-ern-sublabel">Ernährungsmuster</p>
+              <div className="krank-links-grid">
+                {musterS18.map(m => (
+                  <button
+                    key={m.slug}
+                    className="krank-muster-chip"
+                    onClick={() => navigate(`/ernaehrung/muster/${m.slug}`)}
+                  >
+                    {m.name_de}
+                  </button>
+                ))}
+              </div>
+            </div>
+          )}
         </div>
       )}
 
