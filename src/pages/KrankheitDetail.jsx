@@ -5,10 +5,12 @@
 //   0.3 Array.isArray-Guards für alle JSONB-Array-Felder (statt field || [])
 //   0.4 Platzhalter-Kommentare [7] Sicherheitsblock + [12] S6-Block (intern, keine UI)
 //   0.5 Intern-Fälle (F06/L72/M13/R74/Z87): quellenExtern-Filter + ehrlicher Hinweis
+// S6-03: S5→S6 Cross-Block „Häufig eingesetzte Wirkstoffe" (S6-03, 22.04.2026)
+//   1.0 [12] S6-Block mit getWirkstoffeByKrankheit — nur DB-verifizierte Treffer, ausblenden wenn leer
 
 import { useState, useEffect } from 'react'
 import { useParams, useNavigate } from 'react-router-dom'
-import { getKrankheitBySlug, getLaborwerteNameMap, getSupplementeNameMap } from '../lib/queries'
+import { getKrankheitBySlug, getLaborwerteNameMap, getSupplementeNameMap, getWirkstoffeByKrankheit } from '../lib/queries'
 import './Krankheiten.css'
 
 const EBENEN = [
@@ -26,6 +28,7 @@ export default function KrankheitDetail() {
   const [ebene, setEbene] = useState('laienhaft')
   const [laborwertNamen, setLaborwertNamen] = useState({})
   const [supplementNamen, setSupplementNamen] = useState({})
+  const [wirkstoffe, setWirkstoffe] = useState([])
 
   useEffect(() => {
     async function load() {
@@ -35,12 +38,14 @@ export default function KrankheitDetail() {
         // Array.isArray guards vor Übergabe an Name-Maps (P7C-Freeze 0.3)
         const codes = Array.isArray(data?.verwandte_laborwerte) ? data.verwandte_laborwerte : []
         const slugs = Array.isArray(data?.verwandte_supplements) ? data.verwandte_supplements : []
-        const [lwMap, suppMap] = await Promise.all([
+        const [lwMap, suppMap, wList] = await Promise.all([
           getLaborwerteNameMap(codes).catch(() => ({})),
           getSupplementeNameMap(slugs).catch(() => ({})),
+          getWirkstoffeByKrankheit(data?.icd10_code).catch(() => []),
         ])
         setLaborwertNamen(lwMap)
         setSupplementNamen(suppMap)
+        setWirkstoffe(wList)
       } catch (err) {
         console.error(err)
         setError('Krankheit nicht gefunden.')
@@ -250,7 +255,24 @@ export default function KrankheitDetail() {
         </div>
       )}
 
-      {/* [12] S6-Cross-Block "Standardmedikamente" — nach S6-Build; Stufe 2; kein Platzhalter sichtbar */}
+      {/* [12] S6-Cross-Block "Häufig eingesetzte Wirkstoffe" (S6-03, 22.04.2026) ─── */}
+      {/* Nur wenn DB-Treffer vorhanden — ausblenden wenn leer */}
+      {wirkstoffe.length > 0 && (
+        <div className="krank-section">
+          <p className="krank-section-title">Häufig eingesetzte Wirkstoffe</p>
+          <div className="krank-links-grid">
+            {wirkstoffe.map(w => (
+              <button
+                key={w.slug}
+                className="krank-med-chip"
+                onClick={() => navigate(`/medikamente/${w.slug}`)}
+              >
+                {w.name_de}
+              </button>
+            ))}
+          </div>
+        </div>
+      )}
 
       {/* [15] Weiterführende Informationen ──────────────────────────────────── */}
       {weiterfuehrend.length > 0 && (

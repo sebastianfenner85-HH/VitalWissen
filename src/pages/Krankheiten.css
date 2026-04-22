@@ -469,6 +469,26 @@
   background: #D4F0E3;
 }
 
+/* S6-Cross-Block: Wirkstoff-Chips (krank-med-chip) — S6-03 */
+.krank-med-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: #EEF2FF;
+  color: #3730A3;
+  border-radius: 20px;
+  padding: 5px 14px;
+  font-size: 13px;
+  font-weight: 500;
+  border: 1px solid #C7D2FE;
+  cursor: pointer;
+  transition: background 0.15s;
+}
+
+.krank-med-chip:hover {
+  background: #E0E7FF;
+}
+
 /* Quellen */
 .krank-quellen-list {
   list-style: none;
