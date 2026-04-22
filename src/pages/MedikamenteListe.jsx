@@ -5,13 +5,14 @@ import './Medikamente.css'
 
 // Schnellfilter-Tags passend zu filter_tags in der DB
 const TAG_FILTER = [
-  { key: null,              label: 'Alle' },
-  { key: 'Schmerzmittel',   label: '💊 Schmerzmittel' },
-  { key: 'Herz-Kreislauf',  label: '❤️ Herz-Kreislauf' },
-  { key: 'Stoffwechsel',    label: '🔬 Stoffwechsel' },
-  { key: 'Psyche',          label: '🧠 Psyche / Neurologie' },
-  { key: 'Atemwege',        label: '🫁 Atemwege' },
-  { key: 'OTC',             label: '🏪 Rezeptfrei (OTC)' },
+  { key: null,                label: 'Alle' },
+  { key: 'Herz-Kreislauf',    label: '❤️ Herz-Kreislauf' },
+  { key: 'Schmerzmittel',     label: '💊 Schmerzmittel' },
+  { key: 'Psyche-Neurologie', label: '🧠 Psyche / Neurologie' },
+  { key: 'Stoffwechsel',      label: '🔬 Stoffwechsel' },
+  { key: 'Atemwege',          label: '🫁 Atemwege' },
+  { key: 'Gastro-Uro',        label: '🩺 Magen & Harnwege' },
+  { key: 'OTC',               label: '🏪 Rezeptfrei' },
 ]
 
 export default function MedikamenteListe() {
@@ -36,6 +37,14 @@ export default function MedikamenteListe() {
     }
     load()
   }, [])
+
+  // Anzahl je Tag (aus allen geladenen Daten — für Count-Badge)
+  const tagCounts = {}
+  wirkstoffe.forEach(w => {
+    if (Array.isArray(w.filter_tags)) {
+      w.filter_tags.forEach(t => { tagCounts[t] = (tagCounts[t] || 0) + 1 })
+    }
+  })
 
   // Suche: name_de + synonyme[] + wirkstoffklasse + atc_code
   const gefiltert = wirkstoffe.filter(w => {
@@ -114,6 +123,9 @@ export default function MedikamenteListe() {
                 onClick={() => setFilterTag(t.key)}
               >
                 {t.label}
+                <span className="med-tag-count">
+                  {t.key === null ? wirkstoffe.length : (tagCounts[t.key] ?? 0)}
+                </span>
               </button>
             ))}
           </div>
