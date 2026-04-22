@@ -10,12 +10,17 @@ const KATEGORIE_ICON = {
   'Pflanzenstoff':  '🌿',
 }
 
-// ─── Normalisierungs-Helfer ──────────────────────────────────────────────────
+// ─── Daten-Helfer ───────────────────────────────────────────────────────────
+// Kanonisches DB-Schema: alle JSONB-Felder sind Arrays bzw. Objekte mit
+// geschlechtsspezifischen Keys — kein Dual-Format-Support mehr nötig (S18-BUILD-02b)
 
 const BEDARF_KEY_LABELS = {
   maenner_adult:   'Männer (Erwachsen)',
   frauen_adult:    'Frauen (Erwachsen)',
+  frauen_adult_19_50: 'Frauen (19–50 J.)',
+  frauen_adult_51plus: 'Frauen (51+ J.)',
   ab_70_jahre:     'Ab 70 Jahre',
+  ab_51_jahre:     'Ab 51 Jahre',
   schwangerschaft: 'Schwangerschaft',
   stillzeit:       'Stillzeit',
   kinder:          'Kinder',
@@ -25,66 +30,46 @@ const BEDARF_KEY_LABELS = {
   hinweis:         'Hinweis',
   alle:            'Allgemein',
   empfehlung:      'Empfehlung',
-  de:              'Empfehlung',
 }
 
-// Tagesbedarf: {maenner_adult:..., frauen_adult:...} ODER {de:..., einheit:...} → [{label, value}]
+// Tagesbedarf: {maenner_adult, frauen_adult, ..., hinweis} → [{label, value}]
 function normTagesbedarf(data) {
   if (!data) return []
   if (typeof data === 'string') return [{ label: 'Empfehlung', value: data }]
   return Object.entries(data)
-    .filter(([k]) => k !== 'einheit')
     .map(([k, v]) => ({ label: BEDARF_KEY_LABELS[k] || k, value: String(v) }))
 }
 
-// Beste Quellen: Array<{lebensmittel, menge_pro_100g}> ODER {liste:[...]} ODER Array<string>
+// Beste Quellen: Array<{lebensmittel, menge_pro_100g}> → string[]
 function normQuellen(data) {
-  if (!data) return []
-  if (Array.isArray(data)) {
-    return data.map(item =>
-      typeof item === 'string' ? item
-      : item.lebensmittel
-        ? `${item.lebensmittel}${item.menge_pro_100g ? ` (${item.menge_pro_100g}/100 g)` : ''}`
-        : JSON.stringify(item)
-    )
-  }
-  if (data.liste) return data.liste
-  return []
+  if (!data || !Array.isArray(data)) return []
+  return data.map(item =>
+    typeof item === 'string' ? item
+    : item.lebensmittel
+      ? `${item.lebensmittel}${item.menge_pro_100g ? ` (${item.menge_pro_100g}/100 g)` : ''}`
+      : JSON.stringify(item)
+  )
 }
 
-// Mangel-Symptome: Array<{symptom, schwere}> ODER {liste:[...]} ODER Array<string>
+// Mangel-Symptome: Array<{symptom, schwere}> → string[]
 function normSymptome(data) {
-  if (!data) return []
-  if (Array.isArray(data)) {
-    return data.map(item =>
-      typeof item === 'string' ? item
-      : item.symptom
-        ? `${item.symptom}${item.schwere ? ` (${item.schwere})` : ''}`
-        : JSON.stringify(item)
-    )
-  }
-  if (data.liste) return data.liste
-  return []
+  if (!data || !Array.isArray(data)) return []
+  return data.map(item =>
+    typeof item === 'string' ? item
+    : item.symptom
+      ? `${item.symptom}${item.schwere ? ` (${item.schwere})` : ''}`
+      : JSON.stringify(item)
+  )
 }
 
-// Erkrankungs-Bezug: Array<{name_de, icd_code, relevanz_kurz}> ODER {liste:[...]} ODER null
+// Erkrankungs-Bezug: Array<{name_de, icd_code, relevanz_kurz}> → normierte Objekte
 function normErkrankungen(data) {
-  if (!data) return []
-  if (Array.isArray(data)) {
-    return data.map(item =>
-      typeof item === 'string'
-        ? { name: item, icd_code: null, relevanz: null }
-        : { name: item.name_de || item.name || '', icd_code: item.icd_code || null, relevanz: item.relevanz_kurz || null }
-    )
-  }
-  if (data.liste) {
-    return data.liste.map(item =>
-      typeof item === 'string'
-        ? { name: item, icd_code: null, relevanz: null }
-        : { name: item.name_de || item.name || '', icd_code: item.icd_code || null, relevanz: null }
-    )
-  }
-  return []
+  if (!data || !Array.isArray(data)) return []
+  return data.map(item =>
+    typeof item === 'string'
+      ? { name: item, icd_code: null, relevanz: null }
+      : { name: item.name_de || item.name || '', icd_code: item.icd_code || null, relevanz: item.relevanz_kurz || null }
+  )
 }
 
 // ─── Komponente ─────────────────────────────────────────────────────────────
@@ -145,9 +130,7 @@ export default function ErnaehrungNaehrstoffDetail() {
   const quellenListe = normQuellen(naehrstoff.beste_quellen)
   const symptomListe = normSymptome(naehrstoff.mangel_symptome)
   const erkList      = normErkrankungen(naehrstoff.erkrankungs_bezug)
-  const quellenBelege = Array.isArray(naehrstoff.quellen)
-    ? naehrstoff.quellen
-    : naehrstoff.quellen?.liste ?? []
+  const quellenBelege = Array.isArray(naehrstoff.quellen) ? naehrstoff.quellen : []
 
   const hasAnyBedarf = bedarfNih.length > 0 || bedarfDge.length > 0 || bedarfEfsa.length > 0
 
