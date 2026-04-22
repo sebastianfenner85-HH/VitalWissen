@@ -5,7 +5,7 @@ import './Home.css'
 
 export default function Home() {
   const [query, setQuery] = useState('')
-  const [results, setResults] = useState({ laborwerte: [], supplements: [], krankheiten: [] })
+  const [results, setResults] = useState({ laborwerte: [], supplements: [], krankheiten: [], wirkstoffe: [] })
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState(null)
   const [showResults, setShowResults] = useState(false)
@@ -27,7 +27,7 @@ export default function Home() {
     if (debounceRef.current) clearTimeout(debounceRef.current)
 
     if (query.trim().length < 2) {
-      setResults({ laborwerte: [], supplements: [], krankheiten: [] })
+      setResults({ laborwerte: [], supplements: [], krankheiten: [], wirkstoffe: [] })
       setShowResults(false)
       return
     }
@@ -51,7 +51,7 @@ export default function Home() {
   }, [query])
 
   const hasResults =
-    results.laborwerte.length > 0 || results.supplements.length > 0 || results.krankheiten.length > 0
+    results.laborwerte.length > 0 || results.supplements.length > 0 || results.krankheiten.length > 0 || results.wirkstoffe.length > 0
 
   function handleSelect(type, id) {
     setShowResults(false)
@@ -59,6 +59,7 @@ export default function Home() {
     if (type === 'laborwert')  navigate(`/laborwerte/${id}`)
     if (type === 'supplement') navigate(`/supplements/${id}`)
     if (type === 'krankheit')  navigate(`/krankheiten/${id}`)
+    if (type === 'wirkstoff')  navigate(`/medikamente/${id}`)
   }
 
   function handleFallbackNav(path) {
@@ -88,7 +89,7 @@ export default function Home() {
             <input
               className="home-search-input"
               type="text"
-              placeholder="Symptom, Diagnose, Laborwert, Supplement…"
+              placeholder="Symptom, Diagnose, Laborwert, Supplement, Wirkstoff…"
               value={query}
               onChange={e => setQuery(e.target.value)}
               onFocus={() => hasResults && setShowResults(true)}
@@ -167,6 +168,24 @@ export default function Home() {
                       <span className="home-search-item-name">{s.name_de}</span>
                       {s.kategorie && (
                         <span className="home-search-item-meta">{s.kategorie}</span>
+                      )}
+                    </button>
+                  ))}
+                </div>
+              )}
+
+              {results.wirkstoffe.length > 0 && (
+                <div className="home-search-group">
+                  <p className="home-search-group-label">Medikamente / Wirkstoffe</p>
+                  {results.wirkstoffe.map(w => (
+                    <button
+                      key={w.slug}
+                      className="home-search-item"
+                      onClick={() => handleSelect('wirkstoff', w.slug)}
+                    >
+                      <span className="home-search-item-name">{w.name_de}</span>
+                      {w.wirkstoffklasse && (
+                        <span className="home-search-item-meta">{w.wirkstoffklasse}</span>
                       )}
                     </button>
                   ))}

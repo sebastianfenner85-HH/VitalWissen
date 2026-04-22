@@ -310,37 +310,45 @@ export async function getMusterByKrankheitSlug(krankheitSlug) {
 // ─── Suche (Home) ────────────────────────────────────────────────────────────
 
 export async function sucheGlobal(query) {
-  if (!query || query.trim().length < 2) return { laborwerte: [], supplements: [], krankheiten: [] }
+  if (!query || query.trim().length < 2) return { laborwerte: [], supplements: [], krankheiten: [], wirkstoffe: [] }
 
   const term = `%${query.trim()}%`
 
-  const [laborwerteResult, supplementsResult, krankheitenResult] = await Promise.all([
+  const [laborwerteResult, supplementsResult, krankheitenResult, wirkstoffeResult] = await Promise.all([
     supabase
       .from('laborwerte')
       .select('loinc_code, slug, name_de, kategorie, notfall_flag')
       .or(`name_de.ilike.${term},vollname_de.ilike.${term}`)
-      .limit(5),
+      .limit(4),
 
     supabase
       .from('supplements')
       .select('slug, name_de, kategorie, wofuer_kurz')
       .or(`name_de.ilike.${term},wofuer_kurz.ilike.${term}`)
-      .limit(5),
+      .limit(4),
 
     supabase
       .from('krankheiten')
       .select('slug, name_de, icd10_code, notfall_flag')
       .or(`name_de.ilike.${term},synonym_de.ilike.${term},icd10_code.ilike.${term}`)
-      .limit(5),
+      .limit(4),
+
+    supabase
+      .from('wirkstoffe')
+      .select('slug, name_de, wirkstoffklasse, atc_code')
+      .or(`name_de.ilike.${term},wirkstoffklasse.ilike.${term},atc_code.ilike.${term}`)
+      .limit(4),
   ])
 
   if (laborwerteResult.error) throw laborwerteResult.error
   if (supplementsResult.error) throw supplementsResult.error
   if (krankheitenResult.error) throw krankheitenResult.error
+  if (wirkstoffeResult.error) throw wirkstoffeResult.error
 
   return {
     laborwerte: laborwerteResult.data,
     supplements: supplementsResult.data,
     krankheiten: krankheitenResult.data,
+    wirkstoffe: wirkstoffeResult.data,
   }
 }
