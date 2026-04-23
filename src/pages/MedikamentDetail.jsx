@@ -4,6 +4,7 @@ import {
   getWirkstoffBySlug,
   getKrankheitenDetailMap,
   getSupplementeNameMap,
+  getLebensmittelByWirkstoffSlug,
 } from '../lib/queries'
 import './Medikamente.css'
 
@@ -16,6 +17,7 @@ export default function MedikamentDetail() {
   const [error, setError]                 = useState(null)
   const [krankheitMap, setKrankheitMap]   = useState({})
   const [suppNamen, setSuppNamen]         = useState({})
+  const [lmHinweise, setLmHinweise]       = useState([])
 
   useEffect(() => {
     async function load() {
@@ -24,12 +26,14 @@ export default function MedikamentDetail() {
         setW(data)
 
         // Cross-Link-Maps parallel laden — Fehler dürfen Cross-Blocks nicht brechen
-        const [kwMap, snMap] = await Promise.all([
+        const [kwMap, snMap, lmData] = await Promise.all([
           getKrankheitenDetailMap(data?.verwandte_krankheiten || []).catch(() => ({})),
           getSupplementeNameMap(data?.verwandte_supplements || []).catch(() => ({})),
+          getLebensmittelByWirkstoffSlug(slug).catch(() => []),
         ])
         setKrankheitMap(kwMap)
         setSuppNamen(snMap)
+        setLmHinweise(lmData)
       } catch (err) {
         console.error(err)
         setError('Wirkstoff nicht gefunden.')
@@ -325,6 +329,28 @@ export default function MedikamentDetail() {
                   onClick={() => navigate(`/supplements/${s}`)}
                 >
                   💊 {suppNamen[s]}
+                </button>
+              ))}
+            </div>
+          </div>
+        )}
+
+        {/* ── Cross-Block: Lebensmittel mit Hinweisen (S6 → K8b, S6-06) ── */}
+        {lmHinweise.length > 0 && (
+          <div className="med-section">
+            <h2 className="med-section-title">Lebensmittel mit Hinweisen</h2>
+            <p className="med-section-subtext">
+              Zu folgenden Lebensmitteln gibt es dokumentierte Hinweise bei Einnahme dieses
+              Wirkstoffs. Diese Angaben sind nicht abschließend — bitte Apotheke befragen.
+            </p>
+            <div className="med-crosslink-grid">
+              {lmHinweise.map(lm => (
+                <button
+                  key={lm.slug}
+                  className="med-crosslink-chip med-crosslink-chip--lm"
+                  onClick={() => navigate(`/ernaehrung/lebensmittel/${lm.slug}`)}
+                >
+                  🥗 {lm.name_de}
                 </button>
               ))}
             </div>

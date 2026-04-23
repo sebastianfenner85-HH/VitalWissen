@@ -430,3 +430,23 @@ export async function getZusatzstoffBySlug(slug) {
   if (error) throw error
   return data
 }
+
+// ─── S6 → S18: Lebensmittel mit Hinweisen zu einem Wirkstoff (K8b) ──────────
+// S6-06, 23.04.2026
+// Reverse-Lookup: findet Lebensmittel deren wechselwirkungen-Feld den Wirkstoff-Slug enthält
+// JSONB-Containment via filter 'cs' (@>) — identischer Mechanismus wie getLebensmittelByIcdCode
+export async function getLebensmittelByWirkstoffSlug(wirkstoffSlug) {
+  if (!wirkstoffSlug) return []
+  const { data, error } = await supabase
+    .from('lebensmittel')
+    .select('slug, name_de, oberkategorie')
+    .filter('wechselwirkungen', 'cs', JSON.stringify([{ medikament_slug: wirkstoffSlug }]))
+    .order('name_de', { ascending: true })
+    .limit(5)
+
+  if (error) {
+    console.warn('getLebensmittelByWirkstoffSlug:', error.message)
+    return []
+  }
+  return data ?? []
+}

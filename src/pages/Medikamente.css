@@ -687,6 +687,19 @@
   background: var(--primary-50);
 }
 
+/* Lebensmittel-Variante (orange — konsistent mit krank-lm-chip in S5) */
+.med-crosslink-chip--lm {
+  background: #fff7ed;
+  border-color: #fed7aa;
+  color: #9a3412;
+}
+
+.med-crosslink-chip--lm:hover {
+  background: #ffedd5;
+  border-color: #fb923c;
+  color: #7c2d12;
+}
+
 /* ── Footer-Disclaimer (Pflichtblock) ────────────────────────────────────── */
 
 .med-footer-disclaimer {
@@ -733,6 +746,12 @@
 @media (max-width: 640px) {
   .med-detail-hero {
     padding: 32px 16px 24px;
+  }
+
+  .med-crosslink-chip {
+    min-height: 40px;
+    display: inline-flex;
+    align-items: center;
   }
 
   .med-detail-body {
