@@ -12,6 +12,7 @@ import ErnaehrungListe from "./pages/ErnaehrungListe";
 import ErnaehrungMusterDetail from "./pages/ErnaehrungMusterDetail";
 import ErnaehrungNaehrstoffDetail from "./pages/ErnaehrungNaehrstoffDetail";
 import ErnaehrungLebensmittelDetail from "./pages/ErnaehrungLebensmittelDetail";
+import ErnaehrungZusatzstoffDetail from "./pages/ErnaehrungZusatzstoffDetail";
 import Arztbrief from "./pages/Arztbrief";
 import MedikamenteListe from "./pages/MedikamenteListe";
 import MedikamentDetail from "./pages/MedikamentDetail";
@@ -36,6 +37,7 @@ export default function App() {
             <Route path="/ernaehrung/muster/:slug" element={<ErnaehrungMusterDetail />} />
             <Route path="/ernaehrung/naehrstoff/:slug" element={<ErnaehrungNaehrstoffDetail />} />
             <Route path="/ernaehrung/lebensmittel/:slug" element={<ErnaehrungLebensmittelDetail />} />
+            <Route path="/ernaehrung/zusatzstoff/:slug" element={<ErnaehrungZusatzstoffDetail />} />
             <Route path="/arztbrief" element={<Arztbrief />} />
             <Route path="/medikamente" element={<MedikamenteListe />} />
             <Route path="/medikamente/:slug" element={<MedikamentDetail />} />

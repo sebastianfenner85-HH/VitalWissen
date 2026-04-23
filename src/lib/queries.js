@@ -407,3 +407,26 @@ export async function getLebensmittelByIcdCode(icdCode) {
   }
   return data ?? []
 }
+
+// S18-Build-05: Zusatzstoff-Kompass (K8d) — 23.04.2026
+export async function getZusatzstoffListe() {
+  const { data, error } = await supabase
+    .from('zusatzstoffe')
+    .select('slug, e_nummer, name_de, oberkategorie, funktion_im_lebensmittel')
+    .order('oberkategorie', { ascending: true })
+    .order('e_nummer', { ascending: true })
+
+  if (error) throw error
+  return data ?? []
+}
+
+export async function getZusatzstoffBySlug(slug) {
+  const { data, error } = await supabase
+    .from('zusatzstoffe')
+    .select('*')
+    .eq('slug', slug)
+    .single()
+
+  if (error) throw error
+  return data
+}
