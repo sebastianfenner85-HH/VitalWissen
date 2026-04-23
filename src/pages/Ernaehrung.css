@@ -1251,5 +1251,18 @@
   .ern-lm-filter-chip {
     font-size: 12px;
     padding: 5px 10px;
+    min-height: 40px;
+  }
+
+  .ern-lm-back-btn {
+    padding: 8px 0;
+  }
+
+  .ern-lm-erkrankungs-chip {
+    min-height: 40px;
+  }
+
+  .ern-lm-mikro-chip--linked {
+    min-height: 40px;
   }
 }
