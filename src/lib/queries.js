@@ -352,3 +352,58 @@ export async function sucheGlobal(query) {
     wirkstoffe: wirkstoffeResult.data,
   }
 }
+
+// ─── S18 — Lebensmittel (K8b) ────────────────────────────────────────────────
+// S18-Build-04, 23.04.2026
+
+export async function getLebensmittelListe() {
+  const { data, error } = await supabase
+    .from('lebensmittel')
+    .select('slug, name_de, oberkategorie, kurzbeschreibung')
+    .order('oberkategorie', { ascending: true })
+    .order('name_de', { ascending: true })
+
+  if (error) throw error
+  return data ?? []
+}
+
+export async function getLebensmittelBySlug(slug) {
+  const { data, error } = await supabase
+    .from('lebensmittel')
+    .select('*')
+    .eq('slug', slug)
+    .single()
+
+  if (error) throw error
+  return data
+}
+
+export async function getLebensmittelByKategorie(kategorie) {
+  const { data, error } = await supabase
+    .from('lebensmittel')
+    .select('slug, name_de, oberkategorie, kurzbeschreibung')
+    .eq('oberkategorie', kategorie)
+    .order('name_de', { ascending: true })
+
+  if (error) throw error
+  return data ?? []
+}
+
+// S5 → S18: Lebensmittel die einen ICD-10-Code in erkrankungs_bezug referenzieren
+// JSONB-Containment via filter 'cs' (Supabase PostgREST @> Operator)
+// Identischer Mechanismus wie getNaehrstoffeByIcdCode (Build-03)
+export async function getLebensmittelByIcdCode(icdCode) {
+  if (!icdCode) return []
+  const { data, error } = await supabase
+    .from('lebensmittel')
+    .select('slug, name_de, oberkategorie')
+    .filter('erkrankungs_bezug', 'cs', JSON.stringify([{ icd_code: icdCode }]))
+    .order('name_de', { ascending: true })
+    .limit(5)
+
+  if (error) {
+    console.warn('getLebensmittelByIcdCode:', error.message)
+    return []
+  }
+  return data ?? []
+}

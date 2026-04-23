@@ -1,6 +1,7 @@
+// S18-Build-04: Lebensmittel-Kompass Abschnitt ergänzt (23.04.2026)
 import { useState, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
-import { getErnaehrungsmusterListe, getNaehrstoffListe } from '../lib/queries'
+import { getErnaehrungsmusterListe, getNaehrstoffListe, getLebensmittelListe } from '../lib/queries'
 import './Ernaehrung.css'
 
 const MUSTER_ICONS = {
@@ -17,25 +18,44 @@ const KATEGORIE_ICON = {
   'Pflanzenstoff':  '🌿',
 }
 
-// Reihenfolge der Kategorien
+const LM_KATEGORIE_ICON = {
+  'Gemüse':        '🥦',
+  'Obst':          '🍎',
+  'Hülsenfrüchte': '🫘',
+  'Fisch':         '🐟',
+  'Fleisch':       '🥩',
+  'Getreide':      '🌾',
+  'Nüsse/Samen':   '🥜',
+  'Milchprodukte': '🥛',
+  'Öle/Fette':     '🫒',
+  'Sonstiges':     '🍳',
+}
+
+const LM_KATEGORIEN = ['Gemüse', 'Obst', 'Hülsenfrüchte', 'Fisch', 'Fleisch', 'Getreide', 'Nüsse/Samen', 'Milchprodukte', 'Öle/Fette', 'Sonstiges']
+
+// Reihenfolge der Nährstoff-Kategorien
 const KATEGORIE_ORDER = ['Vitamin', 'Mineralstoff', 'Makronährstoff', 'Pflanzenstoff']
 
 export default function ErnaehrungListe() {
   const [muster, setMuster] = useState([])
   const [naehrstoffe, setNaehrstoffe] = useState([])
+  const [lebensmittel, setLebensmittel] = useState([])
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState(null)
+  const [aktiverLmFilter, setAktiverLmFilter] = useState('Alle')
   const navigate = useNavigate()
 
   useEffect(() => {
     async function load() {
       try {
-        const [musterData, naehrstoffData] = await Promise.all([
+        const [musterData, naehrstoffData, lebensmittelData] = await Promise.all([
           getErnaehrungsmusterListe(),
           getNaehrstoffListe(),
+          getLebensmittelListe(),
         ])
         setMuster(musterData)
         setNaehrstoffe(naehrstoffData)
+        setLebensmittel(lebensmittelData)
       } catch (err) {
         console.error(err)
         setError('Inhalte konnten nicht geladen werden.')
@@ -51,6 +71,16 @@ export default function ErnaehrungListe() {
     acc[kat] = naehrstoffe.filter(n => n.kategorie === kat)
     return acc
   }, {})
+
+  // Lebensmittel filtern
+  const gefilterteLebensmittel = aktiverLmFilter === 'Alle'
+    ? lebensmittel
+    : lebensmittel.filter(lm => lm.oberkategorie === aktiverLmFilter)
+
+  // Kategorien mit Einträgen für Filter-Chips
+  const vorhandeneLmKategorien = LM_KATEGORIEN.filter(k =>
+    lebensmittel.some(lm => lm.oberkategorie === k)
+  )
 
   if (loading) {
     return (
@@ -76,7 +106,7 @@ export default function ErnaehrungListe() {
           <div className="ern-hero-label">🥦 S18 Ernährungskompass</div>
           <h1 className="ern-hero-title">Ernährung verstehen</h1>
           <p className="ern-hero-sub">
-            Nährstoffe, Ernährungsmuster und ihre Wirkung — evidenzbasiert und
+            Nährstoffe, Lebensmittel und Ernährungsmuster — evidenzbasiert und
             verständlich erklärt.
           </p>
         </div>
@@ -123,6 +153,71 @@ export default function ErnaehrungListe() {
         )}
       </div>
 
+      {/* Lebensmittel-Kompass (NEU — S18-Build-04) */}
+      <div className="ern-lm-section-wrapper">
+        <h2 className="ern-section-title">Lebensmittel-Kompass</h2>
+        <p className="ern-section-sub">
+          {lebensmittel.length} Lebensmittel und Lebensmittelgruppen — Nährwertprofile,
+          gesundheitlicher Nutzen und Erkrankungs-Bezüge
+        </p>
+
+        {lebensmittel.length === 0 ? (
+          <p style={{ color: 'var(--text-muted)', fontSize: '14px' }}>
+            Noch keine Lebensmittel in der Datenbank.
+          </p>
+        ) : (
+          <>
+            {/* Kategorie-Filter */}
+            <div className="ern-lm-filter-chips">
+              <button
+                className={`ern-lm-filter-chip${aktiverLmFilter === 'Alle' ? ' ern-lm-filter-chip--aktiv' : ''}`}
+                onClick={() => setAktiverLmFilter('Alle')}
+              >
+                Alle ({lebensmittel.length})
+              </button>
+              {vorhandeneLmKategorien.map(k => {
+                const count = lebensmittel.filter(lm => lm.oberkategorie === k).length
+                return (
+                  <button
+                    key={k}
+                    className={`ern-lm-filter-chip${aktiverLmFilter === k ? ' ern-lm-filter-chip--aktiv' : ''}`}
+                    onClick={() => setAktiverLmFilter(k)}
+                  >
+                    {LM_KATEGORIE_ICON[k]} {k} ({count})
+                  </button>
+                )
+              })}
+            </div>
+
+            {/* Lebensmittel-Karten-Grid */}
+            <div className="ern-lm-grid">
+              {gefilterteLebensmittel.map((lm) => (
+                <div
+                  key={lm.slug}
+                  className="ern-lm-card"
+                  onClick={() => navigate(`/ernaehrung/lebensmittel/${lm.slug}`)}
+                  role="button"
+                  tabIndex={0}
+                  onKeyDown={(e) => e.key === 'Enter' && navigate(`/ernaehrung/lebensmittel/${lm.slug}`)}
+                >
+                  <div className="ern-lm-card-icon">
+                    {LM_KATEGORIE_ICON[lm.oberkategorie] || '🥗'}
+                  </div>
+                  <div className="ern-lm-card-name">{lm.name_de}</div>
+                  <div className="ern-lm-card-kat">{lm.oberkategorie}</div>
+                  <div className="ern-lm-card-desc">
+                    {lm.kurzbeschreibung?.length > 80
+                      ? lm.kurzbeschreibung.slice(0, 80) + '…'
+                      : lm.kurzbeschreibung}
+                  </div>
+                  <div className="ern-lm-card-arrow">Mehr erfahren →</div>
+                </div>
+              ))}
+            </div>
+          </>
+        )}
+      </div>
+
       {/* Ernährungsmuster */}
       <div className="ern-grid-section">
         <h2 className="ern-section-title">Ernährungsmuster</h2>
@@ -160,10 +255,10 @@ export default function ErnaehrungListe() {
       {/* Scope-Hinweis */}
       <div className="ern-scope-note">
         <p>
-          <strong>Hinweis:</strong> Der Ernährungskompass zeigt evidenzbasierte Nährstoff-Profile und
-          ausgewählte Ernährungsmuster. Lebensmittel, Zusatzstoffe und personalisierte Empfehlungen
-          werden in späteren Ausbaustufen ergänzt. VitalWissen ersetzt keine ärztliche oder
-          ernährungstherapeutische Beratung.
+          <strong>Hinweis:</strong> Der Ernährungskompass zeigt evidenzbasierte Nährstoff-Profile,
+          ausgewählte Lebensmittelgruppen und Ernährungsmuster. Zusatzstoffe und personalisierte
+          Empfehlungen werden in späteren Ausbaustufen ergänzt. VitalWissen ersetzt keine ärztliche
+          oder ernährungstherapeutische Beratung.
         </p>
       </div>
     </div>

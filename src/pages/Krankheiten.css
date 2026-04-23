@@ -547,6 +547,28 @@
   background: #CCFBF1;
 }
 
+/* Lebensmittel-Chips: orange (S18-Build-04, 23.04.2026) */
+.krank-lm-chip {
+  display: inline-flex;
+  align-items: center;
+  background: #FFF7ED;
+  color: #9A3412;
+  border-radius: 20px;
+  padding: 5px 14px;
+  font-size: 13px;
+  font-weight: 500;
+  border: 1px solid #FDBA74;
+  cursor: pointer;
+  transition: background 0.15s;
+  white-space: nowrap;
+}
+
+.krank-lm-chip:hover {
+  background: #F97316;
+  color: white;
+  border-color: #F97316;
+}
+
 /* Quellen */
 .krank-quellen-list {
   list-style: none;
