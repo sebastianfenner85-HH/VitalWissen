@@ -11,6 +11,8 @@
 //   2.0 [13] S18-Block mit getNaehrstoffeByIcdCode + getMusterByKrankheitSlug — ausblenden wenn beide leer
 // S18-Build-04: Lebensmittel-Chips in Block [13] ergänzt (23.04.2026)
 //   3.0 [13] Lebensmittel-Chips via getLebensmittelByIcdCode — orange, Slot 3 in Block [13]
+// S8-BUILD-01: B4 „Nächste Schritte" (23.04.2026)
+//   4.0 [14] B4-Block mit Stufe-1/2/3-Logik aus naechste_schritte JSONB — nur für 5 First-Slice-Krankheiten
 
 import { useState, useEffect } from 'react'
 import { useParams, useNavigate } from 'react-router-dom'
@@ -23,6 +25,64 @@ const EBENEN = [
   { key: 'fachlich',  label: 'Fachlich'      },
 ]
 
+// ── B4 Option-Karte ─────────────────────────────────────────────────────────
+// Gezeigt wenn: naechste_schritte Feld vorhanden + stufe-Filter passend
+// Keine Therapieempfehlung, keine Diagnosestellung, kein Arzt-Ersatz (S8-PRE-SPEC §C10)
+function B4OptionCard({ option }) {
+  const typLabel = option.typ === 'S' ? 'Standard' : option.typ === 'E' ? 'Ergänzend' : 'Explorativ'
+  const typClass = option.typ === 'S' ? 'b4-typ-badge--s' : option.typ === 'E' ? 'b4-typ-badge--e' : 'b4-typ-badge--x'
+  const optClass = option.typ === 'S' ? 'b4-option--s' : option.typ === 'E' ? 'b4-option--e' : 'b4-option--x'
+
+  return (
+    <div className={`b4-option ${optClass}`}>
+      <div className="b4-option-top">
+        <span className="b4-option-titel">{option.titel}</span>
+        <span className={`b4-typ-badge ${typClass}`}>{typLabel}</span>
+      </div>
+
+      {option.nutzen && (
+        <p className="b4-option-nutzen">{option.nutzen}</p>
+      )}
+
+      {option.vorsicht && (
+        <p className="b4-option-vorsicht">⚠ {option.vorsicht}</p>
+      )}
+
+      {option.monitoring && (
+        <p className="b4-option-monitoring">⏱ {option.monitoring}</p>
+      )}
+
+      {Array.isArray(option.fragen) && option.fragen.length > 0 && (
+        <div className="b4-option-fragen">
+          <span className="b4-fragen-label">Besprechen:</span>
+          <ul className="b4-fragen-list">
+            {option.fragen.map((f, i) => (
+              <li key={i}>{f}</li>
+            ))}
+          </ul>
+        </div>
+      )}
+
+      <div className="b4-option-footer">
+        <span className="b4-option-trigger">Gezeigt weil: {option.trigger}</span>
+        {option.quelle_url ? (
+          <a
+            href={option.quelle_url}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="b4-option-quelle"
+          >
+            {option.quelle} ↗
+          </a>
+        ) : option.quelle ? (
+          <span className="b4-option-quelle">{option.quelle}</span>
+        ) : null}
+      </div>
+    </div>
+  )
+}
+
+// ── Hauptkomponente ──────────────────────────────────────────────────────────
 export default function KrankheitDetail() {
   const { slug } = useParams()
   const navigate = useNavigate()
@@ -36,6 +96,9 @@ export default function KrankheitDetail() {
   const [naehrstoffeS18, setNaehrstoffeS18] = useState([])
   const [musterS18, setMusterS18] = useState([])
   const [lebensmittelS18, setLebensmittelS18] = useState([])
+  // B4 State: Accordion (Stufe 2) + Intent-Signal (Stufe 3)
+  const [b4Offen, setB4Offen] = useState(false)
+  const [b4Erweitert, setB4Erweitert] = useState(false)
 
   useEffect(() => {
     async function load() {
@@ -103,8 +166,14 @@ export default function KrankheitDetail() {
   const verwLaborwerte  = Array.isArray(k.verwandte_laborwerte)  ? k.verwandte_laborwerte  : []
   const verwSupplements = Array.isArray(k.verwandte_supplements) ? k.verwandte_supplements : []
   const synonyme        = Array.isArray(k.synonym_de)            ? k.synonym_de            : []
-  // filter_tags: Guard vorhanden für künftige Logik (Fehldiagnose-Block, Stufe 1)
-  // const filterTags   = Array.isArray(k.filter_tags)           ? k.filter_tags           : []
+  // B4: naechste_schritte JSONB-Array (S8-BUILD-01)
+  // Guard: leeres Array wenn Feld fehlt (Krankheiten ohne B4-Daten → Block absent)
+  const naechsteSchritte = Array.isArray(k.naechste_schritte) ? k.naechste_schritte : []
+
+  // Stufe-Filter (Pre-Spec bindend — S8-PRE-SPEC §C6)
+  const b4S1 = naechsteSchritte.filter(o => o.stufe === 1)
+  const b4S2 = naechsteSchritte.filter(o => o.stufe === 2)
+  const b4S3 = naechsteSchritte.filter(o => o.stufe === 3)
 
   // Nur Refs rendern, die tatsächlich in der DB existieren (= Klarname im Map vorhanden)
   const valLaborwerte  = verwLaborwerte.filter(code => laborwertNamen[code] !== undefined)
@@ -343,6 +412,73 @@ export default function KrankheitDetail() {
               </div>
             </div>
           )}
+        </div>
+      )}
+
+      {/* [14] B4-Block "Nächste Schritte" — S8-BUILD-01 (23.04.2026) ─────────── */}
+      {/* Nur wenn naechste_schritte JSONB befüllt — block absent wenn leer       */}
+      {/* First Slice: 5 Krankheiten (I10/E11/F32/E03/D50) — alle anderen absent  */}
+      {/* Keine Therapieempfehlung, kein Arzt-Ersatz (S8-PRE-SPEC §C10)           */}
+      {naechsteSchritte.length > 0 && (
+        <div className="krank-section b4-block">
+          {/* B4 Header */}
+          <p className="krank-section-title">Nächste Schritte</p>
+          <p className="b4-subtitle">
+            Praktische Handlungsoptionen — was du besprechen, vorbereiten oder einleiten kannst.
+          </p>
+
+          {/* Stufe 1: sofort sichtbar — Standard + Notfall (RK-A, Pre-Spec §C6 S1) */}
+          {b4S1.length > 0 && (
+            <div className="b4-stufe1">
+              {b4S1.map(o => (
+                <B4OptionCard key={o.id} option={o} />
+              ))}
+            </div>
+          )}
+
+          {/* Stufe 2: Accordion — Ergänzend etabliert (RK-B, Pre-Spec §C6 S2) */}
+          {b4S2.length > 0 && (
+            <div className="b4-accordion-wrap">
+              <button
+                className="b4-accordion-btn"
+                onClick={() => setB4Offen(v => !v)}
+                aria-expanded={b4Offen}
+              >
+                <span>{b4Offen ? '▲' : '▼'} Unterstützende Maßnahmen &amp; Monitoring</span>
+                <span className="b4-accordion-count">{b4S2.length} Optionen</span>
+              </button>
+              {b4Offen && (
+                <div className="b4-stufe2">
+                  {b4S2.map(o => (
+                    <B4OptionCard key={o.id} option={o} />
+                  ))}
+                </div>
+              )}
+            </div>
+          )}
+
+          {/* Stufe 3: nach Intent-Signal (Pre-Spec §C6 S3) */}
+          {b4S3.length > 0 && !b4Erweitert && (
+            <button
+              className="b4-intent-btn"
+              onClick={() => setB4Erweitert(true)}
+            >
+              Weitere Optionen &amp; aktuelle Forschung anzeigen →
+            </button>
+          )}
+          {b4S3.length > 0 && b4Erweitert && (
+            <div className="b4-stufe3">
+              <p className="b4-stufe3-label">Optionen &amp; Forschung — mit Einordnung</p>
+              {b4S3.map(o => (
+                <B4OptionCard key={o.id} option={o} />
+              ))}
+            </div>
+          )}
+
+          {/* Trust Note — Pflicht laut Pre-Spec §C1 */}
+          <p className="b4-trust-note">
+            Diese Optionen ersetzen keine individuelle ärztliche Beratung. Sie helfen dabei, Gespräche vorzubereiten und Handlungsoptionen einzuordnen — die Entscheidung liegt bei dir und deiner Ärztin oder deinem Arzt.
+          </p>
         </div>
       )}
 
