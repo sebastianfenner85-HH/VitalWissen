@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react'
 import { useParams, useNavigate } from 'react-router-dom'
 import { getLaborwertByCode } from '../lib/queries'
+import { LABORWERT_K3_MAP } from '../lib/laborwert_k3_map'
 import './Laborwerte.css'
 
 // S1-BUILD-01: JP-Gating — JSCC-Daten noch nicht regulär exponiert.
@@ -28,6 +29,13 @@ const ZT_META = {
   ZT4: { label: 'Therapiemonitoring', cssKey: 'zt4' },
 }
 
+// K3-Einordnung Typ-Labels + CSS-Schlüssel
+const EINORDNUNG_TYP = {
+  standard:   { label: 'Leitlinienwissen',    cssKey: 'standard' },
+  supporting: { label: 'Ergänzender Hinweis', cssKey: 'supporting' },
+  uncertain:  { label: 'Explorativ',          cssKey: 'uncertain' },
+}
+
 function formatRef(min, max, einheit) {
   if (min != null && max != null) return `${min} – ${max} ${einheit ?? ''}`
   if (max != null) return `< ${max} ${einheit ?? ''}`
@@ -35,7 +43,7 @@ function formatRef(min, max, einheit) {
   return '—'
 }
 
-// [6] Zielwert-Block V3 — Komponente
+// [6] Zielwert-Block V3 — Komponente (S1-BUILD-01)
 function ZielwertBlock({ zielwerte }) {
   const [intentOpen, setIntentOpen] = useState(false)
   const [openItems, setOpenItems] = useState({})
@@ -122,6 +130,67 @@ function ZielwertBlock({ zielwerte }) {
           {intentOpen && zt34.map((z, i) => renderItem(z, `zt34-${i}`))}
         </div>
       )}
+    </div>
+  )
+}
+
+// [12] Einordnung des Wertes — Komponente (S8-BUILD-02, K3)
+// Strikt nach K3-Regeln: keine Diagnose, kein Personalisierungsframing.
+// "wird beobachtet bei" / "kann auftreten bei" — nie "bedeutet X" oder "du hast".
+function EinordnungBlock({ loincCode }) {
+  const eintraege = LABORWERT_K3_MAP[loincCode]
+  if (!eintraege) return null
+
+  const { high = [], low = [] } = eintraege
+  if (high.length === 0 && low.length === 0) return null
+
+  const renderKarte = (eintrag, idx) => {
+    const typ = EINORDNUNG_TYP[eintrag.type] ?? EINORDNUNG_TYP.uncertain
+    return (
+      <div key={idx} className="lw-einordnung-karte">
+        <div className="lw-einordnung-karte-kopf">
+          <span className={`lw-einordnung-badge lw-einordnung-badge--${typ.cssKey}`}>
+            {typ.label}
+          </span>
+          <span className="lw-einordnung-titel">{eintrag.title}</span>
+        </div>
+        <p className="lw-einordnung-beschreibung">{eintrag.description}</p>
+        {eintrag.caution && (
+          <div className="lw-einordnung-vorsicht">
+            <span className="lw-einordnung-vorsicht-icon">ⓘ</span>
+            <span>{eintrag.caution}</span>
+          </div>
+        )}
+        <p className="lw-einordnung-evidenz">{eintrag.evidence}</p>
+      </div>
+    )
+  }
+
+  return (
+    <div className="detail-section lw-einordnung-block">
+      <p className="detail-section-title">Einordnung des Wertes</p>
+
+      <div className="lw-einordnung-hinweis">
+        <span>Dieser Abschnitt zeigt, in welchen medizinischen Zusammenhängen dieser Wert verändert sein kann — keine Diagnose, keine Bewertung Ihres persönlichen Befunds.</span>
+      </div>
+
+      {high.length > 0 && (
+        <div className="lw-einordnung-gruppe">
+          <p className="lw-einordnung-gruppe-titel">↑ Mögliche Zusammenhänge bei erhöhtem Wert</p>
+          {high.map(renderKarte)}
+        </div>
+      )}
+
+      {low.length > 0 && (
+        <div className="lw-einordnung-gruppe">
+          <p className="lw-einordnung-gruppe-titel">↓ Mögliche Zusammenhänge bei erniedrigtem Wert</p>
+          {low.map(renderKarte)}
+        </div>
+      )}
+
+      <p className="lw-einordnung-footer">
+        Laborwerte müssen immer im klinischen Gesamtkontext bewertet werden. Diese Übersicht ersetzt keine ärztliche Einordnung.
+      </p>
     </div>
   )
 }
@@ -319,6 +388,11 @@ export default function LaborwertDetail() {
           </div>
         </div>
       )}
+
+      {/* [12] Einordnung des Wertes — B4/K3 Block (S8-BUILD-02)
+           Nur bei kuratierten Laborwerten (LOINC in LABORWERT_K3_MAP).
+           No-data → Block vollständig absent. */}
+      <EinordnungBlock loincCode={lw.loinc_code} />
 
       {/* [11] Wann zum Arzt — nur bei Daten */}
       {lw.wann_arzt && (
