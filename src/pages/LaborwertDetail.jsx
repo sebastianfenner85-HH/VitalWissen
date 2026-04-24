@@ -364,6 +364,12 @@ export default function LaborwertDetail() {
       {/* [6] Zielwert-Block V3 — nur wenn zielwerte JSONB befüllt */}
       {zielwerte.length > 0 && <ZielwertBlock zielwerte={zielwerte} />}
 
+      {/* [12] Einordnung des Wertes — B4/K3 Block (S8-BUILD-02)
+           Position: zwischen Zielwerte und Mögliche Ursachen.
+           Nur bei kuratierten Laborwerten (LOINC in LABORWERT_K3_MAP).
+           No-data → Block vollständig absent. */}
+      <EinordnungBlock loincCode={lw.loinc_code} />
+
       {/* [8] Ursachen — nur bei Daten */}
       {(ursachenHoch.length > 0 || ursachenNiedrig.length > 0) && (
         <div className="detail-section">
@@ -388,11 +394,6 @@ export default function LaborwertDetail() {
           </div>
         </div>
       )}
-
-      {/* [12] Einordnung des Wertes — B4/K3 Block (S8-BUILD-02)
-           Nur bei kuratierten Laborwerten (LOINC in LABORWERT_K3_MAP).
-           No-data → Block vollständig absent. */}
-      <EinordnungBlock loincCode={lw.loinc_code} />
 
       {/* [11] Wann zum Arzt — nur bei Daten */}
       {lw.wann_arzt && (
