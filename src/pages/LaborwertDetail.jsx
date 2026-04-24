@@ -5,18 +5,125 @@ import './Laborwerte.css'
 
 // S1-BUILD-01: JP-Gating — JSCC-Daten noch nicht regulär exponiert.
 // JP-Karte wird nur gerendert wenn ref_jp_min oder ref_jp_max für diesen Eintrag vorhanden.
-// Sobald JSCC-Befüllung ≥40/60 Einträge erreicht (S1-BUILD-02+), kann dieses Gate entfallen.
 const LEITLINIEN = [
   { key: 'de',  label: '🇩🇪 DE',    quelle: 'DGKL' },
   { key: 'usa', label: '🇺🇸 USA',   quelle: 'AACC' },
   { key: 'jp',  label: '🇯🇵 Japan', quelle: 'JSCC' },
 ]
 
+// Q2 Quellentyp-Labels
+const QUELLEN_TYP_LABEL = {
+  guideline:    'Leitlinie',
+  regulatory:   'Behörde',
+  database:     'Datenbank',
+  research:     'Studie',
+  patient_info: 'Patienteninfo',
+}
+
+// ZT-Typ Metadaten
+const ZT_META = {
+  ZT1: { label: 'Primärprävention',   cssKey: 'zt1' },
+  ZT2: { label: 'Therapieziel',       cssKey: 'zt2' },
+  ZT3: { label: 'Risikogruppe',       cssKey: 'zt3' },
+  ZT4: { label: 'Therapiemonitoring', cssKey: 'zt4' },
+}
+
 function formatRef(min, max, einheit) {
   if (min != null && max != null) return `${min} – ${max} ${einheit ?? ''}`
   if (max != null) return `< ${max} ${einheit ?? ''}`
   if (min != null) return `> ${min} ${einheit ?? ''}`
   return '—'
+}
+
+// [6] Zielwert-Block V3 — Komponente
+function ZielwertBlock({ zielwerte }) {
+  const [intentOpen, setIntentOpen] = useState(false)
+  const [openItems, setOpenItems] = useState({})
+
+  const zt12 = zielwerte.filter(z => z.zielwert_typ === 'ZT1' || z.zielwert_typ === 'ZT2')
+  const zt34 = zielwerte.filter(z => z.zielwert_typ === 'ZT3' || z.zielwert_typ === 'ZT4')
+
+  const toggleItem = (key) => setOpenItems(prev => ({ ...prev, [key]: !prev[key] }))
+
+  const renderItem = (z, key) => {
+    const meta = ZT_META[z.zielwert_typ] ?? { label: z.zielwert_typ, cssKey: 'zt1' }
+    const isOpen = !!openItems[key]
+
+    return (
+      <div key={key} className={`lw-zt-item${z.zielwert_typ === 'ZT4' ? ' lw-zt-item--zt4' : ''}`}>
+        <button
+          className="lw-zt-item-header"
+          onClick={() => toggleItem(key)}
+          aria-expanded={isOpen}
+        >
+          <span className={`lw-zt-badge lw-zt-badge--${meta.cssKey}`}>{meta.label}</span>
+          <span className="lw-zt-item-label">{z.zielwert_label}</span>
+          <span className="lw-zt-item-wert">{z.zielwert_wert}</span>
+          <span className={`lw-zt-chevron${isOpen ? ' lw-zt-chevron--open' : ''}`}>▾</span>
+        </button>
+        {isOpen && (
+          <div className="lw-zt-item-body">
+            {z.zielwert_typ === 'ZT4' && (
+              <p className="lw-zt-arzt-hinweis">
+                Dieser Wert dient der ärztlichen Therapiekontrolle. Änderungen an Ihrer Medikation dürfen nur in Absprache mit Ihrer Ärztin oder Ihrem Arzt erfolgen.
+              </p>
+            )}
+            {z.zielwert_kontext && (
+              <p className="lw-zt-kontext">{z.zielwert_kontext}</p>
+            )}
+            {z.zielwert_caveat && (
+              <p className="lw-zt-caveat">⚠ {z.zielwert_caveat}</p>
+            )}
+            {z.zielwert_quelle && (
+              <p className="lw-zt-quelle-zeile">
+                <span className="lw-quelle-typ-chip lw-quelle-typ-guideline">
+                  {QUELLEN_TYP_LABEL[z.zielwert_quelle.typ] ?? z.zielwert_quelle.typ}
+                </span>
+                {z.zielwert_quelle.url ? (
+                  <a href={z.zielwert_quelle.url} target="_blank" rel="noopener noreferrer" className="lw-zt-quelle-link">
+                    {z.zielwert_quelle.name}
+                  </a>
+                ) : (
+                  <span>{z.zielwert_quelle.name}</span>
+                )}
+                {z.zielwert_quelle.jahr && (
+                  <span className="lw-zt-quelle-jahr"> ({z.zielwert_quelle.jahr})</span>
+                )}
+              </p>
+            )}
+          </div>
+        )}
+      </div>
+    )
+  }
+
+  return (
+    <div className="detail-section lw-zielwert-block">
+      <p className="detail-section-title">Zielwerte &amp; Therapieziele</p>
+
+      {/* Differenzierungs-Hinweis: Referenzbereich ≠ Zielwert */}
+      <div className="lw-zt-hinweis">
+        <span className="lw-zt-hinweis-icon">ℹ</span>
+        <span>Referenzbereiche beschreiben, was bei gesunden Menschen üblich ist. Zielwerte sind Behandlungsziele — sie werden ärztlich individuell festgelegt.</span>
+      </div>
+
+      {/* ZT1 + ZT2: direkt sichtbar, aufklappbar */}
+      {zt12.map((z, i) => renderItem(z, `zt12-${i}`))}
+
+      {/* ZT3 + ZT4: hinter Intent-Button */}
+      {zt34.length > 0 && (
+        <div className="lw-zt-intent-section">
+          <button
+            className="lw-zt-intent-btn"
+            onClick={() => setIntentOpen(prev => !prev)}
+          >
+            {intentOpen ? '▾' : '▸'}&nbsp;Zielwerte für spezifische Risikogruppen oder Therapien
+          </button>
+          {intentOpen && zt34.map((z, i) => renderItem(z, `zt34-${i}`))}
+        </div>
+      )}
+    </div>
+  )
 }
 
 export default function LaborwertDetail() {
@@ -66,9 +173,18 @@ export default function LaborwertDetail() {
       min: lw.ref_de_min_m ?? lw.ref_de_min_w,
       max: lw.ref_de_max_m ?? lw.ref_de_max_w,
       einheit: lw.ref_de_einheit, quelle: lw.ref_de_quelle,
+      quelle_url: lw.ref_de_quelle_url, quelle_jahr: lw.ref_de_quelle_jahr,
     },
-    usa: { min: lw.ref_usa_min, max: lw.ref_usa_max, einheit: lw.ref_usa_einheit, quelle: lw.ref_usa_quelle },
-    jp:  { min: lw.ref_jp_min,  max: lw.ref_jp_max,  einheit: lw.ref_jp_einheit,  quelle: lw.ref_jp_quelle  },
+    usa: {
+      min: lw.ref_usa_min, max: lw.ref_usa_max,
+      einheit: lw.ref_usa_einheit, quelle: lw.ref_usa_quelle,
+      quelle_url: lw.ref_usa_quelle_url, quelle_jahr: lw.ref_usa_quelle_jahr,
+    },
+    jp: {
+      min: lw.ref_jp_min, max: lw.ref_jp_max,
+      einheit: lw.ref_jp_einheit, quelle: lw.ref_jp_quelle,
+      quelle_url: lw.ref_jp_quelle_url, quelle_jahr: lw.ref_jp_quelle_jahr,
+    },
   }
 
   // Defensive Array-Guards für alle JSONB-Felder
@@ -76,6 +192,12 @@ export default function LaborwertDetail() {
   const medEinfluss        = Array.isArray(lw.medikament_einfluss) ? lw.medikament_einfluss : []
   const ursachenHoch       = Array.isArray(lw.ursachen_hoch)    ? lw.ursachen_hoch    : (lw.ursachen_hoch    ? [lw.ursachen_hoch]    : [])
   const ursachenNiedrig    = Array.isArray(lw.ursachen_niedrig) ? lw.ursachen_niedrig : (lw.ursachen_niedrig ? [lw.ursachen_niedrig] : [])
+  const zielwerte          = Array.isArray(lw.zielwerte) ? lw.zielwerte : []
+
+  // Quellenkontext: alle Länder die eine URL haben
+  const quellenKontext = LEITLINIEN
+    .map(l => ({ ...l, ...ref[l.key] }))
+    .filter(l => l.quelle_url)
 
   return (
     <div className="lw-detail">
@@ -111,9 +233,7 @@ export default function LaborwertDetail() {
       )}
 
       {/* [4] Referenzbereiche — immer sichtbar.
-           JP-Gate (S1-BUILD-01): JP-Karte nur rendern wenn Datenbasis vorhanden.
-           DE + USA: zeigen "—" wenn leer (akzeptabel, reguläre Abdeckung erwartet).
-           JP: nicht als Leerfeld exponieren — JSCC-Befüllung noch offen. */}
+           JP-Gate (S1-BUILD-01): JP-Karte nur rendern wenn Datenbasis vorhanden. */}
       <div className="detail-section">
         <p className="detail-section-title">Referenzbereiche im Vergleich</p>
         <div className="referenz-grid">
@@ -151,9 +271,31 @@ export default function LaborwertDetail() {
             )
           })}
         </div>
+
+        {/* [4b] Quellenkontext — nur wenn URL-Daten vorhanden (5 Pilot-Werte) */}
+        {quellenKontext.length > 0 && (
+          <div className="lw-quellenkontext">
+            <span className="lw-quellenkontext-label">Quellen Referenzbereiche:</span>
+            {quellenKontext.map(l => (
+              <a
+                key={l.key}
+                href={l.quelle_url}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="lw-quellenkontext-link"
+              >
+                <span className="lw-quelle-typ-chip lw-quelle-typ-database">Datenbank</span>
+                {l.label} {l.quelle && `· ${l.quelle}`}{l.quelle_jahr && ` (${l.quelle_jahr})`}
+              </a>
+            ))}
+          </div>
+        )}
       </div>
 
-      {/* [5] Ursachen — nur bei Daten */}
+      {/* [6] Zielwert-Block V3 — nur wenn zielwerte JSONB befüllt */}
+      {zielwerte.length > 0 && <ZielwertBlock zielwerte={zielwerte} />}
+
+      {/* [8] Ursachen — nur bei Daten */}
       {(ursachenHoch.length > 0 || ursachenNiedrig.length > 0) && (
         <div className="detail-section">
           <p className="detail-section-title">Mögliche Ursachen</p>
@@ -178,7 +320,7 @@ export default function LaborwertDetail() {
         </div>
       )}
 
-      {/* [6] Wann zum Arzt — nur bei Daten */}
+      {/* [11] Wann zum Arzt — nur bei Daten */}
       {lw.wann_arzt && (
         <div className="detail-section">
           <p className="detail-section-title">Wann zum Arzt?</p>
@@ -186,13 +328,7 @@ export default function LaborwertDetail() {
         </div>
       )}
 
-      {/* [7] S5-Cross-Block "Relevante Erkrankungen" — Spec-Gate offen (Kuratierungsregel).
-           Implementierung in S1-BUILD-02. Hier bewusst ausgelassen. */}
-
-      {/* [8] S2-Cross-Block "Supplement-Einfluss" — nur bei Daten.
-           S1-BUILD-01: Fallback-Text entfernt. Block wird ausgeblendet wenn leer.
-           Chips sind aktuell Text-only (kein Slug-Link). Verlinkung folgt in S1-BUILD-02
-           nach supplement_einfluss-Slug-Migration. */}
+      {/* [9] S2-Cross-Block "Supplement-Einfluss" — nur bei Daten */}
       {supplementEinfluss.length > 0 && (
         <div className="detail-section">
           <p className="detail-section-title">Supplements, die diesen Wert beeinflussen</p>
@@ -206,10 +342,7 @@ export default function LaborwertDetail() {
         </div>
       )}
 
-      {/* [9] S6-Cross-Block "Medikamenten-Einfluss" — nur bei Daten + S6 live.
-           S1-BUILD-01: Fallback-Text entfernt. Block wird ausgeblendet wenn leer.
-           S6 ist aktuell nicht live → Block bleibt für alle Einträge unsichtbar.
-           Aktivierung erfolgt in S1-BUILD-02 nach S6-Build + medikament_einfluss-Slug-Migration. */}
+      {/* [10] S6-Cross-Block "Medikamenten-Einfluss" — nur bei Daten */}
       {medEinfluss.length > 0 && (
         <div className="detail-section">
           <p className="detail-section-title">Medikamente, die diesen Wert beeinflussen</p>
@@ -223,7 +356,7 @@ export default function LaborwertDetail() {
         </div>
       )}
 
-      {/* [10] Disclaimer — immer letzter Block */}
+      {/* [13] Disclaimer — immer letzter Block */}
       <p style={{ fontSize: 13, color: 'var(--text-muted)', marginTop: 32, textAlign: 'center' }}>
         Diese Informationen ersetzen keine ärztliche Diagnose. Laborwerte müssen immer im klinischen Kontext bewertet werden.
       </p>

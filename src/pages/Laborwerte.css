@@ -362,3 +362,266 @@
 }
 
 .beschreibung-text strong { color: var(--text); }
+
+/* =========================================================
+   S1-BUILD-01: Referenz-Grid Mobile-fix (A5-Befund)
+   ========================================================= */
+@media (max-width: 640px) {
+  .referenz-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* =========================================================
+   S1-BUILD-01: Quellenkontext unter Referenz-Grid
+   ========================================================= */
+.lw-quellenkontext {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px;
+  margin-top: 12px;
+  padding-top: 12px;
+  border-top: 1px solid var(--border, #e5e7eb);
+}
+
+.lw-quellenkontext-label {
+  font-size: 12px;
+  color: var(--text-muted);
+  white-space: nowrap;
+}
+
+.lw-quellenkontext-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 12px;
+  color: var(--text-muted);
+  text-decoration: none;
+  padding: 4px 8px;
+  border-radius: 6px;
+  border: 1px solid var(--border, #e5e7eb);
+  background: var(--surface-2, #f9fafb);
+  min-height: 32px;
+  transition: border-color 0.15s, color 0.15s;
+}
+
+.lw-quellenkontext-link:hover {
+  border-color: var(--text-muted);
+  color: var(--text);
+}
+
+/* Q2 Quellentyp-Chips (shared: auch in ZielwertBlock genutzt) */
+.lw-quelle-typ-chip {
+  display: inline-block;
+  font-size: 10px;
+  font-weight: 600;
+  padding: 2px 6px;
+  border-radius: 4px;
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
+}
+
+.lw-quelle-typ-guideline  { background: #e0e7ff; color: #3730a3; }
+.lw-quelle-typ-regulatory { background: #dbeafe; color: #1e40af; }
+.lw-quelle-typ-database   { background: #f1f5f9; color: #475569; }
+.lw-quelle-typ-research   { background: #fef3c7; color: #92400e; }
+.lw-quelle-typ-patient_info { background: #ccfbf1; color: #115e59; }
+
+/* =========================================================
+   S1-BUILD-01: Zielwert-Block V3
+   ========================================================= */
+.lw-zielwert-block {
+  /* inherits detail-section */
+}
+
+/* Differenzierungs-Hinweis: Referenzbereich ≠ Zielwert */
+.lw-zt-hinweis {
+  display: flex;
+  gap: 8px;
+  align-items: flex-start;
+  background: var(--surface-2, #f9fafb);
+  border: 1px solid var(--border, #e5e7eb);
+  border-radius: 8px;
+  padding: 10px 12px;
+  font-size: 13px;
+  color: var(--text-muted);
+  margin-bottom: 12px;
+}
+
+.lw-zt-hinweis-icon {
+  flex-shrink: 0;
+  font-size: 15px;
+  line-height: 1.4;
+}
+
+/* ZT Badge (Typ-Label) */
+.lw-zt-badge {
+  display: inline-block;
+  font-size: 10px;
+  font-weight: 700;
+  padding: 2px 7px;
+  border-radius: 4px;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+
+.lw-zt-badge--zt1 { background: #dcfce7; color: #166534; }
+.lw-zt-badge--zt2 { background: #dbeafe; color: #1e40af; }
+.lw-zt-badge--zt3 { background: #ffedd5; color: #9a3412; }
+.lw-zt-badge--zt4 { background: #f3e8ff; color: #6b21a8; }
+
+/* ZT Item Card */
+.lw-zt-item {
+  border: 1px solid var(--border, #e5e7eb);
+  border-radius: 8px;
+  margin-bottom: 8px;
+  overflow: hidden;
+}
+
+.lw-zt-item--zt4 {
+  border-color: #d8b4fe;
+}
+
+.lw-zt-item-header {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  width: 100%;
+  background: var(--surface-2, #f9fafb);
+  border: none;
+  padding: 10px 12px;
+  cursor: pointer;
+  text-align: left;
+  min-height: 44px;
+  font-size: 14px;
+  color: var(--text);
+  transition: background 0.15s;
+}
+
+.lw-zt-item-header:hover {
+  background: var(--surface-3, #f3f4f6);
+}
+
+.lw-zt-item-label {
+  flex: 1;
+  font-weight: 500;
+}
+
+.lw-zt-item-wert {
+  font-weight: 700;
+  color: var(--blue, #2563eb);
+  white-space: nowrap;
+  font-size: 15px;
+}
+
+.lw-zt-chevron {
+  font-size: 14px;
+  color: var(--text-muted);
+  transition: transform 0.2s;
+  flex-shrink: 0;
+}
+
+.lw-zt-chevron--open {
+  transform: rotate(180deg);
+}
+
+.lw-zt-item-body {
+  padding: 12px 14px;
+  border-top: 1px solid var(--border, #e5e7eb);
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.lw-zt-arzt-hinweis {
+  font-size: 12px;
+  color: #6b21a8;
+  background: #faf5ff;
+  border: 1px solid #d8b4fe;
+  border-radius: 6px;
+  padding: 8px 10px;
+  margin: 0;
+}
+
+.lw-zt-kontext {
+  font-size: 13px;
+  color: var(--text);
+  margin: 0;
+  line-height: 1.5;
+}
+
+.lw-zt-caveat {
+  font-size: 12px;
+  color: #92400e;
+  background: #fef3c7;
+  border-radius: 6px;
+  padding: 7px 10px;
+  margin: 0;
+}
+
+.lw-zt-quelle-zeile {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  flex-wrap: wrap;
+  font-size: 12px;
+  margin: 0;
+}
+
+.lw-zt-quelle-link {
+  color: var(--blue, #2563eb);
+  text-decoration: none;
+}
+
+.lw-zt-quelle-link:hover {
+  text-decoration: underline;
+}
+
+.lw-zt-quelle-jahr {
+  color: var(--text-muted);
+}
+
+/* ZT3/ZT4 Intent-Section */
+.lw-zt-intent-section {
+  margin-top: 8px;
+}
+
+.lw-zt-intent-btn {
+  display: block;
+  width: 100%;
+  background: none;
+  border: 1px dashed var(--border, #d1d5db);
+  border-radius: 8px;
+  padding: 10px 14px;
+  cursor: pointer;
+  font-size: 13px;
+  color: var(--text-muted);
+  text-align: left;
+  min-height: 44px;
+  transition: border-color 0.15s, color 0.15s;
+  margin-bottom: 8px;
+}
+
+.lw-zt-intent-btn:hover {
+  border-color: var(--text-muted);
+  color: var(--text);
+}
+
+/* Mobile tweaks für ZT-Block */
+@media (max-width: 640px) {
+  .lw-zt-item-header {
+    flex-wrap: wrap;
+    gap: 6px;
+  }
+
+  .lw-zt-item-label {
+    width: calc(100% - 100px);
+  }
+
+  .lw-zt-item-wert {
+    font-size: 14px;
+  }
+}
