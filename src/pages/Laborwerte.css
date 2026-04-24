@@ -760,3 +760,215 @@
     font-size: 12px;
   }
 }
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   S8-BUILD-03 — B4 Actions Block "Was kann ich konkret tun?"
+   CSS-Prefix: lw-b4a-*
+   ═══════════════════════════════════════════════════════════════════════════ */
+
+.lw-b4a-block {
+  margin-top: 8px;
+}
+
+/* Intro-Hinweis */
+.lw-b4a-hinweis {
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+  background: var(--surface-2);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 10px 14px;
+  font-size: 13px;
+  color: var(--text-light);
+  line-height: 1.55;
+  margin-bottom: 20px;
+}
+
+.lw-b4a-hinweis-icon {
+  flex-shrink: 0;
+  font-size: 15px;
+  margin-top: 1px;
+}
+
+/* Gruppen-Trenner (↑ erhöht / ↓ erniedrigt) */
+.lw-b4a-gruppe {
+  margin-bottom: 24px;
+}
+
+.lw-b4a-gruppe-titel {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--text-light);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  margin-bottom: 10px;
+}
+
+/* Einzelne Karte */
+.lw-b4a-karte {
+  background: var(--bg);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 14px 16px;
+  margin-bottom: 12px;
+}
+
+/* Kopfzeile: Badge + Titel */
+.lw-b4a-karte-kopf {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 8px;
+  flex-wrap: wrap;
+}
+
+.lw-b4a-badge {
+  font-size: 11px;
+  font-weight: 600;
+  border-radius: 4px;
+  padding: 2px 7px;
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+
+.lw-b4a-badge--standard {
+  background: #dcfce7;
+  color: #166534;
+}
+
+.lw-b4a-badge--supporting {
+  background: var(--surface-2);
+  color: var(--text-light);
+}
+
+.lw-b4a-karte-titel {
+  font-size: 15px;
+  font-weight: 600;
+  color: var(--text);
+  line-height: 1.35;
+}
+
+/* Kontext-Zeile (whyShown) */
+.lw-b4a-kontext {
+  font-size: 13px;
+  color: var(--text-muted);
+  line-height: 1.5;
+  margin-bottom: 10px;
+}
+
+/* Action-Block (whatHelps) — hervorgehoben */
+.lw-b4a-action {
+  background: #f0fdf4;
+  border-left: 3px solid #22c55e;
+  border-radius: 0 6px 6px 0;
+  padding: 8px 12px;
+  margin-bottom: 10px;
+}
+
+.lw-b4a-action-label {
+  display: block;
+  font-size: 11px;
+  font-weight: 600;
+  color: #166534;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  margin-bottom: 4px;
+}
+
+.lw-b4a-action-text {
+  font-size: 14px;
+  color: var(--text);
+  line-height: 1.55;
+  margin: 0;
+}
+
+/* Zu-erwarten-Zeile */
+.lw-b4a-effekt {
+  font-size: 13px;
+  color: var(--text-light);
+  line-height: 1.5;
+  margin-bottom: 8px;
+}
+
+/* Vorsicht-Hinweis */
+.lw-b4a-caution {
+  display: flex;
+  align-items: flex-start;
+  gap: 6px;
+  font-size: 13px;
+  color: #92400e;
+  background: #fffbeb;
+  border: 1px solid #fde68a;
+  border-radius: 6px;
+  padding: 7px 10px;
+  margin-bottom: 8px;
+  line-height: 1.5;
+}
+
+.lw-b4a-caution-icon {
+  flex-shrink: 0;
+  font-size: 14px;
+  margin-top: 1px;
+}
+
+/* Monitoring-Zeile */
+.lw-b4a-monitoring {
+  display: flex;
+  align-items: baseline;
+  gap: 6px;
+  font-size: 12px;
+  color: var(--text-muted);
+  margin-bottom: 8px;
+  flex-wrap: wrap;
+}
+
+.lw-b4a-monitoring-label {
+  font-weight: 600;
+  color: var(--text-light);
+  white-space: nowrap;
+}
+
+.lw-b4a-monitoring-text {
+  line-height: 1.45;
+}
+
+/* Evidenz-Zeile */
+.lw-b4a-evidenz {
+  font-size: 11px;
+  color: var(--text-muted);
+  margin: 6px 0 0;
+}
+
+/* Footer-Disclaimer */
+.lw-b4a-footer {
+  font-size: 12px;
+  color: var(--text-muted);
+  line-height: 1.5;
+  margin-top: 4px;
+  padding-top: 12px;
+  border-top: 1px solid var(--border);
+}
+
+/* Mobile-Anpassungen */
+@media (max-width: 640px) {
+  .lw-b4a-karte {
+    padding: 12px 13px;
+  }
+
+  .lw-b4a-karte-kopf {
+    gap: 8px;
+  }
+
+  .lw-b4a-karte-titel {
+    font-size: 14px;
+  }
+
+  .lw-b4a-action {
+    padding: 8px 10px;
+  }
+
+  .lw-b4a-caution {
+    padding: 7px 9px;
+  }
+}

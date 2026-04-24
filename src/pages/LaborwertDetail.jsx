@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react'
 import { useParams, useNavigate } from 'react-router-dom'
 import { getLaborwertByCode } from '../lib/queries'
 import { LABORWERT_K3_MAP } from '../lib/laborwert_k3_map'
+import { LABORWERT_B4_ACTIONS_MAP } from '../lib/laborwert_b4_actions_map'
 import './Laborwerte.css'
 
 // S1-BUILD-01: JP-Gating — JSCC-Daten noch nicht regulär exponiert.
@@ -198,6 +199,88 @@ function EinordnungBlock({ loincCode, slug }) {
   )
 }
 
+
+// B4-Kategorie Labels
+const B4_KATEGORIE = {
+  standard:   { label: 'Gesprächspunkt', cssKey: 'standard' },
+  supporting: { label: 'Ergänzend',      cssKey: 'supporting' },
+}
+
+// [12b] Was kann ich konkret tun? — Komponente (S8-BUILD-03)
+// Keine Diagnose, keine Therapieanweisung, keine Dosierungsangabe.
+// Nur: Gesprächsbausteine und Orientierungshinweise.
+function B4ActionsBlock({ loincCode, slug }) {
+  const data =
+    (loincCode && LABORWERT_B4_ACTIONS_MAP[loincCode]) ||
+    (slug && LABORWERT_B4_ACTIONS_MAP[slug]) ||
+    null
+  if (!data) return null
+
+  const { title, intro, high = [], low = [] } = data
+  if (high.length === 0 && low.length === 0) return null
+
+  const renderKarte = (karte, idx) => {
+    const kat = B4_KATEGORIE[karte.category] ?? B4_KATEGORIE.supporting
+    return (
+      <div key={idx} className="lw-b4a-karte">
+        <div className="lw-b4a-karte-kopf">
+          <span className={`lw-b4a-badge lw-b4a-badge--${kat.cssKey}`}>{kat.label}</span>
+          <span className="lw-b4a-karte-titel">{karte.title}</span>
+        </div>
+        {karte.whyShown && (
+          <p className="lw-b4a-kontext">{karte.whyShown}</p>
+        )}
+        <div className="lw-b4a-action">
+          <span className="lw-b4a-action-label">Was besprechen?</span>
+          <p className="lw-b4a-action-text">{karte.whatHelps}</p>
+        </div>
+        {karte.expectedEffect && (
+          <p className="lw-b4a-effekt">{karte.expectedEffect}</p>
+        )}
+        {karte.cautions && (
+          <div className="lw-b4a-caution">
+            <span className="lw-b4a-caution-icon">ⓘ</span>
+            <span>{karte.cautions}</span>
+          </div>
+        )}
+        {karte.monitoring && (
+          <div className="lw-b4a-monitoring">
+            <span className="lw-b4a-monitoring-label">Monitoring:</span>
+            <span className="lw-b4a-monitoring-text">{karte.monitoring}</span>
+          </div>
+        )}
+        <p className="lw-b4a-evidenz">{karte.evidence}</p>
+      </div>
+    )
+  }
+
+  return (
+    <div className="detail-section lw-b4a-block">
+      <p className="detail-section-title">{title}</p>
+      <div className="lw-b4a-hinweis">
+        <span className="lw-b4a-hinweis-icon">💬</span>
+        <span>{intro}</span>
+      </div>
+      {high.length > 0 && (
+        <div className="lw-b4a-gruppe">
+          <p className="lw-b4a-gruppe-titel">↑ Bei erhöhtem Wert</p>
+          {high.map(renderKarte)}
+        </div>
+      )}
+      {low.length > 0 && (
+        <div className="lw-b4a-gruppe">
+          <p className="lw-b4a-gruppe-titel">↓ Bei erniedrigtem Wert</p>
+          {low.map(renderKarte)}
+        </div>
+      )}
+      <p className="lw-b4a-footer">
+        Diese Hinweise sind keine Therapieempfehlung und ersetzen keine ärztliche Beratung.
+        Entscheidungen über diagnostische und therapeutische Maßnahmen liegen bei Ihrer Ärztin oder Ihrem Arzt.
+      </p>
+    </div>
+  )
+}
+
 export default function LaborwertDetail() {
   const { code } = useParams()
   const navigate = useNavigate()
@@ -372,6 +455,12 @@ export default function LaborwertDetail() {
            Nur bei kuratierten Laborwerten (LOINC in LABORWERT_K3_MAP).
            No-data → Block vollständig absent. */}
       <EinordnungBlock loincCode={lw.loinc_code} slug={lw.slug} />
+
+      {/* [12b] Was kann ich konkret tun? — B4 Actions Block (S8-BUILD-03)
+           Position: direkt nach EinordnungBlock.
+           Nur bei 5 MVP-Laborwerten (LOINC in LABORWERT_B4_ACTIONS_MAP).
+           No-data → Block vollständig absent. Keine Therapieempfehlung. */}
+      <B4ActionsBlock loincCode={lw.loinc_code} slug={lw.slug} />
 
       {/* [8] Ursachen — nur bei Daten */}
       {(ursachenHoch.length > 0 || ursachenNiedrig.length > 0) && (
