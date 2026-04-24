@@ -45,7 +45,7 @@ function formatRef(min, max, einheit) {
 }
 
 // [6] Zielwert-Block V3 — Komponente (S1-BUILD-01)
-function ZielwertBlock({ zielwerte }) {
+function ZielwertBlock({ zielwerte, loincCode }) {
   const [intentOpen, setIntentOpen] = useState(false)
   const [openItems, setOpenItems] = useState({})
 
@@ -115,6 +115,18 @@ function ZielwertBlock({ zielwerte }) {
         <span className="lw-zt-hinweis-icon">ℹ</span>
         <span>Referenzbereiche beschreiben, was bei gesunden Menschen üblich ist. Zielwerte sind Behandlungsziele — sie werden ärztlich individuell festgelegt.</span>
       </div>
+
+      {/* S1-BUILD-01b: LDL-Kontext-Microcopy — nur für LDL-Cholesterin (LOINC 2089-1).
+           Kein universeller Optimalwert: LDL-Zielwert ist risiko- und therapieabhängig.
+           Risikobasierte Tabelle ESC/EAS 2021: 116 / 100 / 70 / 55 mg/dL. */}
+      {loincCode === '2089-1' && (
+        <div className="lw-zt-hinweis">
+          <span className="lw-zt-hinweis-icon">📌</span>
+          <span>
+            LDL sollte möglichst niedrig sein. Welche Zielwerte gelten, hängt vom individuellen Herz-Kreislauf-Risiko ab — und wird ärztlich festgelegt. Die Werte unten gelten für unterschiedliche Risikogruppen (ESC/EAS-Leitlinien 2021).
+          </span>
+        </div>
+      )}
 
       {/* ZT1 + ZT2: direkt sichtbar, aufklappbar */}
       {zt12.map((z, i) => renderItem(z, `zt12-${i}`))}
@@ -448,7 +460,7 @@ export default function LaborwertDetail() {
       </div>
 
       {/* [6] Zielwert-Block V3 — nur wenn zielwerte JSONB befüllt */}
-      {zielwerte.length > 0 && <ZielwertBlock zielwerte={zielwerte} />}
+      {zielwerte.length > 0 && <ZielwertBlock zielwerte={zielwerte} loincCode={lw.loinc_code} />}
 
       {/* [12] Einordnung des Wertes — B4/K3 Block (S8-BUILD-02)
            Position: zwischen Zielwerte und Mögliche Ursachen.
