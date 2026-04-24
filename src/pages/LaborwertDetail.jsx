@@ -137,8 +137,11 @@ function ZielwertBlock({ zielwerte }) {
 // [12] Einordnung des Wertes — Komponente (S8-BUILD-02, K3)
 // Strikt nach K3-Regeln: keine Diagnose, kein Personalisierungsframing.
 // "wird beobachtet bei" / "kann auftreten bei" — nie "bedeutet X" oder "du hast".
-function EinordnungBlock({ loincCode }) {
-  const eintraege = LABORWERT_K3_MAP[loincCode]
+function EinordnungBlock({ loincCode, slug }) {
+  const eintraege =
+    (loincCode && LABORWERT_K3_MAP[loincCode]) ||
+    (slug && LABORWERT_K3_MAP[slug]) ||
+    null
   if (!eintraege) return null
 
   const { high = [], low = [] } = eintraege
@@ -368,7 +371,7 @@ export default function LaborwertDetail() {
            Position: zwischen Zielwerte und Mögliche Ursachen.
            Nur bei kuratierten Laborwerten (LOINC in LABORWERT_K3_MAP).
            No-data → Block vollständig absent. */}
-      <EinordnungBlock loincCode={lw.loinc_code} />
+      <EinordnungBlock loincCode={lw.loinc_code} slug={lw.slug} />
 
       {/* [8] Ursachen — nur bei Daten */}
       {(ursachenHoch.length > 0 || ursachenNiedrig.length > 0) && (
