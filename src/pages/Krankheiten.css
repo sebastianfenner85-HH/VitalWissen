@@ -905,3 +905,132 @@
     padding: 7px 8px;
   }
 }
+
+/* ── Quellenbox (Q2-BUILD-02a) ──────────────────────────────────────────────
+   Ersetzt krank-quellen-list / krank-quelle-item (Plain-Link-Liste)
+   Typ-Chip (Q2-Farben, konsistent mit Vertrauen.css) + Name-Link + optionale Beschreibung
+   Mobile-first: Tap-Ziele ≥ 40px, Flex-Wrap auf ≤ 600px
+   Max 2 Einträge sichtbar, Rest hinter "N weitere"-Button (Q2 Pre-Spec C4)
+─────────────────────────────────────────────────────────────────────────── */
+.krank-quellenbox {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.krank-quellenbox-row {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  padding: 12px 14px;
+  background: var(--bg-light);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+}
+
+/* Typ-Chip — Farben identisch mit q2-beispiel-chip--* in Vertrauen.css */
+.krank-quellen-typchip {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 11px;
+  font-weight: 600;
+  padding: 3px 9px;
+  border-radius: 999px;
+  white-space: nowrap;
+  flex-shrink: 0;
+  align-self: flex-start;
+  margin-top: 2px;
+}
+
+.krank-quellen-typchip--guideline    { background: #EEF2FF; color: #4338CA; }
+.krank-quellen-typchip--regulatory   { background: #EFF6FF; color: #1D4ED8; }
+.krank-quellen-typchip--database     { background: #F1F5F9; color: #475569; }
+.krank-quellen-typchip--research     { background: #FEF9C3; color: #854D0E; }
+.krank-quellen-typchip--patient_info { background: #ECFEFF; color: #0E7490; }
+
+/* Name + Beschreibung */
+.krank-quellenbox-main {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  flex: 1;
+  min-width: 0;
+}
+
+.krank-quellenbox-link {
+  font-size: 14px;
+  color: var(--primary);
+  text-decoration: none;
+  line-height: 1.45;
+  min-height: 40px;
+  display: flex;
+  align-items: center;
+  word-break: break-word;
+}
+
+.krank-quellenbox-link:hover {
+  text-decoration: underline;
+}
+
+.krank-quellenbox-name {
+  font-size: 14px;
+  color: var(--text-dark);
+  line-height: 1.45;
+  min-height: 40px;
+  display: flex;
+  align-items: center;
+  word-break: break-word;
+}
+
+/* Beschreibung — nur sichtbar wenn im JSONB vorhanden, nie erzwungen */
+.krank-quellenbox-desc {
+  font-size: 12px;
+  color: var(--text-muted);
+  line-height: 1.55;
+  margin: 0;
+}
+
+/* „+ N weitere anzeigen"-Button */
+.krank-quellenbox-more {
+  background: none;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 8px 14px;
+  font-size: 13px;
+  color: var(--primary);
+  cursor: pointer;
+  text-align: left;
+  min-height: 40px;
+  transition: background 0.15s;
+  display: flex;
+  align-items: center;
+}
+
+.krank-quellenbox-more:hover {
+  background: #F0FAF5;
+}
+
+/* Mobile-first — ≤ 600px */
+@media (max-width: 600px) {
+  .krank-quellenbox-row {
+    flex-direction: column;
+    gap: 8px;
+    padding: 12px;
+  }
+
+  .krank-quellen-typchip {
+    margin-top: 0;
+    align-self: flex-start;
+  }
+
+  .krank-quellenbox-link,
+  .krank-quellenbox-name {
+    min-height: 44px;
+  }
+
+  .krank-quellenbox-more {
+    width: 100%;
+    justify-content: center;
+  }
+}

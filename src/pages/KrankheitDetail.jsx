@@ -13,6 +13,10 @@
 //   3.0 [13] Lebensmittel-Chips via getLebensmittelByIcdCode — orange, Slot 3 in Block [13]
 // S8-BUILD-01: B4 „Nächste Schritte" (23.04.2026)
 //   4.0 [14] B4-Block mit Stufe-1/2/3-Logik aus naechste_schritte JSONB — nur für 5 First-Slice-Krankheiten
+// Q2-BUILD-02a: S5 Quellenbox-Komponente (24.04.2026)
+//   5.0 [16] QuellenBox ersetzt Plain-Link-Liste — Typ-Chip (Q2-Farben) + Name-Link + beschreibung wenn vorhanden
+//       TYP_MAP: awmf/Leitlinie→guideline, iqwig/Patienteninformation→patient_info, icd10→database, rki→regulatory
+//       Mobile-first: Tap-Ziele ≥ 40px, max 2 sichtbar + "N weitere"-Button
 
 import { useState, useEffect } from 'react'
 import { useParams, useNavigate } from 'react-router-dom'
@@ -24,6 +28,74 @@ const EBENEN = [
   { key: 'laienhaft', label: 'Laienhaft'     },
   { key: 'fachlich',  label: 'Fachlich'      },
 ]
+
+// ── Q2 Quellentyp-Mapping (Q2-BUILD-02a) ────────────────────────────────────
+// Mappt DB-Werte (awmf, iqwig, icd10, rki, Leitlinie, Patienteninformation)
+// auf Q2-kanonische Typen + Label + Icon (Pre-Spec B3, Vertrauen.css-Farben)
+const QUELLEN_TYP = {
+  'awmf':                { q2: 'guideline',    label: 'Leitlinie',     icon: '📋' },
+  'Leitlinie':           { q2: 'guideline',    label: 'Leitlinie',     icon: '📋' },
+  'iqwig':               { q2: 'patient_info', label: 'Patienteninfo', icon: '📖' },
+  'Patienteninformation':{ q2: 'patient_info', label: 'Patienteninfo', icon: '📖' },
+  'icd10':               { q2: 'database',     label: 'Datenbasis',    icon: '🗄️' },
+  'rki':                 { q2: 'regulatory',   label: 'Regulatorisch', icon: '🏛️' },
+}
+
+function getTypInfo(typ) {
+  return QUELLEN_TYP[typ] || { q2: 'database', label: typ || 'Quelle', icon: '📄' }
+}
+
+// ── QuellenBox-Komponente (Q2-BUILD-02a) ────────────────────────────────────
+// Zeigt Quellen als Typ-Chip + Name-Link + optional beschreibung (nur wenn vorhanden)
+// Max 2 sichtbar — Rest hinter „+ N weitere anzeigen" (Q2 Pre-Spec C4, mobil)
+// Absent bei 0 Quellen (kein leerer Container)
+function QuellenBox({ quellen }) {
+  const [showAll, setShowAll] = useState(false)
+  if (!quellen || quellen.length === 0) return null
+
+  const visible = showAll ? quellen : quellen.slice(0, 2)
+  const hiddenCount = quellen.length - 2
+
+  return (
+    <div className="krank-quellenbox">
+      {visible.map((q, i) => {
+        const { q2, label, icon } = getTypInfo(q.typ)
+        return (
+          <div key={i} className="krank-quellenbox-row">
+            <span className={`krank-quellen-typchip krank-quellen-typchip--${q2}`}>
+              {icon} {label}
+            </span>
+            <div className="krank-quellenbox-main">
+              {q.url ? (
+                <a
+                  href={q.url}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="krank-quellenbox-link"
+                >
+                  {q.name} ↗
+                </a>
+              ) : (
+                <span className="krank-quellenbox-name">{q.name}</span>
+              )}
+              {q.beschreibung && (
+                <p className="krank-quellenbox-desc">{q.beschreibung}</p>
+              )}
+            </div>
+          </div>
+        )
+      })}
+      {!showAll && hiddenCount > 0 && (
+        <button
+          className="krank-quellenbox-more"
+          onClick={() => setShowAll(true)}
+        >
+          + {hiddenCount} weitere {hiddenCount === 1 ? 'Quelle' : 'Quellen'} anzeigen
+        </button>
+      )}
+    </div>
+  )
+}
 
 // ── B4 Option-Karte ─────────────────────────────────────────────────────────
 // Gezeigt wenn: naechste_schritte Feld vorhanden + stufe-Filter passend
@@ -157,7 +229,6 @@ export default function KrankheitDetail() {
   }
 
   // Defensive Array.isArray guards für alle JSONB-Array-Felder (P7C-Freeze 0.3)
-  // Ersetzt bisheriges `k.field || []` — robust gegen non-Array / null / inkonsistente JSONB-Zustände
   const symptome        = Array.isArray(k.symptome)              ? k.symptome              : []
   const diagnostik      = Array.isArray(k.diagnostik)            ? k.diagnostik            : []
   const behandlung      = Array.isArray(k.behandlung)            ? k.behandlung            : []
@@ -167,21 +238,18 @@ export default function KrankheitDetail() {
   const verwSupplements = Array.isArray(k.verwandte_supplements) ? k.verwandte_supplements : []
   const synonyme        = Array.isArray(k.synonym_de)            ? k.synonym_de            : []
   // B4: naechste_schritte JSONB-Array (S8-BUILD-01)
-  // Guard: leeres Array wenn Feld fehlt (Krankheiten ohne B4-Daten → Block absent)
   const naechsteSchritte = Array.isArray(k.naechste_schritte) ? k.naechste_schritte : []
 
-  // Stufe-Filter (Pre-Spec bindend — S8-PRE-SPEC §C6)
+  // Stufe-Filter (S8-PRE-SPEC §C6)
   const b4S1 = naechsteSchritte.filter(o => o.stufe === 1)
   const b4S2 = naechsteSchritte.filter(o => o.stufe === 2)
   const b4S3 = naechsteSchritte.filter(o => o.stufe === 3)
 
-  // Nur Refs rendern, die tatsächlich in der DB existieren (= Klarname im Map vorhanden)
+  // Nur Refs rendern die in der DB existieren (= Klarname im Map vorhanden)
   const valLaborwerte  = verwLaborwerte.filter(code => laborwertNamen[code] !== undefined)
   const valSupplements = verwSupplements.filter(s   => supplementNamen[s]   !== undefined)
 
   // Intern-Fälle Quellen-Logik (P7C-Freeze 0.5)
-  // quellenExtern: nur Einträge mit typ !== 'intern' — sichtbar im Quellenblock
-  // nurInternQuellen: quellen vorhanden aber ausschließlich intern (F06/L72/M13/R74/Z87)
   const quellenExtern    = quellen.filter(q => q.typ !== 'intern')
   const nurInternQuellen = quellen.length > 0 && quellenExtern.length === 0
 
@@ -300,7 +368,6 @@ export default function KrankheitDetail() {
       {/* [Sicherheitsblock] — Spec-Gate offen; kein vorsicht-Feld im Schema → S5-BUILD-02 */}
 
       {/* [10] S1-Cross-Block "Relevante Laborwerte" (P7C-Freeze 0.2) ──────────── */}
-      {/* Nur wenn valLaborwerte.length > 0 — kein Fallback-Text wenn leer */}
       {valLaborwerte.length > 0 && (
         <div className="krank-section">
           <p className="krank-section-title">Relevante Laborwerte</p>
@@ -319,7 +386,6 @@ export default function KrankheitDetail() {
       )}
 
       {/* [11] S2-Cross-Block "Evidenzbasierte Supplements" (P7C-Freeze 0.2) ───── */}
-      {/* Nur wenn valSupplements.length > 0 — kein Fallback-Text wenn leer */}
       {valSupplements.length > 0 && (
         <div className="krank-section">
           <p className="krank-section-title">Evidenzbasierte Supplements</p>
@@ -338,7 +404,6 @@ export default function KrankheitDetail() {
       )}
 
       {/* [12] S6-Cross-Block "Häufig eingesetzte Wirkstoffe" (S6-03, 22.04.2026) ─── */}
-      {/* Nur wenn DB-Treffer vorhanden — ausblenden wenn leer */}
       {wirkstoffe.length > 0 && (
         <div className="krank-section">
           <p className="krank-section-title">Häufig eingesetzte Wirkstoffe</p>
@@ -357,10 +422,6 @@ export default function KrankheitDetail() {
       )}
 
       {/* [13] S18-Cross-Block "Ernährung im Kontext" (S18-Build-03 + Build-04) ─── */}
-      {/* Nährstoffe via ICD-Code (erkrankungs_bezug @> [{icd_code}]) — max 5      */}
-      {/* Muster via Krankheits-Slug (verwandte_krankheiten @> [slug]) — max 3     */}
-      {/* Lebensmittel via ICD-Code (erkrankungs_bezug @> [{icd_code}]) — max 5   */}
-      {/* Block absent wenn alle drei Listen leer — kein Empty-State, kein Dummy   */}
       {(naehrstoffeS18.length > 0 || musterS18.length > 0 || lebensmittelS18.length > 0) && (
         <div className="krank-section">
           <p className="krank-section-title">Ernährung im Kontext</p>
@@ -416,18 +477,13 @@ export default function KrankheitDetail() {
       )}
 
       {/* [14] B4-Block "Nächste Schritte" — S8-BUILD-01 (23.04.2026) ─────────── */}
-      {/* Nur wenn naechste_schritte JSONB befüllt — block absent wenn leer       */}
-      {/* First Slice: 5 Krankheiten (I10/E11/F32/E03/D50) — alle anderen absent  */}
-      {/* Keine Therapieempfehlung, kein Arzt-Ersatz (S8-PRE-SPEC §C10)           */}
       {naechsteSchritte.length > 0 && (
         <div className="krank-section b4-block">
-          {/* B4 Header */}
           <p className="krank-section-title">Nächste Schritte</p>
           <p className="b4-subtitle">
             Praktische Handlungsoptionen — was du besprechen, vorbereiten oder einleiten kannst.
           </p>
 
-          {/* Stufe 1: sofort sichtbar — Standard + Notfall (RK-A, Pre-Spec §C6 S1) */}
           {b4S1.length > 0 && (
             <div className="b4-stufe1">
               {b4S1.map(o => (
@@ -436,7 +492,6 @@ export default function KrankheitDetail() {
             </div>
           )}
 
-          {/* Stufe 2: Accordion — Ergänzend etabliert (RK-B, Pre-Spec §C6 S2) */}
           {b4S2.length > 0 && (
             <div className="b4-accordion-wrap">
               <button
@@ -457,7 +512,6 @@ export default function KrankheitDetail() {
             </div>
           )}
 
-          {/* Stufe 3: nach Intent-Signal (Pre-Spec §C6 S3) */}
           {b4S3.length > 0 && !b4Erweitert && (
             <button
               className="b4-intent-btn"
@@ -475,7 +529,6 @@ export default function KrankheitDetail() {
             </div>
           )}
 
-          {/* Trust Note — Pflicht laut Pre-Spec §C1 */}
           <p className="b4-trust-note">
             Diese Optionen ersetzen keine individuelle ärztliche Beratung. Sie helfen dabei, Gespräche vorzubereiten und Handlungsoptionen einzuordnen — die Entscheidung liegt bei dir und deiner Ärztin oder deinem Arzt.
           </p>
@@ -502,27 +555,18 @@ export default function KrankheitDetail() {
         </div>
       )}
 
-      {/* [16] Quellen — nur externe Quellen (typ !== 'intern') (P7C-Freeze 0.5) ── */}
+      {/* [16] Quellen — QuellenBox (Q2-BUILD-02a) ──────────────────────────── */}
+      {/* Nur externe Quellen (typ !== 'intern') — intern-Fälle F06/L72/M13/R74/Z87 */}
+      {/* QuellenBox: Typ-Chip + Name-Link + beschreibung wenn vorhanden          */}
+      {/* Max 2 sichtbar, Rest hinter „+ N weitere anzeigen" (Q2 Pre-Spec C4)    */}
       {quellenExtern.length > 0 && (
         <div className="krank-section">
           <p className="krank-section-title">Quellen</p>
-          <ul className="krank-quellen-list">
-            {quellenExtern.map((q, i) => (
-              <li key={i} className="krank-quelle-item">
-                {q.url ? (
-                  <a href={q.url} target="_blank" rel="noopener noreferrer">{q.name}</a>
-                ) : (
-                  q.name
-                )}
-                {q.typ && <span style={{ color: 'var(--text-muted)', fontSize: 12 }}> · {q.typ}</span>}
-              </li>
-            ))}
-          </ul>
+          <QuellenBox quellen={quellenExtern} />
         </div>
       )}
 
       {/* [16b] Intern-Fälle: kein Quellenblock — ehrlicher Hinweis (P7C-Freeze 0.5) */}
-      {/* Greift wenn quellen nur intern-Einträge enthält (F06/L72/M13/R74/Z87) */}
       {nurInternQuellen && (
         <p style={{ fontSize: 13, color: 'var(--text-muted)', marginTop: 8, marginBottom: 0 }}>
           Zu diesem ICD-Code liegen keine externen Quellen vor.
