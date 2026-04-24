@@ -7,9 +7,9 @@
 }
 
 .ern-hero {
-  background: var(--primary-50);
-  border-bottom: 1px solid var(--primary-100);
-  padding: 48px 0 40px;
+  background: var(--bg); /* UI-REFRESH-03: Listing-Header beruhigt, analog Laborwerte/Krankheiten */
+  border-bottom: 1px solid var(--border);
+  padding: 40px 0 32px;
 }
 
 .ern-hero-inner {
@@ -19,24 +19,13 @@
 }
 
 .ern-hero-label {
-  display: inline-flex;
-  align-items: center;
-  gap: 6px;
-  background: var(--primary-100);
-  color: var(--primary);
-  font-size: 12px;
-  font-weight: 600;
-  letter-spacing: 0.06em;
-  text-transform: uppercase;
-  padding: 4px 12px;
-  border-radius: 999px;
-  margin-bottom: 16px;
+  display: none; /* UI-REFRESH-03: No-Go #4 Eyebrow-Badge entfernt */
 }
 
 .ern-hero-title {
-  font-family: 'Instrument Serif', Georgia, serif;
-  font-size: clamp(28px, 5vw, 42px);
-  font-weight: 400;
+  font-family: 'DM Sans', system-ui, sans-serif; /* UI-REFRESH-03: Listing-H1 = DM Sans, B2 */
+  font-size: clamp(24px, 3.5vw, 32px);
+  font-weight: 600;
   color: var(--text);
   margin-bottom: 12px;
   line-height: 1.2;
@@ -58,9 +47,9 @@
 }
 
 .ern-section-title {
-  font-family: 'Instrument Serif', Georgia, serif;
-  font-size: 20px;
-  font-weight: 400;
+  font-family: 'DM Sans', system-ui, sans-serif; /* UI-REFRESH-03: Sektionsüberschrift = DM Sans, B2 */
+  font-size: 16px;
+  font-weight: 600;
   color: var(--text);
   margin-bottom: 8px;
 }
@@ -102,9 +91,9 @@
 }
 
 .ern-card-name {
-  font-family: 'Instrument Serif', Georgia, serif;
-  font-size: 20px;
-  font-weight: 400;
+  font-family: 'DM Sans', system-ui, sans-serif; /* UI-REFRESH-03: Karten-Titel = DM Sans 600, B2 */
+  font-size: 16px;
+  font-weight: 600;
   color: var(--text);
   line-height: 1.25;
 }
@@ -200,8 +189,8 @@
 }
 
 .ern-detail-hero {
-  background: var(--primary-50);
-  border-bottom: 1px solid var(--primary-100);
+  background: var(--bg); /* UI-REFRESH-03: Detail-Hero beruhigt */
+  border-bottom: 1px solid var(--border);
   padding: 40px 0 36px;
 }
 
@@ -216,18 +205,7 @@
 }
 
 .ern-detail-label {
-  display: inline-flex;
-  align-items: center;
-  gap: 6px;
-  background: var(--primary-100);
-  color: var(--primary);
-  font-size: 11px;
-  font-weight: 600;
-  letter-spacing: 0.06em;
-  text-transform: uppercase;
-  padding: 3px 10px;
-  border-radius: 999px;
-  margin-bottom: 14px;
+  display: none; /* UI-REFRESH-03: No-Go #4 Eyebrow-Badge entfernt */
 }
 
 .ern-detail-title {
@@ -267,9 +245,9 @@
 }
 
 .ern-block-title {
-  font-family: 'Instrument Serif', Georgia, serif;
-  font-size: 20px;
-  font-weight: 400;
+  font-family: 'DM Sans', system-ui, sans-serif; /* UI-REFRESH-03: Block-Titel = DM Sans 600, B2+B5 */
+  font-size: 16px;
+  font-weight: 600;
   color: var(--text);
   margin-bottom: 14px;
   display: flex;
@@ -491,9 +469,9 @@
 }
 
 .ern-naehrstoff-gruppe-title {
-  font-family: 'Instrument Serif', Georgia, serif;
-  font-size: 16px;
-  font-weight: 400;
+  font-family: 'DM Sans', system-ui, sans-serif; /* UI-REFRESH-03: Gruppen-Titel = DM Sans, B2 */
+  font-size: 14px;
+  font-weight: 600;
   color: var(--text-light);
   margin-bottom: 14px;
   display: flex;
@@ -556,8 +534,8 @@
 }
 
 .ern-naehrstoff-hero {
-  background: var(--primary-50);
-  border-bottom: 1px solid var(--primary-100);
+  background: var(--bg); /* UI-REFRESH-03: Nährstoff-Hero beruhigt */
+  border-bottom: 1px solid var(--border);
   padding: 40px 0 36px;
 }
 
@@ -572,18 +550,7 @@
 }
 
 .ern-naehrstoff-label {
-  display: inline-flex;
-  align-items: center;
-  gap: 6px;
-  background: var(--primary-100);
-  color: var(--primary);
-  font-size: 11px;
-  font-weight: 600;
-  letter-spacing: 0.06em;
-  text-transform: uppercase;
-  padding: 3px 10px;
-  border-radius: 999px;
-  margin-bottom: 14px;
+  display: none; /* UI-REFRESH-03: No-Go #4 Eyebrow-Badge entfernt */
 }
 
 .ern-naehrstoff-title {
@@ -1330,9 +1297,9 @@
 }
 
 .ern-zs-filter-chip--aktiv {
-  background: var(--primary-50);
+  background: var(--primary); /* UI-REFRESH-03: konsistenter aktiver Zustand (solid fill wie alle anderen Filter) */
   border-color: var(--primary);
-  color: var(--primary);
+  color: white;
   font-weight: 600;
 }
 
@@ -1403,8 +1370,8 @@
 
 /* Header */
 .ern-zs-header {
-  background: var(--primary-50);
-  border-bottom: 1px solid var(--primary-100);
+  background: var(--bg); /* UI-REFRESH-03: Zusatzstoff-Header beruhigt */
+  border-bottom: 1px solid var(--border);
   padding: 40px 0 32px;
 }
 
@@ -1509,9 +1476,9 @@
 }
 
 .ern-zs-block-title {
-  font-family: 'Instrument Serif', Georgia, serif;
-  font-size: 20px;
-  font-weight: 400;
+  font-family: 'DM Sans', system-ui, sans-serif; /* UI-REFRESH-03: Block-Titel = DM Sans 600, B2+B5 */
+  font-size: 16px;
+  font-weight: 600;
   color: var(--text-dark);
   margin-bottom: 12px;
 }

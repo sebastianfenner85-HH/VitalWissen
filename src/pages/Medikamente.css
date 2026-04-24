@@ -66,8 +66,9 @@
 }
 
 .med-title {
-  font-family: "Instrument Serif", serif;
-  font-size: clamp(26px, 4vw, 38px);
+  font-family: "DM Sans", system-ui, sans-serif; /* UI-REFRESH-03: Listing-H1 = DM Sans 600 (B2, deferriert aus REFRESH-01) */
+  font-size: clamp(24px, 3.5vw, 32px);
+  font-weight: 600;
   color: var(--text);
   margin: 0 0 10px;
 }
@@ -431,8 +432,9 @@
 }
 
 .med-section-title {
-  font-family: "Instrument Serif", serif;
-  font-size: 22px;
+  font-family: "DM Sans", system-ui, sans-serif; /* UI-REFRESH-03: Sektionsüberschrift = DM Sans 600, B2 */
+  font-size: 16px;
+  font-weight: 600;
   color: var(--text);
   margin-bottom: 14px;
 }

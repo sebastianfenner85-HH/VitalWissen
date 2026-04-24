@@ -288,9 +288,9 @@
   font-family: 'DM Sans', sans-serif;
   font-size: 14px;
   font-weight: 600;
-  text-transform: uppercase;
-  letter-spacing: 0.08em;
-  color: var(--text-muted);
+  text-transform: none; /* UI-REFRESH-03: uppercase entfernt, analog supp-section-title + krank-section-title */
+  letter-spacing: normal;
+  color: var(--text);
   margin-bottom: 16px;
 }
 
