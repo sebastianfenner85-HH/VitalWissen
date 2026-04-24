@@ -1,0 +1,497 @@
+/* ─── Q2 Vertrauensseite — Prefix: q2-* ───────────────────────────────────── */
+
+/* ── Seitenrahmen ─────────────────────────────────────────────────── */
+.q2-page {
+  padding: 32px 0 64px;
+}
+
+.q2-header {
+  margin-bottom: 40px;
+}
+
+.q2-back {
+  display: inline-block;
+  font-size: 13px;
+  color: var(--text-light);
+  margin-bottom: 16px;
+  transition: color 0.15s;
+  min-height: 40px;
+  line-height: 40px;
+}
+
+.q2-back:hover {
+  color: var(--primary);
+}
+
+.q2-title {
+  font-size: 36px;
+  color: var(--text);
+  margin-bottom: 10px;
+}
+
+.q2-subtitle {
+  font-size: 16px;
+  color: var(--text-light);
+  line-height: 1.6;
+  max-width: 560px;
+}
+
+/* ── Sections ─────────────────────────────────────────────────────── */
+.q2-section {
+  margin-bottom: 48px;
+  padding-bottom: 48px;
+  border-bottom: 1px solid var(--border);
+}
+
+.q2-section--last {
+  border-bottom: none;
+  margin-bottom: 0;
+}
+
+.q2-section-title {
+  font-size: 22px;
+  color: var(--text);
+  margin-bottom: 14px;
+}
+
+.q2-section-lead {
+  font-size: 15px;
+  color: var(--text-light);
+  margin-bottom: 20px;
+  line-height: 1.6;
+}
+
+/* ── Prose ────────────────────────────────────────────────────────── */
+.q2-prose {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  max-width: 680px;
+}
+
+.q2-prose p {
+  font-size: 15px;
+  line-height: 1.7;
+  color: var(--text-light);
+}
+
+.q2-prose p strong {
+  color: var(--text);
+}
+
+/* ── V1: Ist/Nicht-Grid ───────────────────────────────────────────── */
+.q2-ist-nicht-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+  margin-top: 20px;
+}
+
+.q2-ist-card {
+  border-radius: var(--radius);
+  padding: 18px 20px;
+  border: 1px solid var(--border);
+}
+
+.q2-ist-card--ist {
+  background: var(--primary-50);
+  border-color: var(--primary-100);
+}
+
+.q2-ist-card--nicht {
+  background: #FFF8F8;
+  border-color: #F0D0D0;
+}
+
+.q2-ist-label {
+  display: block;
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  margin-bottom: 12px;
+  color: var(--text-muted);
+}
+
+.q2-ist-list {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.q2-ist-card--ist .q2-ist-list li::before {
+  content: "✓ ";
+  color: var(--primary);
+  font-weight: 600;
+}
+
+.q2-ist-card--nicht .q2-ist-list li::before {
+  content: "✕ ";
+  color: var(--red);
+  font-weight: 600;
+}
+
+.q2-ist-list li {
+  font-size: 14px;
+  color: var(--text-light);
+  line-height: 1.5;
+}
+
+/* ── V3: Quellentypen-Grid ────────────────────────────────────────── */
+.q2-typen-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.q2-typ-card {
+  background: white;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 18px 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.q2-typ-top {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+}
+
+.q2-typ-icon {
+  font-size: 22px;
+  flex-shrink: 0;
+  margin-top: 2px;
+}
+
+.q2-typ-top > div {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+/* Badges pro Typ */
+.q2-typ-badge {
+  display: inline-block;
+  font-size: 13px;
+  font-weight: 600;
+  padding: 3px 10px;
+  border-radius: 999px;
+  line-height: 1.5;
+}
+
+.q2-typ-badge--guideline   { background: #EEF2FF; color: #4338CA; }
+.q2-typ-badge--regulatory  { background: #EFF6FF; color: #1D4ED8; }
+.q2-typ-badge--database    { background: #F1F5F9; color: #475569; }
+.q2-typ-badge--research    { background: var(--yellow-light); color: var(--yellow); }
+.q2-typ-badge--patient_info { background: #ECFEFF; color: #0E7490; }
+
+/* Ebene-Tag */
+.q2-typ-ebene {
+  font-size: 11px;
+  font-weight: 500;
+  padding: 2px 8px;
+  border-radius: 999px;
+  display: inline-block;
+  width: fit-content;
+}
+
+.q2-typ-ebene--primaer {
+  background: var(--primary-50);
+  color: var(--primary);
+  border: 1px solid var(--primary-100);
+}
+
+.q2-typ-ebene--sekundaer {
+  background: #F1F5F9;
+  color: #64748B;
+  border: 1px solid #E2E8F0;
+}
+
+.q2-typ-beschreibung {
+  font-size: 14px;
+  color: var(--text-light);
+  line-height: 1.6;
+  margin: 0;
+}
+
+/* Beispiel-Chips (wiederverwendet in V3, V4) */
+.q2-typ-beispiele {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.q2-beispiel-chip {
+  font-size: 12px;
+  font-weight: 500;
+  padding: 3px 10px;
+  border-radius: 999px;
+  display: inline-block;
+  min-height: 26px;
+  line-height: 20px;
+}
+
+.q2-beispiel-chip--guideline   { background: #EEF2FF; color: #4338CA; }
+.q2-beispiel-chip--regulatory  { background: #EFF6FF; color: #1D4ED8; }
+.q2-beispiel-chip--database    { background: #F1F5F9; color: #475569; }
+.q2-beispiel-chip--research    { background: var(--yellow-light); color: var(--yellow); }
+.q2-beispiel-chip--patient_info { background: #ECFEFF; color: #0E7490; }
+
+.q2-typ-saeule {
+  font-size: 12px;
+  color: var(--text-muted);
+  margin: 0;
+}
+
+/* ── V4: Quellenhierarchie ────────────────────────────────────────── */
+.q2-hierarchie {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+  margin-bottom: 20px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  overflow: hidden;
+}
+
+.q2-hierarchie-level {
+  display: flex;
+  align-items: flex-start;
+  gap: 0;
+  padding: 16px 20px;
+  border-bottom: 1px solid var(--border);
+  background: white;
+  min-height: 40px;
+}
+
+.q2-hierarchie-level:last-child {
+  border-bottom: none;
+}
+
+.q2-hierarchie-level--1 { border-left: 4px solid #4338CA; }
+.q2-hierarchie-level--2 { border-left: 4px solid #475569; }
+.q2-hierarchie-level--3 { border-left: 4px solid var(--yellow); }
+.q2-hierarchie-level--4 { border-left: 4px solid #0E7490; }
+
+.q2-hierarchie-rank {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  background: var(--surface-2);
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--text);
+  flex-shrink: 0;
+  margin-right: 14px;
+  margin-top: 2px;
+}
+
+.q2-hierarchie-content {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+.q2-hierarchie-name {
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--text);
+}
+
+.q2-hierarchie-desc {
+  font-size: 13px;
+  color: var(--text-light);
+  line-height: 1.5;
+}
+
+.q2-hierarchie-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 5px;
+  margin-top: 4px;
+}
+
+.q2-hierarchie-tag {
+  font-size: 11px;
+  font-weight: 600;
+  padding: 3px 10px;
+  border-radius: 999px;
+  background: var(--primary-50);
+  color: var(--primary);
+  border: 1px solid var(--primary-100);
+  flex-shrink: 0;
+  height: fit-content;
+  margin-top: 3px;
+  margin-left: 12px;
+  white-space: nowrap;
+}
+
+.q2-hierarchie-tag--sekundaer {
+  background: #F1F5F9;
+  color: #64748B;
+  border-color: #E2E8F0;
+}
+
+.q2-hinweis-box {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  background: #F0F7FF;
+  border: 1px solid #BFDBFE;
+  border-radius: var(--radius-sm);
+  padding: 14px 16px;
+}
+
+.q2-hinweis-icon {
+  font-size: 16px;
+  flex-shrink: 0;
+  margin-top: 1px;
+}
+
+.q2-hinweis-box p {
+  font-size: 13px;
+  line-height: 1.6;
+  color: var(--text-light);
+  margin: 0;
+}
+
+.q2-hinweis-box strong {
+  color: var(--text);
+}
+
+/* ── V6: Nicht-Liste ──────────────────────────────────────────────── */
+.q2-nicht-liste {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.q2-nicht-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  padding: 12px 16px;
+  background: #FFF8F8;
+  border: 1px solid #F0D0D0;
+  border-radius: var(--radius-sm);
+  min-height: 40px;
+}
+
+.q2-nicht-icon {
+  color: var(--red);
+  font-weight: 700;
+  font-size: 14px;
+  flex-shrink: 0;
+  margin-top: 2px;
+}
+
+.q2-nicht-item span:last-child {
+  font-size: 14px;
+  color: var(--text-light);
+  line-height: 1.5;
+}
+
+/* ── V7: Feedback ─────────────────────────────────────────────────── */
+.q2-feedback-box {
+  background: var(--primary-50);
+  border: 1px solid var(--primary-100);
+  border-radius: var(--radius);
+  padding: 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  align-items: flex-start;
+}
+
+.q2-feedback-text {
+  font-size: 15px;
+  color: var(--text-light);
+  line-height: 1.6;
+  margin: 0;
+  max-width: 560px;
+}
+
+.q2-feedback-btn {
+  display: inline-flex;
+  align-items: center;
+  background: var(--primary);
+  color: white;
+  font-size: 14px;
+  font-weight: 600;
+  padding: 10px 22px;
+  border-radius: var(--radius-sm);
+  min-height: 40px;
+  transition: background 0.15s;
+  text-decoration: none;
+}
+
+.q2-feedback-btn:hover {
+  background: var(--primary-light);
+  color: white;
+}
+
+/* ── Mobile ───────────────────────────────────────────────────────── */
+@media (max-width: 640px) {
+  .q2-page {
+    padding: 24px 0 48px;
+  }
+
+  .q2-title {
+    font-size: 28px;
+  }
+
+  .q2-ist-nicht-grid {
+    grid-template-columns: 1fr;
+    gap: 12px;
+  }
+
+  .q2-typ-card {
+    padding: 14px 16px;
+  }
+
+  .q2-hierarchie-level {
+    padding: 14px 14px;
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+
+  .q2-hierarchie-tag {
+    margin-left: 0;
+    margin-top: 4px;
+  }
+
+  .q2-hierarchie-desc {
+    display: none; /* auf Mobile nur Name + Chips + Tag */
+  }
+
+  .q2-nicht-item {
+    padding: 12px 14px;
+    min-height: 44px;
+  }
+
+  .q2-feedback-box {
+    padding: 18px;
+  }
+
+  .q2-feedback-btn {
+    width: 100%;
+    justify-content: center;
+  }
+
+  .q2-back {
+    font-size: 14px;
+  }
+
+  .q2-section-title {
+    font-size: 20px;
+  }
+}

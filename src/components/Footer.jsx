@@ -1,3 +1,5 @@
+import { Link } from "react-router-dom";
+
 export default function Footer() {
   return (
     <footer className="site-footer">
@@ -13,6 +15,7 @@ export default function Footer() {
           </div>
           <div className="footer-meta">
             <span className="footer-badge">Werbefrei · Kein Affiliate · Kein Sponsoring</span>
+            <Link to="/vertrauen" className="footer-trust-link">Quellen &amp; Vertrauen</Link>
             <span className="footer-copy">© {new Date().getFullYear()} VitalWissen</span>
           </div>
         </div>

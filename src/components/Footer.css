@@ -68,3 +68,19 @@
     text-align: center;
   }
 }
+
+/* ─── Footer Trust-Link (Q2-BUILD-01) ────────────────────────────── */
+.footer-trust-link {
+  font-size: 12px;
+  color: var(--text-light);
+  text-decoration: underline;
+  text-underline-offset: 2px;
+  min-height: 40px;
+  display: inline-flex;
+  align-items: center;
+  transition: color 0.15s;
+}
+
+.footer-trust-link:hover {
+  color: var(--primary);
+}

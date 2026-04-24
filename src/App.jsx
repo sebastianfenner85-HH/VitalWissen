@@ -16,6 +16,7 @@ import ErnaehrungZusatzstoffDetail from "./pages/ErnaehrungZusatzstoffDetail";
 import Arztbrief from "./pages/Arztbrief";
 import MedikamenteListe from "./pages/MedikamenteListe";
 import MedikamentDetail from "./pages/MedikamentDetail";
+import Vertrauen from "./pages/Vertrauen";
 import "./styles/global.css";
 import "./components/Footer.css";
 
@@ -41,6 +42,7 @@ export default function App() {
             <Route path="/arztbrief" element={<Arztbrief />} />
             <Route path="/medikamente" element={<MedikamenteListe />} />
             <Route path="/medikamente/:slug" element={<MedikamentDetail />} />
+            <Route path="/vertrauen" element={<Vertrauen />} />
             <Route path="*" element={<NotFound />} />
           </Routes>
         </main>
