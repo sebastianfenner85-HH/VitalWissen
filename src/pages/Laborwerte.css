@@ -1,7 +1,7 @@
 .lw-page { min-height: 100vh; }
 
 .lw-header {
-  background: linear-gradient(160deg, #f0faf5 0%, #fafaf8 100%);
+  background: var(--bg); /* UI-REFRESH-01: Gradient entfernt, konsistenter Header */
   border-bottom: 1px solid var(--border);
   padding: 40px 0 0;
 }
@@ -15,7 +15,9 @@
 }
 
 .lw-title {
-  font-size: 36px;
+  font-family: 'DM Sans', system-ui, sans-serif; /* UI-REFRESH-01: Listenseiten-H1 = DM Sans */
+  font-size: 30px;
+  font-weight: 600;
   margin-bottom: 8px;
 }
 
@@ -258,7 +260,7 @@
   margin-bottom: 12px;
 }
 
-.lw-detail-title { font-size: 42px; margin-bottom: 6px; }
+.lw-detail-title { font-family: 'Instrument Serif', Georgia, serif; /* UI-REFRESH-01: Detail-H1 behält Serif */ font-weight: 400; font-size: 42px; margin-bottom: 6px; }
 .lw-detail-vollname { font-size: 18px; color: var(--text-light); font-family: 'DM Sans', sans-serif; }
 
 .notfall-banner {

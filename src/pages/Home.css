@@ -4,9 +4,9 @@
 
 /* ── Hero ─────────────────────────────────────────── */
 .home-hero {
-  background: linear-gradient(160deg, #f0faf5 0%, #fafaf8 40%, #fffdf5 100%);
+  background: linear-gradient(160deg, #f5f9f7 0%, var(--bg) 100%);
   border-bottom: 1px solid var(--border);
-  padding: 80px 24px 64px;
+  padding: 56px 24px 48px;
   text-align: center;
 }
 
@@ -17,7 +17,7 @@
 }
 
 .home-eyebrow {
-  display: inline-block;
+  display: none; /* UI-REFRESH-01: entfernt — editorial ohne Informationswert */
   background: var(--primary-100);
   color: var(--primary);
   font-size: 12px;
@@ -30,7 +30,9 @@
 }
 
 .home-headline {
-  font-size: clamp(28px, 4.5vw, 48px);
+  font-family: 'Instrument Serif', Georgia, serif; /* UI-REFRESH-01: explizit gesetzt, da globale h-Regel entfernt */
+  font-weight: 400;
+  font-size: clamp(24px, 3.5vw, 36px);
   line-height: 1.15;
   margin-bottom: 20px;
   color: var(--text);
@@ -304,6 +306,7 @@
 }
 
 .home-pillar-card h3 {
+  font-family: 'DM Sans', system-ui, sans-serif; /* UI-REFRESH-01: DM Sans für Karten-Überschriften */
   font-size: 17px;
   font-weight: 700;
   color: var(--text);

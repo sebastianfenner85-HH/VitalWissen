@@ -115,6 +115,7 @@
 }
 
 .nav-tagline {
+  display: none; /* UI-REFRESH-01: Nav-Tagline entfernt — persistentes Serif-kursiv ist editorial */
   font-size: 12px;
   color: var(--text-muted);
   font-style: italic;

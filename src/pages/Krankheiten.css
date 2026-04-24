@@ -22,8 +22,10 @@
 }
 
 .krank-title {
-  font-family: "Instrument Serif", serif;
-  font-size: clamp(26px, 4vw, 38px);
+  /* UI-REFRESH-01: Listenseiten-H1 = DM Sans (kein Serif auf Übersichtsseiten) */
+  font-family: 'DM Sans', system-ui, sans-serif;
+  font-size: clamp(24px, 3.5vw, 32px);
+  font-weight: 600;
   color: var(--text-dark);
   margin: 0 0 10px;
 }
@@ -365,11 +367,12 @@
 }
 
 .krank-section-title {
-  font-size: 11px;
-  font-weight: 700;
-  text-transform: uppercase;
-  letter-spacing: 0.08em;
-  color: var(--text-muted);
+  /* UI-REFRESH-01: Block-Titel lesbar statt uppercase-whisper */
+  font-size: 13px;
+  font-weight: 600;
+  text-transform: none;
+  letter-spacing: normal;
+  color: var(--text);
   margin: 0 0 14px;
 }
 

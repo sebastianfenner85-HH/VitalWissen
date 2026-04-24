@@ -50,10 +50,12 @@ body {
   font-size: 16px;
 }
 
+/* Instrument Serif wird NICHT mehr pauschal auf h1/h2/h3 gesetzt.
+   Erlaubte Einsatzkontexte: .home-headline, Detailseiten-H1 (explizit),
+   Logo-Mark (.nav-logo-mark). Alle anderen Headings: DM Sans. */
 h1, h2, h3 {
-  font-family: 'Instrument Serif', Georgia, serif;
   line-height: 1.2;
-  font-weight: 400;
+  font-weight: 600;
 }
 
 a {

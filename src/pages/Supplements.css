@@ -1,7 +1,7 @@
 .supp-page { min-height: 100vh; }
 
 .supp-header {
-  background: linear-gradient(160deg, #fffdf0 0%, #fafaf8 100%);
+  background: var(--bg); /* UI-REFRESH-01: Gradient entfernt */
   border-bottom: 1px solid var(--border);
   padding: 40px 0 0;
 }
@@ -14,7 +14,7 @@
   margin-bottom: 28px;
 }
 
-.supp-title { font-size: 36px; margin-bottom: 8px; }
+.supp-title { font-family: 'DM Sans', system-ui, sans-serif; /* UI-REFRESH-01: Listenseiten-H1 = DM Sans */ font-size: 30px; font-weight: 600; margin-bottom: 8px; }
 .supp-subtitle { font-size: 16px; color: var(--text-light); }
 
 .supp-filter-row {
@@ -132,7 +132,7 @@
 
 .supp-detail-back:hover { color: var(--accent-dark); }
 
-.supp-detail-title { font-size: 42px; margin-bottom: 6px; }
+.supp-detail-title { font-family: 'Instrument Serif', Georgia, serif; /* UI-REFRESH-01: Detail-H1 behält Serif */ font-weight: 400; font-size: 42px; margin-bottom: 6px; }
 .supp-detail-wissenschaftlich { font-size: 18px; color: var(--text-light); font-family: 'DM Sans', sans-serif; margin-bottom: 16px; }
 
 .supp-section {
