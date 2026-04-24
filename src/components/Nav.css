@@ -84,8 +84,8 @@
 }
 
 .soon-tag {
-  background: var(--accent-light);
-  color: var(--accent-dark);
+  background: var(--surface-2); /* UI-REFRESH-02: amber → neutral, No-Go amber außerhalb S2 */
+  color: var(--text-muted);
   font-size: 9px;
   font-weight: 500;
   padding: 1px 5px;

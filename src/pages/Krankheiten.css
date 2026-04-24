@@ -456,20 +456,22 @@
   display: inline-flex;
   align-items: center;
   gap: 6px;
-  background: #F0FAF5;
-  color: var(--primary);
+  background: var(--surface-2); /* UI-REFRESH-02: Typ 1 neutral */
+  color: var(--text-light);
   border-radius: 20px;
   padding: 5px 14px;
   font-size: 13px;
   font-weight: 500;
   text-decoration: none;
-  border: 1px solid #B2DFCF;
+  border: 1px solid var(--border);
   cursor: pointer;
-  transition: background 0.15s;
+  transition: border-color 0.15s, color 0.15s, background 0.15s;
 }
 
 .krank-link-chip:hover {
-  background: #D4F0E3;
+  border-color: var(--primary);
+  color: var(--primary);
+  background: var(--primary-50);
 }
 
 /* S6-Cross-Block: Wirkstoff-Chips (krank-med-chip) — S6-03 */
@@ -477,19 +479,21 @@
   display: inline-flex;
   align-items: center;
   gap: 6px;
-  background: #EEF2FF;
-  color: #3730A3;
+  background: var(--surface-2); /* UI-REFRESH-02: Typ 1 neutral */
+  color: var(--text-light);
   border-radius: 20px;
   padding: 5px 14px;
   font-size: 13px;
   font-weight: 500;
-  border: 1px solid #C7D2FE;
+  border: 1px solid var(--border);
   cursor: pointer;
-  transition: background 0.15s;
+  transition: border-color 0.15s, color 0.15s, background 0.15s;
 }
 
 .krank-med-chip:hover {
-  background: #E0E7FF;
+  border-color: var(--primary);
+  color: var(--primary);
+  background: var(--primary-50);
 }
 
 /* S18-Cross-Block [13]: Ernährung im Kontext — Subgruppen + Chips */
@@ -504,8 +508,8 @@
 .krank-ern-sublabel {
   font-size: 11px;
   font-weight: 600;
-  text-transform: uppercase;
-  letter-spacing: 0.06em;
+  text-transform: none; /* UI-REFRESH-02: uppercase entfernt */
+  letter-spacing: normal;
   color: var(--text-muted);
   margin: 0 0 8px;
 }
@@ -514,62 +518,66 @@
 .krank-ern-chip {
   display: inline-flex;
   align-items: center;
-  background: #FFF7ED;
-  color: #92400E;
+  background: var(--surface-2); /* UI-REFRESH-02: Typ 1 neutral */
+  color: var(--text-light);
   border-radius: 20px;
   padding: 5px 14px;
   font-size: 13px;
   font-weight: 500;
-  border: 1px solid #FED7AA;
+  border: 1px solid var(--border);
   cursor: pointer;
-  transition: background 0.15s;
+  transition: border-color 0.15s, color 0.15s, background 0.15s;
   white-space: nowrap;
 }
 
 .krank-ern-chip:hover {
-  background: #FEE4C0;
+  border-color: var(--primary);
+  color: var(--primary);
+  background: var(--primary-50);
 }
 
 /* Muster-Chips: teal */
 .krank-muster-chip {
   display: inline-flex;
   align-items: center;
-  background: #F0FDFA;
-  color: #134E4A;
+  background: var(--surface-2); /* UI-REFRESH-02: Typ 1 neutral */
+  color: var(--text-light);
   border-radius: 20px;
   padding: 5px 14px;
   font-size: 13px;
   font-weight: 500;
-  border: 1px solid #99F6E4;
+  border: 1px solid var(--border);
   cursor: pointer;
-  transition: background 0.15s;
+  transition: border-color 0.15s, color 0.15s, background 0.15s;
   white-space: nowrap;
 }
 
 .krank-muster-chip:hover {
-  background: #CCFBF1;
+  border-color: var(--primary);
+  color: var(--primary);
+  background: var(--primary-50);
 }
 
 /* Lebensmittel-Chips: orange (S18-Build-04, 23.04.2026) */
 .krank-lm-chip {
   display: inline-flex;
   align-items: center;
-  background: #FFF7ED;
-  color: #9A3412;
+  background: var(--surface-2); /* UI-REFRESH-02: Typ 1 neutral */
+  color: var(--text-light);
   border-radius: 20px;
   padding: 5px 14px;
   font-size: 13px;
   font-weight: 500;
-  border: 1px solid #FDBA74;
+  border: 1px solid var(--border);
   cursor: pointer;
-  transition: background 0.15s;
+  transition: border-color 0.15s, color 0.15s, background 0.15s;
   white-space: nowrap;
 }
 
 .krank-lm-chip:hover {
-  background: #F97316;
-  color: white;
-  border-color: #F97316;
+  border-color: var(--primary);
+  color: var(--primary);
+  background: var(--primary-50);
 }
 
 /* Quellen */
@@ -949,7 +957,7 @@
 .krank-quellen-typchip--guideline    { background: #EEF2FF; color: #4338CA; }
 .krank-quellen-typchip--regulatory   { background: #EFF6FF; color: #1D4ED8; }
 .krank-quellen-typchip--database     { background: #F1F5F9; color: #475569; }
-.krank-quellen-typchip--research     { background: #FEF9C3; color: #854D0E; }
+.krank-quellen-typchip--research     { background: #EEE9FF; color: #6B5CA5; } /* UI-REFRESH-02: Violett-Grau (kein Amber-Konflikt mit S2) */
 .krank-quellen-typchip--patient_info { background: #ECFEFF; color: #0E7490; }
 
 /* Name + Beschreibung */

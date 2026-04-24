@@ -147,9 +147,9 @@
   font-family: 'DM Sans', sans-serif;
   font-size: 14px;
   font-weight: 600;
-  text-transform: uppercase;
-  letter-spacing: 0.08em;
-  color: var(--text-muted);
+  text-transform: none; /* UI-REFRESH-02: uppercase entfernt, analog krank-section-title */
+  letter-spacing: normal;
+  color: var(--text);
   margin-bottom: 16px;
 }
 
@@ -249,10 +249,11 @@
 }
 
 .zusammenhaenge-chip {
-  background: var(--primary-100);
-  color: var(--primary);
+  background: var(--surface-2); /* UI-REFRESH-02: Typ 1 neutral */
+  color: var(--text-light);
   font-size: 13px;
   font-weight: 500;
   padding: 4px 12px;
   border-radius: 999px;
+  border: 1px solid var(--border);
 }

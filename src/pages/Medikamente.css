@@ -404,12 +404,13 @@
 }
 
 .med-indikation-chip {
-  background: var(--primary-50);
-  color: var(--primary-dark);
+  background: var(--surface-2); /* UI-REFRESH-02: Typ 1 neutral */
+  color: var(--text-light);
   font-size: 13px;
   padding: 4px 12px;
   border-radius: 20px;
   font-weight: 500;
+  border: 1px solid var(--border);
 }
 
 /* ── Detail: Body / Sections ─────────────────────────────────────────────── */
@@ -687,17 +688,17 @@
   background: var(--primary-50);
 }
 
-/* Lebensmittel-Variante (orange — konsistent mit krank-lm-chip in S5) */
+/* Lebensmittel-Variante — UI-REFRESH-02: Typ 1, konsistent mit Basis-Chip */
 .med-crosslink-chip--lm {
-  background: #fff7ed;
-  border-color: #fed7aa;
-  color: #9a3412;
+  background: var(--surface-2);
+  border-color: var(--border);
+  color: var(--text-light);
 }
 
 .med-crosslink-chip--lm:hover {
-  background: #ffedd5;
-  border-color: #fb923c;
-  color: #7c2d12;
+  border-color: var(--primary);
+  color: var(--primary);
+  background: var(--primary-50);
 }
 
 /* ── Footer-Disclaimer (Pflichtblock) ────────────────────────────────────── */

@@ -427,7 +427,7 @@
 .lw-quelle-typ-guideline  { background: #e0e7ff; color: #3730a3; }
 .lw-quelle-typ-regulatory { background: #dbeafe; color: #1e40af; }
 .lw-quelle-typ-database   { background: #f1f5f9; color: #475569; }
-.lw-quelle-typ-research   { background: #fef3c7; color: #92400e; }
+.lw-quelle-typ-research   { background: #EEE9FF; color: #6B5CA5; } /* UI-REFRESH-02: Violett-Grau */
 .lw-quelle-typ-patient_info { background: #ccfbf1; color: #115e59; }
 
 /* =========================================================

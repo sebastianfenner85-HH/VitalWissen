@@ -346,21 +346,22 @@
   display: inline-flex;
   align-items: center;
   gap: 6px;
-  background: var(--primary-50);
-  border: 1px solid var(--primary-100);
-  color: var(--primary);
+  background: var(--surface-2); /* UI-REFRESH-02: Typ 1 neutral */
+  border: 1px solid var(--border);
+  color: var(--text-light);
   border-radius: 999px;
   padding: 5px 14px;
   font-size: 13px;
   font-weight: 500;
   cursor: pointer;
   text-decoration: none;
-  transition: background 0.15s, border-color 0.15s;
+  transition: border-color 0.15s, color 0.15s, background 0.15s;
 }
 
 .ern-chip:hover {
-  background: var(--primary-100);
   border-color: var(--primary);
+  color: var(--primary);
+  background: var(--primary-50);
 }
 
 .ern-no-crosslinks {
@@ -667,21 +668,22 @@
   display: inline-flex;
   align-items: center;
   gap: 6px;
-  background: var(--primary-50);
-  border: 1px solid var(--primary-100);
-  color: var(--primary);
+  background: var(--surface-2); /* UI-REFRESH-02: Typ 1 neutral */
+  border: 1px solid var(--border);
+  color: var(--text-light);
   border-radius: 999px;
   padding: 5px 14px;
   font-size: 13px;
   font-weight: 500;
   cursor: pointer;
   text-decoration: none;
-  transition: background 0.15s, border-color 0.15s;
+  transition: border-color 0.15s, color 0.15s, background 0.15s;
 }
 
 .ern-naehrstoff-chip:hover {
-  background: var(--primary-100);
   border-color: var(--primary);
+  color: var(--primary);
+  background: var(--primary-50);
 }
 
 /* Mobile */
@@ -862,12 +864,13 @@
 }
 
 .ern-lm-kategorie-badge {
-  background: var(--primary);
-  color: white;
+  background: var(--primary-50); /* UI-REFRESH-02: Beruhigt, kein Solid-Primary */
+  color: var(--primary);
+  border: 1px solid var(--primary-100);
   border-radius: var(--radius-full);
   padding: 4px 12px;
   font-size: 13px;
-  font-weight: 600;
+  font-weight: 500;
 }
 
 .ern-lm-nova-badge {
@@ -982,15 +985,16 @@
 
 .ern-lm-mikro-chip--linked {
   cursor: pointer;
-  border-color: #22c55e;
-  color: #15803d;
-  background: #f0fdf4;
-  transition: all 0.15s;
+  border-color: var(--border); /* UI-REFRESH-02: Typ 1 neutral */
+  color: var(--text-light);
+  background: var(--surface-2);
+  transition: border-color 0.15s, color 0.15s, background 0.15s;
 }
 
 .ern-lm-mikro-chip--linked:hover {
-  background: #22c55e;
-  color: white;
+  background: var(--primary-50);
+  color: var(--primary);
+  border-color: var(--primary);
 }
 
 /* ─── Block [3]: Nutzen ─────────────────────────────────────────────────────── */
@@ -1152,21 +1156,21 @@
 }
 
 .ern-lm-erkrankungs-chip {
-  background: #fff7ed;
-  border: 1px solid #fed7aa;
+  background: var(--surface-2); /* UI-REFRESH-02: Typ 1 neutral */
+  border: 1px solid var(--border);
   border-radius: var(--radius-sm);
   padding: 5px 12px;
   font-size: 13px;
-  color: #92400e;
+  color: var(--text-light);
   cursor: pointer;
-  transition: all 0.15s;
+  transition: border-color 0.15s, color 0.15s, background 0.15s;
   text-align: left;
 }
 
 .ern-lm-erkrankungs-chip:hover {
-  background: #f97316;
-  color: white;
-  border-color: #f97316;
+  border-color: var(--primary);
+  color: var(--primary);
+  background: var(--primary-50);
 }
 
 .ern-lm-erkrankungs-chip-relevanz {
