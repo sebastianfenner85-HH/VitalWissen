@@ -127,9 +127,20 @@ function ZielwertBlock({ zielwerte, loincCode }) {
           </span>
         </div>
       )}
+      {loincCode === '2089-1' && (
+        <p className="lw-zt-ldl-risk-note">
+          Bei bestehendem Herz-Kreislauf-Risiko oder Vorerkrankungen gelten deutlich niedrigere Zielwerte (&lt;70 mg/dL oder &lt;55 mg/dL).
+        </p>
+      )}
 
       {/* ZT1 + ZT2: direkt sichtbar, aufklappbar */}
       {zt12.map((z, i) => renderItem(z, `zt12-${i}`))}
+
+      {loincCode === '2089-1' && zt12.length > 0 && (
+        <p className="lw-zt-ldl-normalrisiko-note">
+          Dieser Wert gilt nur für Personen mit niedrigem Risiko und ist kein allgemeiner Optimalwert.
+        </p>
+      )}
 
       {/* ZT3 + ZT4: hinter Intent-Button */}
       {zt34.length > 0 && (
