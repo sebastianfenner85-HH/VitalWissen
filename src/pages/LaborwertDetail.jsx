@@ -212,15 +212,32 @@ function EinordnungBlock({ loincCode, slug }) {
 }
 
 
-// B4-Kategorie Labels
+// B4-Kategorie Labels — erweitert (B4-BUILD-02, B4_DECISION_LOGIC_FREEZE)
 const B4_KATEGORIE = {
-  standard:   { label: 'Gesprächspunkt', cssKey: 'standard' },
-  supporting: { label: 'Ergänzend',      cssKey: 'supporting' },
+  standard:          { label: 'Gesprächspunkt',      cssKey: 'standard' },
+  supporting:        { label: 'Ergänzend',            cssKey: 'supporting' },
+  lifestyle:         { label: 'Lebensstil',           cssKey: 'lifestyle' },
+  supportive:        { label: 'Unterstützend',        cssKey: 'supportive' },
+  promising:         { label: 'Vielversprechend',     cssKey: 'promising' },
+  experimental:      { label: 'Experimentell',        cssKey: 'experimental' },
+  avoid:             { label: 'Eher vermeiden',       cssKey: 'avoid' },
+  monitoring:        { label: 'Monitoring',           cssKey: 'monitoring' },
+  doctor_discussion: { label: 'Gespräch vorbereiten', cssKey: 'doctor' },
 }
 
-// [12b] Was kann ich konkret tun? — Komponente (S8-BUILD-03)
+// Evidenz-Klartextlabels — §5.9 PATCH_01, B4_DECISION_LOGIC_FREEZE
+const B4_EVIDENCE_MATURITY = {
+  established:  'Etabliert',
+  supported:    'Gut untersucht',
+  promising:    'Vielversprechend',
+  uncertain:    'Unsicher',
+  experimental: 'Experimentell',
+  avoid:        'Eher vermeiden',
+}
+
+// [12b] Was kann ich konkret tun? — Komponente (S8-BUILD-03, erweitert B4-BUILD-02)
 // Keine Diagnose, keine Therapieanweisung, keine Dosierungsangabe.
-// Nur: Gesprächsbausteine und Orientierungshinweise.
+// Backward-kompatibel: alte 8-Felder-Karten (HbA1c/Ferritin/VitD/CRP) weiter unterstützt.
 function B4ActionsBlock({ loincCode, slug }) {
   const data =
     (loincCode && LABORWERT_B4_ACTIONS_MAP[loincCode]) ||
@@ -232,36 +249,95 @@ function B4ActionsBlock({ loincCode, slug }) {
   if (high.length === 0 && low.length === 0) return null
 
   const renderKarte = (karte, idx) => {
-    const kat = B4_KATEGORIE[karte.category] ?? B4_KATEGORIE.supporting
+    // Backward-kompatible Feldauflösung (neu || alt)
+    const measureCat = karte.measureCategory || karte.category || 'supporting'
+    const kat = B4_KATEGORIE[measureCat] ?? B4_KATEGORIE.supporting
+    const actionText = karte.whatCouldHelp || karte.whatHelps
+    const effectText = karte.expectedBenefit || karte.expectedEffect
+    const cautionsText = karte.risksAndCautions || karte.cautions
+    const evidenceLabel = karte.evidenceMaturity
+      ? B4_EVIDENCE_MATURITY[karte.evidenceMaturity]
+      : null
+    const isAvoid = measureCat === 'avoid'
+    const isHighSafety = karte.safetyLevel === 'high'
+    const needsDoctor = karte.requiresDoctorDiscussion === true
+
     return (
-      <div key={idx} className="lw-b4a-karte">
+      <div key={idx} className={`lw-b4a-karte${isAvoid ? ' lw-b4a-karte--avoid' : ''}`}>
         <div className="lw-b4a-karte-kopf">
           <span className={`lw-b4a-badge lw-b4a-badge--${kat.cssKey}`}>{kat.label}</span>
+          {evidenceLabel && (
+            <span className="lw-b4a-badge lw-b4a-badge--evidence">{evidenceLabel}</span>
+          )}
           <span className="lw-b4a-karte-titel">{karte.title}</span>
         </div>
         {karte.whyShown && (
           <p className="lw-b4a-kontext">{karte.whyShown}</p>
         )}
-        <div className="lw-b4a-action">
-          <span className="lw-b4a-action-label">Was besprechen?</span>
-          <p className="lw-b4a-action-text">{karte.whatHelps}</p>
-        </div>
-        {karte.expectedEffect && (
-          <p className="lw-b4a-effekt">{karte.expectedEffect}</p>
+        {karte.targetGroup && (
+          <p className="lw-b4a-zielgruppe">Relevant für: {karte.targetGroup}</p>
         )}
-        {karte.cautions && (
+        {isHighSafety && (
+          <div className="lw-b4a-warn-block">
+            <span>⚠️</span>
+            <span>Ärztliche Rücksprache vor jeder Entscheidung notwendig.</span>
+          </div>
+        )}
+        {actionText && !isAvoid && (
+          <div className="lw-b4a-action">
+            <span className="lw-b4a-action-label">Was besprechen?</span>
+            <p className="lw-b4a-action-text">{actionText}</p>
+          </div>
+        )}
+        {isAvoid && actionText && (
+          <p className="lw-b4a-avoid-text">{actionText}</p>
+        )}
+        {effectText && (
+          <p className="lw-b4a-effekt">{effectText}</p>
+        )}
+        {karte.uncertaintyReason && (
+          <div className="lw-b4a-uncertainty">
+            <span className="lw-b4a-uncertainty-label">Evidenzlücke: </span>
+            <span>{karte.uncertaintyReason}</span>
+          </div>
+        )}
+        {cautionsText && (
           <div className="lw-b4a-caution">
             <span className="lw-b4a-caution-icon">ⓘ</span>
-            <span>{karte.cautions}</span>
+            <span>{cautionsText}</span>
+          </div>
+        )}
+        {karte.contraindicationsOrRedFlags && (
+          <div className="lw-b4a-contraindication">
+            <span>⚠</span>
+            <span>{karte.contraindicationsOrRedFlags}</span>
+          </div>
+        )}
+        {karte.notToConfuseWith && (
+          <div className="lw-b4a-abgrenzung">
+            <span className="lw-b4a-abgrenzung-label">Nicht verwechseln: </span>
+            <span>{karte.notToConfuseWith}</span>
           </div>
         )}
         {karte.monitoring && (
           <div className="lw-b4a-monitoring">
             <span className="lw-b4a-monitoring-label">Monitoring:</span>
-            <span className="lw-b4a-monitoring-text">{karte.monitoring}</span>
+            <span className="lw-b4a-monitoring-text"> {karte.monitoring}</span>
           </div>
         )}
-        <p className="lw-b4a-evidenz">{karte.evidence}</p>
+        {karte.doctorDiscussion && (
+          <div className="lw-b4a-doktor">
+            <span className="lw-b4a-doktor-label">Gesprächsfragen: </span>
+            <span>{karte.doctorDiscussion}</span>
+          </div>
+        )}
+        {needsDoctor && !isHighSafety && (
+          <div className="lw-b4a-arzt-callout">Ärztliche Rücksprache empfohlen</div>
+        )}
+        <p className="lw-b4a-evidenz">
+          {evidenceLabel ? `${evidenceLabel} · ` : ''}
+          {karte.sourceRequirement || karte.evidence || ''}
+        </p>
       </div>
     )
   }

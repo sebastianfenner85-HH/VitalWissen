@@ -33,84 +33,251 @@
 
 export const LABORWERT_B4_ACTIONS_MAP = {
 
-  // ─── LDL-Cholesterin — LOINC 2089-1 ──────────────────────────────────────
+  // ─── LDL-Cholesterin — LOINC 2089-1 — B4-BUILD-02 (15-Felder-Schema) ─────
   '2089-1': {
     title: 'Was kann ich bei erhöhtem LDL besprechen?',
     intro:
-      'LDL-Cholesterin wird immer im Zusammenhang mit dem gesamten Herz-Kreislauf-Risiko bewertet. Die folgenden Punkte sind Gesprächs- und Orientierungsbausteine — keine individuelle Therapieempfehlung.',
+      'LDL-Cholesterin wird immer im Zusammenhang mit dem gesamten Herz-Kreislauf-Risiko bewertet. Welcher Zielwert gilt, hängt vom individuellen Risikoprofil ab — 116 mg/dL ist kein universeller Optimalwert. Die folgenden Punkte sind Gesprächs- und Orientierungsbausteine — keine individuelle Therapieempfehlung.',
     high: [
       {
-        title: 'Gesamtrisiko ärztlich einordnen lassen',
-        category: 'standard',
-        evidence: 'Leitlinie — ESC/EAC Dyslipidämien 2019',
+        title: 'Gesamtrisiko und persönlichen Zielwert einordnen',
+        measureCategory: 'doctor_discussion',
+        evidenceMaturity: 'established',
+        evidenceType: 'guideline',
         whyShown:
-          'LDL-Zielwerte hängen stark vom individuellen Herz-Kreislauf-Risiko ab — ein einzelner LDL-Wert reicht für die Einordnung nicht aus.',
-        whatHelps:
-          'Besprich Risikofaktoren wie Blutdruck, Rauchen, Diabetes, familiäre Belastung und frühere Herz-Kreislauf-Ereignisse mit deiner Ärztin oder deinem Arzt.',
-        expectedEffect:
-          'Einordnung, welcher LDL-Zielwert für dich individuell gilt und ob Maßnahmen sinnvoll sind.',
-        cautions:
+          'Gezeigt, weil: LDL erhöht — welcher Zielwert gilt, hängt vom individuellen Herz-Kreislauf-Risiko ab (ESC/EAS 2021)',
+        targetGroup:
+          'Alle Personen mit erhöhtem LDL — vor jeder Entscheidung über Maßnahmen',
+        whatCouldHelp:
+          'Besprich mit deiner Ärztin oder deinem Arzt alle relevanten Risikofaktoren: Blutdruck, Rauchen, Diabetes, Alter, familiäre Belastung und ggf. frühere Herz-Kreislauf-Ereignisse.',
+        expectedBenefit:
+          'Einordnung, welcher LDL-Zielwert individuell gilt (< 116, < 100, < 70 oder < 55 mg/dL je Risikogruppe) und ob eine Maßnahme zeitnah sinnvoll ist.',
+        uncertaintyReason: null,
+        risksAndCautions:
           'Ein einzelner erhöhter LDL-Wert ohne bekannte Vorerkrankungen erfordert nicht automatisch eine medikamentöse Therapie.',
+        contraindicationsOrRedFlags: null,
         monitoring:
-          'Vollständiges Lipidprofil (LDL, HDL, Triglyzeride), Blutdruck, Nüchternblutzucker.',
+          'Vollständiges Lipidprofil (LDL, HDL, Triglyzeride, Non-HDL), Blutdruck, Nüchternblutzucker.',
+        doctorDiscussion:
+          '"Welcher LDL-Zielwert gilt für mein individuelles Risikoprofil?" / "Welche weiteren Risikofaktoren sollten wir prüfen?"',
+        notToConfuseWith:
+          '116 mg/dL ist kein universeller Optimalwert — er gilt nur bei niedrigem kardiovaskulären Risiko. Mittleres Risiko: < 100, hohes Risiko: < 70, sehr hohes Risiko: < 55 mg/dL.',
+        safetyLevel: 'low',
+        requiresDoctorDiscussion: true,
+        sourceRequirement: 'Leitlinie — ESC/EAS 2021 Dyslipidämien',
       },
       {
-        title: 'Ernährungs- und Lebensstilgewohnheiten besprechen',
-        category: 'standard',
-        evidence: 'Leitlinie — ESC/EAC 2019, AWMF',
+        title: 'Ballaststoffreiche Ernährung',
+        measureCategory: 'lifestyle',
+        evidenceMaturity: 'supported',
+        evidenceType: 'meta_analysis',
         whyShown:
-          'Ernährung (gesättigte Fettsäuren, Ballaststoffe) und körperliche Aktivität haben messbaren Einfluss auf den LDL-Spiegel.',
-        whatHelps:
-          'Besonders relevant: Reduktion gesättigter Fettsäuren, mehr Ballaststoffe, regelmäßige körperliche Aktivität. Arzt oder Ernährungsberatung können konkrete Maßnahmen vorschlagen.',
-        expectedEffect:
-          'Lebensstilmaßnahmen können LDL je nach Ausgangslage messbar senken — besonders bei milder Erhöhung.',
-        cautions:
-          'Bei familiärer Hypercholesterinämie sind Lebensstilmaßnahmen allein meist nicht ausreichend.',
-        monitoring:
-          'Kontrolle des Lipidprofils nach 3–6 Monaten Lebensstilmaßnahmen empfohlen.',
+          'Gezeigt, weil: Lösliche Ballaststoffe binden Gallensäuren im Darm und verringern die LDL-Aufnahme — gut belegt durch Meta-Analysen',
+        targetGroup:
+          'Menschen mit mäßig erhöhtem LDL bei niedrigem bis mittlerem kardiovaskulären Risiko',
+        whatCouldHelp:
+          'Mindestens 25–30 g Ballaststoffe täglich: Hafer (Beta-Glucan), Hülsenfrüchte, Flohsamenschalen, Gemüse, Vollkorn. WHO- und DGE-Empfehlung.',
+        expectedBenefit:
+          'LDL-Senkung um durchschnittlich 5–8 % — messbar nach 6–12 Wochen konsequenter Ernährungsumstellung.',
+        uncertaintyReason: null,
+        risksAndCautions:
+          'Ballaststoffzufuhr langsam steigern; bei Reizdarm oder empfindlichem Darm vorsichtig beginnen.',
+        contraindicationsOrRedFlags: null,
+        monitoring: 'LDL-Kontrolle nach 3 Monaten konsequenter Ernährungsumstellung.',
+        doctorDiscussion:
+          '"Welche Ernährungsanpassungen machen in meinem Fall Sinn?" / "Kann eine Ernährungsberatung sinnvoll sein?"',
+        notToConfuseWith:
+          'Nicht verwechseln mit fettarmer Ernährung — lösliche Ballaststoffe senken LDL deutlich effektiver als eine Reduktion der Gesamtfettmenge.',
+        safetyLevel: 'low',
+        requiresDoctorDiscussion: false,
+        sourceRequirement:
+          'Gut untersucht — Cochrane Review Soluble Dietary Fibre (McRorie 2017) + EFSA-Stellungnahme Beta-Glucan',
       },
       {
-        title: 'Vollständiges Lipidprofil beurteilen lassen',
-        category: 'standard',
-        evidence: 'Klinisch etabliert — ESC/EAC 2019',
+        title: 'Vollständiges Lipidprofil bestimmen lassen',
+        measureCategory: 'standard',
+        evidenceMaturity: 'established',
+        evidenceType: 'guideline',
         whyShown:
-          'LDL allein ist nur ein Teil des kardiovaskulären Risikobilds — HDL, Triglyzeride und Gesamtcholesterin sind für eine vollständige Einordnung notwendig.',
-        whatHelps:
-          'Bitte darum, dass HDL, Triglyzeride und Non-HDL-Cholesterin in die Blutuntersuchung einbezogen werden.',
-        expectedEffect:
-          'Bessere Risikoabschätzung durch das vollständige Fettstoffwechselprofil.',
-        cautions: null,
+          'Gezeigt, weil: LDL allein bildet das kardiovaskuläre Risiko nicht vollständig ab — HDL, Triglyzeride und Non-HDL-Cholesterin sind für eine vollständige Einordnung notwendig',
+        targetGroup:
+          'Alle Personen mit erhöhtem LDL, sofern noch kein vollständiges Lipidprofil vorliegt',
+        whatCouldHelp:
+          'Bitte darum, dass HDL, Triglyzeride, Non-HDL-Cholesterin und Gesamtcholesterin in die Blutuntersuchung einbezogen werden.',
+        expectedBenefit:
+          'Vollständigere Risikoabschätzung — Non-HDL-Cholesterin gilt laut ESC/EAS 2021 als besserer Risikomarker als LDL allein.',
+        uncertaintyReason: null,
+        risksAndCautions: null,
+        contraindicationsOrRedFlags: null,
         monitoring:
-          'Nicht-nüchtern-Lipide sind für Erstscreening geeignet; für Verlaufskontrollen wird nüchtern empfohlen.',
+          'Nüchternblut für vollständiges Lipidprofil; Nicht-nüchtern-Werte für Erstscreening geeignet.',
+        doctorDiscussion:
+          '"Können wir das vollständige Lipidprofil bestimmen?" / "Was ist mein Non-HDL-Cholesterin?"',
+        notToConfuseWith: null,
+        safetyLevel: 'low',
+        requiresDoctorDiscussion: false,
+        sourceRequirement: 'Etabliert — ESC/EAS 2021 Dyslipidämien §4',
       },
       {
-        title: 'Familienanamnese ansprechen',
-        category: 'supporting',
-        evidence: 'Klinisch relevant — AWMF Leitlinie Familiäre Hypercholesterinämie',
+        title: 'Lipidsenker als Gesprächspunkt vorbereiten',
+        measureCategory: 'doctor_discussion',
+        evidenceMaturity: 'established',
+        evidenceType: 'guideline',
         whyShown:
-          'Bei familiärer Hypercholesterinämie (FH) können sehr hohe LDL-Werte erblich bedingt sein. Frühzeitige Erkennung verbessert die Prognose deutlich.',
-        whatHelps:
-          'Sprich an, ob Herzerkrankungen oder sehr hohe Cholesterin-Werte in der Familie bekannt sind — besonders bei Betroffenen in jungem Alter.',
-        expectedEffect:
-          'Ggf. gezielte genetische Abklärung oder intensivere Therapieplanung möglich.',
-        cautions:
-          'Familiäre Hypercholesterinämie ist selten, aber häufig unterdiagnostiziert.',
+          'Gezeigt, weil: Bei erhöhtem LDL mit relevantem kardiovaskulären Risiko sind Statine die Klasse-I-A-Empfehlung der ESC/EAS-Leitlinie — ärztliche Einordnung notwendig',
+        targetGroup:
+          'Menschen mit erhöhtem LDL und relevantem Herz-Kreislauf-Risiko — Risikoeinschätzung nur ärztlich möglich',
+        whatCouldHelp:
+          'Wenn ärztlich ein relevantes Risiko festgestellt wird: Frag nach dem für dich geeigneten Therapieansatz, dem erwarteten Nutzen und was bei Muskelbeschwerden zu tun ist.',
+        expectedBenefit:
+          'Statine senken LDL je nach Präparat und Dosierung um 30–50 %. Langfristig: reduziertes kardiovaskuläres Risiko laut ESC/EAS 2021.',
+        uncertaintyReason: null,
+        risksAndCautions:
+          'Mögliche Muskelbeschwerden (Myopathie) — ärztliche Kontrolle von CK und Leberwerten initial empfohlen.',
+        contraindicationsOrRedFlags:
+          'Schwangerschaft, schwere Lebererkrankung: Statine kontraindiziert. Muskelschmerzen unter Statinen zeitnah ärztlich klären.',
+        monitoring: 'LDL, CK und Leberwerte (GOT/GPT) nach 4–8 Wochen; langfristig jährlich.',
+        doctorDiscussion:
+          '"Was wäre ein realistisches LDL-Ziel für mein Risikoprofil?" / "Welches Statin ist geeignet und welche Dosis?" / "Was tun bei Muskelbeschwerden?"',
+        notToConfuseWith:
+          'Statine sind kein Ersatz für Lebensstiländerungen — sie wirken additiv. Eine Entscheidung über Statine liegt ausschließlich bei Ärztin oder Arzt.',
+        safetyLevel: 'high',
+        requiresDoctorDiscussion: true,
+        sourceRequirement: 'Etabliert — ESC/EAS 2021 Dyslipidämien',
+      },
+      {
+        title: 'Lösliche Ballaststoffe: Flohsamenschalen (Psyllium)',
+        measureCategory: 'supportive',
+        evidenceMaturity: 'supported',
+        evidenceType: 'rct',
+        whyShown:
+          'Gezeigt, weil: Mehrere RCTs zeigen LDL-Senkung durch Psyllium (Flohsamenschalen) um 5–7 % — als Ergänzung zu Ernährungsmaßnahmen belegt',
+        targetGroup:
+          'Menschen mit mäßig erhöhtem LDL, die Ernährungsmaßnahmen ergänzen möchten; kein Ersatz für ärztliche Beurteilung bei hohem Risiko',
+        whatCouldHelp:
+          'Flohsamenschalen (Psyllium, 10–15 g täglich, in Wasser oder Joghurt eingerührt) können als ergänzende Maßnahme besprochen werden.',
+        expectedBenefit:
+          'LDL-Senkung um ~5–7 % in mehreren RCTs; zusätzlich positiver Effekt auf Blutzucker und Darmgesundheit.',
+        uncertaintyReason:
+          'Kein aktiver Leitlinienstandard für Flohsamenschalen — gut belegte unterstützende Evidenz (mehrere RCTs), aber kein klinischer Konsens als Primärtherapie.',
+        risksAndCautions:
+          'Ausreichend Flüssigkeit trinken (mindestens 1–2 Gläser Wasser pro Einnahme). Langsam einschleichen bei empfindlichem Verdauungstrakt.',
+        contraindicationsOrRedFlags:
+          'Zeitversetzt zu Medikamenten einnehmen (mind. 30–60 Min. Abstand), da Psyllium die Aufnahme einiger Wirkstoffe verzögern kann.',
+        monitoring: 'LDL-Kontrolle nach 6–12 Wochen bei regelmäßiger Anwendung.',
+        doctorDiscussion:
+          '"Kann Psyllium in meinem Fall sinnvoll sein?" / "Gibt es Wechselwirkungen mit meinen aktuellen Medikamenten?"',
+        notToConfuseWith:
+          'Nicht verwechseln mit unlöslichen Ballaststoffen (z. B. Weizenkleie) — diese haben keine vergleichbare LDL-senkende Wirkung. Kein Ersatz für Statine bei klinisch relevantem Risiko.',
+        safetyLevel: 'low',
+        requiresDoctorDiscussion: false,
+        sourceRequirement:
+          'Gut untersucht — Cochrane Review Soluble Dietary Fibre 2016 + EFSA Health Claim Psyllium',
+      },
+      {
+        title: 'Pflanzensterole und -stanole',
+        measureCategory: 'supportive',
+        evidenceMaturity: 'supported',
+        evidenceType: 'meta_analysis',
+        whyShown:
+          'Gezeigt, weil: Pflanzensterole/-stanole hemmen die Cholesterinaufnahme im Darm — EFSA-anerkannter Health Claim bei 2–3 g täglich',
+        targetGroup:
+          'Menschen mit erhöhtem LDL, die ergänzende Ernährungsmaßnahmen suchen; nicht bei Schwangerschaft oder Stillzeit ohne ärztliche Rücksprache',
+        whatCouldHelp:
+          'Pflanzensterole/-stanole sind in angereicherten Margarine- und Joghurtprodukten erhältlich. 2–3 g täglich zu einer Hauptmahlzeit können LDL messbar senken.',
+        expectedBenefit:
+          'LDL-Senkung um 7–12 % bei 2–3 g Pflanzensterolen täglich — belegt durch Meta-Analysen und EFSA Health Claim.',
+        uncertaintyReason:
+          'Langzeitdaten zur Reduktion kardiovaskulärer Ereignisse fehlen — Surrogatmarker (LDL) gut belegt, klinischer Endpunkt weniger klar.',
+        risksAndCautions:
+          'Produkte können kostspielig sein. Bei Phytosterolemie (seltene Erbkrankheit) kontraindiziert.',
+        contraindicationsOrRedFlags:
+          'Phytosterolemie: absolute Kontraindikation. Schwangerschaft und Stillzeit: ärztliche Rücksprache empfohlen.',
+        monitoring: 'LDL-Kontrolle nach 6–8 Wochen bei regelmäßiger Anwendung.',
+        doctorDiscussion:
+          '"Sind Pflanzensterol-Produkte in meinem Fall sinnvoll?" / "Gibt es Hinweise auf Phytosterolemie in meiner Familie?"',
+        notToConfuseWith:
+          'Pflanzensterole senken LDL — reduzieren aber keine bereits vorhandenen Gefäßablagerungen. Kein Ersatz für Statine bei hohem Risiko.',
+        safetyLevel: 'medium',
+        requiresDoctorDiscussion: false,
+        sourceRequirement:
+          'Gut untersucht — EFSA Health Claim Phytosterols 2010 + Meta-Analyse Demonty et al. 2009',
+      },
+      {
+        title: 'Omega-3-Fettsäuren als LDL-Senker',
+        measureCategory: 'avoid',
+        evidenceMaturity: 'avoid',
+        evidenceType: 'meta_analysis',
+        whyShown:
+          'Gezeigt, weil: Omega-3 wird häufig zur LDL-Senkung empfohlen — die Evidenz spricht nicht für einen relevanten LDL-senkenden Effekt in diesem Kontext',
+        targetGroup:
+          'Menschen, die Omega-3 zur Senkung des LDL-Cholesterins einsetzen möchten',
+        whatCouldHelp:
+          'Für LDL-Senkung nicht geeignet — kein relevanter Effekt belegt.',
+        expectedBenefit:
+          'Kein relevanter LDL-senkender Effekt in Meta-Analysen und Leitlinien für diesen Kontext.',
+        uncertaintyReason: null,
+        risksAndCautions:
+          'Hochdosierte Omega-3-Präparate (> 3 g/Tag): erhöhtes Blutungsrisiko. Wechselwirkungen mit Blutgerinnungshemmern möglich.',
+        contraindicationsOrRedFlags: null,
         monitoring: null,
+        doctorDiscussion: null,
+        notToConfuseWith:
+          'Omega-3 hat gut belegte Effekte auf Triglyzeride und kann kardiovaskuläres Gesamtrisiko beeinflussen — aber LDL-Cholesterin nicht spezifisch senken. Wer Omega-3 für andere Indikationen einnimmt, muss dies nicht absetzen.',
+        safetyLevel: 'low',
+        requiresDoctorDiscussion: false,
+        sourceRequirement:
+          'Eher vermeiden (für LDL-Senkung) — REDUCE-IT Trial + ESC/EAS 2021 §6 + Cochrane Omega-3 Lipide 2020',
+      },
+      {
+        title: 'Verlaufskontrolle: Lipidprofil',
+        measureCategory: 'monitoring',
+        evidenceMaturity: 'established',
+        evidenceType: 'guideline',
+        whyShown:
+          'Gezeigt, weil: ESC/EAS-Leitlinie 2021 empfiehlt regelmäßige Lipidprofil-Kontrollen bei bekannt erhöhtem LDL — nach Maßnahmen und unter Therapie',
+        targetGroup:
+          'Alle Personen mit bekannt erhöhtem LDL, insbesondere nach Lebensstilanpassungen oder unter Therapie',
+        whatCouldHelp:
+          'Verlaufskontrollen des Lipidprofils (LDL, HDL, Triglyzeride, Non-HDL) ermöglichen die Einschätzung von Lebensstilmaßnahmen und ggf. Therapieeffekten.',
+        expectedBenefit:
+          'Einordnung, ob Maßnahmen wirken — und ob eine Anpassung der Strategie sinnvoll ist.',
+        uncertaintyReason: null,
+        risksAndCautions: null,
+        contraindicationsOrRedFlags: null,
+        monitoring:
+          'Lipidprofil nach 3–6 Monaten bei Lebensstilmaßnahmen; nach 4–8 Wochen bei Therapiestart oder -anpassung.',
+        doctorDiscussion:
+          '"Wann und wie oft sollte ich das Lipidprofil kontrollieren lassen?"',
+        notToConfuseWith: null,
+        safetyLevel: 'low',
+        requiresDoctorDiscussion: false,
+        sourceRequirement: 'Etabliert — ESC/EAS 2021 Dyslipidämien Monitoring-Empfehlungen',
       },
     ],
     low: [
       {
         title: 'Bestehende lipidsenkende Therapie einordnen lassen',
-        category: 'standard',
-        evidence: 'Klinisch etabliert — ESC/EAC 2019',
+        measureCategory: 'standard',
+        evidenceMaturity: 'established',
+        evidenceType: 'guideline',
         whyShown:
-          'Sehr niedrige LDL-Werte entstehen häufig unter hochdosierten Statinen oder anderen Lipidsenkern. In bestimmten Hochrisikogruppen sind niedrige LDL-Zielwerte leitliniengerecht.',
-        whatHelps:
-          'Falls du Lipidsenker einnimmst, besprich mit deiner Ärztin oder deinem Arzt, ob Dosierung und Therapieziel noch passend sind.',
-        expectedEffect:
+          'Gezeigt, weil: Sehr niedrige LDL-Werte entstehen häufig unter lipidsenkender Therapie — Zielwerterreichung ärztlich prüfen lassen',
+        targetGroup: 'Personen, die lipidsenkende Medikamente (z. B. Statine, Ezetimib) einnehmen',
+        whatCouldHelp:
+          'Besprich mit deiner Ärztin oder deinem Arzt, ob Dosierung und Therapieziel noch passend sind.',
+        expectedBenefit:
           'Einordnung, ob der Wert im angestrebten Zielbereich liegt oder eine Anpassung sinnvoll ist.',
-        cautions: null,
-        monitoring: null,
+        uncertaintyReason: null,
+        risksAndCautions: null,
+        contraindicationsOrRedFlags: null,
+        monitoring: 'LDL, CK und Leberwerte (GOT/GPT) bei laufender Statin-Therapie jährlich.',
+        doctorDiscussion:
+          '"Liegt mein LDL-Wert im angestrebten Zielbereich?" / "Sollte die Dosierung oder Therapie angepasst werden?"',
+        notToConfuseWith: null,
+        safetyLevel: 'low',
+        requiresDoctorDiscussion: true,
+        sourceRequirement: 'Etabliert — ESC/EAS 2021 Dyslipidämien Monitoring',
       },
     ],
   },
