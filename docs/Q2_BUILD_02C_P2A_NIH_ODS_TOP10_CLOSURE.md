@@ -1,7 +1,7 @@
 # Q2-BUILD-02c-P2A — Closure: S2 NIH-ODS Top-10 Quellenlücken
 
 **Paketname:** Q2-BUILD-02c-P2A — S2 NIH-ODS Top-10 Quellenlücken  
-**Typ:** DB-only (kein Frontend, kein Code, kein Build-Commit, kein Deploy); Doku-Sync über Commit `821d44a`  
+**Typ:** DB-only (kein Frontend, kein Code, kein Build-Commit, kein Deploy); P2A-Doku-Sync initial `821d44a`, finaler Metadaten-Fix `e496dbe`  
 **Datum:** 06.05.2026  
 **Status:** ✅ ABGESCHLOSSEN  
 **Führende Basis:** `Q2_BUILD_02C_S2_QUELLENBOX_CLOSURE.md` · `Q2_BUILD_02C_01_SCHEMA_NIH_BOOTSTRAP_SPEC.md`
@@ -112,7 +112,7 @@ RETURNING slug, nih_ods_link, jsonb_array_length(quellen), quellen->0->>'url';
 | DB-Write | JA — UPDATE 10 Rows (nih_ods_link + quellen), Dashboard-JWT |
 | Kein Frontend-Touch | ✅ |
 | Kein Code-Touch | ✅ |
-| Kein Code-/Build-Commit | ✅ (DB-only; Doku-Sync `821d44a`) |
+| Kein Code-/Build-Commit | ✅ (DB-only; P2A-Doku-Sync `821d44a` → finaler Fix `e496dbe`) |
 | Kein Deploy | ✅ |
 | Offener Side Effect | NEIN |
 | Supabase-Stabilität | Projekt aktiv, alle Queries erfolgreich |
@@ -126,4 +126,4 @@ RETURNING slug, nih_ods_link, jsonb_array_length(quellen), quellen->0->>'url';
 | 20 Supplements mit `quellen = []` verbleibend | P2B: 5× NCCIH (Melatonin/Echinacea/Ginkgo/Mariendistel/Rhodiola) + 5× P2-Kandidaten — je eigenständiger Chat |
 | 10 P3-Supplements (kein E28-konformer Link) | Vorerst leer lassen |
 
-*Erstellt: 06.05.2026 — Q2-BUILD-02c-P2A ✅ abgeschlossen. DB-Write: 10 UPDATE-Rows. Kein Code, kein Build-Commit, kein Deploy. Doku-Sync: Commit `821d44a`.*
+*Erstellt: 06.05.2026 — Q2-BUILD-02c-P2A ✅ abgeschlossen. DB-Write: 10 UPDATE-Rows. Kein Code, kein Build-Commit, kein Deploy. P2A-Doku-Sync `821d44a`, finaler Metadaten-Fix `e496dbe`.*
