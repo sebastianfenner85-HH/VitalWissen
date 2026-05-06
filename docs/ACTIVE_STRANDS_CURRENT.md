@@ -199,8 +199,8 @@ Diese Datei gibt den schnellen Überblick über alle aktiven und zuletzt bewegte
 ### Q2 — Vertrauens-/Quellen-Layer (Querschicht)
 **Status:** ✅ **Q2-BUILD-02c abgeschlossen (06.05.2026)** ✅ **Q2-BUILD-02c-P2A abgeschlossen (06.05.2026)**  
 **Letzter Stand (Q2-BUILD-02c):** S2 QuellenBox live. `supplements.quellen` JSONB angelegt (ALTER TABLE). NIH-ODS-Bootstrap: 21/51 Supplements mit Quelleneinträgen. `SuppQuellenBox`-Komponente inline in `SupplementDetail.jsx`. PubMed-Key-Fix. 3 Dateien, DB-Write: JA. Commit `2e1223d`.  
-**Letzter Stand (Q2-BUILD-02c-P2A):** 10 NIH-ODS-Importlücken geschlossen (nih_ods_link + quellen für B1/B2/B3/B5/Biotin/Kalium/Chrom/Kupfer/Mangan/L-Carnitin). DB: 31/51 Supplements mit quellen. Kein Code, kein Commit. V1–V8 ✅.  
-**Letzter Commit:** `5fba660` (docs-only Closure-Patch, 06.05.2026) — auf `origin/main` (kein Build-Commit für P2A da DB-only)  
+**Letzter Stand (Q2-BUILD-02c-P2A):** 10 NIH-ODS-Importlücken geschlossen (nih_ods_link + quellen für B1/B2/B3/B5/Biotin/Kalium/Chrom/Kupfer/Mangan/L-Carnitin). DB: 31/51 Supplements mit quellen. Kein Code, kein Build-Commit, kein Deploy; Doku-Sync über Commit `821d44a`. V1–V8 ✅.  
+**Letzter Commit:** `821d44a` (Doku-Sync P2A, 06.05.2026) — auf `origin/main`  
 **DB-Write:** JA (ALTER TABLE + 31 UPDATE-Rows gesamt; P2A: 10 UPDATEs, Dashboard-JWT)  
 **Letzte führende Dokumente:**
 - **`01_PROJECT_SOURCES_CURRENT/Q2_BUILD_02C_P2A_NIH_ODS_TOP10_CLOSURE.md`** — **führend** (06.05.2026)
@@ -347,8 +347,8 @@ Diese Datei gibt den schnellen Überblick über alle aktiven und zuletzt bewegte
 
 | Dimension | Status |
 |-----------|--------|
-| Git HEAD (`origin/main`) | `5fba660` — docs-only Closure-Patch (Q2-BUILD-02c Verifikation + Doppelpflege, 06.05.2026) |
-| Netlify | Auto-Publishing AN — letzter Build-Deploy `main@2e1223d` Published, deployed in 10s (06.05.2026, 19:40) — Live-Smoke ✅ (docs-only `5fba660` triggert keinen Netlify-Build) |
+| Git HEAD (`origin/main`) | `821d44a` — Doku-Sync P2A (Q2-BUILD-02c-P2A Closure + AUDIT_CANON + ACTIVE_STRANDS, 06.05.2026) |
+| Netlify | Auto-Publishing AN — letzter Build-Deploy `main@2e1223d` Published, deployed in 10s (06.05.2026, 19:40) — Live-Smoke ✅ (docs-only `821d44a` triggert keinen Netlify-Build) |
 | Supabase DB | `zusatzstoffe` 35, `lebensmittel` 24, `wirkstoffe` 50, `krankheiten` 221 (+`naechste_schritte` JSONB: 5 befüllt), **`laborwerte` 60 (+8 Felder, 5 mit `zielwerte`)**, **`supplements` 51 (+`quellen` JSONB: 31/51 mit NIH-ODS-Quellen — Q2-BUILD-02c: 21 + P2A: 10)**, `ernaehrungsmuster` 4, `naehrstoffe` 41 |
 | MISTRAL_API_KEY | in Netlify gesetzt (Production, S4-Proxy aktiv) |
 | DB-Write heute | JA — ALTER TABLE supplements (quellen JSONB) + UPDATE 21 Rows (NIH-ODS-Bootstrap, Q2-BUILD-02c) + UPDATE 10 Rows (P2A NIH-ODS-Lücken), Dashboard-JWT |
