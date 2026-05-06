@@ -8,6 +8,68 @@ import {
 } from '../lib/queries'
 import './Medikamente.css'
 
+
+// ── Q2-BUILD-02b: S6 QuellenBox — Typ-Mapping + Komponente ──────────────────
+const MED_QUELLEN_TYP = {
+  ema:       { farbe: 'regulatory', label: 'Regulatorisch', icon: '🏛️' },
+  bfarm:     { farbe: 'regulatory', label: 'Regulatorisch', icon: '🏛️' },
+  openfda:   { farbe: 'database',   label: 'Datenbank',     icon: '🗄️' },
+  who_atc:   { farbe: 'database',   label: 'Datenbank',     icon: '🗄️' },
+  atc:       { farbe: 'database',   label: 'Datenbank',     icon: '🗄️' },
+  guideline: { farbe: 'guideline',  label: 'Leitlinie',     icon: '📋' },
+  regulatory:{ farbe: 'regulatory', label: 'Regulatorisch', icon: '🏛️' },
+  database:  { farbe: 'database',   label: 'Datenbank',     icon: '🗄️' },
+  research:  { farbe: 'research',   label: 'Forschung',     icon: '🔬' },
+}
+
+function getMedTypInfo(typ) {
+  if (!typ) return { farbe: 'database', label: 'Datenbank', icon: '📄' }
+  return MED_QUELLEN_TYP[typ.toLowerCase()] || { farbe: 'database', label: typ, icon: '📄' }
+}
+
+function MedQuellenBox({ quellen }) {
+  const [showAll, setShowAll] = useState(false)
+  if (!quellen || quellen.length === 0) return null
+  const sichtbar = showAll ? quellen : quellen.slice(0, 2)
+  const restAnzahl = quellen.length - 2
+  return (
+    <div className="med-quellenbox">
+      {sichtbar.map((q, i) => {
+        const info = getMedTypInfo(q.typ)
+        return (
+          <div key={i} className="med-quellenbox-row">
+            <span className={`med-quellenbox-typchip med-quellenbox-typchip--${info.farbe}`}>
+              {info.icon} {info.label}
+            </span>
+            <div className="med-quellenbox-main">
+              {q.url ? (
+                <a
+                  href={q.url}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="med-quellenbox-link"
+                >
+                  {q.name}
+                </a>
+              ) : (
+                <span className="med-quellenbox-name">{q.name}</span>
+              )}
+              {q.beschreibung && (
+                <p className="med-quellenbox-desc">{q.beschreibung}</p>
+              )}
+            </div>
+          </div>
+        )
+      })}
+      {!showAll && restAnzahl > 0 && (
+        <button className="med-quellenbox-more" onClick={() => setShowAll(true)}>
+          + {restAnzahl} weitere anzeigen
+        </button>
+      )}
+    </div>
+  )
+}
+
 export default function MedikamentDetail() {
   const { slug } = useParams()
   const navigate  = useNavigate()
@@ -278,22 +340,7 @@ export default function MedikamentDetail() {
             )}
           </div>
 
-          {quellen.length > 0 && (
-            <ul className="med-quellen-list">
-              {quellen.map((q, i) => (
-                <li key={i} className="med-quelle-item">
-                  {q.url ? (
-                    <a href={q.url} target="_blank" rel="noopener noreferrer">{q.name}</a>
-                  ) : (
-                    <span>{q.name}</span>
-                  )}
-                  {q.typ && (
-                    <span className="med-quelle-typ">{q.typ.toUpperCase()}</span>
-                  )}
-                </li>
-              ))}
-            </ul>
-          )}
+          <MedQuellenBox quellen={quellen} />
         </div>
 
         {/* ── Cross-Block: Zugehörige Krankheiten (S6 → S5) ─────────────── */}

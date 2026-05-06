@@ -789,3 +789,135 @@
     padding: 7px 14px;
   }
 }
+
+/* ── Q2-BUILD-02b: S6 QuellenBox (med-quellenbox-*) ─────────────────────────
+   Konsistent mit krank-quellenbox-* (Q2-BUILD-02a) — gleiche Chip-Farben,
+   gleiche Expand-Logik, mobile-first, Tap-Targets ≥ 40px.
+   ─────────────────────────────────────────────────────────────────────────── */
+
+.med-quellenbox {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-top: 4px;
+}
+
+.med-quellenbox-row {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+}
+
+.med-quellenbox-typchip {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  flex-shrink: 0;
+  font-size: 12px;
+  font-weight: 600;
+  padding: 4px 10px;
+  border-radius: 20px;
+  white-space: nowrap;
+  min-height: 28px;
+}
+
+/* Q2-Chip-Farben — konsistent mit Vertrauen.css q2-beispiel-chip--* */
+.med-quellenbox-typchip--guideline {
+  background: #EEF2FF;
+  color: #4338CA;
+}
+
+.med-quellenbox-typchip--regulatory {
+  background: #EFF6FF;
+  color: #1D4ED8;
+}
+
+.med-quellenbox-typchip--database {
+  background: #F1F5F9;
+  color: #475569;
+}
+
+.med-quellenbox-typchip--research {
+  background: #FEF9C3;
+  color: #854D0E;
+}
+
+.med-quellenbox-typchip--patient_info {
+  background: #ECFEFF;
+  color: #0E7490;
+}
+
+.med-quellenbox-main {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  min-width: 0;
+}
+
+.med-quellenbox-link {
+  font-size: 14px;
+  color: var(--primary);
+  text-decoration: underline;
+  text-underline-offset: 2px;
+  line-height: 1.45;
+  min-height: 40px;
+  display: inline-flex;
+  align-items: center;
+}
+
+.med-quellenbox-link:hover {
+  color: var(--primary-dark);
+}
+
+.med-quellenbox-name {
+  font-size: 14px;
+  color: var(--text-light);
+  line-height: 1.45;
+}
+
+.med-quellenbox-desc {
+  font-size: 13px;
+  color: var(--text-muted);
+  line-height: 1.5;
+  margin: 0;
+}
+
+.med-quellenbox-more {
+  background: none;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  padding: 6px 14px;
+  font-size: 13px;
+  color: var(--text-light);
+  cursor: pointer;
+  font-family: inherit;
+  transition: border-color 0.15s, color 0.15s;
+  align-self: flex-start;
+  min-height: 36px;
+}
+
+.med-quellenbox-more:hover {
+  border-color: var(--primary);
+  color: var(--primary);
+}
+
+@media (max-width: 600px) {
+  .med-quellenbox-row {
+    flex-direction: column;
+    gap: 6px;
+  }
+
+  .med-quellenbox-typchip {
+    align-self: flex-start;
+  }
+
+  .med-quellenbox-link {
+    min-height: 44px;
+  }
+
+  .med-quellenbox-more {
+    width: 100%;
+    text-align: center;
+    min-height: 44px;
+  }
+}
