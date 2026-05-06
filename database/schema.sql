@@ -164,6 +164,9 @@ CREATE TABLE supplements (
   -- AEO
   schema_org        JSONB,
 
+  -- Q2 Trust-Layer
+  quellen           JSONB DEFAULT '[]',  -- [{typ, name, url, quellen_typ, beschreibung?}] -- E28-konforme Quelleneintraege
+
   -- Meta
   datenqualitaet        SMALLINT DEFAULT 1,
   letzte_aktualisierung TIMESTAMP DEFAULT NOW(),

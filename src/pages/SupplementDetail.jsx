@@ -14,6 +14,48 @@ const DOSIERUNGS_QUELLEN = [
   { key: 'efsa', label: 'EFSA', typ: 'EU-Referenzwert' },
 ]
 
+// Q2-BUILD-02c: SuppQuellenBox — analog MedQuellenBox (Q2-BUILD-02b)
+// quellen_typ direkt aus JSONB gelesen (kein extra Mapping nötig — Datenvertrag §H0 Spec)
+const Q2_TYP_INFO = {
+  database:     { label: 'Datenbasis',       icon: '🗄️', farbe: 'database'     },
+  regulatory:   { label: 'Regulatorisch',    icon: '🏛️', farbe: 'regulatory'   },
+  research:     { label: 'Forschungsquelle', icon: '🔬', farbe: 'research'     },
+  guideline:    { label: 'Leitlinie',        icon: '📋', farbe: 'guideline'    },
+  patient_info: { label: 'Patienteninfo',    icon: '📖', farbe: 'patient_info' },
+}
+
+function SuppQuellenBox({ quellen }) {
+  const [showAll, setShowAll] = useState(false)
+  if (!quellen || quellen.length === 0) return null
+  const visible = showAll ? quellen : quellen.slice(0, 2)
+  return (
+    <div className="supp-quellenbox">
+      {visible.map((q, i) => {
+        const info = Q2_TYP_INFO[q.quellen_typ] || Q2_TYP_INFO.database
+        return (
+          <div key={i} className="supp-quellenbox-row">
+            <span className={`supp-quellenbox-typchip supp-quellenbox-typchip--${info.farbe}`}>
+              {info.icon} {info.label}
+            </span>
+            <div className="supp-quellenbox-main">
+              {q.url
+                ? <a href={q.url} target="_blank" rel="noopener noreferrer" className="supp-quellenbox-link">{q.name}</a>
+                : <span className="supp-quellenbox-name">{q.name}</span>
+              }
+              {q.beschreibung && <p className="supp-quellenbox-desc">{q.beschreibung}</p>}
+            </div>
+          </div>
+        )
+      })}
+      {quellen.length > 2 && !showAll && (
+        <button className="supp-quellenbox-more" onClick={() => setShowAll(true)}>
+          + {quellen.length - 2} weitere anzeigen
+        </button>
+      )}
+    </div>
+  )
+}
+
 export default function SupplementDetail() {
   const { slug } = useParams()
   const navigate = useNavigate()
@@ -247,9 +289,9 @@ export default function SupplementDetail() {
                 <p style={{ fontSize: 14, color: 'var(--text-light)' }}>
                   {typeof st === 'string' ? st : st.titel}
                 </p>
-                {st.pubmed_id && (
+                {(st.pmid || st.pubmed_id) && (
                   <a
-                    href={`https://pubmed.ncbi.nlm.nih.gov/${st.pubmed_id}/`}
+                    href={`https://pubmed.ncbi.nlm.nih.gov/${st.pmid || st.pubmed_id}/`}
                     target="_blank"
                     rel="noopener noreferrer"
                     className="supp-nih-link"
@@ -313,6 +355,17 @@ export default function SupplementDetail() {
               )
             })}
           </div>
+        </div>
+      )}
+
+
+      {/* [10b] Q2-BUILD-02c: Quellenbox — nur wenn quellen befüllt.
+           Zeigt NIH ODS + weitere verlinkte Quellen als Typ-Chips.
+           Block absent wenn quellen leer oder nicht vorhanden. */}
+      {s.quellen && s.quellen.length > 0 && (
+        <div className="supp-section">
+          <p className="supp-section-title">Quellengrundlage</p>
+          <SuppQuellenBox quellen={s.quellen} />
         </div>
       )}
 
