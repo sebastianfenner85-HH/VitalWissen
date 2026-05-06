@@ -197,26 +197,33 @@ Diese Datei gibt den schnellen Überblick über alle aktiven und zuletzt bewegte
 ---
 
 ### Q2 — Vertrauens-/Quellen-Layer (Querschicht)
-**Status:** ✅ **Q2-BUILD-02c abgeschlossen (06.05.2026)**  
-**Letzter Stand (Q2-BUILD-02c):** S2 QuellenBox live. `supplements.quellen` JSONB angelegt (ALTER TABLE). NIH-ODS-Bootstrap: 21/51 Supplements mit Quelleneinträgen. `SuppQuellenBox`-Komponente inline in `SupplementDetail.jsx` (analog MedQuellenBox). PubMed-Key-Fix (pmid/pubmed_id dual fallback). `supp-quellenbox-*` CSS (133 Zeilen, mobile-first). schema.sql sync. Build 126 Module, 0 Fehler. 3 Dateien, DB-Write: JA. `MedQuellenBox`-Komponente in `MedikamentDetail.jsx` Block 6. Typ-Chip (regulatory=blau, database=slate, guideline=indigo, research=amber). Max-2-Expand. Roh-Enum entfernt. 2 Dateien. Commit `c4b70d7`. V1–V10 ✅.  
-Vorgänger: Q2-BUILD-02a (24.04.2026) S5 QuellenBox, Commit `6a9fde7`. Q2-BUILD-01 (24.04.2026) Vertrauensseite `/vertrauen`, Commit `e3b5617`.  
-**Letzter Commit:** `2e1223d` (Q2-BUILD-02c S2 QuellenBox, 06.05.2026) — auf `origin/main`  
-**DB-Write:** JA (ALTER TABLE + 21 UPDATE-Rows, Dashboard-JWT)  
+**Status:** ✅ **Q2-BUILD-02c abgeschlossen (06.05.2026)** ✅ **Q2-BUILD-02c-P2A abgeschlossen (06.05.2026)**  
+**Letzter Stand (Q2-BUILD-02c):** S2 QuellenBox live. `supplements.quellen` JSONB angelegt (ALTER TABLE). NIH-ODS-Bootstrap: 21/51 Supplements mit Quelleneinträgen. `SuppQuellenBox`-Komponente inline in `SupplementDetail.jsx`. PubMed-Key-Fix. 3 Dateien, DB-Write: JA. Commit `2e1223d`.  
+**Letzter Stand (Q2-BUILD-02c-P2A):** 10 NIH-ODS-Importlücken geschlossen (nih_ods_link + quellen für B1/B2/B3/B5/Biotin/Kalium/Chrom/Kupfer/Mangan/L-Carnitin). DB: 31/51 Supplements mit quellen. Kein Code, kein Commit. V1–V8 ✅.  
+**Letzter Commit:** `5fba660` (docs-only Closure-Patch, 06.05.2026) — auf `origin/main` (kein Build-Commit für P2A da DB-only)  
+**DB-Write:** JA (ALTER TABLE + 31 UPDATE-Rows gesamt; P2A: 10 UPDATEs, Dashboard-JWT)  
 **Letzte führende Dokumente:**
-- **`01_PROJECT_SOURCES_CURRENT/Q2_BUILD_02C_S2_QUELLENBOX_CLOSURE.md`** — **führend** (06.05.2026)
+- **`01_PROJECT_SOURCES_CURRENT/Q2_BUILD_02C_P2A_NIH_ODS_TOP10_CLOSURE.md`** — **führend** (06.05.2026)
+- `01_PROJECT_SOURCES_CURRENT/Q2_BUILD_02C_S2_QUELLENBOX_CLOSURE.md` — Q2-BUILD-02c-Vorgänger
 - `01_PROJECT_SOURCES_CURRENT/Q2_BUILD_02B_S6_QUELLENBOX_CLOSURE.md` — S6-Vorgänger
 - `01_PROJECT_SOURCES_CURRENT/Q2_BUILD_02A_S5_QUELLENBOX_CLOSURE.md` — S5-Vorgänger
 - `01_PROJECT_SOURCES_CURRENT/Q2_TRUST_SOURCE_PRE_SPEC.md` — Pre-Spec-Grundlage
 
-**Nächster zulässiger Schritt:** Q2-BUILD-02c-P2 (weitere Quellen-Batches für restliche 30 Supplements, eigenständiger Chat) oder Q2-BUILD-03 (`review_typ`/`quellen_konflikt`-Schema)  
-**Offene Risiken:** P2-Batch: 30 Supplements haben noch kein `quellen`-Eintrag (kein Blocker für Live-Betrieb, nur NIH-ODS-Lücke). feedback@vitalwissen.de → reale Adresse (kein Build-Blocker).  
-**Strang formal geschlossen:** NEIN — Q2-BUILD-02c (S2) + Q2-BUILD-03 ausstehend  
+**Nächster zulässiger Schritt:** Q2-BUILD-02c-P2B (5× NCCIH: Melatonin/Echinacea/Ginkgo/Mariendistel/Rhodiola, eigenständiger Chat) oder Q2-BUILD-03 (`review_typ`/`quellen_konflikt`-Schema)  
+**Offene Risiken:** 20 Supplements ohne quellen (10 P3 = kein E28-Link; 5 P2-Kandidaten; 5 NCCIH). feedback@vitalwissen.de → reale Adresse (kein Build-Blocker).  
+**Strang formal geschlossen:** NEIN — Q2-BUILD-03 ausstehend  
 
 ---
 
 ## 3. HEUTE / ZULETZT BEWEGTE PAKETE (06.05.2026)
 
-**Q2-BUILD-02c S2 QuellenBox (06.05.2026 — aktuelles Paket):**
+**Q2-BUILD-02c-P2A NIH-ODS Top-10 Quellenlücken (06.05.2026 — aktuelles Paket):**
+- DB-Write: JA — UPDATE 10 Rows (nih_ods_link + quellen für B1/B2/B3/B5/Biotin/Kalium/Chrom/Kupfer/Mangan/L-Carnitin), Dashboard-JWT. Schema-Change: NEIN (quellen JSONB bereits vorhanden). Code: NEIN. Commit: NEIN. Deploy: NEIN.
+- Preflight: 6/6 Hard-Stop-Prüfungen PASS. typ-Entscheidung: "NIH ODS" (Klartext, konsistent mit bestehenden 21 Einträgen). RETURNING: 10 Rows, alle quellen_count=1, alle url_check=nih_ods_link.
+- V1–V8 alle ✅. DB: 31/51 supplements mit quellen.
+- Output: `01_PROJECT_SOURCES_CURRENT/Q2_BUILD_02C_P2A_NIH_ODS_TOP10_CLOSURE.md`
+
+**Q2-BUILD-02c S2 QuellenBox (06.05.2026 — Vorgänger-Paket):**
 - DB-Write: JA (ALTER TABLE supplements ADD COLUMN quellen JSONB DEFAULT '[]' + UPDATE 21 Rows via NIH-ODS-Bootstrap, Dashboard-JWT). Schema-Change: JA. queries.js: NEIN (select('*') holt quellen automatisch). S5/S6: NEIN.
 - Code: `src/pages/SupplementDetail.jsx` (+57/-2: Q2_TYP_INFO + SuppQuellenBox-Komponente + Block [10b] Quellengrundlage + PubMed-Key-Fix pmid/pubmed_id). `src/pages/Supplements.css` (+133: supp-quellenbox-* CSS, 5 Farbvarianten, Mobile-Breakpoint 600px, Tap-Targets ≥ 44px). `database/schema.sql` (+3: quellen JSONB DEFAULT '[]' im supplements-Block). Build: 126 Module, 0 Fehler.
 - Commit: `2e1223d`. Push: `origin/main` (`c4b70d7..2e1223d`). Netlify Auto-Deploy ausgelöst.
@@ -340,11 +347,11 @@ Vorgänger: Q2-BUILD-02a (24.04.2026) S5 QuellenBox, Commit `6a9fde7`. Q2-BUILD-
 
 | Dimension | Status |
 |-----------|--------|
-| Git HEAD (`origin/main`) | `2e1223d` — working tree clean (Q2-BUILD-02c, 06.05.2026) |
-| Netlify | Auto-Publishing AN — letzter Deploy `main@2e1223d` Published, deployed in 10s (Q2-BUILD-02c, 06.05.2026, 19:40) — Live-Smoke ✅ |
-| Supabase DB | `zusatzstoffe` 35, `lebensmittel` 24, `wirkstoffe` 50, `krankheiten` 221 (+`naechste_schritte` JSONB: 5 befüllt), **`laborwerte` 60 (+8 Felder, 5 mit `zielwerte`)**, **`supplements` 51 (+`quellen` JSONB: 21/51 mit NIH-ODS-Quellen)**, `ernaehrungsmuster` 4, `naehrstoffe` 41 |
+| Git HEAD (`origin/main`) | `5fba660` — docs-only Closure-Patch (Q2-BUILD-02c Verifikation + Doppelpflege, 06.05.2026) |
+| Netlify | Auto-Publishing AN — letzter Build-Deploy `main@2e1223d` Published, deployed in 10s (06.05.2026, 19:40) — Live-Smoke ✅ (docs-only `5fba660` triggert keinen Netlify-Build) |
+| Supabase DB | `zusatzstoffe` 35, `lebensmittel` 24, `wirkstoffe` 50, `krankheiten` 221 (+`naechste_schritte` JSONB: 5 befüllt), **`laborwerte` 60 (+8 Felder, 5 mit `zielwerte`)**, **`supplements` 51 (+`quellen` JSONB: 31/51 mit NIH-ODS-Quellen — Q2-BUILD-02c: 21 + P2A: 10)**, `ernaehrungsmuster` 4, `naehrstoffe` 41 |
 | MISTRAL_API_KEY | in Netlify gesetzt (Production, S4-Proxy aktiv) |
-| DB-Write heute | JA — ALTER TABLE supplements (quellen JSONB) + UPDATE 21 Rows (NIH-ODS-Bootstrap), Dashboard-JWT |
+| DB-Write heute | JA — ALTER TABLE supplements (quellen JSONB) + UPDATE 21 Rows (NIH-ODS-Bootstrap, Q2-BUILD-02c) + UPDATE 10 Rows (P2A NIH-ODS-Lücken), Dashboard-JWT |
 | Supabase Resume | JA — Projekt war pausiert zu Build-Beginn; resumed vor erstem DB-Write; Write erst nach Healthy-Bestätigung ausgeführt (Ops-Side-Effect, kein Datenverlust) |
 | Offener Side Effect | NEIN |
 | Uncommitted Changes | NEIN |
@@ -367,7 +374,7 @@ Nur echte, aktuell freigegebene nächste Schritte (keine Ideenliste):
 
 | Schritt | Paketname | Voraussetzung | Prio |
 |---------|-----------|---------------|------|
-| Q2 Quellenbox S2 P2-Batch | **Q2-BUILD-02c-P2** | Q2-BUILD-02c ✅ abgeschlossen (06.05.2026) — weitere Quellen-Batches für 30 Supplements ohne quellen-Einträge, eigenständiger Chat | NIEDRIG |
+| Q2 Quellenbox S2 P2B — NCCIH | **Q2-BUILD-02c-P2B** | Q2-BUILD-02c-P2A ✅ abgeschlossen (06.05.2026) — 5× NCCIH: Melatonin/Echinacea/Ginkgo/Mariendistel/Rhodiola, DB-only, eigenständiger Chat | NIEDRIG |
 | Brand/UX Refresh Detailseiten-Hierarchie | **UI-REFRESH-04** | UI-REFRESH-03 ✅ abgeschlossen (24.04.2026) — Detailseiten Primär/Sekundär-Container `var(--surface-2)`, eigenständiger Chat | MITTEL |
 | S1 Zielwert-Rollout + V2-Kontext | **S1-BUILD-02** | S1-BUILD-01 ✅ abgeschlossen (24.04.2026) — Rollout auf alle 60 Werte, V2-Kontext Alter/Schwangerschaft, S1↔S5/S6-Crosslinks, eigenständiger Chat | MITTEL |
 | S6 weiterer Ausbau | **S6-07** | Eigenständiger Chat — S6-06 + Q2-BUILD-02b abgeschlossen ✅ | MITTEL |
@@ -422,4 +429,6 @@ Nur wenn ausnahmsweise nicht nötig: explizit begründen.
 *Aktualisiert: 06.05.2026 — Q2-BUILD-02b ✅ S6 QuellenBox Rollout abgeschlossen. MedQuellenBox-Komponente in MedikamentDetail.jsx Block 6. Typ-Mapping ema/bfarm→regulatory, openfda/atc/who_atc→database. 2 Dateien. Kein DB-Write. Commit `c4b70d7`. §2 S6-/Q2-Strang aktualisiert + §3 aktuelles Paket + §4 Ops (HEAD `c4b70d7`) + §5 (Q2-BUILD-02b → Q2-BUILD-02c, B4-BUILD-02 → B4-BUILD-03) nachgezogen. Doppelpflege vollständig.*  
 *Aktualisiert: 06.05.2026 — Q2-BUILD-02c ✅ S2 QuellenBox abgeschlossen. DB-Write: JA (ALTER TABLE + 21 UPDATE-Rows). 3 Dateien (SupplementDetail.jsx + Supplements.css + schema.sql). SuppQuellenBox + PubMed-Key-Fix + schema.sql sync. Commit `2e1223d`. Push origin/main. §2 Q2-Strang + S2-Strang + §3 aktuelles Paket + §4 Ops + §5 Nächste Schritte (Q2-BUILD-02c → Q2-BUILD-02c-P2) nachgezogen. Doppelpflege vollständig.*
 *Verifikations-Patch: 06.05.2026 — §4 Ops: Git HEAD + Netlify-Deploy auf `2e1223d` korrigiert. Supabase-Resume als Ops-Side-Effect dokumentiert. Live-Smoke bestätigt.*
-*Nächste Pflicht-Aktualisierung: bei Q2-BUILD-02c-P2, S8-BUILD-02d, B4-BUILD-03, S1-BUILD-02, UI-REFRESH-04 oder jedem anderen Paket-Abschluss*
+*Closure-Patch: 06.05.2026 — §4 Ops: Git HEAD auf `5fba660` (docs-only) aktualisiert. Doku-Fix-Commit `5fba660` gepusht: Q2_BUILD_02C_S2_QUELLENBOX_CLOSURE.md (Section I nachgetragen) + AUDIT_CANON_CURRENT.md (Q2-Sektion + Nächster Schritt) + ACTIVE_STRANDS_CURRENT.md (Git HEAD + Netlify-Zeile). Kein Netlify-Build erwartet. Alle 5 Doppelpflege-Dateien vollständig.*
+*Aktualisiert: 06.05.2026 — Q2-BUILD-02c-P2A ✅ 10 NIH-ODS-Importlücken geschlossen. DB-Write: UPDATE 10 Rows (nih_ods_link + quellen), Dashboard-JWT. Kein Code, kein Commit, kein Deploy. V1–V8 PASS. DB: 31/51 supplements mit quellen. §2 Q2-Strang + §3 aktuelles Paket + §4 Ops + §5 (P2 → P2B NCCIH) nachgezogen. Doppelpflege vollständig.*  
+*Nächste Pflicht-Aktualisierung: bei Q2-BUILD-02c-P2B, S8-BUILD-02d, B4-BUILD-03, S1-BUILD-02, UI-REFRESH-04 oder jedem anderen Paket-Abschluss*

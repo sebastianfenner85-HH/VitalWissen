@@ -50,7 +50,7 @@ Wenn Dokumente widersprechen, gilt folgende Priorität:
 | Säule | Status | DB-Einträge | Letzter Commit |
 |-------|--------|-------------|----------------|
 | S1 Laborwert-Lexikon | ✅ Live + **S1-BUILD-01 (24.04.2026):** Zielwert-Block V3, 8 neue DB-Felder, 5 Pilot-Werte. + **S1-BUILD-01b (24.04.2026):** LDL Microcopy. + **S1-BUILD-01c (25.04.2026):** LDL Zielwert-Klarstellung — Risikohinweis (nach 📌-Box) + Normalrisiko-Note (nach 116-Zeile), 2 CSS-Klassen, kein DB-Write. Live-Check 7/7 PASS. | 60 Laborwerte (5 mit `zielwerte`) | `06c1176` (S1-BUILD-01c) |
-| S2 Supplement-Kompass | ✅ Live + **Q2-BUILD-02c (06.05.2026):** supplements.quellen JSONB live, SuppQuellenBox, 21 NIH-ODS-Quellen, PubMed-Key-Fix | 51 Supplements | `2e1223d` (Q2-BUILD-02c) |
+| S2 Supplement-Kompass | ✅ Live + **Q2-BUILD-02c (06.05.2026):** supplements.quellen JSONB live, SuppQuellenBox, 21 NIH-ODS-Quellen, PubMed-Key-Fix. **Q2-BUILD-02c-P2A (06.05.2026):** +10 NIH-ODS-Lücken geschlossen (B-Vitamine/Mineralien/L-Carnitin). **31/51 Supplements mit quellen.** | 51 Supplements (31 mit quellen) | `2e1223d` (Q2-BUILD-02c — kein neuer Commit, DB-only P2A) |
 | S5 Krankheits-Lexikon | ✅ Live + **Q2-BUILD-02a (24.04.2026): Quellenbox-Komponente** — Typ-Chip + Name-Link + beschreibung (Q2-Farben), max-2-expand, mobile-first | 221 Krankheiten (216/221 echte Quellen) | `6a9fde7` (Q2-BUILD-02a) |
 | S4 Arztbrief-Decoder | ✅ Beta Freeze | kein DB-Touch | `519f2d9` (P7-05) |
 | S6 Medikamenten-Erklärer | ✅ **Q2-BUILD-02b abgeschlossen (06.05.2026)** — MedQuellenBox-Komponente in Block 6: Typ-Chip (regulatory/database/guideline), Max-2-Expand, Roh-Enum entfernt, mobile-first. Vorgänger: S6-06 (23.04.2026) LM-Hinweisblock. | 50 Wirkstoffe | `c4b70d7` (Q2-BUILD-02b) |
@@ -62,7 +62,7 @@ Wenn Dokumente widersprechen, gilt folgende Priorität:
 | Tabelle | Einträge | RLS | Hinweis |
 |---------|----------|-----|---------|
 | `laborwerte` | 60 | ✅ | 12 mit Notfall-Flag; **+8 neue Felder (S1-BUILD-01):** `zielwerte` JSONB, `ref_*_quelle_url/_jahr ×3`, `letzte_aktualisierung`; 5 Pilot-Werte mit `zielwerte` befüllt |
-| `supplements` | 51 | ✅ | inkl. vitamin-k2; `kategorie` 7 distinct; **`wofuer` 51/51 gefüllt** (S2-02A); **`quellen` JSONB live (Q2-BUILD-02c): 21/51 mit NIH-ODS-Quellen** |
+| `supplements` | 51 | ✅ | inkl. vitamin-k2; `kategorie` 7 distinct; **`wofuer` 51/51 gefüllt** (S2-02A); **`quellen` JSONB live: 31/51 mit NIH-ODS-Quellen** (Q2-BUILD-02c: 21 + P2A: 10), 20 noch leer |
 | `krankheiten` | 221 | ✅ | 5 dauerhaft intern (F06/L72/M13/R74/Z87); **`naechste_schritte` JSONB: 5 befüllt, 216 leer** (S8-BUILD-01) |
 | `ernaehrungsmuster` | 4 | ✅ | Public-Read-Policy |
 | `naehrstoffe` | 41 | ✅ | anon read-only; 4 Kategorien (14 Vitamine, 12 Mineralstoffe, 6 Makronährstoffe, 9 Pflanzenstoffe) |
@@ -193,8 +193,9 @@ Nächster Schritt: S3-Spec-Paket (eigenständiger Chat, explizite Freigabe).
 
 ### Q2 — Vertrauens-/Quellen-Layer
 **Status:** ✅ **Q2-BUILD-01 abgeschlossen (24.04.2026)** — Globale Vertrauensseite `/vertrauen` live. ✅ **Q2-BUILD-02a abgeschlossen (24.04.2026)** — S5 Quellenbox-Komponente live. ✅ **Q2-BUILD-02b abgeschlossen (06.05.2026)** — S6 QuellenBox-Rollout: `MedQuellenBox`-Komponente in `MedikamentDetail.jsx` Block 6. `MED_QUELLEN_TYP`-Konstante + `getMedTypInfo()`-Helper + Inline-Komponente. Typ-Mapping: ema/bfarm→regulatory, openfda/atc/who_atc→database, guideline→guideline, research→research, Fallback→database. Chip-Farben Q2-konsistent (regulatory=blau, database=slate, guideline=indigo, research=amber). Max-2-Expand. Roh-Enum-Anzeige (`toUpperCase()`) entfernt. Zulassungsinfos + Disclaimer-Blöcke unverändert. S2 deferred (`supplements.quellen`-Feld nicht vorhanden). 2 Dateien (+79/-16 JSX, +132 CSS). V1–V10 ✅. Commit `c4b70d7`. ✅ **Q2-BUILD-02c abgeschlossen (06.05.2026)** — S2 QuellenBox: `supplements.quellen` JSONB-Feld live (ALTER TABLE), 21 NIH-ODS-Einträge (Bootstrap aus `nih_ods_link`). `SuppQuellenBox`-Inline-Komponente in `SupplementDetail.jsx`. `supp-quellenbox-*` CSS (mobile-first, Tap-Targets ≥ 44px). PubMed-Key-Fix: Dual-Fallback `pmid`/`pubmed_id`. E28-konform (alle Einträge mit URL). DB-Write: JA (ALTER TABLE + 21 UPDATEs). 3 Dateien. V1–V10 ✅. Commit `2e1223d`.  
-Nächster Schritt: Q2-BUILD-02c-P2 (weitere Quellen-Batches für 30 Supplements ohne `quellen`) oder Q2-BUILD-03 (`review_typ`/`quellen_konflikt`-Schema) — je eigenständiger Chat.  
-Führend: `Q2_BUILD_02C_S2_QUELLENBOX_CLOSURE.md` · `Q2_BUILD_02B_S6_QUELLENBOX_CLOSURE.md` · `Q2_BUILD_02A_S5_QUELLENBOX_CLOSURE.md` · `Q2_BUILD_01_CLOSURE.md`
+✅ **Q2-BUILD-02c-P2A abgeschlossen (06.05.2026)** — 10 NIH-ODS-Importlücken geschlossen (nih_ods_link + quellen für B1/B2/B3/B5/Biotin/Kalium/Chrom/Kupfer/Mangan/L-Carnitin). DB: 31/51 Supplements mit quellen. Kein Code, kein Commit, kein Deploy. V1–V8 ✅.  
+Nächster Schritt: Q2-BUILD-02c-P2B (5× NCCIH: Melatonin/Echinacea/Ginkgo/Mariendistel/Rhodiola) oder Q2-BUILD-03 (`review_typ`/`quellen_konflikt`-Schema) — je eigenständiger Chat.  
+Führend: `Q2_BUILD_02C_P2A_NIH_ODS_TOP10_CLOSURE.md` · `Q2_BUILD_02C_S2_QUELLENBOX_CLOSURE.md` · `Q2_BUILD_02B_S6_QUELLENBOX_CLOSURE.md` · `Q2_BUILD_02A_S5_QUELLENBOX_CLOSURE.md` · `Q2_BUILD_01_CLOSURE.md`
 
 ### UI-REFRESH — Brand/UX CSS-Refresh (Design-Governance + Builds)
 **Status:** ✅ **UI-REFRESH-01 abgeschlossen (24.04.2026), Commit `54447ba`** — ✅ **UI-REFRESH-02 abgeschlossen (24.04.2026), Commit `f4600f0`**  
