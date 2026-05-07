@@ -302,6 +302,8 @@ export const LABORWERT_B4_ACTIONS_MAP = {
           'HbA1c allein ist kein Diagnosetest für Diabetes — dafür sind Nüchternblutzucker und ggf. ein oraler Glukosetoleranztest notwendig.',
         monitoring:
           'Nüchternblutzucker, Gewicht, Blutdruck, Nierenwerte (Kreatinin, eGFR).',
+        safetyLevel: 'high',
+        requiresDoctorDiscussion: true,
       },
       {
         title: 'Ernährung und Bewegungsgewohnheiten besprechen',
@@ -317,6 +319,8 @@ export const LABORWERT_B4_ACTIONS_MAP = {
           'Bei bekanntem Typ-1-Diabetes sind Insulindosierung und Kohlenhydratmanagement zentral — ärztliche Begleitung ist unerlässlich.',
         monitoring:
           'Kontrolle nach 3 Monaten empfohlen (entspricht der biologischen Halbwertszeit von HbA1c).',
+        safetyLevel: 'medium',
+        requiresDoctorDiscussion: false,
       },
       {
         title: 'Individuelle Therapieziele abklären',
@@ -331,6 +335,8 @@ export const LABORWERT_B4_ACTIONS_MAP = {
         cautions:
           'Zu aggressive Blutzuckersenkung (Hypoglykämien) kann bei bestimmten Gruppen — z. B. älteren Patienten — schädlicher sein als ein leicht erhöhter HbA1c.',
         monitoring: null,
+        safetyLevel: 'high',
+        requiresDoctorDiscussion: true,
       },
     ],
     low: [
@@ -348,6 +354,8 @@ export const LABORWERT_B4_ACTIONS_MAP = {
           'Ein niedrigerer HbA1c bei Anämie ist kein Hinweis auf gute Blutzuckerkontrolle — andere Messmethoden (z. B. Fruktosamin) können dann besser geeignet sein.',
         monitoring:
           'Hämoglobin, Ferritin, ggf. Retikulozyten.',
+        safetyLevel: 'medium',
+        requiresDoctorDiscussion: true,
       },
     ],
   },
@@ -372,6 +380,8 @@ export const LABORWERT_B4_ACTIONS_MAP = {
           'Erhöhtes Ferritin schließt einen gleichzeitigen Eisenmangel nicht aus (sogenannter funktioneller Eisenmangel).',
         monitoring:
           'CRP, Transferrinsättigung, ggf. löslicher Transferrinrezeptor.',
+        safetyLevel: 'medium',
+        requiresDoctorDiscussion: true,
       },
       {
         title: 'Leberwerte im Kontext beurteilen lassen',
@@ -386,6 +396,8 @@ export const LABORWERT_B4_ACTIONS_MAP = {
         cautions: null,
         monitoring:
           'GOT (AST), GPT (ALT), GGT.',
+        safetyLevel: 'medium',
+        requiresDoctorDiscussion: true,
       },
       {
         title: 'Vollständigen Eisenstatus bestimmen lassen',
@@ -401,6 +413,8 @@ export const LABORWERT_B4_ACTIONS_MAP = {
           'Hämochromatose ist selten — häufigere Ursachen für erhöhtes Ferritin sind Entzündungen und Lebererkrankungen.',
         monitoring:
           'Transferrinsättigung; bei begründetem Verdacht: HFE-Gentest (Hämochromatose).',
+        safetyLevel: 'medium',
+        requiresDoctorDiscussion: true,
       },
     ],
     low: [
@@ -418,6 +432,8 @@ export const LABORWERT_B4_ACTIONS_MAP = {
           'Bei gleichzeitiger Entzündung (erhöhtem CRP) kann Ferritin trotz Eisenmangel normal oder sogar erhöht erscheinen.',
         monitoring:
           'Hämoglobin, Transferrinsättigung, CRP.',
+        safetyLevel: 'medium',
+        requiresDoctorDiscussion: true,
       },
       {
         title: 'Ursache des Eisenmangels klären lassen',
@@ -432,6 +448,8 @@ export const LABORWERT_B4_ACTIONS_MAP = {
         cautions:
           'Eisensupplementation ohne Ursachenklärung kann eine Diagnose verzögern.',
         monitoring: null,
+        safetyLevel: 'medium',
+        requiresDoctorDiscussion: true,
       },
       {
         title: 'Eisenreiche Ernährungsgewohnheiten besprechen',
@@ -446,6 +464,8 @@ export const LABORWERT_B4_ACTIONS_MAP = {
         cautions:
           'Bei nachgewiesenem Eisenmangel reichen Ernährungsmaßnahmen allein oft nicht aus — ärztliche Beurteilung bleibt notwendig.',
         monitoring: null,
+        safetyLevel: 'low',
+        requiresDoctorDiscussion: false,
       },
     ],
   },
@@ -470,6 +490,8 @@ export const LABORWERT_B4_ACTIONS_MAP = {
           'Sonnenexposition allein führt nicht zu Vitamin-D-Toxizität — das Risiko entsteht ausschließlich durch übermäßige Supplementierung.',
         monitoring:
           'Kalzium im Blut (bei stark erhöhten Werten), Nierenfunktion.',
+        safetyLevel: 'high',
+        requiresDoctorDiscussion: true,
       },
     ],
     low: [
@@ -487,6 +509,8 @@ export const LABORWERT_B4_ACTIONS_MAP = {
           'Nicht jeder niedrige Vitamin-D-Wert erfordert hochdosierte Supplementierung — eine ärztliche Einschätzung ist sinnvoll.',
         monitoring:
           'Kontrollmessung nach 3–6 Monaten bei laufender Supplementierung.',
+        safetyLevel: 'medium',
+        requiresDoctorDiscussion: true,
       },
       {
         title: 'Supplementierung mit Arzt besprechen',
@@ -502,6 +526,8 @@ export const LABORWERT_B4_ACTIONS_MAP = {
           'Selbstständige Hochdosierung ohne ärztliche Kontrolle ist nicht empfohlen — Vitamin D ist fettlöslich und kann sich im Körper anreichern.',
         monitoring:
           'Kontrollmessung nach 3–6 Monaten.',
+        safetyLevel: 'medium',
+        requiresDoctorDiscussion: true,
       },
       {
         title: 'Knochengesundheit im Kontext einordnen lassen',
@@ -516,6 +542,8 @@ export const LABORWERT_B4_ACTIONS_MAP = {
         cautions: null,
         monitoring:
           'Kalzium, Phosphat, ggf. PTH (Parathormon).',
+        safetyLevel: 'medium',
+        requiresDoctorDiscussion: true,
       },
     ],
   },
@@ -540,6 +568,8 @@ export const LABORWERT_B4_ACTIONS_MAP = {
           'Selbstbehandlung ohne ärztliche Diagnose ist bei unklarem CRP-Anstieg nicht empfohlen.',
         monitoring:
           'Blutbild (Leukozyten, Differentialblutbild), ggf. Procalcitonin bei Infektionsverdacht.',
+        safetyLevel: 'high',
+        requiresDoctorDiscussion: true,
       },
       {
         title: 'Entzündungsursache gezielt klären lassen',
@@ -554,6 +584,8 @@ export const LABORWERT_B4_ACTIONS_MAP = {
         cautions: null,
         monitoring:
           'Verlaufskontrolle CRP nach 1–2 Wochen, um das Therapieansprechen einzuschätzen.',
+        safetyLevel: 'high',
+        requiresDoctorDiscussion: true,
       },
       {
         title: 'Verlaufskontrolle nach Behandlung besprechen',
@@ -567,6 +599,8 @@ export const LABORWERT_B4_ACTIONS_MAP = {
           'Einordnung, ob die Therapie anschlägt oder eine Anpassung notwendig ist.',
         cautions: null,
         monitoring: null,
+        safetyLevel: 'medium',
+        requiresDoctorDiscussion: true,
       },
       {
         title: 'Chronisch erhöhtes CRP als Risikofaktor einordnen lassen',
@@ -581,6 +615,8 @@ export const LABORWERT_B4_ACTIONS_MAP = {
         cautions:
           'Leicht erhöhtes CRP kann auch durch viele alltägliche Faktoren bedingt sein — z. B. eine kürzliche Infektion oder intensive körperliche Anstrengung.',
         monitoring: null,
+        safetyLevel: 'medium',
+        requiresDoctorDiscussion: true,
       },
     ],
     low: [],
