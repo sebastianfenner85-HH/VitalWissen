@@ -183,7 +183,7 @@ Diese Datei gibt den schnellen Überblick über alle aktiven und zuletzt bewegte
 - `P7D_03_S3_FREEZE.md` — S3-Scope
 - `P7D_S18_RESET_FREEZE.md` — S18-Scope
 
-**Nächster zulässiger Schritt:** S3-PIPELINE-SPEC — nach S3-MVP-SLICE-SPEC ✅ abgeschlossen (07.05.2026). Eigenständiger Chat, explizite Freigabe erforderlich.  
+**Nächster zulässiger Schritt:** S3-UX-SPEC — nach S3-PIPELINE-SPEC ✅ abgeschlossen (07.05.2026). Eigenständiger Chat, explizite Freigabe erforderlich. (11-Block-Detailseite `/studien/:slug`, Block [15] auf S5, CSS-Prefix `s3-*`, Studientyp-Ampel, Quellenbox Q2-Typ `research`)  
 **Strang formal geschlossen:** P7D-Strang JA (Phase-B-Architektur abgeschlossen)  
 
 ---
@@ -416,7 +416,7 @@ Nur echte, aktuell freigegebene nächste Schritte (keine Ideenliste):
 | B4 Actions Rollout weitere LW | **B4-BUILD-03** | B4-SAFETY-PATCH ✅ abgeschlossen (07.05.2026) — B4 Actions Map um weitere LW ergänzen, eigenständiger Chat | MITTEL |
 | S8 B4/K3 Rollout Kalium/Natrium | **S8-BUILD-02d** | S8-BUILD-02c ✅ abgeschlossen — Kalium (2823-3) + Natrium (2951-2) in K3-Map ergänzen, eigenständiger Chat | NIEDRIG |
 | S4 weitere Features | **P7-06** | Separates Spec-Paket + explizite Freigabe zuerst | NIEDRIG |
-| S3 Pipeline-Spec | **S3-PIPELINE-SPEC** | S3-MVP-SLICE-SPEC ✅ abgeschlossen (07.05.2026) — eigenständiger Chat, explizite Freigabe erforderlich | NIEDRIG |
+| S3 UX-Spec | **S3-UX-SPEC** | S3-PIPELINE-SPEC ✅ abgeschlossen (07.05.2026) — eigenständiger Chat, explizite Freigabe erforderlich | NIEDRIG |
 
 **S6-07-Kandidaten (nicht beauftragt):** S2→S6 Cross-Block (Supplement-Chips auf SupplementDetail.jsx), S6-Filter-Erweiterungen, S1→S6 Cross-Block (Laborwerte → Wirkstoffe — aufwändiges LOINC-Mapping).
 
@@ -471,4 +471,5 @@ Nur wenn ausnahmsweise nicht nötig: explizit begründen.
 *Aktualisiert: 07.05.2026 — S3-K6-SCHEMA-SPEC ✅ Bindende Schema-Spezifikation Kernobjekt K6 abgeschlossen und abgenommen. 38 Felder, API-Quellen OpenAlex/PubMed/Crossref, Curation-Workflow K.1 (manuell, KI-TLDR VERBOTEN), Hype-Guardrails, RLS E29-konform. P.0 Pflicht-Spec-Sequenz (4 Pakete vor S3-BUILD-01). Keine Build-Freigabe. Kein Code, kein DB-Write, kein Commit. §2 P7D-Strang (Nächster Schritt: S3-MVP-SLICE-SPEC) + §5 (S3-Spec → S3-MVP-SLICE-SPEC) nachgezogen. Doppelpflege vollständig.*  
 *Aktualisiert: 07.05.2026 — S3-MVP-SLICE-SPEC ✅ MVP-Slice-Spezifikation Studienkompass abgeschlossen. Option C (Krankheiten-only/K1): 5 ICD-Cluster (I10/E11/F32/E03/D50), 20 K6-Einträge, Modus 1 (Cross-Block [15] auf S5-Seiten). ICD = interne Objektanker. Originalabstract C.1 NEIN. CSS-Prefix `s3-*`. Keine Build-Freigabe. Kein Code, kein DB-Write, kein Commit. §2 P7D-Strang (Nächster Schritt: S3-PIPELINE-SPEC) + §5 (S3-MVP-SLICE-SPEC → S3-PIPELINE-SPEC) nachgezogen. Doppelpflege vollständig.*  
 *Aktualisiert: 07.05.2026 — S3-MVP-SLICE-SPEC Customer-Value-Patch ✅. H0 ergänzt (Produktversprechen C.1, Coverage-Regel, Findability-Tabelle, Empty-State-Regel, UX-Claim). MVP-Entscheidung unverändert. S3-PIPELINE-SPEC bleibt nächster Schritt — muss ICD→MeSH-Mapping und Coverage-/Empty-State-Logik berücksichtigen. §2 P7D-Strang + §5 bestätigt unverändert. Doppelpflege vollständig.*  
-*Nächste Pflicht-Aktualisierung: bei S3-PIPELINE-SPEC, B4-BUILD-03, Q2-BUILD-02c-P2B, S8-BUILD-02d, S1-BUILD-02, UI-REFRESH-04 oder jedem anderen Paket-Abschluss*
+*Aktualisiert: 07.05.2026 — S3-PIPELINE-SPEC ✅ Vollständige Pipeline-Spec Studienkompass C.1 abgeschlossen (Sections A–S). ICD→MeSH-Mapping (5 Cluster, Primary/Secondary/Tertiary), zweistufige Suchstrategie (Quick-Pass + Deep-Pass), Quellen-Prioritätskette (OpenAlex→PubMed→Crossref→EuropePMC→DOI.org; Cochrane/Semantic Scholar ROT), Pipeline-Phasen P0–P8 (vollständig manuell C.1), Curation-Queue-Format, Gates K.1–K.4, Coverage-/Findability-/Empty-State-Regeln, API-/Rate-/Secrets-Regeln, K6-Feldmapping J.1–J.5, 15 Validatoren PASS. Kein Code, kein DB-Write, kein Commit, kein Deploy. §2 P7D-Strang (Nächster Schritt: S3-UX-SPEC) + §5 (S3-PIPELINE-SPEC → S3-UX-SPEC) nachgezogen. Doppelpflege vollständig.*  
+*Nächste Pflicht-Aktualisierung: bei S3-UX-SPEC, B4-BUILD-03, Q2-BUILD-02c-P2B, S8-BUILD-02d, S1-BUILD-02, UI-REFRESH-04 oder jedem anderen Paket-Abschluss*
