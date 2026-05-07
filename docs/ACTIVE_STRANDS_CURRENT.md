@@ -183,7 +183,7 @@ Diese Datei gibt den schnellen Überblick über alle aktiven und zuletzt bewegte
 - `P7D_03_S3_FREEZE.md` — S3-Scope
 - `P7D_S18_RESET_FREEZE.md` — S18-Scope
 
-**Nächster zulässiger Schritt:** S3-MVP-SLICE-SPEC — nach S3-K6-SCHEMA-SPEC ✅ abgeschlossen (07.05.2026). Eigenständiger Chat, explizite Phase-C-Freigabe erforderlich.  
+**Nächster zulässiger Schritt:** S3-PIPELINE-SPEC — nach S3-MVP-SLICE-SPEC ✅ abgeschlossen (07.05.2026). Eigenständiger Chat, explizite Freigabe erforderlich.  
 **Strang formal geschlossen:** P7D-Strang JA (Phase-B-Architektur abgeschlossen)  
 
 ---
@@ -416,7 +416,7 @@ Nur echte, aktuell freigegebene nächste Schritte (keine Ideenliste):
 | B4 Actions Rollout weitere LW | **B4-BUILD-03** | B4-SAFETY-PATCH ✅ abgeschlossen (07.05.2026) — B4 Actions Map um weitere LW ergänzen, eigenständiger Chat | MITTEL |
 | S8 B4/K3 Rollout Kalium/Natrium | **S8-BUILD-02d** | S8-BUILD-02c ✅ abgeschlossen — Kalium (2823-3) + Natrium (2951-2) in K3-Map ergänzen, eigenständiger Chat | NIEDRIG |
 | S4 weitere Features | **P7-06** | Separates Spec-Paket + explizite Freigabe zuerst | NIEDRIG |
-| S3 MVP-Slice-Spec | **S3-MVP-SLICE-SPEC** | S3-K6-SCHEMA-SPEC ✅ abgeschlossen (07.05.2026) — eigenständiger Chat, explizite Phase-C-Freigabe erforderlich | NIEDRIG |
+| S3 Pipeline-Spec | **S3-PIPELINE-SPEC** | S3-MVP-SLICE-SPEC ✅ abgeschlossen (07.05.2026) — eigenständiger Chat, explizite Freigabe erforderlich | NIEDRIG |
 
 **S6-07-Kandidaten (nicht beauftragt):** S2→S6 Cross-Block (Supplement-Chips auf SupplementDetail.jsx), S6-Filter-Erweiterungen, S1→S6 Cross-Block (Laborwerte → Wirkstoffe — aufwändiges LOINC-Mapping).
 
@@ -469,4 +469,6 @@ Nur wenn ausnahmsweise nicht nötig: explizit begründen.
 *Aktualisiert: 07.05.2026 — B4-SAFETY-PATCH ✅ safetyLevel + requiresDoctorDiscussion für 18 Karten (HbA1c/Ferritin/VitD/CRP) nachgerüstet. 1 Datei, 36 Insertions, 0 Deletions. Kein JSX, kein CSS, kein DB-Write. Commit `8f19256`. Push `origin/main` (`846ce99..8f19256`). Netlify Auto-Deploy ausgelöst. Schließt FULL_AUDIT_2026-05 Befund #2 (KRITISCH-MED). B4-BUILD-03 entsperrt. §2 S8/B4-Strang + §3 aktuelles Paket + §4 Ops (HEAD `8f19256`) + §5 (B4-BUILD-03 NIEDRIG → MITTEL, Voraussetzung geupdated) nachgezogen. Doppelpflege vollständig.*
 *Aktualisiert: 07.05.2026 — Q2-BUILD-02d ✅ S1 LwQuellenBox Rollout abgeschlossen. LwQuellenBox-Inline-Komponente in LaborwertDetail.jsx. Typ: database (DGKL/AACC/JSCC). Region-Flag + Name-Link + Jahr. Max-2-Expand. Leer-Guard. Mobile Q6. Block [4b] ersetzt. 2 Dateien, kein DB-Write. Commit `fab4374`. Push `origin/main` (`8f19256..fab4374`). Netlify Auto-Deploy ausgelöst. Schließt FULL_AUDIT_2026-05 Befund #3 — alle 3 Vollaudit-Befunde geschlossen. §2 S1-Strang + Q2-Strang + §3 aktuelles Paket + §4 Ops (HEAD `fab4374`) + §5 (Q2-BUILD-02d entfernt) nachgezogen. Doppelpflege vollständig.*
 *Aktualisiert: 07.05.2026 — S3-K6-SCHEMA-SPEC ✅ Bindende Schema-Spezifikation Kernobjekt K6 abgeschlossen und abgenommen. 38 Felder, API-Quellen OpenAlex/PubMed/Crossref, Curation-Workflow K.1 (manuell, KI-TLDR VERBOTEN), Hype-Guardrails, RLS E29-konform. P.0 Pflicht-Spec-Sequenz (4 Pakete vor S3-BUILD-01). Keine Build-Freigabe. Kein Code, kein DB-Write, kein Commit. §2 P7D-Strang (Nächster Schritt: S3-MVP-SLICE-SPEC) + §5 (S3-Spec → S3-MVP-SLICE-SPEC) nachgezogen. Doppelpflege vollständig.*  
-*Nächste Pflicht-Aktualisierung: bei S3-MVP-SLICE-SPEC, B4-BUILD-03, Q2-BUILD-02c-P2B, S8-BUILD-02d, S1-BUILD-02, UI-REFRESH-04 oder jedem anderen Paket-Abschluss*
+*Aktualisiert: 07.05.2026 — S3-MVP-SLICE-SPEC ✅ MVP-Slice-Spezifikation Studienkompass abgeschlossen. Option C (Krankheiten-only/K1): 5 ICD-Cluster (I10/E11/F32/E03/D50), 20 K6-Einträge, Modus 1 (Cross-Block [15] auf S5-Seiten). ICD = interne Objektanker. Originalabstract C.1 NEIN. CSS-Prefix `s3-*`. Keine Build-Freigabe. Kein Code, kein DB-Write, kein Commit. §2 P7D-Strang (Nächster Schritt: S3-PIPELINE-SPEC) + §5 (S3-MVP-SLICE-SPEC → S3-PIPELINE-SPEC) nachgezogen. Doppelpflege vollständig.*  
+*Aktualisiert: 07.05.2026 — S3-MVP-SLICE-SPEC Customer-Value-Patch ✅. H0 ergänzt (Produktversprechen C.1, Coverage-Regel, Findability-Tabelle, Empty-State-Regel, UX-Claim). MVP-Entscheidung unverändert. S3-PIPELINE-SPEC bleibt nächster Schritt — muss ICD→MeSH-Mapping und Coverage-/Empty-State-Logik berücksichtigen. §2 P7D-Strang + §5 bestätigt unverändert. Doppelpflege vollständig.*  
+*Nächste Pflicht-Aktualisierung: bei S3-PIPELINE-SPEC, B4-BUILD-03, Q2-BUILD-02c-P2B, S8-BUILD-02d, S1-BUILD-02, UI-REFRESH-04 oder jedem anderen Paket-Abschluss*
