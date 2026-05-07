@@ -21,7 +21,7 @@ Diese Datei gibt den schnellen Überblick über alle aktiven und zuletzt bewegte
 ### Q2-MAPPING-PATCH — Quellentyp-Mapping-Lücken
 **Status:** ✅ **abgeschlossen (07.05.2026), Commit `27b3fb6`**  
 **Letzter Stand:** 2 JSX-Dateien, 0 CSS, 0 DB-Write. S5 `QUELLEN_TYP` in `KrankheitDetail.jsx` um `'research': { q2: 'research', label: 'Forschung', icon: '🔬' }` ergänzt — CSS-Modifier `krank-quellen-typchip--research` existierte bereits (Krankheiten.css Z.960, UI-REFRESH-02, violett-grau). S6 `MED_QUELLEN_TYP` in `MedikamentDetail.jsx` um `patient_info: { farbe: 'patient_info', label: 'Patienteninformation', icon: '📖' }` ergänzt — CSS-Modifier `med-quellenbox-typchip--patient_info` existierte bereits (Medikamente.css Z.845, teal). Exakt 3 Insertions, 1 Deletion. Option C (S2 Typ-Normalisierung) ausdrücklich nicht Scope.  
-**Letzter Commit:** `27b3fb6` — auf `origin/main` (`fab4374..27b3fb6`)  
+**Letzter Commit:** `4e4990f` (Doku-Sync) / `27b3fb6` (Code) — auf `origin/main` (`fab4374..27b3fb6..4e4990f`)  
 **DB-Write:** NEIN  
 **Letzte führende Dokumente:**
 - **`01_PROJECT_SOURCES_CURRENT/Q2_MAPPING_PATCH_CLOSURE.md`** — **führend** (07.05.2026)
@@ -183,7 +183,7 @@ Diese Datei gibt den schnellen Überblick über alle aktiven und zuletzt bewegte
 - `P7D_03_S3_FREEZE.md` — S3-Scope
 - `P7D_S18_RESET_FREEZE.md` — S18-Scope
 
-**Nächster zulässiger Schritt:** S3-Spec-Paket (eigenständiger Chat, explizite Freigabe für Phase C)  
+**Nächster zulässiger Schritt:** S3-MVP-SLICE-SPEC — nach S3-K6-SCHEMA-SPEC ✅ abgeschlossen (07.05.2026). Eigenständiger Chat, explizite Phase-C-Freigabe erforderlich.  
 **Strang formal geschlossen:** P7D-Strang JA (Phase-B-Architektur abgeschlossen)  
 
 ---
@@ -416,7 +416,7 @@ Nur echte, aktuell freigegebene nächste Schritte (keine Ideenliste):
 | B4 Actions Rollout weitere LW | **B4-BUILD-03** | B4-SAFETY-PATCH ✅ abgeschlossen (07.05.2026) — B4 Actions Map um weitere LW ergänzen, eigenständiger Chat | MITTEL |
 | S8 B4/K3 Rollout Kalium/Natrium | **S8-BUILD-02d** | S8-BUILD-02c ✅ abgeschlossen — Kalium (2823-3) + Natrium (2951-2) in K3-Map ergänzen, eigenständiger Chat | NIEDRIG |
 | S4 weitere Features | **P7-06** | Separates Spec-Paket + explizite Freigabe zuerst | NIEDRIG |
-| S3 Spec-Paket | **S3-Spec** | Eigenständiger Chat — Phase C, explizite Freigabe | NIEDRIG |
+| S3 MVP-Slice-Spec | **S3-MVP-SLICE-SPEC** | S3-K6-SCHEMA-SPEC ✅ abgeschlossen (07.05.2026) — eigenständiger Chat, explizite Phase-C-Freigabe erforderlich | NIEDRIG |
 
 **S6-07-Kandidaten (nicht beauftragt):** S2→S6 Cross-Block (Supplement-Chips auf SupplementDetail.jsx), S6-Filter-Erweiterungen, S1→S6 Cross-Block (Laborwerte → Wirkstoffe — aufwändiges LOINC-Mapping).
 
@@ -468,4 +468,5 @@ Nur wenn ausnahmsweise nicht nötig: explizit begründen.
 *Aktualisiert: 06.05.2026 — VITALWISSEN_FULL_SYSTEM_AUDIT_2026-05 ✅ Vollaudit abgeschlossen (read-only, Phasen A–G). 20+ Live-Seiten getestet, DB vollständig abgefragt (10 Tabellen, RLS auf allen aktiv), Source/Evidence/Medical-Safety/UX/Brand/Architektur geprüft. Gesamtverdikt: GRÜN — plattform operativ und technisch sauber. 3 Aktionspunkte: (1) Repo-Clone veraltet (ee0e67f), (2) B4-actions-map HbA1c/Ferritin/VitD/CRP ohne requiresDoctorDiscussion+safetyLevel → B4-SAFETY-PATCH vor B4-BUILD-03, (3) S1 ohne QuellenBox → Q2-BUILD-02d. §2 S8/B4-Strang (B4-SAFETY-PATCH-Hinweis) + BRAND-UX-REFRESH (UI-REFRESH-03 ✅) aktualisiert. Kein DB-Write, kein Commit. Report: `01_PROJECT_SOURCES_CURRENT/VITALWISSEN_FULL_SYSTEM_AUDIT_2026_05.md`.*
 *Aktualisiert: 07.05.2026 — B4-SAFETY-PATCH ✅ safetyLevel + requiresDoctorDiscussion für 18 Karten (HbA1c/Ferritin/VitD/CRP) nachgerüstet. 1 Datei, 36 Insertions, 0 Deletions. Kein JSX, kein CSS, kein DB-Write. Commit `8f19256`. Push `origin/main` (`846ce99..8f19256`). Netlify Auto-Deploy ausgelöst. Schließt FULL_AUDIT_2026-05 Befund #2 (KRITISCH-MED). B4-BUILD-03 entsperrt. §2 S8/B4-Strang + §3 aktuelles Paket + §4 Ops (HEAD `8f19256`) + §5 (B4-BUILD-03 NIEDRIG → MITTEL, Voraussetzung geupdated) nachgezogen. Doppelpflege vollständig.*
 *Aktualisiert: 07.05.2026 — Q2-BUILD-02d ✅ S1 LwQuellenBox Rollout abgeschlossen. LwQuellenBox-Inline-Komponente in LaborwertDetail.jsx. Typ: database (DGKL/AACC/JSCC). Region-Flag + Name-Link + Jahr. Max-2-Expand. Leer-Guard. Mobile Q6. Block [4b] ersetzt. 2 Dateien, kein DB-Write. Commit `fab4374`. Push `origin/main` (`8f19256..fab4374`). Netlify Auto-Deploy ausgelöst. Schließt FULL_AUDIT_2026-05 Befund #3 — alle 3 Vollaudit-Befunde geschlossen. §2 S1-Strang + Q2-Strang + §3 aktuelles Paket + §4 Ops (HEAD `fab4374`) + §5 (Q2-BUILD-02d entfernt) nachgezogen. Doppelpflege vollständig.*
-*Nächste Pflicht-Aktualisierung: bei B4-BUILD-03, Q2-BUILD-02c-P2B, S8-BUILD-02d, S1-BUILD-02, UI-REFRESH-04 oder jedem anderen Paket-Abschluss*
+*Aktualisiert: 07.05.2026 — S3-K6-SCHEMA-SPEC ✅ Bindende Schema-Spezifikation Kernobjekt K6 abgeschlossen und abgenommen. 38 Felder, API-Quellen OpenAlex/PubMed/Crossref, Curation-Workflow K.1 (manuell, KI-TLDR VERBOTEN), Hype-Guardrails, RLS E29-konform. P.0 Pflicht-Spec-Sequenz (4 Pakete vor S3-BUILD-01). Keine Build-Freigabe. Kein Code, kein DB-Write, kein Commit. §2 P7D-Strang (Nächster Schritt: S3-MVP-SLICE-SPEC) + §5 (S3-Spec → S3-MVP-SLICE-SPEC) nachgezogen. Doppelpflege vollständig.*  
+*Nächste Pflicht-Aktualisierung: bei S3-MVP-SLICE-SPEC, B4-BUILD-03, Q2-BUILD-02c-P2B, S8-BUILD-02d, S1-BUILD-02, UI-REFRESH-04 oder jedem anderen Paket-Abschluss*

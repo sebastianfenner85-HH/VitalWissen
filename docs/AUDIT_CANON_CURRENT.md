@@ -74,7 +74,7 @@ Wenn Dokumente widersprechen, gilt folgende Priorität:
 
 ### Repo & Hosting
 
-- Letzter Commit auf `main`: `27b3fb6` (Q2-MAPPING-PATCH, 07.05.2026) — Vorgänger: `fab4374` (Q2-BUILD-02d)
+- Letzter Commit auf `main`: `4e4990f` (Q2-MAPPING-PATCH Doku-Sync, 07.05.2026) — Code-Commit: `27b3fb6` (Q2-MAPPING-PATCH)
 - Netlify: Auto-Publishing AN, live unter `https://vitalwissen.netlify.app`
 - GitHub: `sebastianfenner85-HH/VitalWissen` (public)
 - MISTRAL_API_KEY: in Netlify gesetzt (Production, S4-Proxy)
@@ -188,8 +188,9 @@ Führend: **`01_PROJECT_SOURCES_CURRENT/B4_SAFETY_PATCH_CLOSURE.md`** (07.05.202
 Führend: `P7D_ARCHITECTURE_RESET_FREEZE.md`
 
 ### S3 — Studienkompass
-**Status:** ✅ Freeze (P7D-03, 19.04.2026). Scope definiert. Phase C Build.  
-Nächster Schritt: S3-Spec-Paket (eigenständiger Chat, explizite Freigabe).
+**Status:** ✅ Freeze (P7D-03, 19.04.2026). ✅ **S3-K6-SCHEMA-SPEC abgeschlossen (07.05.2026)** — Bindende Schema-Spezifikation Kernobjekt K6: 38 Felder (A–T), API-Quellen (OpenAlex/PubMed/Crossref), Curation-Workflow K.1 (vollständig manuell, KI-TLDR VERBOTEN), Hype-Guardrails, RLS E29-konform. P.0 Pflicht-Spec-Sequenz (4 Pakete vor S3-BUILD-01). Keine Build-Freigabe.  
+Nächster Schritt: S3-MVP-SLICE-SPEC — eigenständiger Chat, explizite Phase-C-Freigabe erforderlich.  
+Führend: `01_PROJECT_SOURCES_CURRENT/S3_K6_SCHEMA_SPEC.md`
 
 ### Q2 — Vertrauens-/Quellen-Layer
 **Status:** ✅ **Q2-BUILD-01 abgeschlossen (24.04.2026)** — Globale Vertrauensseite `/vertrauen` live. ✅ **Q2-BUILD-02a abgeschlossen (24.04.2026)** — S5 Quellenbox-Komponente live. ✅ **Q2-BUILD-02b abgeschlossen (06.05.2026)** — S6 QuellenBox-Rollout: `MedQuellenBox`-Komponente in `MedikamentDetail.jsx` Block 6. `MED_QUELLEN_TYP`-Konstante + `getMedTypInfo()`-Helper + Inline-Komponente. Typ-Mapping: ema/bfarm→regulatory, openfda/atc/who_atc→database, guideline→guideline, research→research, Fallback→database. Chip-Farben Q2-konsistent (regulatory=blau, database=slate, guideline=indigo, research=amber). Max-2-Expand. Roh-Enum-Anzeige (`toUpperCase()`) entfernt. Zulassungsinfos + Disclaimer-Blöcke unverändert. S2 deferred (`supplements.quellen`-Feld nicht vorhanden). 2 Dateien (+79/-16 JSX, +132 CSS). V1–V10 ✅. Commit `c4b70d7`. ✅ **Q2-BUILD-02c abgeschlossen (06.05.2026)** — S2 QuellenBox: `supplements.quellen` JSONB-Feld live (ALTER TABLE), 21 NIH-ODS-Einträge (Bootstrap aus `nih_ods_link`). `SuppQuellenBox`-Inline-Komponente in `SupplementDetail.jsx`. `supp-quellenbox-*` CSS (mobile-first, Tap-Targets ≥ 44px). PubMed-Key-Fix: Dual-Fallback `pmid`/`pubmed_id`. E28-konform (alle Einträge mit URL). DB-Write: JA (ALTER TABLE + 21 UPDATEs). 3 Dateien. V1–V10 ✅. Commit `2e1223d`.  
@@ -295,4 +296,5 @@ Aktualisierung bedeutet mindestens: Tabellen in §3 (DB-Stand, Live-Module), §7
 *Aktualisiert: 24.04.2026 — S1-BUILD-01b ✅ LDL Zielwert-Microcopy live. loincCode-Prop an ZielwertBlock, LOINC `2089-1`-Gating, ESC/EAS-Risikokontext-Hinweis, lw-zt-hinweis wiederverwendet. 1 Datei (LaborwertDetail.jsx), 14 Insertions, 2 Deletions. Build 126 Module, 0 Fehler. Commit `d430333`. DB-Write: NEIN. Paket 1b abgeschlossen — Voraussetzung für B4-BUILD-02 erfüllt. §3 S1 Live-Module (Commit auf `d430333`) + Repo-Stand + §7 S1-Strang (S1-BUILD-01b ergänzt) + §7 S8-Strang (S1-BUILD-01b ✅, Nächster Schritt B4-BUILD-02) nachgezogen.*  
 *Aktualisiert: 06.05.2026 — Q2-BUILD-02c ✅ S2 QuellenBox abgeschlossen. supplements.quellen JSONB live (ALTER TABLE). NIH-ODS-Bootstrap: 21/51 Supplements befüllt. SuppQuellenBox-Komponente in SupplementDetail.jsx (inline, analog MedQuellenBox). PubMed-Key-Fix (pmid/pubmed_id dual fallback). schema.sql sync. Build 126 Module ✅. Commit `2e1223d`. Push origin/main. Netlify Auto-Deploy. DB-Write: JA. §3 S2-Live-Module + DB-Stand (supplements) + Repo-Stand nachgezogen.*
 *Aktualisiert: 06.05.2026 — VITALWISSEN_FULL_SYSTEM_AUDIT_2026-05 ✅ Vollaudit abgeschlossen (read-only). Phasen A–G: Dokument-/Repo-Audit, 20+ Live-Seiten getestet, DB vollständig abgefragt, Source/Evidence, Medical-Safety, UX/Brand, Architektur. Gesamtverdikt: GRÜN. Kritischster Befund: lokaler Repo-Clone veraltet (ee0e67f vs. Live HEAD) + B4-actions-map für 4 LW fehlende Pflicht-Sicherheitsfelder. §7 UI-REFRESH-Drift korrigiert (UI-REFRESH-03 war fälschlich als "Nächster Schritt" markiert — jetzt ✅). Report: `01_PROJECT_SOURCES_CURRENT/VITALWISSEN_FULL_SYSTEM_AUDIT_2026_05.md`. DB-Write: NEIN. Commit: NEIN. Deploy: NEIN.*
-*Nächste Pflicht-Aktualisierung: bei B4-SAFETY-PATCH, Q2-BUILD-02d, Q2-BUILD-02c-P2B, S8-BUILD-02d, B4-BUILD-03 oder jedem anderen Paket-Abschluss*
+*Aktualisiert: 07.05.2026 — S3-K6-SCHEMA-SPEC ✅ Bindende Schema-Spezifikation Kernobjekt K6 abgeschlossen und abgenommen. 38 Felder, Curation-Workflow K.1 (manuell, KI-TLDR VERBOTEN), API-Quellen OpenAlex/PubMed/Crossref, Hype-Guardrails, RLS E29-konform. P.0 Pflicht-Spec-Sequenz (4 Pakete vor S3-BUILD-01). Keine Build-Freigabe. Kein Code, kein DB-Write, kein Commit. §7 S3-Strang nachgezogen. Führend: `01_PROJECT_SOURCES_CURRENT/S3_K6_SCHEMA_SPEC.md`*  
+*Nächste Pflicht-Aktualisierung: bei S3-MVP-SLICE-SPEC, Q2-BUILD-02c-P2B, S8-BUILD-02d, B4-BUILD-03, UI-REFRESH-04 oder jedem anderen Paket-Abschluss*
