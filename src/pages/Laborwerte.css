@@ -1115,3 +1115,97 @@
   .lw-b4a-doktor     { font-size: 11px; }
   .lw-b4a-abgrenzung { font-size: 11px; }
 }
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   Q2-BUILD-02d — LwQuellenBox: Q2-konforme Quellenbox für S1 Referenzquellen
+   CSS-Prefix: lw-quellenbox-*
+   Analog zu krank-quellenbox-* (S5) + med-quellenbox-* (S6) + supp-quellenbox-* (S2).
+   ═══════════════════════════════════════════════════════════════════════════ */
+
+.lw-quellenbox {
+  margin-top: 12px;
+  padding-top: 12px;
+  border-top: 1px solid var(--border, #e5e7eb);
+}
+
+.lw-quellenbox-label {
+  display: block;
+  font-size: 12px;
+  color: var(--text-muted);
+  margin-bottom: 8px;
+}
+
+.lw-quellenbox-rows {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.lw-quellenbox-row {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 6px;
+  min-height: 32px;
+}
+
+.lw-quellenbox-region {
+  font-size: 12px;
+  color: var(--text-muted);
+  white-space: nowrap;
+}
+
+.lw-quellenbox-link {
+  font-size: 13px;
+  color: var(--text-light);
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  min-height: 32px;
+  transition: color 0.15s;
+}
+
+.lw-quellenbox-link:hover {
+  color: var(--primary);
+  text-decoration: underline;
+}
+
+.lw-quellenbox-jahr {
+  font-size: 12px;
+  color: var(--text-muted);
+}
+
+.lw-quellenbox-more {
+  display: block;
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-size: 12px;
+  font-family: inherit;
+  color: var(--text-muted);
+  padding: 4px 0;
+  margin-top: 4px;
+  transition: color 0.15s;
+}
+
+.lw-quellenbox-more:hover {
+  color: var(--primary);
+}
+
+/* Mobile: Tap-Targets ≥ 40px (Q6-Standard) */
+@media (max-width: 640px) {
+  .lw-quellenbox-row {
+    min-height: 40px;
+  }
+
+  .lw-quellenbox-link {
+    min-height: 40px;
+  }
+
+  .lw-quellenbox-more {
+    min-height: 40px;
+    display: flex;
+    align-items: center;
+    width: 100%;
+  }
+}

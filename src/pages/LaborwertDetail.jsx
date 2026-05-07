@@ -380,6 +380,58 @@ function B4ActionsBlock({ loincCode, slug }) {
   )
 }
 
+
+// [4b] Q2-BUILD-02d: LwQuellenBox — Q2-konforme Quellenbox für S1 Referenzquellen
+// Ersetzt das bisherige Inline-Link-Rendering in Block [4b].
+// Input: quellenKontext-Array (key, label, quelle, quelle_url, quelle_jahr).
+// Regeln: Leer-Guard, max 2 initial, Typ-Chip "Datenbank", Name-Link, Jahr, Region.
+// Nur Einträge mit URL werden angezeigt.
+function LwQuellenBox({ quellen }) {
+  const [showAll, setShowAll] = useState(false)
+
+  if (!quellen || quellen.length === 0) return null
+
+  // Sicherheitsfilter: nur Einträge mit URL rendern
+  const filtered = quellen.filter(q => q.quelle_url)
+  if (filtered.length === 0) return null
+
+  const visible = showAll ? filtered : filtered.slice(0, 2)
+  const hiddenCount = filtered.length - 2
+
+  return (
+    <div className="lw-quellenbox">
+      <span className="lw-quellenbox-label">Quellen Referenzbereiche:</span>
+      <div className="lw-quellenbox-rows">
+        {visible.map(q => (
+          <div key={q.key} className="lw-quellenbox-row">
+            <span className="lw-quelle-typ-chip lw-quelle-typ-database">Datenbank</span>
+            <span className="lw-quellenbox-region">{q.label}</span>
+            <a
+              href={q.quelle_url}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="lw-quellenbox-link"
+            >
+              {q.quelle || q.label}
+            </a>
+            {q.quelle_jahr && (
+              <span className="lw-quellenbox-jahr">({q.quelle_jahr})</span>
+            )}
+          </div>
+        ))}
+      </div>
+      {!showAll && hiddenCount > 0 && (
+        <button
+          className="lw-quellenbox-more"
+          onClick={() => setShowAll(true)}
+        >
+          + {hiddenCount} weitere anzeigen
+        </button>
+      )}
+    </div>
+  )
+}
+
 export default function LaborwertDetail() {
   const { code } = useParams()
   const navigate = useNavigate()
@@ -526,24 +578,8 @@ export default function LaborwertDetail() {
           })}
         </div>
 
-        {/* [4b] Quellenkontext — nur wenn URL-Daten vorhanden (5 Pilot-Werte) */}
-        {quellenKontext.length > 0 && (
-          <div className="lw-quellenkontext">
-            <span className="lw-quellenkontext-label">Quellen Referenzbereiche:</span>
-            {quellenKontext.map(l => (
-              <a
-                key={l.key}
-                href={l.quelle_url}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="lw-quellenkontext-link"
-              >
-                <span className="lw-quelle-typ-chip lw-quelle-typ-database">Datenbank</span>
-                {l.label} {l.quelle && `· ${l.quelle}`}{l.quelle_jahr && ` (${l.quelle_jahr})`}
-              </a>
-            ))}
-          </div>
-        )}
+        {/* [4b] Q2-BUILD-02d: LwQuellenBox — Q2-konforme Quellenbox, Leer-Guard intern */}
+        <LwQuellenBox quellen={quellenKontext} />
       </div>
 
       {/* [6] Zielwert-Block V3 — nur wenn zielwerte JSONB befüllt */}
