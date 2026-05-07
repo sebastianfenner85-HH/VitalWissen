@@ -1,6 +1,6 @@
 # ACTIVE_STRANDS_CURRENT — Operative Strang-Übersicht VitalWissen
 
-**Stand:** 06.05.2026 (Q2-BUILD-02c)  
+**Stand:** 07.05.2026 (Q2-MAPPING-PATCH)  
 **Typ:** Meta-Datei — operative Schnellübersicht, kein Ersatz für Einzeldokumente  
 **Pflege:** Bei jedem neuen Paket prüfen und nachziehen  
 
@@ -15,6 +15,21 @@ Diese Datei gibt den schnellen Überblick über alle aktiven und zuletzt bewegte
 ---
 
 ## 2. AKTIVE / ZULETZT RELEVANTE STRÄNGE
+
+---
+
+### Q2-MAPPING-PATCH — Quellentyp-Mapping-Lücken
+**Status:** ✅ **abgeschlossen (07.05.2026), Commit `27b3fb6`**  
+**Letzter Stand:** 2 JSX-Dateien, 0 CSS, 0 DB-Write. S5 `QUELLEN_TYP` in `KrankheitDetail.jsx` um `'research': { q2: 'research', label: 'Forschung', icon: '🔬' }` ergänzt — CSS-Modifier `krank-quellen-typchip--research` existierte bereits (Krankheiten.css Z.960, UI-REFRESH-02, violett-grau). S6 `MED_QUELLEN_TYP` in `MedikamentDetail.jsx` um `patient_info: { farbe: 'patient_info', label: 'Patienteninformation', icon: '📖' }` ergänzt — CSS-Modifier `med-quellenbox-typchip--patient_info` existierte bereits (Medikamente.css Z.845, teal). Exakt 3 Insertions, 1 Deletion. Option C (S2 Typ-Normalisierung) ausdrücklich nicht Scope.  
+**Letzter Commit:** `27b3fb6` — auf `origin/main` (`fab4374..27b3fb6`)  
+**DB-Write:** NEIN  
+**Letzte führende Dokumente:**
+- **`01_PROJECT_SOURCES_CURRENT/Q2_MAPPING_PATCH_CLOSURE.md`** — **führend** (07.05.2026)
+- `01_PROJECT_SOURCES_CURRENT/Q2_BUILD_02A_S5_QUELLENBOX_CLOSURE.md` — S5-Basis
+- `01_PROJECT_SOURCES_CURRENT/Q2_BUILD_02B_S6_QUELLENBOX_CLOSURE.md` — S6-Basis
+
+**Nächste zulässige Schritte:** Q2-BUILD-02c-P2B, B4-BUILD-03, S8-BUILD-02d, UI-REFRESH-04, S1-BUILD-02 (je eigenständiger Chat)  
+**Strang formal geschlossen:** JA
 
 ---
 
@@ -62,24 +77,27 @@ Diese Datei gibt den schnellen Überblick über alle aktiven und zuletzt bewegte
 ---
 
 ### BRAND-UX-REFRESH-SPEC — Design-Governance
-**Status:** ✅ **Spec abgeschlossen (24.04.2026), UI-REFRESH-01 gebaut**  
-**Letzter Stand:** Bindendes Design-Governance-Dokument erstellt. Audit 8 Befunde. 5 Kernentscheidungen B1–B5, 11 CSS-Spec-Blöcke C1–C11, 12 No-Gos. Priority-1-Build (UI-REFRESH-01) abgeschlossen. Nächste Priorität: UI-REFRESH-02 (Chip-Normalisierung, Priority 2).  
-**Letzter Commit:** NEIN (Spec-Dokument)  
+**Status:** ✅ **Spec abgeschlossen (24.04.2026). UI-REFRESH-01 ✅ UI-REFRESH-02 ✅ UI-REFRESH-03 ✅ alle abgeschlossen.**  
+**Letzter Stand:** Alle drei Priority-Builds abgeschlossen. UI-REFRESH-04 = nächstes Paket (Detailseiten-Hierarchie: `var(--surface-2)`, Legacy-Tap-Targets krank-ebene-btn/panel-btn ≥40px).  
+**Letzter Commit:** `f038e34` (UI-REFRESH-03, 24.04.2026)  
 **DB-Write:** NEIN  
 **Letzte führende Dokumente:**
 - **`01_PROJECT_SOURCES_CURRENT/BRAND_UX_REFRESH_SPEC.md`** — **führend für alle Design-Entscheidungen** (bindend für alle Pakete)
+- `01_PROJECT_SOURCES_CURRENT/UI_REFRESH_03_CLOSURE.md` — letzter Build (24.04.2026)
 
-**Strang formal geschlossen:** JA (Spec); UI-REFRESH-02 = nächstes Paket
+**Strang formal geschlossen:** JA (Spec + UI-REFRESH-01+02+03); UI-REFRESH-04 = nächstes Paket
 
 ---
 
 ### S1 — Laborwert-Lexikon (Compare/Zielwert/Trend)
-**Status:** ✅ **S1-BUILD-01c abgeschlossen (25.04.2026)**
-**Letzter Stand (S1-BUILD-01c):** 2 neue sichtbare Klarstell-Texte im ZielwertBlock, gated auf LOINC `2089-1`. Task 1 (nach 📌-Box): „Bei bestehendem Herz-Kreislauf-Risiko oder Vorerkrankungen gelten deutlich niedrigere Zielwerte (<70 mg/dL oder <55 mg/dL)." Task 2 (nach 116-mg/dL-Zeile): „Dieser Wert gilt nur für Personen mit niedrigem Risiko und ist kein allgemeiner Optimalwert." Task 3 (Reihenfolge) übersprungen — nicht trivial ohne Struktureingriff (Scope gehalten). 2 neue CSS-Klassen (`lw-zt-ldl-risk-note` + `lw-zt-ldl-normalrisiko-note`). Kein B4-Touch, kein DB-Write. 2 Dateien, 29 Insertions. Live-Check 7/7 PASS.
-**Letzter Commit:** `06c1176` (S1-BUILD-01c, 25.04.2026) — auf `origin/main`
+**Status:** ✅ **Q2-BUILD-02d abgeschlossen (07.05.2026)** — LwQuellenBox live
+**Letzter Stand (Q2-BUILD-02d):** `LwQuellenBox`-Inline-Komponente in `LaborwertDetail.jsx` (vor `export default`). Datenquelle: `quellenKontext` aus `ref_de/usa/jp_quelle_url/_jahr`. Typ: database (DGKL/AACC/JSCC per S1-PRE-SPEC). Chip DATENBANK (slate), Region-Flag, Name-Link, Jahr. Max-2-Expand. Leer-Guard: 55 nicht-pilot LW → kein Block. Block [4b] vollständig ersetzt. 8 neue `lw-quellenbox-*` CSS-Klassen + Mobile-Breakpoint (Q6 ✅). Kein DB-Write, kein Schema-Change, kein queries.js-Touch. Schließt FULL_AUDIT_2026-05 Befund #3.  
+**Vorgänger (S1-BUILD-01c, 25.04.2026):** LDL Zielwert-Klarstellung. Commit `06c1176`.
+**Letzter Commit:** `fab4374` (Q2-BUILD-02d, 07.05.2026) — auf `origin/main`
 **DB-Write:** NEIN
 **Letzte führende Dokumente:**
-- **`01_PROJECT_SOURCES_CURRENT/S1_BUILD_01C_LDL_ZIELWERT_KLARSTELLUNG_CLOSURE.md`** — **führend** (25.04.2026)
+- **`01_PROJECT_SOURCES_CURRENT/Q2_BUILD_02D_S1_QUELLENBOX_CLOSURE.md`** — **führend** (07.05.2026)
+- `01_PROJECT_SOURCES_CURRENT/S1_BUILD_01C_LDL_ZIELWERT_KLARSTELLUNG_CLOSURE.md` — Vorgänger
 - `01_PROJECT_SOURCES_CURRENT/S1_BUILD_01B_LDL_MICROCOPY_CLOSURE.md` — Paket 1b
 - `01_PROJECT_SOURCES_CURRENT/S1_BUILD_01_CLOSURE.md` — Zielwert-Block Foundation
 - `01_PROJECT_SOURCES_CURRENT/S1_PRE_SPEC_COMPARE_ZIELWERT_TREND.md` — Spec-Grundlage
@@ -180,30 +198,34 @@ Diese Datei gibt den schnellen Überblick über alle aktiven und zuletzt bewegte
 ---
 
 ### S8 / B4 — Entscheidungslogik + B4 Actions (Laborwert-/Krankheitsseiten)
-**Status:** ✅ **B4-BUILD-02 abgeschlossen (25.04.2026), Commit `371f8f1`**
-**Letzter Stand (B4-BUILD-02):** Vollständige LDL-Cholesterin B4-Journey live (LOINC `2089-1`). 8 high + 1 low Karten. 15-Felder-Schema gemäß B4-FREEZE §6.2 + PATCH-01. Neue B4_KATEGORIE (9 Einträge: standard/supporting/lifestyle/supportive/promising/experimental/avoid/monitoring/doctor_discussion), B4_EVIDENCE_MATURITY (6 Einträge). Backward-kompatibel: HbA1c/Ferritin/VitD/CRP (8-Felder-Karten) weiterhin korrekt. ~80 neue `lw-b4a-*`-CSS-Klassen (Badge-Typen, avoid-Styling, warn-block, arzt-callout, evidenceMaturity-Label). safetyLevel='high' Warn-Block (Statin-Karte). Omega-3 → avoid-Styling (kein Action-Block). Live-Check 17/17 PASS. 3 Dateien, kein DB-Write, kein S5/S6/S18-Touch.
-**Letzter Commit:** `371f8f1` (B4-BUILD-02, 25.04.2026) — auf `origin/main`
+**Status:** ✅ **B4-SAFETY-PATCH abgeschlossen (07.05.2026), Commit `8f19256`**
+**Letzter Stand (B4-SAFETY-PATCH):** `safetyLevel` + `requiresDoctorDiscussion` für alle 18 Karten der 4 LOINC-Blöcke (HbA1c/Ferritin/VitD/CRP) nachgerüstet. Scope: ausschließlich `src/lib/laborwert_b4_actions_map.js` (1 Datei, 36 Insertions, 0 Deletions). LDL-Block (2089-1) unberührt. Alle Validatoren PASS (0 fehlende Felder, 0 Konsistenz-Verletzungen). Schließt FULL_AUDIT_2026-05 Befund #2 (KRITISCH-MED). B4-BUILD-03 entsperrt. Kein JSX-Touch, kein CSS, kein DB-Write.  
+**Vorgänger (B4-BUILD-02, 25.04.2026):** Vollständige LDL-Cholesterin B4-Journey live. 8 high + 1 low Karten. 15-Felder-Schema. Live-Check 17/17 PASS.
+**Letzter Commit:** `8f19256` (B4-SAFETY-PATCH, 07.05.2026) — auf `origin/main`
 **DB-Write:** NEIN
 **Letzte führende Dokumente:**
-- **`01_PROJECT_SOURCES_CURRENT/B4_BUILD_02_LDL_JOURNEY_CLOSURE.md`** — **führend** (25.04.2026)
+- **`01_PROJECT_SOURCES_CURRENT/B4_SAFETY_PATCH_CLOSURE.md`** — **führend** (07.05.2026)
+- **`01_PROJECT_SOURCES_CURRENT/B4_BUILD_02_LDL_JOURNEY_CLOSURE.md`** — Vorgänger (25.04.2026)
 - **`01_PROJECT_SOURCES_CURRENT/B4_DECISION_LOGIC_FREEZE.md`** — Spec-Grundlage (gepatcht, bindend)
 - `01_PROJECT_SOURCES_CURRENT/S8_BUILD_03_CLOSURE.md` — B4ActionsBlock Foundation
 - `01_PROJECT_SOURCES_CURRENT/S8_BUILD_02C_CLOSURE.md` — K3-Rollout
 - `01_PROJECT_SOURCES_CURRENT/S8_BUILD_01_CLOSURE.md` — S5-Krankheitsseiten
 
-**Nächster zulässiger Schritt:** S8-BUILD-02d (Kalium/Natrium K3-Map), B4-BUILD-03 (Rollout B4-Actions weitere LW), Q2-BUILD-02b, S1-BUILD-02, UI-REFRESH-04 — je eigenständiger Chat
-**Strang formal geschlossen:** NEIN — B4-BUILD-03+ + K5/K9 ausstehend
+**Nächster zulässiger Schritt:** **B4-BUILD-03** (Rollout B4-Actions weitere Laborwerte — jetzt entsperrt), S8-BUILD-02d (Kalium/Natrium K3-Map), Q2-BUILD-02d (S1-Quellenbox), S1-BUILD-02, UI-REFRESH-04 — je eigenständiger Chat
+**Strang formal geschlossen:** NEIN — B4-BUILD-03+ ausstehend
 
 ---
 
 ### Q2 — Vertrauens-/Quellen-Layer (Querschicht)
 **Status:** ✅ **Q2-BUILD-02c abgeschlossen (06.05.2026)** ✅ **Q2-BUILD-02c-P2A abgeschlossen (06.05.2026)**  
-**Letzter Stand (Q2-BUILD-02c):** S2 QuellenBox live. `supplements.quellen` JSONB angelegt (ALTER TABLE). NIH-ODS-Bootstrap: 21/51 Supplements mit Quelleneinträgen. `SuppQuellenBox`-Komponente inline in `SupplementDetail.jsx`. PubMed-Key-Fix. 3 Dateien, DB-Write: JA. Commit `2e1223d`.  
-**Letzter Stand (Q2-BUILD-02c-P2A):** 10 NIH-ODS-Importlücken geschlossen (nih_ods_link + quellen für B1/B2/B3/B5/Biotin/Kalium/Chrom/Kupfer/Mangan/L-Carnitin). DB: 31/51 Supplements mit quellen. Kein Code, kein Build-Commit, kein Deploy; P2A-Doku-Sync `821d44a`, finaler Metadaten-Fix `e496dbe`. V1–V8 ✅.  
-**Letzter Commit:** `e496dbe` (finaler Metadaten-Fix P2A, 06.05.2026) — auf `origin/main`  
-**DB-Write:** JA (ALTER TABLE + 31 UPDATE-Rows gesamt; P2A: 10 UPDATEs, Dashboard-JWT)  
+**Letzter Stand (Q2-BUILD-02d):** S1 LwQuellenBox live. `LwQuellenBox`-Inline-Komponente in `LaborwertDetail.jsx`. Typ: database. Region-Flag + Name-Link + Jahr. Max-2-Expand. Leer-Guard. 2 Dateien, kein DB-Write. Commit `fab4374`. Schließt FULL_AUDIT_2026-05 Befund #3.  
+**Vorgänger (Q2-BUILD-02c-P2A, 06.05.2026):** 10 NIH-ODS-Importlücken geschlossen. DB: 31/51 Supplements mit quellen.  
+**Vorgänger (Q2-BUILD-02c, 06.05.2026):** S2 QuellenBox live. DB-Write: JA. Commit `2e1223d`.  
+**Letzter Commit:** `fab4374` (Q2-BUILD-02d, 07.05.2026) — auf `origin/main`  
+**DB-Write:** NEIN (Q2-BUILD-02d); JA (Q2-BUILD-02c: ALTER TABLE + 31 UPDATE-Rows gesamt)  
 **Letzte führende Dokumente:**
-- **`01_PROJECT_SOURCES_CURRENT/Q2_BUILD_02C_P2A_NIH_ODS_TOP10_CLOSURE.md`** — **führend** (06.05.2026)
+- **`01_PROJECT_SOURCES_CURRENT/Q2_BUILD_02D_S1_QUELLENBOX_CLOSURE.md`** — **führend** (07.05.2026)
+- `01_PROJECT_SOURCES_CURRENT/Q2_BUILD_02C_P2A_NIH_ODS_TOP10_CLOSURE.md` — P2A-Vorgänger
 - `01_PROJECT_SOURCES_CURRENT/Q2_BUILD_02C_S2_QUELLENBOX_CLOSURE.md` — Q2-BUILD-02c-Vorgänger
 - `01_PROJECT_SOURCES_CURRENT/Q2_BUILD_02B_S6_QUELLENBOX_CLOSURE.md` — S6-Vorgänger
 - `01_PROJECT_SOURCES_CURRENT/Q2_BUILD_02A_S5_QUELLENBOX_CLOSURE.md` — S5-Vorgänger
@@ -215,9 +237,22 @@ Diese Datei gibt den schnellen Überblick über alle aktiven und zuletzt bewegte
 
 ---
 
-## 3. HEUTE / ZULETZT BEWEGTE PAKETE (06.05.2026)
+## 3. HEUTE / ZULETZT BEWEGTE PAKETE (07.05.2026)
 
-**Q2-BUILD-02c-P2A NIH-ODS Top-10 Quellenlücken (06.05.2026 — aktuelles Paket):**
+**Q2-BUILD-02d — S1 LwQuellenBox Rollout (07.05.2026 — aktuelles Paket):**
+- DB-Write: NEIN. Schema-Change: NEIN. queries.js: NEIN. S2/S5/S6: NEIN.
+- Code: `src/pages/LaborwertDetail.jsx` (LwQuellenBox-Komponente inline + Block [4b] ersetzt). `src/pages/Laborwerte.css` (+~35 Zeilen `lw-quellenbox-*` + Mobile-Breakpoint).
+- Commit: `fab4374`. Push: `origin/main` (`8f19256..fab4374`). Netlify Auto-Deploy ausgelöst.
+- Live-Checks: V1 HbA1c (3 Quellen, max-2, Expand) ✅, V2 Expand-Button ✅, V3 Leer-Guard GPT/1742-6 ✅.
+- Schließt: FULL_AUDIT_2026-05 Befund #3 (S1 ohne QuellenBox) — alle 3 Befunde des Vollaudits nun geschlossen.
+
+**B4-SAFETY-PATCH — safetyLevel + requiresDoctorDiscussion für HbA1c/Ferritin/VitD/CRP (07.05.2026 — Vorgänger-Paket):**
+- DB-Write: NEIN. Schema-Change: NEIN. JSX: NEIN. CSS: NEIN.
+- Code: `src/lib/laborwert_b4_actions_map.js` (1 Datei, 36 Insertions, 0 Deletions) — 4 LOINC-Blöcke (4548-4/2276-4/14635-7/1988-5), 18 Karten. LDL-Block (2089-1) unberührt.
+- Commit: `8f19256`. Push: `origin/main` (`846ce99..8f19256`). Netlify Auto-Deploy ausgelöst.
+- Schließt: FULL_AUDIT_2026-05 Befund #2 (KRITISCH-MED). Entsperrt: B4-BUILD-03.
+
+**Q2-BUILD-02c-P2A NIH-ODS Top-10 Quellenlücken (06.05.2026 — Vorgänger-Paket):**
 - DB-Write: JA — UPDATE 10 Rows (nih_ods_link + quellen für B1/B2/B3/B5/Biotin/Kalium/Chrom/Kupfer/Mangan/L-Carnitin), Dashboard-JWT. Schema-Change: NEIN (quellen JSONB bereits vorhanden). Code: NEIN. Commit: NEIN. Deploy: NEIN.
 - Preflight: 6/6 Hard-Stop-Prüfungen PASS. typ-Entscheidung: "NIH ODS" (Klartext, konsistent mit bestehenden 21 Einträgen). RETURNING: 10 Rows, alle quellen_count=1, alle url_check=nih_ods_link.
 - V1–V8 alle ✅. DB: 31/51 supplements mit quellen.
@@ -343,16 +378,15 @@ Diese Datei gibt den schnellen Überblick über alle aktiven und zuletzt bewegte
 
 ---
 
-## 4. OPS / PERSISTENZLAGE (06.05.2026)
+## 4. OPS / PERSISTENZLAGE (07.05.2026)
 
 | Dimension | Status |
 |-----------|--------|
-| Git HEAD (`origin/main`) | `e496dbe` — finaler Metadaten-Fix P2A (vitamin-b5, kein Build-Commit, 06.05.2026) |
-| Netlify | Auto-Publishing AN — letzter Build-Deploy `main@2e1223d` Published, deployed in 10s (06.05.2026, 19:40) — Live-Smoke ✅ (docs-only `e496dbe` triggert keinen Netlify-Build) |
+| Git HEAD (`origin/main`) | `fab4374` — Q2-BUILD-02d (07.05.2026) |
+| Netlify | Auto-Publishing AN — letzter Build-Deploy `main@fab4374` — Netlify Auto-Deploy ausgelöst (2 Dateien: LaborwertDetail.jsx + Laborwerte.css) |
 | Supabase DB | `zusatzstoffe` 35, `lebensmittel` 24, `wirkstoffe` 50, `krankheiten` 221 (+`naechste_schritte` JSONB: 5 befüllt), **`laborwerte` 60 (+8 Felder, 5 mit `zielwerte`)**, **`supplements` 51 (+`quellen` JSONB: 31/51 mit NIH-ODS-Quellen — Q2-BUILD-02c: 21 + P2A: 10)**, `ernaehrungsmuster` 4, `naehrstoffe` 41 |
 | MISTRAL_API_KEY | in Netlify gesetzt (Production, S4-Proxy aktiv) |
-| DB-Write heute | JA — ALTER TABLE supplements (quellen JSONB) + UPDATE 21 Rows (NIH-ODS-Bootstrap, Q2-BUILD-02c) + UPDATE 10 Rows (P2A NIH-ODS-Lücken), Dashboard-JWT |
-| Supabase Resume | JA — Projekt war pausiert zu Build-Beginn; resumed vor erstem DB-Write; Write erst nach Healthy-Bestätigung ausgeführt (Ops-Side-Effect, kein Datenverlust) |
+| DB-Write heute (Q2-BUILD-02d) | NEIN |
 | Offener Side Effect | NEIN |
 | Uncommitted Changes | NEIN |
 
@@ -377,9 +411,9 @@ Nur echte, aktuell freigegebene nächste Schritte (keine Ideenliste):
 | Q2 Quellenbox S2 P2B — NCCIH | **Q2-BUILD-02c-P2B** | Q2-BUILD-02c-P2A ✅ abgeschlossen (06.05.2026) — 5× NCCIH: Melatonin/Echinacea/Ginkgo/Mariendistel/Rhodiola, DB-only, eigenständiger Chat | NIEDRIG |
 | Brand/UX Refresh Detailseiten-Hierarchie | **UI-REFRESH-04** | UI-REFRESH-03 ✅ abgeschlossen (24.04.2026) — Detailseiten Primär/Sekundär-Container `var(--surface-2)`, eigenständiger Chat | MITTEL |
 | S1 Zielwert-Rollout + V2-Kontext | **S1-BUILD-02** | S1-BUILD-01 ✅ abgeschlossen (24.04.2026) — Rollout auf alle 60 Werte, V2-Kontext Alter/Schwangerschaft, S1↔S5/S6-Crosslinks, eigenständiger Chat | MITTEL |
-| S6 weiterer Ausbau | **S6-07** | Eigenständiger Chat — S6-06 + Q2-BUILD-02b abgeschlossen ✅ | MITTEL |
+| S6 weiterer Ausbau | **S6-07** | Eigenständiger Chat — S6-06 + Q2-BUILD-02b + Q2-BUILD-02d abgeschlossen ✅ | MITTEL |
 | S18 Querlinks / neues Paket | **S18-nächstes** | Eigenständiger Chat — alle 4 Kernobjekte abgeschlossen ✅ | MITTEL |
-| B4 Actions Rollout weitere LW | **B4-BUILD-03** | B4-BUILD-02 ✅ abgeschlossen (25.04.2026) — B4 Actions Map um weitere LW ergänzen, eigenständiger Chat | NIEDRIG |
+| B4 Actions Rollout weitere LW | **B4-BUILD-03** | B4-SAFETY-PATCH ✅ abgeschlossen (07.05.2026) — B4 Actions Map um weitere LW ergänzen, eigenständiger Chat | MITTEL |
 | S8 B4/K3 Rollout Kalium/Natrium | **S8-BUILD-02d** | S8-BUILD-02c ✅ abgeschlossen — Kalium (2823-3) + Natrium (2951-2) in K3-Map ergänzen, eigenständiger Chat | NIEDRIG |
 | S4 weitere Features | **P7-06** | Separates Spec-Paket + explizite Freigabe zuerst | NIEDRIG |
 | S3 Spec-Paket | **S3-Spec** | Eigenständiger Chat — Phase C, explizite Freigabe | NIEDRIG |
@@ -431,4 +465,7 @@ Nur wenn ausnahmsweise nicht nötig: explizit begründen.
 *Verifikations-Patch: 06.05.2026 — §4 Ops: Git HEAD + Netlify-Deploy auf `2e1223d` korrigiert. Supabase-Resume als Ops-Side-Effect dokumentiert. Live-Smoke bestätigt.*
 *Closure-Patch: 06.05.2026 — §4 Ops: Git HEAD auf `5fba660` (docs-only) aktualisiert. Doku-Fix-Commit `5fba660` gepusht: Q2_BUILD_02C_S2_QUELLENBOX_CLOSURE.md (Section I nachgetragen) + AUDIT_CANON_CURRENT.md (Q2-Sektion + Nächster Schritt) + ACTIVE_STRANDS_CURRENT.md (Git HEAD + Netlify-Zeile). Kein Netlify-Build erwartet. Alle 5 Doppelpflege-Dateien vollständig.*
 *Aktualisiert: 06.05.2026 — Q2-BUILD-02c-P2A ✅ 10 NIH-ODS-Importlücken geschlossen. DB-Write: UPDATE 10 Rows (nih_ods_link + quellen), Dashboard-JWT. Kein Code, kein Commit, kein Deploy. V1–V8 PASS. DB: 31/51 supplements mit quellen. §2 Q2-Strang + §3 aktuelles Paket + §4 Ops + §5 (P2 → P2B NCCIH) nachgezogen. Doppelpflege vollständig.*  
-*Nächste Pflicht-Aktualisierung: bei Q2-BUILD-02c-P2B, S8-BUILD-02d, B4-BUILD-03, S1-BUILD-02, UI-REFRESH-04 oder jedem anderen Paket-Abschluss*
+*Aktualisiert: 06.05.2026 — VITALWISSEN_FULL_SYSTEM_AUDIT_2026-05 ✅ Vollaudit abgeschlossen (read-only, Phasen A–G). 20+ Live-Seiten getestet, DB vollständig abgefragt (10 Tabellen, RLS auf allen aktiv), Source/Evidence/Medical-Safety/UX/Brand/Architektur geprüft. Gesamtverdikt: GRÜN — plattform operativ und technisch sauber. 3 Aktionspunkte: (1) Repo-Clone veraltet (ee0e67f), (2) B4-actions-map HbA1c/Ferritin/VitD/CRP ohne requiresDoctorDiscussion+safetyLevel → B4-SAFETY-PATCH vor B4-BUILD-03, (3) S1 ohne QuellenBox → Q2-BUILD-02d. §2 S8/B4-Strang (B4-SAFETY-PATCH-Hinweis) + BRAND-UX-REFRESH (UI-REFRESH-03 ✅) aktualisiert. Kein DB-Write, kein Commit. Report: `01_PROJECT_SOURCES_CURRENT/VITALWISSEN_FULL_SYSTEM_AUDIT_2026_05.md`.*
+*Aktualisiert: 07.05.2026 — B4-SAFETY-PATCH ✅ safetyLevel + requiresDoctorDiscussion für 18 Karten (HbA1c/Ferritin/VitD/CRP) nachgerüstet. 1 Datei, 36 Insertions, 0 Deletions. Kein JSX, kein CSS, kein DB-Write. Commit `8f19256`. Push `origin/main` (`846ce99..8f19256`). Netlify Auto-Deploy ausgelöst. Schließt FULL_AUDIT_2026-05 Befund #2 (KRITISCH-MED). B4-BUILD-03 entsperrt. §2 S8/B4-Strang + §3 aktuelles Paket + §4 Ops (HEAD `8f19256`) + §5 (B4-BUILD-03 NIEDRIG → MITTEL, Voraussetzung geupdated) nachgezogen. Doppelpflege vollständig.*
+*Aktualisiert: 07.05.2026 — Q2-BUILD-02d ✅ S1 LwQuellenBox Rollout abgeschlossen. LwQuellenBox-Inline-Komponente in LaborwertDetail.jsx. Typ: database (DGKL/AACC/JSCC). Region-Flag + Name-Link + Jahr. Max-2-Expand. Leer-Guard. Mobile Q6. Block [4b] ersetzt. 2 Dateien, kein DB-Write. Commit `fab4374`. Push `origin/main` (`8f19256..fab4374`). Netlify Auto-Deploy ausgelöst. Schließt FULL_AUDIT_2026-05 Befund #3 — alle 3 Vollaudit-Befunde geschlossen. §2 S1-Strang + Q2-Strang + §3 aktuelles Paket + §4 Ops (HEAD `fab4374`) + §5 (Q2-BUILD-02d entfernt) nachgezogen. Doppelpflege vollständig.*
+*Nächste Pflicht-Aktualisierung: bei B4-BUILD-03, Q2-BUILD-02c-P2B, S8-BUILD-02d, S1-BUILD-02, UI-REFRESH-04 oder jedem anderen Paket-Abschluss*
