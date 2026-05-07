@@ -39,6 +39,7 @@ const QUELLEN_TYP = {
   'Patienteninformation':{ q2: 'patient_info', label: 'Patienteninfo', icon: '📖' },
   'icd10':               { q2: 'database',     label: 'Datenbasis',    icon: '🗄️' },
   'rki':                 { q2: 'regulatory',   label: 'Regulatorisch', icon: '🏛️' },
+  'research':            { q2: 'research',     label: 'Forschung',     icon: '🔬' },
 }
 
 function getTypInfo(typ) {

@@ -19,7 +19,8 @@ const MED_QUELLEN_TYP = {
   guideline: { farbe: 'guideline',  label: 'Leitlinie',     icon: '📋' },
   regulatory:{ farbe: 'regulatory', label: 'Regulatorisch', icon: '🏛️' },
   database:  { farbe: 'database',   label: 'Datenbank',     icon: '🗄️' },
-  research:  { farbe: 'research',   label: 'Forschung',     icon: '🔬' },
+  research:    { farbe: 'research',    label: 'Forschung',          icon: '🔬' },
+  patient_info:{ farbe: 'patient_info', label: 'Patienteninformation', icon: '📖' },
 }
 
 function getMedTypInfo(typ) {
