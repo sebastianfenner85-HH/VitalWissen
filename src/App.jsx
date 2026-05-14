@@ -6,7 +6,8 @@ import LaborwerteListe from "./pages/LaborwerteListe";
 import LaborwertDetail from "./pages/LaborwertDetail";
 import SupplementsListe from "./pages/SupplementsListe";
 import SupplementDetail from "./pages/SupplementDetail";
-import KrankheitenListe from "./pages/KrankheitenListe";
+import KrankheitenListe from "./pages/KrankheitenListe"
+import StudienDetail from "./pages/StudienDetail";
 import KrankheitDetail from "./pages/KrankheitDetail";
 import ErnaehrungListe from "./pages/ErnaehrungListe";
 import ErnaehrungMusterDetail from "./pages/ErnaehrungMusterDetail";
@@ -34,6 +35,7 @@ export default function App() {
             <Route path="/supplements/:slug" element={<SupplementDetail />} />
             <Route path="/krankheiten" element={<KrankheitenListe />} />
             <Route path="/krankheiten/:slug" element={<KrankheitDetail />} />
+        <Route path="/studien/:slug" element={<StudienDetail />} />
             <Route path="/ernaehrung" element={<ErnaehrungListe />} />
             <Route path="/ernaehrung/muster/:slug" element={<ErnaehrungMusterDetail />} />
             <Route path="/ernaehrung/naehrstoff/:slug" element={<ErnaehrungNaehrstoffDetail />} />

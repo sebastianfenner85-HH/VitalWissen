@@ -20,7 +20,7 @@
 
 import { useState, useEffect } from 'react'
 import { useParams, useNavigate } from 'react-router-dom'
-import { getKrankheitBySlug, getLaborwerteNameMap, getSupplementeNameMap, getWirkstoffeByKrankheit, getNaehrstoffeByIcdCode, getMusterByKrankheitSlug, getLebensmittelByIcdCode } from '../lib/queries'
+import { getKrankheitBySlug, getLaborwerteNameMap, getSupplementeNameMap, getWirkstoffeByKrankheit, getNaehrstoffeByIcdCode, getMusterByKrankheitSlug, getLebensmittelByIcdCode, getStudienByKrankheit } from '../lib/queries'
 import './Krankheiten.css'
 
 const EBENEN = [
@@ -169,6 +169,8 @@ export default function KrankheitDetail() {
   const [naehrstoffeS18, setNaehrstoffeS18] = useState([])
   const [musterS18, setMusterS18] = useState([])
   const [lebensmittelS18, setLebensmittelS18] = useState([])
+  const [studien, setStudien] = useState([])
+  const [s3ShowAll, setS3ShowAll] = useState(false)
   // B4 State: Accordion (Stufe 2) + Intent-Signal (Stufe 3)
   const [b4Offen, setB4Offen] = useState(false)
   const [b4Erweitert, setB4Erweitert] = useState(false)
@@ -181,13 +183,14 @@ export default function KrankheitDetail() {
         // Array.isArray guards vor Übergabe an Name-Maps (P7C-Freeze 0.3)
         const codes = Array.isArray(data?.verwandte_laborwerte) ? data.verwandte_laborwerte : []
         const slugs = Array.isArray(data?.verwandte_supplements) ? data.verwandte_supplements : []
-        const [lwMap, suppMap, wList, naehrList, musterList, lmList] = await Promise.all([
+        const [lwMap, suppMap, wList, naehrList, musterList, lmList, studienList] = await Promise.all([
           getLaborwerteNameMap(codes).catch(() => ({})),
           getSupplementeNameMap(slugs).catch(() => ({})),
           getWirkstoffeByKrankheit(data?.icd10_code).catch(() => []),
           getNaehrstoffeByIcdCode(data?.icd10_code).catch(() => []),
           getMusterByKrankheitSlug(slug).catch(() => []),
           getLebensmittelByIcdCode(data?.icd10_code).catch(() => []),
+          getStudienByKrankheit(data?.icd10_code).catch(() => []),
         ])
         setLaborwertNamen(lwMap)
         setSupplementNamen(suppMap)
@@ -195,6 +198,7 @@ export default function KrankheitDetail() {
         setNaehrstoffeS18(naehrList)
         setMusterS18(musterList)
         setLebensmittelS18(lmList)
+        setStudien(studienList)
       } catch (err) {
         console.error(err)
         setError('Krankheit nicht gefunden.')
@@ -532,6 +536,127 @@ export default function KrankheitDetail() {
 
           <p className="b4-trust-note">
             Diese Optionen ersetzen keine individuelle ärztliche Beratung. Sie helfen dabei, Gespräche vorzubereiten und Handlungsoptionen einzuordnen — die Entscheidung liegt bei dir und deiner Ärztin oder deinem Arzt.
+          </p>
+        </div>
+      )}
+
+      {/* [15] S3-Studienkompass — „Was sagt die Forschung?" (S3-BUILD-01, 14.05.2026) ── */}
+      {studien.length > 0 && (
+        <div className="krank-section s3-block">
+          <p className="krank-section-title">🔬 Was sagt die Forschung?</p>
+          <p className="s3-block-intro">
+            Kuratierte Studien und Übersichtsarbeiten zu dieser Erkrankung. Die Auswahl zeigt
+            methodisch hochwertige Publikationen — keine Vollständigkeit, keine Therapieempfehlung.
+          </p>
+
+          <div className="s3-studien-liste">
+            {(s3ShowAll ? studien : studien.slice(0, 3)).map((studie) => {
+              const STUDIENTYP_LABEL = {
+                meta_analyse: 'Meta-Analyse',
+                systematischer_review: 'Systemat. Review',
+                rct: 'Kontrollierte Studie',
+                narrativer_review: 'Narrativer Review',
+                kohortenstudie: 'Kohortenstudie',
+                fall_kontroll: 'Fall-Kontroll-Studie',
+                querschnittsstudie: 'Querschnittsstudie',
+                fallstudie: 'Fallstudie',
+                expertenkonsens: 'Expertenkonsens',
+              }
+              const EVIDENCE_LABEL = {
+                1: 'Sehr gut untersucht',
+                2: 'Gut untersucht',
+                3: 'Mäßig gut untersucht',
+                4: 'Begrenzt untersucht',
+                5: 'Sehr begrenzte Datenlage',
+              }
+              const quellenUrl = studie.url
+                || (studie.doi ? `https://doi.org/${studie.doi}` : null)
+                || (studie.pmid ? `https://pubmed.ncbi.nlm.nih.gov/${studie.pmid}/` : null)
+
+              return (
+                <a
+                  key={studie.slug}
+                  href={`/studien/${studie.slug}`}
+                  className="s3-studien-karte"
+                  aria-label={`Studie: ${studie.titel}`}
+                >
+                  <div className="s3-karte-header">
+                    <span className={`s3-typ-chip s3-typ-${studie.studientyp}`}>
+                      {STUDIENTYP_LABEL[studie.studientyp] ?? studie.studientyp}
+                    </span>
+                    <span className={`s3-evidence-badge s3-lvl-${studie.evidence_level}`}>
+                      Evidenz-Level {studie.evidence_level} · {EVIDENCE_LABEL[studie.evidence_level]}
+                    </span>
+                  </div>
+
+                  <p className="s3-karte-titel">{studie.titel}</p>
+
+                  {studie.publikationsjahr && (
+                    <p className="s3-karte-meta">
+                      {studie.zeitschrift ? `${studie.zeitschrift} · ` : ''}{studie.publikationsjahr}
+                      {studie.stichprobengroesse ? ` · n = ${studie.stichprobengroesse.toLocaleString('de-DE')}` : ''}
+                    </p>
+                  )}
+
+                  <div className="s3-karte-body">
+                    {studie.was_untersucht && (
+                      <div className="s3-karte-feld">
+                        <span className="s3-karte-label">Was untersucht:</span>
+                        <span className="s3-karte-wert">{studie.was_untersucht}</span>
+                      </div>
+                    )}
+                    {studie.ergebnis && (
+                      <div className="s3-karte-feld">
+                        <span className="s3-karte-label">Ergebnis:</span>
+                        <span className="s3-karte-wert">{studie.ergebnis}</span>
+                      </div>
+                    )}
+                    {studie.einschraenkungen && (
+                      <div className="s3-karte-feld s3-karte-feld--einschraenkung">
+                        <span className="s3-karte-label">Einschränkungen:</span>
+                        <span className="s3-karte-wert">{studie.einschraenkungen}</span>
+                      </div>
+                    )}
+                  </div>
+
+                  {/* Hype-Flags */}
+                  {(studie.preprint_flag || studie.tierversuch_flag || studie.in_vitro_flag || studie.interessenkonflikt_flag || studie.hype_warnung) && (
+                    <div className="s3-flags">
+                      {studie.preprint_flag && <span className="s3-flag s3-flag--preprint">⚠ Preprint</span>}
+                      {studie.tierversuch_flag && <span className="s3-flag s3-flag--tier">🐭 Tierversuch</span>}
+                      {studie.in_vitro_flag && <span className="s3-flag s3-flag--vitro">🧪 In-vitro</span>}
+                      {studie.interessenkonflikt_flag && <span className="s3-flag s3-flag--konflikt">⚠ Interessenkonflikt</span>}
+                      {studie.hype_warnung && (
+                        <span className="s3-flag s3-flag--hype" title={studie.hype_warnung}>⚠ Einordnung beachten</span>
+                      )}
+                    </div>
+                  )}
+
+                  {quellenUrl && (
+                    <div className="s3-karte-quelle">
+                      <span className="s3-quelle-label">Originalquelle</span>
+                      <span className="s3-quelle-link">→ Studie öffnen</span>
+                    </div>
+                  )}
+                </a>
+              )
+            })}
+          </div>
+
+          {studien.length > 3 && (
+            <button
+              className="s3-show-all-btn"
+              onClick={() => setS3ShowAll(v => !v)}
+            >
+              {s3ShowAll
+                ? '▲ Weniger anzeigen'
+                : `▼ ${studien.length - 3} weitere Studie${studien.length - 3 !== 1 ? 'n' : ''} anzeigen`}
+            </button>
+          )}
+
+          <p className="s3-disclaimer">
+            Diese Auswahl zeigt kuratierte Studien und Übersichtsarbeiten zu dieser Erkrankung.
+            Sie ersetzt keine ärztliche Beratung und ist keine Therapieempfehlung.
           </p>
         </div>
       )}

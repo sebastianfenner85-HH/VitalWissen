@@ -450,3 +450,46 @@ export async function getLebensmittelByWirkstoffSlug(wirkstoffSlug) {
   }
   return data ?? []
 }
+
+// ─── S3 — Studienkompass (S3-BUILD-01, 14.05.2026) ────────────────────────────
+// Lädt kuratierte Studien (approved + public) für einen ICD-Code-Anker
+// verwandte_krankheiten = TEXT[], GIN-Index idx_studien_krankheiten_gin
+// Sortierung: evidence_level ASC, publikationsjahr DESC; Limit 4
+export async function getStudienByKrankheit(icdCode) {
+  if (!icdCode) return []
+  const { data, error } = await supabase
+    .from('studien')
+    .select(`
+      slug, titel, studientyp, evidence_level, publikationsjahr, zeitschrift,
+      was_untersucht, ergebnis, einschraenkungen, alltagsbezug,
+      url, pmid, doi, hype_warnung,
+      tierversuch_flag, in_vitro_flag, preprint_flag, interessenkonflikt_flag,
+      retraction_status, stichprobengroesse
+    `)
+    .contains('verwandte_krankheiten', [icdCode])
+    .eq('curation_status', 'approved')
+    .eq('visibility', 'public')
+    .order('evidence_level', { ascending: true })
+    .order('publikationsjahr', { ascending: false })
+    .limit(4)
+
+  if (error) {
+    console.warn('getStudienByKrankheit:', error.message)
+    return []
+  }
+  return data ?? []
+}
+
+// Lädt eine einzelne Studie per Slug (für Detailseite /studien/:slug)
+export async function getStudieBySlug(slug) {
+  const { data, error } = await supabase
+    .from('studien')
+    .select('*')
+    .eq('slug', slug)
+    .eq('curation_status', 'approved')
+    .eq('visibility', 'public')
+    .single()
+
+  if (error) throw error
+  return data
+}

@@ -1045,3 +1045,296 @@
     justify-content: center;
   }
 }
+
+/* ── S3 Studienkompass — Block [15] „Was sagt die Forschung?" ──────────────── */
+/* S3-BUILD-01, 14.05.2026 · CSS-Prefix: s3-* */
+
+.s3-block {
+  /* erbt .krank-section (white, border, border-radius, padding, margin-bottom) */
+}
+
+.s3-block-intro {
+  font-size: 13px;
+  color: var(--text-muted);
+  line-height: 1.6;
+  margin: 0 0 16px;
+}
+
+/* ── Studienliste ─────────────────────────────────────────────────────────── */
+.s3-studien-liste {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+/* ── Studienkarte ─────────────────────────────────────────────────────────── */
+.s3-studien-karte {
+  display: block;
+  background: var(--bg-light);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 16px;
+  text-decoration: none;
+  color: inherit;
+  transition: border-color 0.15s, box-shadow 0.15s;
+  cursor: pointer;
+  min-height: 44px; /* Q6 Tap-Target */
+}
+
+.s3-studien-karte:hover {
+  border-color: var(--primary);
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.07);
+}
+
+/* Karten-Header: Typ-Chip + Evidence-Badge */
+.s3-karte-header {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-bottom: 10px;
+}
+
+/* Studientyp-Chip */
+.s3-typ-chip {
+  font-size: 11px;
+  font-weight: 600;
+  background: #EEE9FF;
+  color: #6B5CA5;
+  border-radius: 10px;
+  padding: 3px 9px;
+  white-space: nowrap;
+}
+
+/* Studientyp-Farbvarianten */
+.s3-typ-meta_analyse       { background: #E8F4FD; color: #1A6FA8; }
+.s3-typ-systematischer_review { background: #EAF3EA; color: #2D6A2D; }
+.s3-typ-rct                { background: #EDF4FF; color: #1B4ED8; }
+.s3-typ-narrativer_review  { background: #F5F0FF; color: #6B5CA5; }
+.s3-typ-kohortenstudie     { background: #FFF4E8; color: #9A5100; }
+.s3-typ-fall_kontroll      { background: #FFF0F0; color: #9B2020; }
+.s3-typ-querschnittsstudie { background: #F5F5F0; color: #5A5A40; }
+.s3-typ-fallstudie         { background: #F5F5F5; color: #555; }
+.s3-typ-expertenkonsens    { background: #F0F9FF; color: #0369A1; }
+
+/* Evidence-Badge */
+.s3-evidence-badge {
+  font-size: 11px;
+  font-weight: 500;
+  border-radius: 10px;
+  padding: 3px 9px;
+  white-space: nowrap;
+  background: var(--bg-light);
+  border: 1px solid var(--border);
+  color: var(--text-muted);
+}
+
+.s3-lvl-1 { background: #E8F5E9; color: #1B5E20; border-color: #A5D6A7; }
+.s3-lvl-2 { background: #F1F8E9; color: #33691E; border-color: #C5E1A5; }
+.s3-lvl-3 { background: #FFF8E1; color: #795548; border-color: #FFE082; }
+.s3-lvl-4 { background: #FFF3E0; color: #BF360C; border-color: #FFCC80; }
+.s3-lvl-5 { background: #FFEBEE; color: #B71C1C; border-color: #EF9A9A; }
+
+/* Kartentitel */
+.s3-karte-titel {
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--text-dark);
+  line-height: 1.4;
+  margin: 0 0 6px;
+}
+
+/* Meta-Zeile (Zeitschrift · Jahr · n=) */
+.s3-karte-meta {
+  font-size: 12px;
+  color: var(--text-muted);
+  margin: 0 0 10px;
+  font-family: "DM Mono", monospace;
+}
+
+/* Karten-Body: was_untersucht, ergebnis, einschraenkungen */
+.s3-karte-body {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  margin-bottom: 10px;
+}
+
+.s3-karte-feld {
+  font-size: 13px;
+  line-height: 1.55;
+  color: var(--text-light);
+}
+
+.s3-karte-feld--einschraenkung {
+  color: var(--text-muted);
+  font-style: italic;
+}
+
+.s3-karte-label {
+  font-weight: 600;
+  color: var(--text-dark);
+  margin-right: 4px;
+}
+
+.s3-karte-wert {
+  /* inline, kein Prefix */
+}
+
+/* ── Hype-Flags ───────────────────────────────────────────────────────────── */
+.s3-flags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin: 8px 0;
+}
+
+.s3-flag {
+  font-size: 11px;
+  font-weight: 600;
+  border-radius: 10px;
+  padding: 3px 9px;
+  white-space: nowrap;
+}
+
+.s3-flag--preprint  { background: #FFF3CD; color: #856404; }
+.s3-flag--tier      { background: #F3F4F6; color: #374151; }
+.s3-flag--vitro     { background: #EDF2FB; color: #1A3A6B; }
+.s3-flag--konflikt  { background: #FEE2E2; color: #991B1B; }
+.s3-flag--hype      { background: #FFF3CD; color: #856404; }
+
+/* Hype-Warnung Langtext (Detailseite) */
+.s3-hype-warnung {
+  font-size: 13px;
+  color: #856404;
+  background: #FFFBEB;
+  border: 1px solid #FDE68A;
+  border-radius: 8px;
+  padding: 10px 14px;
+  margin: 8px 0 0;
+  line-height: 1.55;
+}
+
+/* ── Quellenlink auf Karte ────────────────────────────────────────────────── */
+.s3-karte-quelle {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: 10px;
+  padding-top: 10px;
+  border-top: 1px solid var(--border);
+}
+
+.s3-quelle-label {
+  font-size: 11px;
+  color: var(--text-muted);
+  font-weight: 500;
+}
+
+.s3-quelle-link {
+  font-size: 12px;
+  color: var(--primary);
+  font-weight: 600;
+}
+
+/* ── Show-All-Button ──────────────────────────────────────────────────────── */
+.s3-show-all-btn {
+  display: block;
+  width: 100%;
+  margin-top: 12px;
+  padding: 10px 16px;
+  background: none;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--primary);
+  cursor: pointer;
+  text-align: center;
+  transition: background 0.15s;
+  min-height: 44px; /* Q6 */
+}
+
+.s3-show-all-btn:hover {
+  background: #F0FAF5;
+}
+
+/* ── Disclaimer ───────────────────────────────────────────────────────────── */
+.s3-disclaimer {
+  font-size: 12px;
+  color: var(--text-muted);
+  line-height: 1.6;
+  margin: 14px 0 0;
+  padding-top: 12px;
+  border-top: 1px solid var(--border);
+}
+
+/* ── Detailseite /studien/:slug ───────────────────────────────────────────── */
+.s3-detail-header {
+  margin-bottom: 24px;
+}
+
+.s3-detail-badges {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-bottom: 12px;
+}
+
+.s3-detail-title {
+  /* erbt krank-detail-title — Instrument Serif gesichert */
+}
+
+.s3-detail-meta {
+  font-size: 13px;
+  color: var(--text-muted);
+  margin: 6px 0 0;
+  font-style: normal;
+  font-family: "DM Mono", monospace;
+}
+
+.s3-flags-section {
+  /* erbt .krank-section */
+}
+
+.s3-detail-quelle {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  align-items: center;
+}
+
+.s3-doi-text {
+  font-size: 12px;
+  color: var(--text-muted);
+  font-family: "DM Mono", monospace;
+}
+
+.s3-disclaimer-section {
+  background: #FAFAFA;
+}
+
+/* ── Responsive ───────────────────────────────────────────────────────────── */
+@media (max-width: 600px) {
+  .s3-karte-header {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .s3-studien-karte {
+    padding: 14px;
+  }
+
+  .s3-show-all-btn {
+    padding: 12px 16px;
+  }
+
+  .s3-detail-badges {
+    flex-direction: column;
+  }
+
+  .s3-detail-quelle {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+}
