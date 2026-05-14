@@ -1,0 +1,25 @@
+name: Supabase Keepalive
+on:
+  schedule:
+    - cron: "0 8 * * 1"
+    - cron: "0 8 * * 3"
+    - cron: "0 8 * * 5"
+  workflow_dispatch:
+jobs:
+  keepalive:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Ping Supabase (read-only, anon)
+        env:
+          SUPABASE_ANON_KEY: ${{ secrets.SUPABASE_ANON_KEY }}
+        run: |
+          STATUS=$(curl -s -o /dev/null -w "%{http_code}" \
+            -H "apikey: ${SUPABASE_ANON_KEY}" \
+            -H "Authorization: Bearer ${SUPABASE_ANON_KEY}" \
+            "https://ejyrzxmtosrouwstiyws.supabase.co/rest/v1/laborwerte?select=loinc_code&limit=1")
+          echo "HTTP Status: ${STATUS}"
+          if [ "${STATUS}" != "200" ]; then
+            echo "Unerwarteter Status: ${STATUS} — Supabase möglicherweise nicht erreichbar"
+            exit 1
+          fi
+          echo "Keepalive erfolgreich — Supabase aktiv"
