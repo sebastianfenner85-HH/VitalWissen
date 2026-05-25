@@ -1,0 +1,848 @@
+{
+  "meta": {
+    "validator_version": "2.0",
+    "soll_lw": 60,
+    "soll_supp": 51,
+    "soll_krank": 221
+  },
+  "files": {
+    "v5_export": {
+      "filename": "vitalwissen_datenabzug_2026-05-25_v5.md",
+      "sha256": "4a597254dfd748bee78563f742ce8596e6a558148ada6550532d9554b54c0414",
+      "size_bytes": 72991
+    },
+    "v5_link_report": {
+      "filename": "vitalwissen_datenabzug_2026-05-25_v5_link_validation_report.md",
+      "sha256": "bfce3ab5a4a274cf4bc5304be1a93497c4754263195b5eab744d1a4a69d65b3a",
+      "size_bytes": 30683
+    },
+    "v5_semantic": {
+      "filename": "vitalwissen_datenabzug_2026-05-25_v5_semantic_review.md",
+      "sha256": "da3ee2eb5709fd7d0f505108429d96f9211615452d0ede949e7ffa848434adc0",
+      "size_bytes": 3945
+    },
+    "v5_url_inventory": {
+      "filename": "vitalwissen_datenabzug_2026-05-25_v5_url_inventory.csv",
+      "sha256": "842eec50b388fe24505b93cc84af33fde5003b9371764170e66003b10529f3e4",
+      "size_bytes": 30714
+    }
+  },
+  "export_derived": {
+    "laborwerte_count": 60,
+    "supplements_count": 51,
+    "krankheiten_count": 221,
+    "krankheiten_by_status": {
+      "❌ URL defekt — v4-URL war 404, entfernt in v5": 5,
+      "⚠️ Quelle nicht verlinkt im Export": 71,
+      "✅ URL live + semantisch passend": 133,
+      "⚠️ dauerhaft intern — laut P6-Final begründet": 5,
+      "❌ URL defekt — Domain nicht erreichbar (2026-05-25)": 1,
+      "⚠️ URL live, semantischer Bezug unsicher (bare domain)": 3,
+      "⚠️ URL live-Status unklar — nicht in DB, Überprüfung erforderlich": 3
+    },
+    "krankheiten_live_passend_count": 133,
+    "krankheiten_defective": [
+      {
+        "icd": "Q20",
+        "name": "Angeborener Herzfehler",
+        "status": "❌ URL defekt — v4-URL war 404, entfernt in v5"
+      },
+      {
+        "icd": "J38",
+        "name": "Heiserkeit",
+        "status": "❌ URL defekt — v4-URL war 404, entfernt in v5"
+      },
+      {
+        "icd": "M81",
+        "name": "Osteoporose",
+        "status": "❌ URL defekt — Domain nicht erreichbar (2026-05-25)"
+      },
+      {
+        "icd": "O10",
+        "name": "Schwangerschaftshypertonie",
+        "status": "❌ URL defekt — v4-URL war 404, entfernt in v5"
+      },
+      {
+        "icd": "N39",
+        "name": "Harnwegsinfektion",
+        "status": "❌ URL defekt — v4-URL war 404, entfernt in v5"
+      },
+      {
+        "icd": "N41",
+        "name": "Prostatitis",
+        "status": "❌ URL defekt — v4-URL war 404, entfernt in v5"
+      }
+    ],
+    "krankheiten_bare_domain": [
+      {
+        "icd": "M05",
+        "name": "Rheumatoide Arthritis",
+        "status": "⚠️ URL live, semantischer Bezug unsicher (bare domain)"
+      },
+      {
+        "icd": "I10",
+        "name": "Bluthochdruck",
+        "status": "⚠️ URL live, semantischer Bezug unsicher (bare domain)"
+      },
+      {
+        "icd": "K58",
+        "name": "Reizdarmsyndrom",
+        "status": "⚠️ URL live, semantischer Bezug unsicher (bare domain)"
+      }
+    ],
+    "krankheiten_unklar": [
+      {
+        "icd": "R51",
+        "name": "Kopfschmerzen",
+        "status": "⚠️ URL live-Status unklar — nicht in DB, Überprüfung erforderlich"
+      },
+      {
+        "icd": "R10",
+        "name": "Bauchschmerzen",
+        "status": "⚠️ URL live-Status unklar — nicht in DB, Überprüfung erforderlich"
+      },
+      {
+        "icd": "T14",
+        "name": "Verstauchung",
+        "status": "⚠️ URL live-Status unklar — nicht in DB, Überprüfung erforderlich"
+      }
+    ],
+    "krankheiten_internal": [
+      {
+        "icd": "M13",
+        "name": "Arthritis"
+      },
+      {
+        "icd": "L72",
+        "name": "Atheromatöse Zyste"
+      },
+      {
+        "icd": "F06",
+        "name": "Organische psychische Störung"
+      },
+      {
+        "icd": "Z87",
+        "name": "Chronische Erkrankung in der Vorgeschichte"
+      },
+      {
+        "icd": "R74",
+        "name": "Erhöhte Leberenzyme"
+      }
+    ],
+    "krankheiten_without_clickable_url": [
+      {
+        "icd": "Q20",
+        "name": "Angeborener Herzfehler",
+        "status": "❌ URL defekt — v4-URL war 404, entfernt in v5"
+      },
+      {
+        "icd": "Q65",
+        "name": "Hüftdysplasie",
+        "status": "⚠️ Quelle nicht verlinkt im Export"
+      },
+      {
+        "icd": "Q89",
+        "name": "Marfan-Syndrom",
+        "status": "⚠️ Quelle nicht verlinkt im Export"
+      },
+      {
+        "icd": "Q61",
+        "name": "Zystische Nierenerkrankung",
+        "status": "⚠️ Quelle nicht verlinkt im Export"
+      },
+      {
+        "icd": "J96",
+        "name": "Atemversagen",
+        "status": "⚠️ Quelle nicht verlinkt im Export"
+      },
+      {
+        "icd": "J38",
+        "name": "Heiserkeit",
+        "status": "❌ URL defekt — v4-URL war 404, entfernt in v5"
+      },
+      {
+        "icd": "J95",
+        "name": "Pneumothorax",
+        "status": "⚠️ Quelle nicht verlinkt im Export"
+      },
+      {
+        "icd": "M81",
+        "name": "Osteoporose",
+        "status": "❌ URL defekt — Domain nicht erreichbar (2026-05-25)"
+      },
+      {
+        "icd": "M06",
+        "name": "Reaktive Arthritis",
+        "status": "⚠️ Quelle nicht verlinkt im Export"
+      },
+      {
+        "icd": "M47",
+        "name": "Spondylose",
+        "status": "⚠️ Quelle nicht verlinkt im Export"
+      },
+      {
+        "icd": "D64",
+        "name": "Anämie",
+        "status": "⚠️ Quelle nicht verlinkt im Export"
+      },
+      {
+        "icd": "D86",
+        "name": "Sarkoidose",
+        "status": "⚠️ Quelle nicht verlinkt im Export"
+      },
+      {
+        "icd": "D69",
+        "name": "Thrombozytopenie",
+        "status": "⚠️ Quelle nicht verlinkt im Export"
+      },
+      {
+        "icd": "D51",
+        "name": "Vitamin-B12-Mangel-Anämie",
+        "status": "⚠️ Quelle nicht verlinkt im Export"
+      },
+      {
+        "icd": "E06",
+        "name": "Hashimoto-Thyreoiditis",
+        "status": "⚠️ Quelle nicht verlinkt im Export"
+      },
+      {
+        "icd": "E05",
+        "name": "Hyperthyreose",
+        "status": "⚠️ Quelle nicht verlinkt im Export"
+      },
+      {
+        "icd": "E27",
+        "name": "Nebennierenrindeninsuffizienz",
+        "status": "⚠️ Quelle nicht verlinkt im Export"
+      },
+      {
+        "icd": "E28",
+        "name": "Polyzystisches Ovarialsyndrom",
+        "status": "⚠️ Quelle nicht verlinkt im Export"
+      },
+      {
+        "icd": "N73",
+        "name": "Adnexitis",
+        "status": "⚠️ Quelle nicht verlinkt im Export"
+      },
+      {
+        "icd": "N91",
+        "name": "Ausbleiben der Menstruation",
+        "status": "⚠️ Quelle nicht verlinkt im Export"
+      },
+      {
+        "icd": "O10",
+        "name": "Schwangerschaftshypertonie",
+        "status": "❌ URL defekt — v4-URL war 404, entfernt in v5"
+      },
+      {
+        "icd": "N92",
+        "name": "Starke Regelblutung",
+        "status": "⚠️ Quelle nicht verlinkt im Export"
+      },
+      {
+        "icd": "L57",
+        "name": "Aktinische Keratose",
+        "status": "⚠️ Quelle nicht verlinkt im Export"
+      },
+      {
+        "icd": "L29",
+        "name": "Juckreiz",
+        "status": "⚠️ Quelle nicht verlinkt im Export"
+      },
+      {
+        "icd": "L23",
+        "name": "Kontaktekzem",
+        "status": "⚠️ Quelle nicht verlinkt im Export"
+      },
+      {
+        "icd": "L43",
+        "name": "Lichen planus",
+        "status": "⚠️ Quelle nicht verlinkt im Export"
+      },
+      {
+        "icd": "L93",
+        "name": "Lupus erythematodes",
+        "status": "⚠️ Quelle nicht verlinkt im Export"
+      },
+      {
+        "icd": "L20",
+        "name": "Neurodermitis",
+        "status": "⚠️ Quelle nicht verlinkt im Export"
+      },
+      {
+        "icd": "L50",
+        "name": "Urtikaria",
+        "status": "⚠️ Quelle nicht verlinkt im Export"
+      },
+      {
+        "icd": "I70",
+        "name": "Arteriosklerose",
+        "status": "⚠️ Quelle nicht verlinkt im Export"
+      },
+      {
+        "icd": "I87",
+        "name": "Chronisch venöse Insuffizienz",
+        "status": "⚠️ Quelle nicht verlinkt im Export"
+      },
+      {
+        "icd": "I21",
+        "name": "Herzinfarkt",
+        "status": "⚠️ Quelle nicht verlinkt im Export"
+      },
+      {
+        "icd": "I42",
+        "name": "Kardiomyopathie",
+        "status": "⚠️ Quelle nicht verlinkt im Export"
+      },
+      {
+        "icd": "B20",
+        "name": "HIV-Infektion",
+        "status": "⚠️ Quelle nicht verlinkt im Export"
+      },
+      {
+        "icd": "A41",
+        "name": "Sepsis",
+        "status": "⚠️ Quelle nicht verlinkt im Export"
+      },
+      {
+        "icd": "A15",
+        "name": "Tuberkulose",
+        "status": "⚠️ Quelle nicht verlinkt im Export"
+      },
+      {
+        "icd": "G51",
+        "name": "Fazialisparese",
+        "status": "⚠️ Quelle nicht verlinkt im Export"
+      },
+      {
+        "icd": "G61",
+        "name": "Guillain-Barré-Syndrom",
+        "status": "⚠️ Quelle nicht verlinkt im Export"
+      },
+      {
+        "icd": "G35",
+        "name": "Multiple Sklerose",
+        "status": "⚠️ Quelle nicht verlinkt im Export"
+      },
+      {
+        "icd": "R55",
+        "name": "Ohnmacht",
+        "status": "⚠️ Quelle nicht verlinkt im Export"
+      },
+      {
+        "icd": "I65",
+        "name": "Verschluss der hirnversorgenden Arterien",
+        "status": "⚠️ Quelle nicht verlinkt im Export"
+      },
+      {
+        "icd": "G80",
+        "name": "Zerebralparese",
+        "status": "⚠️ Quelle nicht verlinkt im Export"
+      },
+      {
+        "icd": "N17",
+        "name": "Akutes Nierenversagen",
+        "status": "⚠️ Quelle nicht verlinkt im Export"
+      },
+      {
+        "icd": "N39",
+        "name": "Harnwegsinfektion",
+        "status": "❌ URL defekt — v4-URL war 404, entfernt in v5"
+      },
+      {
+        "icd": "C67",
+        "name": "Blasenkrebs",
+        "status": "⚠️ Quelle nicht verlinkt im Export"
+      },
+      {
+        "icd": "C56",
+        "name": "Eierstockkrebs",
+        "status": "⚠️ Quelle nicht verlinkt im Export"
+      },
+      {
+        "icd": "C54",
+        "name": "Gebärmutterkrebs",
+        "status": "⚠️ Quelle nicht verlinkt im Export"
+      },
+      {
+        "icd": "C91",
+        "name": "Leukämie",
+        "status": "⚠️ Quelle nicht verlinkt im Export"
+      },
+      {
+        "icd": "C43",
+        "name": "Melanom",
+        "status": "⚠️ Quelle nicht verlinkt im Export"
+      },
+      {
+        "icd": "C73",
+        "name": "Schilddrüsenkrebs",
+        "status": "⚠️ Quelle nicht verlinkt im Export"
+      },
+      {
+        "icd": "F31",
+        "name": "Bipolare Störung",
+        "status": "⚠️ Quelle nicht verlinkt im Export"
+      },
+      {
+        "icd": "Z73",
+        "name": "Burnout-Syndrom",
+        "status": "⚠️ Quelle nicht verlinkt im Export"
+      },
+      {
+        "icd": "F11",
+        "name": "Opiatabhängigkeit",
+        "status": "⚠️ Quelle nicht verlinkt im Export"
+      },
+      {
+        "icd": "F60",
+        "name": "Persönlichkeitsstörung",
+        "status": "⚠️ Quelle nicht verlinkt im Export"
+      },
+      {
+        "icd": "F40",
+        "name": "Phobische Störung",
+        "status": "⚠️ Quelle nicht verlinkt im Export"
+      },
+      {
+        "icd": "F45",
+        "name": "Somatoforme Störung",
+        "status": "⚠️ Quelle nicht verlinkt im Export"
+      },
+      {
+        "icd": "F91",
+        "name": "Störung des Sozialverhaltens",
+        "status": "⚠️ Quelle nicht verlinkt im Export"
+      },
+      {
+        "icd": "R53",
+        "name": "Erschöpfung",
+        "status": "⚠️ Quelle nicht verlinkt im Export"
+      },
+      {
+        "icd": "R00",
+        "name": "Herzrasen",
+        "status": "⚠️ Quelle nicht verlinkt im Export"
+      },
+      {
+        "icd": "Z03",
+        "name": "Post-COVID-Syndrom",
+        "status": "⚠️ Quelle nicht verlinkt im Export"
+      },
+      {
+        "icd": "E84",
+        "name": "Zystische Fibrose",
+        "status": "⚠️ Quelle nicht verlinkt im Export"
+      },
+      {
+        "icd": "N48",
+        "name": "Erektile Dysfunktion",
+        "status": "⚠️ Quelle nicht verlinkt im Export"
+      },
+      {
+        "icd": "N41",
+        "name": "Prostatitis",
+        "status": "❌ URL defekt — v4-URL war 404, entfernt in v5"
+      },
+      {
+        "icd": "K70",
+        "name": "Alkoholische Lebererkrankung",
+        "status": "⚠️ Quelle nicht verlinkt im Export"
+      },
+      {
+        "icd": "K86",
+        "name": "Chronische Bauchspeicheldrüsenentzündung",
+        "status": "⚠️ Quelle nicht verlinkt im Export"
+      },
+      {
+        "icd": "K92",
+        "name": "Darmblutung",
+        "status": "⚠️ Quelle nicht verlinkt im Export"
+      },
+      {
+        "icd": "K72",
+        "name": "Leberversagen",
+        "status": "⚠️ Quelle nicht verlinkt im Export"
+      },
+      {
+        "icd": "K74",
+        "name": "Leberzirrhose",
+        "status": "⚠️ Quelle nicht verlinkt im Export"
+      },
+      {
+        "icd": "R11",
+        "name": "Übelkeit und Erbrechen",
+        "status": "⚠️ Quelle nicht verlinkt im Export"
+      },
+      {
+        "icd": "T78",
+        "name": "Anaphylaxie",
+        "status": "⚠️ Quelle nicht verlinkt im Export"
+      },
+      {
+        "icd": "S12",
+        "name": "Halswirbelkörperfraktur",
+        "status": "⚠️ Quelle nicht verlinkt im Export"
+      },
+      {
+        "icd": "S62",
+        "name": "Handknochen-Fraktur",
+        "status": "⚠️ Quelle nicht verlinkt im Export"
+      },
+      {
+        "icd": "S82",
+        "name": "Knöchelfraktur",
+        "status": "⚠️ Quelle nicht verlinkt im Export"
+      },
+      {
+        "icd": "S72",
+        "name": "Oberschenkelhalsfraktur",
+        "status": "⚠️ Quelle nicht verlinkt im Export"
+      },
+      {
+        "icd": "S22",
+        "name": "Rippenfraktur",
+        "status": "⚠️ Quelle nicht verlinkt im Export"
+      },
+      {
+        "icd": "S06",
+        "name": "Schädel-Hirn-Trauma",
+        "status": "⚠️ Quelle nicht verlinkt im Export"
+      },
+      {
+        "icd": "S52",
+        "name": "Unterarmfraktur",
+        "status": "⚠️ Quelle nicht verlinkt im Export"
+      }
+    ],
+    "supplements_without_url": [
+      "BCAA",
+      "L-Arginin",
+      "L-Glutamin",
+      "NAC (N-Acetylcystein)",
+      "Taurin",
+      "CLA (Konjugierte Linolsäure)",
+      "MCT-Öl",
+      "Silizium",
+      "Berberin",
+      "Quercetin",
+      "Resveratrol",
+      "Alpha-Liponsäure",
+      "Beta-Glucan",
+      "Hyaluronsäure",
+      "NADH"
+    ],
+    "supplements_with_url": [
+      "Kreatin",
+      "L-Carnitin",
+      "Omega-3-Fettsäuren",
+      "Chrom",
+      "Eisen",
+      "Jod",
+      "Kalium",
+      "Kalzium",
+      "Kupfer",
+      "Magnesium",
+      "Mangan",
+      "Selen",
+      "Zink",
+      "Ashwagandha",
+      "Echinacea",
+      "Ginkgo Biloba",
+      "Kurkumin",
+      "Mariendistel",
+      "Rhodiola Rosea",
+      "Probiotika",
+      "Coenzym Q10",
+      "Melatonin",
+      "Biotin (Vitamin B7)",
+      "Folsäure",
+      "Niacin (Vitamin B3)",
+      "Pantothensäure (Vitamin B5)",
+      "Vitamin A",
+      "Vitamin B1 (Thiamin)",
+      "Vitamin B12",
+      "Vitamin B2 (Riboflavin)",
+      "Vitamin B6",
+      "Vitamin C",
+      "Vitamin D",
+      "Vitamin E",
+      "Vitamin K",
+      "Vitamin K2"
+    ]
+  },
+  "report_derived": {
+    "summary": {
+      "Kennzahl": "Wert",
+      "Krankheiten gesamt": 221,
+      "Krankheiten mit DB-URL": 137,
+      "Krankheiten ohne verlinkte Quelle": 77,
+      "✅ URL live + passend": 133,
+      "⚠️ Semantisch unsicher (bare domain)": 3,
+      "❌ URL defekt": 6,
+      "⚠️ Dauerhaft intern": 5,
+      "Supplements mit URL": 36,
+      "Supplements ohne URL": 15
+    },
+    "summary_krankheiten_gesamt": 221,
+    "summary_krankheiten_without_url": 77,
+    "summary_krankheiten_live": 133,
+    "summary_krankheiten_bare_domain": 3,
+    "summary_krankheiten_defective": 6,
+    "summary_krankheiten_internal": 5,
+    "summary_supplements_with_url": 36,
+    "summary_supplements_without_url": 15,
+    "open_points_supplements_without_url_list": [
+      "Alpha-Liponsäure",
+      "BCAA",
+      "Berberin",
+      "Beta-Glucan",
+      "CLA",
+      "Echinacea (hat NCCIH)",
+      "Ginkgo (hat NCCIH)",
+      "Hyaluronsäure",
+      "L-Arginin",
+      "L-Glutamin",
+      "Mariendistel (hat NCCIH)",
+      "MCT-Öl",
+      "NADH",
+      "Quercetin",
+      "Resveratrol",
+      "Silizium",
+      "Taurin"
+    ],
+    "semantic_uncertain_list": [
+      {
+        "icd": "M05",
+        "name": "Rheumatoide Arthritis"
+      },
+      {
+        "icd": "I10",
+        "name": "Bluthochdruck"
+      },
+      {
+        "icd": "K58",
+        "name": "Reizdarmsyndrom"
+      }
+    ],
+    "defective_url_list_from_report": [
+      {
+        "icd": "Q20",
+        "name": "Angeborener Herzfehler"
+      },
+      {
+        "icd": "J38",
+        "name": "Heiserkeit"
+      },
+      {
+        "icd": "M81",
+        "name": "Osteoporose"
+      },
+      {
+        "icd": "O10",
+        "name": "Schwangerschaftshypertonie"
+      },
+      {
+        "icd": "N39",
+        "name": "Harnwegsinfektion"
+      },
+      {
+        "icd": "N41",
+        "name": "Prostatitis"
+      }
+    ]
+  },
+  "inventory_derived": {
+    "rows_total": 257,
+    "krankheiten_rows": 221,
+    "supplement_rows": 36,
+    "live_status_counts": {
+      "❌ defekt": 6,
+      "—": 76,
+      "200 OK": 136,
+      "opaque/ungeprüft": 3,
+      "⚠️ ungeprüft": 36
+    }
+  },
+  "semantic_review_derived": {
+    "semantic_uncertain": [
+      {
+        "icd": "I10",
+        "name": "Bluthochdruck (essenziell)"
+      },
+      {
+        "icd": "K58",
+        "name": "Reizdarmsy."
+      },
+      {
+        "icd": "M05",
+        "name": "Rheumatoide Arthritis"
+      }
+    ],
+    "defective_unreachable": [
+      {
+        "icd": "M81",
+        "name": "Osteoporose"
+      }
+    ]
+  },
+  "consistency_checks": [
+    {
+      "check": "LW Soll vs Export",
+      "expected": 60,
+      "actual": 60,
+      "source_expected": "SOLL",
+      "source_actual": "v5_export",
+      "verdict": "OK"
+    },
+    {
+      "check": "Supplements Soll vs Export",
+      "expected": 51,
+      "actual": 51,
+      "source_expected": "SOLL",
+      "source_actual": "v5_export",
+      "verdict": "OK"
+    },
+    {
+      "check": "Krankheiten Soll vs Export",
+      "expected": 221,
+      "actual": 221,
+      "source_expected": "SOLL",
+      "source_actual": "v5_export",
+      "verdict": "OK"
+    },
+    {
+      "check": "Krankheiten gesamt: Report-Zusammenfassung vs Export",
+      "expected": 221,
+      "actual": 221,
+      "source_expected": "v5_link_report Zusammenfassung",
+      "source_actual": "v5_export",
+      "verdict": "OK"
+    },
+    {
+      "check": "Supplements ohne URL: Report-Zusammenfassung vs Export",
+      "expected": 15,
+      "actual": 15,
+      "source_expected": "v5_link_report Zusammenfassung",
+      "source_actual": "v5_export",
+      "verdict": "OK"
+    },
+    {
+      "check": "Supplements mit URL: Report-Zusammenfassung vs Export",
+      "expected": 36,
+      "actual": 36,
+      "source_expected": "v5_link_report Zusammenfassung",
+      "source_actual": "v5_export",
+      "verdict": "OK"
+    },
+    {
+      "check": "Supplements ohne URL: Report-Offenliste Anzahl vs Report-Zusammenfassung",
+      "expected": 15,
+      "actual": 17,
+      "source_expected": "v5_link_report Zusammenfassung",
+      "source_actual": "v5_link_report Offene Punkte",
+      "verdict": "ABWEICHUNG"
+    },
+    {
+      "check": "Report-Offenliste: keine Items mit URL fälschlich enthalten",
+      "expected": [],
+      "actual": [
+        "Echinacea (export: Echinacea)",
+        "Ginkgo (export: Ginkgo Biloba)",
+        "Mariendistel (export: Mariendistel)"
+      ],
+      "source_expected": "v5_export (mit URL)",
+      "source_actual": "v5_link_report Offene Punkte",
+      "verdict": "ABWEICHUNG"
+    },
+    {
+      "check": "Report-Offenliste: keine Items ohne URL vergessen",
+      "expected": [],
+      "actual": [
+        "NAC (N-Acetylcystein)"
+      ],
+      "source_expected": "v5_export (ohne URL)",
+      "source_actual": "v5_link_report Offene Punkte",
+      "verdict": "ABWEICHUNG"
+    },
+    {
+      "check": "Krankheiten ✅ live: Report-Zusammenfassung vs Export",
+      "expected": 133,
+      "actual": 133,
+      "source_expected": "v5_link_report Zusammenfassung",
+      "source_actual": "v5_export",
+      "verdict": "OK"
+    },
+    {
+      "check": "Krankheiten ⚠️ bare domain: Report-Zusammenfassung vs Export",
+      "expected": 3,
+      "actual": 3,
+      "source_expected": "v5_link_report Zusammenfassung",
+      "source_actual": "v5_export",
+      "verdict": "OK"
+    },
+    {
+      "check": "Krankheiten ❌ defekt: Report-Zusammenfassung vs Export",
+      "expected": 6,
+      "actual": 6,
+      "source_expected": "v5_link_report Zusammenfassung",
+      "source_actual": "v5_export",
+      "verdict": "OK"
+    },
+    {
+      "check": "Krankheiten ⚠️ intern: Report-Zusammenfassung vs Export",
+      "expected": 5,
+      "actual": 5,
+      "source_expected": "v5_link_report Zusammenfassung",
+      "source_actual": "v5_export",
+      "verdict": "OK"
+    },
+    {
+      "check": "Semantisch unsicher ICDs: Report vs Semantic Review",
+      "expected": [
+        "I10",
+        "K58",
+        "M05"
+      ],
+      "actual": [
+        "I10",
+        "K58",
+        "M05"
+      ],
+      "source_expected": "v5_link_report Offene Punkte",
+      "source_actual": "v5_semantic_review",
+      "verdict": "OK"
+    },
+    {
+      "check": "URL Inventory Krankheiten-Zeilen vs SOLL",
+      "expected": 221,
+      "actual": 221,
+      "source_expected": "SOLL",
+      "source_actual": "v5_url_inventory",
+      "verdict": "OK"
+    },
+    {
+      "check": "URL Inventory Supplement-Zeilen vs Export Supplements mit URL",
+      "expected": 36,
+      "actual": 36,
+      "source_expected": "v5_export (mit URL)",
+      "source_actual": "v5_url_inventory",
+      "verdict": "OK"
+    },
+    {
+      "check": "Krankheiten ohne verlinkte Quelle: Report vs Export (nicht verlinkt + defekt, exkl. intern)",
+      "expected": 77,
+      "actual": 77,
+      "source_expected": "v5_link_report Zusammenfassung",
+      "source_actual": "v5_export (nicht verlinkt + defekt, exkl. intern)",
+      "verdict": "OK"
+    }
+  ],
+  "consistency_summary": {
+    "total": 17,
+    "ok": 14,
+    "abweichungen": 3,
+    "verdict": "FAIL"
+  }
+}

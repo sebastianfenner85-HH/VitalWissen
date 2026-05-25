@@ -1,0 +1,258 @@
+Typ,ICD/Slug,Name,URL,Live-Status,v5-Status
+Krankheit,Q20,Angeborener Herzfehler,https://www.gesundheitsinformation.de/herzfehler-bei-kindern.html,❌ defekt,❌ URL defekt — v4-URL war 404; entfernt in v5
+Krankheit,Q65,Hüftdysplasie,—,—,⚠️ Quelle nicht verlinkt im Export
+Krankheit,Q89,Marfan-Syndrom,—,—,⚠️ Quelle nicht verlinkt im Export
+Krankheit,Q61,Zystische Nierenerkrankung,—,—,⚠️ Quelle nicht verlinkt im Export
+Krankheit,J20,Akute Bronchitis,https://www.gesundheitsinformation.de/akute-bronchitis.html,200 OK,✅ URL live + semantisch passend
+Krankheit,J06,Akute Erkältung,https://www.gesundheitsinformation.de/erkaeltung.html,200 OK,✅ URL live + semantisch passend
+Krankheit,J45,Asthma bronchiale,https://ginasthma.org,200 OK,✅ URL live + semantisch passend
+Krankheit,J96,Atemversagen,—,—,⚠️ Quelle nicht verlinkt im Export
+Krankheit,J44,COPD,https://goldcopd.org,200 OK,✅ URL live + semantisch passend
+Krankheit,J02,Halsschmerzen,https://www.gesundheitsinformation.de/erkaeltung.html,200 OK,✅ URL live + semantisch passend
+Krankheit,J38,Heiserkeit,https://www.gesundheitsinformation.de/heiserkeit.html,❌ defekt,❌ URL defekt — v4-URL war 404; entfernt in v5
+Krankheit,J30,Heuschnupfen,https://www.gesundheitsinformation.de/allergien.html,200 OK,✅ URL live + semantisch passend
+Krankheit,R05,Husten,https://www.gesundheitsinformation.de/husten.html,200 OK,✅ URL live + semantisch passend
+Krankheit,J10,Influenza,https://www.gesundheitsinformation.de/grippe.html,200 OK,✅ URL live + semantisch passend
+Krankheit,J18,Lungenentzündung,https://www.gesundheitsinformation.de/lungenentzuendung.html,200 OK,✅ URL live + semantisch passend
+Krankheit,J03,Mandelentzündung,https://www.gesundheitsinformation.de/mandelentzuendung.html,200 OK,✅ URL live + semantisch passend
+Krankheit,J32,Nasennebenhöhlenentzündung,https://www.gesundheitsinformation.de/nasennebenhoehlenentzuendung.html,200 OK,✅ URL live + semantisch passend
+Krankheit,J95,Pneumothorax,—,—,⚠️ Quelle nicht verlinkt im Export
+Krankheit,J00,Schnupfen,https://www.gesundheitsinformation.de/erkaeltung.html,200 OK,✅ URL live + semantisch passend
+Krankheit,J12,Virale Lungenentzündung,https://www.gesundheitsinformation.de/lungenentzuendung.html,200 OK,✅ URL live + semantisch passend
+Krankheit,H10,Bindehautentzündung,https://www.gesundheitsinformation.de/bindehautentzuendung.html,200 OK,✅ URL live + semantisch passend
+Krankheit,H61,Cerumen-Pfropf,https://www.gesundheitsinformation.de/ohrenschmalz-pfropf.html,200 OK,✅ URL live + semantisch passend
+Krankheit,H00,Gerstenkorn,https://www.gesundheitsinformation.de/gerstenkorn-und-hagelkorn-augenlidentzuendung.html,200 OK,✅ URL live + semantisch passend
+Krankheit,H25,Grauer Star,https://www.gesundheitsinformation.de/grauer-star-katarakt.html,200 OK,✅ URL live + semantisch passend
+Krankheit,H40,Grüner Star,https://www.gesundheitsinformation.de/gruener-star-glaukom.html,200 OK,✅ URL live + semantisch passend
+Krankheit,H26,Katarakt,https://www.gesundheitsinformation.de/grauer-star-katarakt.html,200 OK,✅ URL live + semantisch passend
+Krankheit,H52,Kurzsichtigkeit,https://www.gesundheitsinformation.de/kurzsichtigkeit-myopie.html,200 OK,✅ URL live + semantisch passend
+Krankheit,H35,Makuladegeneration,https://www.gesundheitsinformation.de/altersabhaengige-makuladegeneration-amd.html,200 OK,✅ URL live + semantisch passend
+Krankheit,H65,Mittelohrentzündung,https://www.gesundheitsinformation.de/mittelohrentzuendung.html,200 OK,✅ URL live + semantisch passend
+Krankheit,H90,Schwerhörigkeit,https://www.gesundheitsinformation.de/schwerhoerigkeit-und-gehoerlosigkeit-bei-erwachsenen.html,200 OK,✅ URL live + semantisch passend
+Krankheit,H81,Schwindel (Vestibulariskrise),https://www.gesundheitsinformation.de/gutartiger-lagerungsschwindel.html,200 OK,✅ URL live + semantisch passend
+Krankheit,M13,Arthritis,—,—,⚠️ dauerhaft intern — laut P6-Final begründet
+Krankheit,M17,Arthrose,https://www.gesundheitsinformation.de/arthrose.html,200 OK,✅ URL live + semantisch passend
+Krankheit,M51,Bandscheibenvorfall,https://www.gesundheitsinformation.de/bandscheibenvorfall.html,200 OK,✅ URL live + semantisch passend
+Krankheit,M79,Fibromyalgie,https://www.gesundheitsinformation.de/fibromyalgie.html,200 OK,✅ URL live + semantisch passend
+Krankheit,M19,Fingergelenksarthrose,https://www.gesundheitsinformation.de/arthrose.html,200 OK,✅ URL live + semantisch passend
+Krankheit,M10,Gichtarthritis,https://www.gesundheitsinformation.de/gicht.html,200 OK,✅ URL live + semantisch passend
+Krankheit,M16,Hüftarthrose,https://www.gesundheitsinformation.de/hueftarthrose-coxarthrose.html,200 OK,✅ URL live + semantisch passend
+Krankheit,M15,Kniearthrose,https://www.gesundheitsinformation.de/arthrose.html,200 OK,✅ URL live + semantisch passend
+Krankheit,M81,Osteoporose,https://www.dvo-osteologie.org,❌ defekt,❌ URL defekt — Domain nicht erreichbar (2026-05-25)
+Krankheit,M07,Psoriasis-Arthritis,https://www.gesundheitsinformation.de/schuppenflechte-mit-gelenkentzuendung-psoriasis-arthritis.html,200 OK,✅ URL live + semantisch passend
+Krankheit,M06,Reaktive Arthritis,—,—,⚠️ Quelle nicht verlinkt im Export
+Krankheit,M05,Rheumatoide Arthritis,https://www.awmf.org,200 OK,⚠️ URL live; semantischer Bezug unsicher (bare domain)
+Krankheit,M54,Rückenschmerzen,https://www.gesundheitsinformation.de/ruecken-und-kreuzschmerzen.html,200 OK,✅ URL live + semantisch passend
+Krankheit,M75,Schultersteife,https://www.gesundheitsinformation.de/schultersteife.html,200 OK,✅ URL live + semantisch passend
+Krankheit,M65,Sehnenscheidenentzündung,https://www.gesundheitsinformation.de/sehnenscheidenentzuendung.html,200 OK,✅ URL live + semantisch passend
+Krankheit,M43,Skoliose,https://www.gesundheitsinformation.de/skoliose-im-jugendalter.html,200 OK,✅ URL live + semantisch passend
+Krankheit,M47,Spondylose,—,—,⚠️ Quelle nicht verlinkt im Export
+Krankheit,M77,Tennisarm,https://www.gesundheitsinformation.de/tennisarm-und-golferarm.html,200 OK,✅ URL live + semantisch passend
+Krankheit,M42,Wirbelsäulenerkrankung,https://www.gesundheitsinformation.de/ruecken-und-kreuzschmerzen.html,200 OK,✅ URL live + semantisch passend
+Krankheit,D64,Anämie,—,—,⚠️ Quelle nicht verlinkt im Export
+Krankheit,D50,Eisenmangelanämie,https://www.onkopedia.com/de/onkopedia/guidelines/eisenmangel-und-eisenmangelanaemie/@@guideline/html/index.html,200 OK,✅ URL live + semantisch passend
+Krankheit,D86,Sarkoidose,—,—,⚠️ Quelle nicht verlinkt im Export
+Krankheit,D69,Thrombozytopenie,—,—,⚠️ Quelle nicht verlinkt im Export
+Krankheit,D51,Vitamin-B12-Mangel-Anämie,—,—,⚠️ Quelle nicht verlinkt im Export
+Krankheit,E06,Hashimoto-Thyreoiditis,—,—,⚠️ Quelle nicht verlinkt im Export
+Krankheit,E05,Hyperthyreose,—,—,⚠️ Quelle nicht verlinkt im Export
+Krankheit,E03,Hypothyreose,https://register.awmf.org/de/leitlinien/detail/053-046,200 OK,✅ URL live + semantisch passend
+Krankheit,E27,Nebennierenrindeninsuffizienz,—,—,⚠️ Quelle nicht verlinkt im Export
+Krankheit,E28,Polyzystisches Ovarialsyndrom,—,—,⚠️ Quelle nicht verlinkt im Export
+Krankheit,N73,Adnexitis,—,—,⚠️ Quelle nicht verlinkt im Export
+Krankheit,N91,Ausbleiben der Menstruation,—,—,⚠️ Quelle nicht verlinkt im Export
+Krankheit,N80,Endometriose,https://www.gesundheitsinformation.de/endometriose.html,200 OK,✅ URL live + semantisch passend
+Krankheit,O60,Frühgeburt,https://www.gesundheitsinformation.de/was-kann-man-tun-wenn-sich-eine-fruehgeburt-ankuendigt.html,200 OK,✅ URL live + semantisch passend
+Krankheit,N83,Ovarialzyste,https://www.gesundheitsinformation.de/eierstockzysten-ovarialzysten.html,200 OK,✅ URL live + semantisch passend
+Krankheit,N94,Prämenstruelles Syndrom,https://www.gesundheitsinformation.de/praemenstruelles-syndrom-pms.html,200 OK,✅ URL live + semantisch passend
+Krankheit,O24,Schwangerschaftsdiabetes,https://www.gesundheitsinformation.de/schwangerschaftsdiabetes.html,200 OK,✅ URL live + semantisch passend
+Krankheit,O10,Schwangerschaftshypertonie,https://www.gesundheitsinformation.de/bluthochdruck-in-der-schwangerschaft.html,❌ defekt,❌ URL defekt — v4-URL war 404; entfernt in v5
+Krankheit,N92,Starke Regelblutung,—,—,⚠️ Quelle nicht verlinkt im Export
+Krankheit,N95,Wechseljahresbeschwerden,https://www.gesundheitsinformation.de/wechseljahrsbeschwerden.html,200 OK,✅ URL live + semantisch passend
+Krankheit,L70,Akne,https://www.gesundheitsinformation.de/akne.html,200 OK,✅ URL live + semantisch passend
+Krankheit,L57,Aktinische Keratose,—,—,⚠️ Quelle nicht verlinkt im Export
+Krankheit,L72,Atheromatöse Zyste,—,—,⚠️ dauerhaft intern — laut P6-Final begründet
+Krankheit,L02,Furunkel,https://www.gesundheitsinformation.de/furunkel-und-karbunkel.html,200 OK,✅ URL live + semantisch passend
+Krankheit,L01,Impetigo,https://www.gesundheitsinformation.de/borkenflechte-impetigo.html,200 OK,✅ URL live + semantisch passend
+Krankheit,L29,Juckreiz,—,—,⚠️ Quelle nicht verlinkt im Export
+Krankheit,L23,Kontaktekzem,—,—,⚠️ Quelle nicht verlinkt im Export
+Krankheit,L43,Lichen planus,—,—,⚠️ Quelle nicht verlinkt im Export
+Krankheit,L93,Lupus erythematodes,—,—,⚠️ Quelle nicht verlinkt im Export
+Krankheit,L60,Nagelpilz,https://www.gesundheitsinformation.de/nagelpilz.html,200 OK,✅ URL live + semantisch passend
+Krankheit,L20,Neurodermitis,—,—,⚠️ Quelle nicht verlinkt im Export
+Krankheit,L03,Phlegmone,https://www.gesundheitsinformation.de/wundrose-und-phlegmone.html,200 OK,✅ URL live + semantisch passend
+Krankheit,L71,Rosazea,https://www.gesundheitsinformation.de/rosazea.html,200 OK,✅ URL live + semantisch passend
+Krankheit,L40,Schuppenflechte,https://www.gesundheitsinformation.de/schuppenflechte-psoriasis.html,200 OK,✅ URL live + semantisch passend
+Krankheit,L50,Urtikaria,—,—,⚠️ Quelle nicht verlinkt im Export
+Krankheit,L08,Wundrose,https://www.gesundheitsinformation.de/wundrose-und-phlegmone.html,200 OK,✅ URL live + semantisch passend
+Krankheit,I20,Angina pectoris,https://www.gesundheitsinformation.de/koronare-herzkrankheit-khk.html,200 OK,✅ URL live + semantisch passend
+Krankheit,I35,Aortenklappenstenose,https://www.gesundheitsinformation.de/herzklappenfehler.html,200 OK,✅ URL live + semantisch passend
+Krankheit,I70,Arteriosklerose,—,—,⚠️ Quelle nicht verlinkt im Export
+Krankheit,I10,Bluthochdruck,https://www.escardio.org,200 OK,⚠️ URL live; semantischer Bezug unsicher (bare domain)
+Krankheit,I87,Chronisch venöse Insuffizienz,—,—,⚠️ Quelle nicht verlinkt im Export
+Krankheit,I21,Herzinfarkt,—,—,⚠️ Quelle nicht verlinkt im Export
+Krankheit,I50,Herzinsuffizienz,https://www.gesundheitsinformation.de/herzschwaeche.html,200 OK,✅ URL live + semantisch passend
+Krankheit,I49,Herzrhythmusstörung,https://www.gesundheitsinformation.de/herzrhythmusstoerungen.html,200 OK,✅ URL live + semantisch passend
+Krankheit,I11,Hypertensive Herzkrankheit,https://www.gesundheitsinformation.de/bluthochdruck-hypertonie.html,200 OK,✅ URL live + semantisch passend
+Krankheit,I42,Kardiomyopathie,—,—,⚠️ Quelle nicht verlinkt im Export
+Krankheit,I25,Koronare Herzkrankheit,https://www.gesundheitsinformation.de/koronare-herzkrankheit-khk.html,200 OK,✅ URL live + semantisch passend
+Krankheit,I83,Krampfadern,https://www.gesundheitsinformation.de/krampfadern.html,200 OK,✅ URL live + semantisch passend
+Krankheit,I26,Lungenembolie,https://www.gesundheitsinformation.de/lungenembolie.html,200 OK,✅ URL live + semantisch passend
+Krankheit,I73,Periphere arterielle Verschlusskrankheit,https://www.gesundheitsinformation.de/durchblutungsstoerung-der-beine-pavk.html,200 OK,✅ URL live + semantisch passend
+Krankheit,I80,Tiefe Beinvenenthrombose,https://www.gesundheitsinformation.de/tiefe-venenthrombose-tvt.html,200 OK,✅ URL live + semantisch passend
+Krankheit,I48,Vorhofflimmern,https://www.gesundheitsinformation.de/vorhofflimmern.html,200 OK,✅ URL live + semantisch passend
+Krankheit,B34,COVID-19,https://www.gesundheitsinformation.de/covid-19-coronavirus-krankheit.html,200 OK,✅ URL live + semantisch passend
+Krankheit,B18,Chronische Virushepatitis,https://www.gesundheitsinformation.de/hepatitis-b.html,200 OK,✅ URL live + semantisch passend
+Krankheit,B35,Fußpilz,https://www.gesundheitsinformation.de/fusspilz.html,200 OK,✅ URL live + semantisch passend
+Krankheit,B02,Gürtelrose,https://www.gesundheitsinformation.de/guertelrose.html,200 OK,✅ URL live + semantisch passend
+Krankheit,B20,HIV-Infektion,—,—,⚠️ Quelle nicht verlinkt im Export
+Krankheit,B00,Herpes simplex,https://www.gesundheitsinformation.de/lippenherpes.html,200 OK,✅ URL live + semantisch passend
+Krankheit,A09,Infektiöse Gastroenteritis,https://www.gesundheitsinformation.de/durchfall.html,200 OK,✅ URL live + semantisch passend
+Krankheit,B86,Krätze,https://www.gesundheitsinformation.de/kraetze-skabies.html,200 OK,✅ URL live + semantisch passend
+Krankheit,B37,Pilzinfektion,https://www.gesundheitsinformation.de/pilzinfektion-der-vagina-scheidenpilz.html,200 OK,✅ URL live + semantisch passend
+Krankheit,A41,Sepsis,—,—,⚠️ Quelle nicht verlinkt im Export
+Krankheit,A15,Tuberkulose,—,—,⚠️ Quelle nicht verlinkt im Export
+Krankheit,B19,Virushepatitis,https://www.gesundheitsinformation.de/hepatitis-b.html,200 OK,✅ URL live + semantisch passend
+Krankheit,A46,Wundrose (Erysipel),https://www.gesundheitsinformation.de/wundrose-und-phlegmone.html,200 OK,✅ URL live + semantisch passend
+Krankheit,G54,Bandscheibenvorfall mit Nervenwurzelkompression,https://www.gesundheitsinformation.de/bandscheibenvorfall.html,200 OK,✅ URL live + semantisch passend
+Krankheit,G89,Chronischer Schmerz,https://www.gesundheitsinformation.de/chronische-schmerzen-verstehen.html,200 OK,✅ URL live + semantisch passend
+Krankheit,G40,Epilepsie,https://www.gesundheitsinformation.de/epilepsie.html,200 OK,✅ URL live + semantisch passend
+Krankheit,G51,Fazialisparese,—,—,⚠️ Quelle nicht verlinkt im Export
+Krankheit,G61,Guillain-Barré-Syndrom,—,—,⚠️ Quelle nicht verlinkt im Export
+Krankheit,I63,Hirninfarkt,https://www.gesundheitsinformation.de/schlaganfall.html,200 OK,✅ URL live + semantisch passend
+Krankheit,R51,Kopfschmerzen,https://www.gesundheitsinformation.de/kopfschmerzen.html,opaque/ungeprüft,⚠️ URL live-Status unklar — nicht in DB; Überprüfung erforderlich
+Krankheit,G43,Migräne,https://www.gesundheitsinformation.de/migraene.html,200 OK,✅ URL live + semantisch passend
+Krankheit,G35,Multiple Sklerose,—,—,⚠️ Quelle nicht verlinkt im Export
+Krankheit,R55,Ohnmacht,—,—,⚠️ Quelle nicht verlinkt im Export
+Krankheit,G20,Parkinson-Krankheit,https://www.gesundheitsinformation.de/parkinson.html,200 OK,✅ URL live + semantisch passend
+Krankheit,G47,Schlafapnoe,https://www.gesundheitsinformation.de/obstruktive-schlafapnoe.html,200 OK,✅ URL live + semantisch passend
+Krankheit,I64,Schlaganfall,https://www.gesundheitsinformation.de/schlaganfall.html,200 OK,✅ URL live + semantisch passend
+Krankheit,G44,Spannungskopfschmerz,https://www.gesundheitsinformation.de/spannungskopfschmerzen.html,200 OK,✅ URL live + semantisch passend
+Krankheit,I65,Verschluss der hirnversorgenden Arterien,—,—,⚠️ Quelle nicht verlinkt im Export
+Krankheit,G80,Zerebralparese,—,—,⚠️ Quelle nicht verlinkt im Export
+Krankheit,N17,Akutes Nierenversagen,—,—,⚠️ Quelle nicht verlinkt im Export
+Krankheit,N30,Blasenentzündung,https://www.gesundheitsinformation.de/akute-blasenentzuendung.html,200 OK,✅ URL live + semantisch passend
+Krankheit,N18,Chronische Niereninsuffizienz,https://kdigo.org,200 OK,✅ URL live + semantisch passend
+Krankheit,N39,Harnwegsinfektion,https://www.gesundheitsinformation.de/harnwegsinfekte.html,❌ defekt,❌ URL defekt — v4-URL war 404; entfernt in v5
+Krankheit,N23,Nierenkolik,https://www.gesundheitsinformation.de/nierensteine-und-harnleitersteine.html,200 OK,✅ URL live + semantisch passend
+Krankheit,N20,Nierensteine,https://www.gesundheitsinformation.de/nierensteine-und-harnleitersteine.html,200 OK,✅ URL live + semantisch passend
+Krankheit,C67,Blasenkrebs,—,—,⚠️ Quelle nicht verlinkt im Export
+Krankheit,C50,Brustkrebs,https://www.gesundheitsinformation.de/brustkrebs.html,200 OK,✅ URL live + semantisch passend
+Krankheit,C18,Darmkrebs,https://www.gesundheitsinformation.de/darmkrebs.html,200 OK,✅ URL live + semantisch passend
+Krankheit,C56,Eierstockkrebs,—,—,⚠️ Quelle nicht verlinkt im Export
+Krankheit,C54,Gebärmutterkrebs,—,—,⚠️ Quelle nicht verlinkt im Export
+Krankheit,C91,Leukämie,—,—,⚠️ Quelle nicht verlinkt im Export
+Krankheit,C34,Lungenkrebs,https://www.gesundheitsinformation.de/lungenkrebs.html,200 OK,✅ URL live + semantisch passend
+Krankheit,C43,Melanom,—,—,⚠️ Quelle nicht verlinkt im Export
+Krankheit,C61,Prostatakrebs,https://www.gesundheitsinformation.de/oertlich-begrenzter-prostatakrebs.html,200 OK,✅ URL live + semantisch passend
+Krankheit,C73,Schilddrüsenkrebs,—,—,⚠️ Quelle nicht verlinkt im Export
+Krankheit,F90,ADHS,https://www.gesundheitsinformation.de/aufmerksamkeitsdefizit-und-hyperaktivitaetsstoerung-adhs.html,200 OK,✅ URL live + semantisch passend
+Krankheit,F10,Alkoholabhängigkeit,https://www.gesundheitsinformation.de/alkohol.html,200 OK,✅ URL live + semantisch passend
+Krankheit,F41,Angststörung,https://www.gesundheitsinformation.de/generalisierte-angststoerung.html,200 OK,✅ URL live + semantisch passend
+Krankheit,F84,Autismus-Spektrum-Störung,https://www.gesundheitsinformation.de/autismus.html,200 OK,✅ URL live + semantisch passend
+Krankheit,F98,Bettnässen,https://www.gesundheitsinformation.de/bettnaessen.html,200 OK,✅ URL live + semantisch passend
+Krankheit,F31,Bipolare Störung,—,—,⚠️ Quelle nicht verlinkt im Export
+Krankheit,Z73,Burnout-Syndrom,—,—,⚠️ Quelle nicht verlinkt im Export
+Krankheit,F32,Depression,https://register.awmf.org/de/leitlinien/detail/038-013,200 OK,✅ URL live + semantisch passend
+Krankheit,F50,Essstörung,https://www.gesundheitsinformation.de/magersucht-anorexie.html,200 OK,✅ URL live + semantisch passend
+Krankheit,F17,Nikotinabhängigkeit,https://www.gesundheitsinformation.de/rauchen.html,200 OK,✅ URL live + semantisch passend
+Krankheit,F11,Opiatabhängigkeit,—,—,⚠️ Quelle nicht verlinkt im Export
+Krankheit,F06,Organische psychische Störung,—,—,⚠️ dauerhaft intern — laut P6-Final begründet
+Krankheit,F60,Persönlichkeitsstörung,—,—,⚠️ Quelle nicht verlinkt im Export
+Krankheit,F40,Phobische Störung,—,—,⚠️ Quelle nicht verlinkt im Export
+Krankheit,F43,Posttraumatische Belastungsstörung,https://www.gesundheitsinformation.de/posttraumatische-belastungsstoerung.html,200 OK,✅ URL live + semantisch passend
+Krankheit,F33,Rezidivierende depressive Störung,https://www.gesundheitsinformation.de/depression.html,200 OK,✅ URL live + semantisch passend
+Krankheit,F20,Schizophrenie,https://www.gesundheitsinformation.de/schizophrenie.html,200 OK,✅ URL live + semantisch passend
+Krankheit,F51,Schlafstörung,https://www.gesundheitsinformation.de/schlafprobleme-und-schlafstoerungen-insomnie.html,200 OK,✅ URL live + semantisch passend
+Krankheit,F45,Somatoforme Störung,—,—,⚠️ Quelle nicht verlinkt im Export
+Krankheit,F91,Störung des Sozialverhaltens,—,—,⚠️ Quelle nicht verlinkt im Export
+Krankheit,F42,Zwangsstörung,https://www.gesundheitsinformation.de/zwangsstoerungen.html,200 OK,✅ URL live + semantisch passend
+Krankheit,Z87,Chronische Erkrankung in der Vorgeschichte,—,—,⚠️ dauerhaft intern — laut P6-Final begründet
+Krankheit,R53,Erschöpfung,—,—,⚠️ Quelle nicht verlinkt im Export
+Krankheit,R00,Herzrasen,—,—,⚠️ Quelle nicht verlinkt im Export
+Krankheit,Z03,Post-COVID-Syndrom,—,—,⚠️ Quelle nicht verlinkt im Export
+Krankheit,E66,Adipositas,https://www.gesundheitsinformation.de/starkes-uebergewicht-adipositas.html,200 OK,✅ URL live + semantisch passend
+Krankheit,E10,Diabetes mellitus Typ 1,https://www.gesundheitsinformation.de/diabetes-typ-1.html,200 OK,✅ URL live + semantisch passend
+Krankheit,E11,Diabetes mellitus Typ 2,https://register.awmf.org/de/leitlinien/detail/057-001,200 OK,✅ URL live + semantisch passend
+Krankheit,E14,Diabetes mellitus nicht näher bezeichnet,https://www.gesundheitsinformation.de/diabetes-typ-2.html,200 OK,✅ URL live + semantisch passend
+Krankheit,E63,Eisenmangel,https://www.gesundheitsinformation.de/eisenmangel-und-eisenmangel-anaemie.html,200 OK,✅ URL live + semantisch passend
+Krankheit,R73,Erhöhter Blutzucker,https://www.gesundheitsinformation.de/nuechternblutzucker.html,200 OK,✅ URL live + semantisch passend
+Krankheit,E78,Fettstoffwechselstörung,https://www.gesundheitsinformation.de/erhoehte-cholesterinwerte.html,200 OK,✅ URL live + semantisch passend
+Krankheit,E79,Gicht,https://www.gesundheitsinformation.de/gicht.html,200 OK,✅ URL live + semantisch passend
+Krankheit,E61,Magnesiummangel,https://www.gesundheitsinformation.de/magnesium.html,200 OK,✅ URL live + semantisch passend
+Krankheit,E55,Vitamin-D-Mangel,https://www.gesundheitsinformation.de/vitamin-d-mangel.html,200 OK,✅ URL live + semantisch passend
+Krankheit,E84,Zystische Fibrose,—,—,⚠️ Quelle nicht verlinkt im Export
+Krankheit,N48,Erektile Dysfunktion,—,—,⚠️ Quelle nicht verlinkt im Export
+Krankheit,N40,Gutartige Prostatavergrößerung,https://www.gesundheitsinformation.de/gutartige-prostatavergroesserung.html,200 OK,✅ URL live + semantisch passend
+Krankheit,N41,Prostatitis,https://www.gesundheitsinformation.de/prostataentzuendung.html,❌ defekt,❌ URL defekt — v4-URL war 404; entfernt in v5
+Krankheit,K70,Alkoholische Lebererkrankung,—,—,⚠️ Quelle nicht verlinkt im Export
+Krankheit,K35,Appendizitis,https://www.gesundheitsinformation.de/blinddarmentzuendung-appendizitis.html,200 OK,✅ URL live + semantisch passend
+Krankheit,R10,Bauchschmerzen,https://www.gesundheitsinformation.de/bauchschmerzen.html,opaque/ungeprüft,⚠️ URL live-Status unklar — nicht in DB; Überprüfung erforderlich
+Krankheit,K86,Chronische Bauchspeicheldrüsenentzündung,—,—,⚠️ Quelle nicht verlinkt im Export
+Krankheit,K51,Colitis ulcerosa,https://www.gesundheitsinformation.de/colitis-ulcerosa.html,200 OK,✅ URL live + semantisch passend
+Krankheit,K92,Darmblutung,—,—,⚠️ Quelle nicht verlinkt im Export
+Krankheit,K57,Divertikulose,https://www.gesundheitsinformation.de/divertikelkrankheit-und-divertikulitis.html,200 OK,✅ URL live + semantisch passend
+Krankheit,R74,Erhöhte Leberenzyme,—,—,⚠️ dauerhaft intern — laut P6-Final begründet
+Krankheit,K81,Gallenblasenentzündung,https://www.gesundheitsinformation.de/gallensteine.html,200 OK,✅ URL live + semantisch passend
+Krankheit,K80,Gallensteine,https://www.gesundheitsinformation.de/gallensteine.html,200 OK,✅ URL live + semantisch passend
+Krankheit,K29,Gastritis,https://www.gesundheitsinformation.de/magenschleimhautentzuendung-gastritis.html,200 OK,✅ URL live + semantisch passend
+Krankheit,K52,Gastroenteritis,https://www.gesundheitsinformation.de/durchfall.html,200 OK,✅ URL live + semantisch passend
+Krankheit,K87,Hämorrhoiden,https://www.gesundheitsinformation.de/vergroesserte-haemorrhoiden-haemorrhoidalleiden.html,200 OK,✅ URL live + semantisch passend
+Krankheit,K72,Leberversagen,—,—,⚠️ Quelle nicht verlinkt im Export
+Krankheit,K74,Leberzirrhose,—,—,⚠️ Quelle nicht verlinkt im Export
+Krankheit,K25,Magengeschwür,https://www.gesundheitsinformation.de/magen-und-zwoelffingerdarmgeschwuere.html,200 OK,✅ URL live + semantisch passend
+Krankheit,K50,Morbus Crohn,https://www.gesundheitsinformation.de/morbus-crohn.html,200 OK,✅ URL live + semantisch passend
+Krankheit,K43,Narbenhernie,https://www.gesundheitsinformation.de/hernien.html,200 OK,✅ URL live + semantisch passend
+Krankheit,K85,Pankreatitis,https://www.gesundheitsinformation.de/akute-entzuendung-der-bauchspeicheldruese-pankreatitis.html,200 OK,✅ URL live + semantisch passend
+Krankheit,K58,Reizdarmsyndrom,https://www.awmf.org,200 OK,⚠️ URL live; semantischer Bezug unsicher (bare domain)
+Krankheit,K21,Sodbrennen,https://www.gesundheitsinformation.de/sodbrennen-und-refluxkrankheit.html,200 OK,✅ URL live + semantisch passend
+Krankheit,K01,Weisheitszahn,https://www.gesundheitsinformation.de/weisheitszaehne.html,200 OK,✅ URL live + semantisch passend
+Krankheit,K05,Zahnfleischentzündung,https://www.gesundheitsinformation.de/zahnfleischentzuendung-und-parodontitis.html,200 OK,✅ URL live + semantisch passend
+Krankheit,K26,Zwölffingerdarmgeschwür,https://www.gesundheitsinformation.de/magen-und-zwoelffingerdarmgeschwuere.html,200 OK,✅ URL live + semantisch passend
+Krankheit,K90,Zöliakie,https://www.gesundheitsinformation.de/zoeliakie-glutenunvertraeglichkeit.html,200 OK,✅ URL live + semantisch passend
+Krankheit,R11,Übelkeit und Erbrechen,—,—,⚠️ Quelle nicht verlinkt im Export
+Krankheit,T78,Anaphylaxie,—,—,⚠️ Quelle nicht verlinkt im Export
+Krankheit,S12,Halswirbelkörperfraktur,—,—,⚠️ Quelle nicht verlinkt im Export
+Krankheit,S62,Handknochen-Fraktur,—,—,⚠️ Quelle nicht verlinkt im Export
+Krankheit,S82,Knöchelfraktur,—,—,⚠️ Quelle nicht verlinkt im Export
+Krankheit,S72,Oberschenkelhalsfraktur,—,—,⚠️ Quelle nicht verlinkt im Export
+Krankheit,S22,Rippenfraktur,—,—,⚠️ Quelle nicht verlinkt im Export
+Krankheit,S06,Schädel-Hirn-Trauma,—,—,⚠️ Quelle nicht verlinkt im Export
+Krankheit,S52,Unterarmfraktur,—,—,⚠️ Quelle nicht verlinkt im Export
+Krankheit,T14,Verstauchung,https://www.gesundheitsinformation.de/verletzungen.html,opaque/ungeprüft,⚠️ URL live-Status unklar — nicht in DB; Überprüfung erforderlich
+Supplement,—,Kreatin,https://ods.od.nih.gov/factsheets/ExerciseAndAthleticPerformance-HealthProfessional/,⚠️ ungeprüft,✅ Ersatzquelle verifiziert; ursprünglicher NIH-ODS-Einzelstofflink war 404
+Supplement,—,L-Carnitin,https://ods.od.nih.gov/factsheets/Carnitine-HealthProfessional/,⚠️ ungeprüft,✅ URL verifiziert
+Supplement,—,Omega-3-Fettsäuren,https://ods.od.nih.gov/factsheets/Omega3FattyAcids-HealthProfessional/,⚠️ ungeprüft,✅ URL verifiziert
+Supplement,—,Chrom,https://ods.od.nih.gov/factsheets/Chromium-HealthProfessional/,⚠️ ungeprüft,✅ URL verifiziert
+Supplement,—,Eisen,https://ods.od.nih.gov/factsheets/Iron-HealthProfessional/,⚠️ ungeprüft,✅ URL verifiziert
+Supplement,—,Jod,https://ods.od.nih.gov/factsheets/Iodine-HealthProfessional/,⚠️ ungeprüft,✅ URL verifiziert
+Supplement,—,Kalium,https://ods.od.nih.gov/factsheets/Potassium-HealthProfessional/,⚠️ ungeprüft,✅ URL verifiziert
+Supplement,—,Kalzium,https://ods.od.nih.gov/factsheets/Calcium-HealthProfessional/,⚠️ ungeprüft,✅ URL verifiziert
+Supplement,—,Kupfer,https://ods.od.nih.gov/factsheets/Copper-HealthProfessional/,⚠️ ungeprüft,✅ URL verifiziert
+Supplement,—,Magnesium,https://ods.od.nih.gov/factsheets/Magnesium-HealthProfessional/,⚠️ ungeprüft,✅ URL verifiziert
+Supplement,—,Mangan,https://ods.od.nih.gov/factsheets/Manganese-HealthProfessional/,⚠️ ungeprüft,✅ URL verifiziert
+Supplement,—,Selen,https://ods.od.nih.gov/factsheets/Selenium-HealthProfessional/,⚠️ ungeprüft,✅ URL verifiziert
+Supplement,—,Zink,https://ods.od.nih.gov/factsheets/Zinc-HealthProfessional/,⚠️ ungeprüft,✅ URL verifiziert
+Supplement,—,Ashwagandha,https://ods.od.nih.gov/factsheets/Ashwagandha-HealthProfessional/,⚠️ ungeprüft,✅ URL verifiziert
+Supplement,—,Echinacea,https://www.nccih.nih.gov/health/echinacea,⚠️ ungeprüft,✅ URL verifiziert
+Supplement,—,Ginkgo Biloba,https://www.nccih.nih.gov/health/ginkgo,⚠️ ungeprüft,✅ URL verifiziert
+Supplement,—,Kurkumin,https://www.nccih.nih.gov/health/turmeric,⚠️ ungeprüft,✅ Ersatzquelle verifiziert; ursprünglicher NIH-ODS-Einzelstofflink war 404
+Supplement,—,Mariendistel,https://www.nccih.nih.gov/health/milk-thistle,⚠️ ungeprüft,✅ URL verifiziert
+Supplement,—,Rhodiola Rosea,https://www.nccih.nih.gov/health/rhodiola,⚠️ ungeprüft,✅ URL verifiziert
+Supplement,—,Probiotika,https://ods.od.nih.gov/factsheets/Probiotics-HealthProfessional/,⚠️ ungeprüft,✅ URL verifiziert
+Supplement,—,Coenzym Q10,https://www.nccih.nih.gov/health/coenzyme-q10,⚠️ ungeprüft,✅ Ersatzquelle verifiziert; ursprünglicher NIH-ODS-Einzelstofflink war 404
+Supplement,—,Melatonin,https://www.nccih.nih.gov/health/melatonin-what-you-need-to-know,⚠️ ungeprüft,✅ URL verifiziert
+Supplement,—,Biotin (Vitamin B7),https://ods.od.nih.gov/factsheets/Biotin-HealthProfessional/,⚠️ ungeprüft,✅ URL verifiziert
+Supplement,—,Folsäure,https://ods.od.nih.gov/factsheets/Folate-HealthProfessional/,⚠️ ungeprüft,✅ URL verifiziert
+Supplement,—,Niacin (Vitamin B3),https://ods.od.nih.gov/factsheets/Niacin-HealthProfessional/,⚠️ ungeprüft,✅ URL verifiziert
+Supplement,—,Pantothensäure (Vitamin B5),https://ods.od.nih.gov/factsheets/PantothenicAcid-HealthProfessional/,⚠️ ungeprüft,✅ URL verifiziert
+Supplement,—,Vitamin A,https://ods.od.nih.gov/factsheets/VitaminA-HealthProfessional/,⚠️ ungeprüft,✅ URL verifiziert
+Supplement,—,Vitamin B1 (Thiamin),https://ods.od.nih.gov/factsheets/Thiamin-HealthProfessional/,⚠️ ungeprüft,✅ URL verifiziert
+Supplement,—,Vitamin B12,https://ods.od.nih.gov/factsheets/VitaminB12-HealthProfessional/,⚠️ ungeprüft,✅ URL verifiziert
+Supplement,—,Vitamin B2 (Riboflavin),https://ods.od.nih.gov/factsheets/Riboflavin-HealthProfessional/,⚠️ ungeprüft,✅ URL verifiziert
+Supplement,—,Vitamin B6,https://ods.od.nih.gov/factsheets/VitaminB6-HealthProfessional/,⚠️ ungeprüft,✅ URL verifiziert
+Supplement,—,Vitamin C,https://ods.od.nih.gov/factsheets/VitaminC-HealthProfessional/,⚠️ ungeprüft,✅ URL verifiziert
+Supplement,—,Vitamin D,https://ods.od.nih.gov/factsheets/VitaminD-HealthProfessional/,⚠️ ungeprüft,✅ URL verifiziert
+Supplement,—,Vitamin E,https://ods.od.nih.gov/factsheets/VitaminE-HealthProfessional/,⚠️ ungeprüft,✅ URL verifiziert
+Supplement,—,Vitamin K,https://ods.od.nih.gov/factsheets/VitaminK-HealthProfessional/,⚠️ ungeprüft,✅ URL verifiziert
+Supplement,—,Vitamin K2,https://ods.od.nih.gov/factsheets/VitaminK-HealthProfessional/,⚠️ ungeprüft,✅ URL verifiziert
