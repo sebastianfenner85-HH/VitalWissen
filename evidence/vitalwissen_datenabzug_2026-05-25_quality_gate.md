@@ -186,4 +186,4 @@ Export-abgeleitete Liste (15 Einträge):
 
 *Konsistenzprüfungen: 17 gesamt — 14 OK, 3 ABWEICHUNG(en). Gesamtfreigabe: NEIN.*
 
-*Erzeugt von quality_gate_validator.py v2.0 — 25.05.2026. Keine DB-Writes. Kein Commit. Kein Push. Kein Deploy.*
+*Erzeugt von quality_gate_validator.py v2.0 — 25.05.2026. Keine DB-Writes. Kein Deploy. Evidence Pack in evidence/ im Repo persistiert.*

@@ -658,7 +658,9 @@ def generate_findings_csv(raw: dict, workspace: Path) -> Path:
     """
     Erzeugt quality_gate_findings.csv aus raw-dict.
     Alle Zeilen maschinell abgeleitet — keine manuellen Werte.
-    Typen: ABWEICHUNG | DEFEKTE_URL | OK | SEMANTIK_UNSICHER | SUPPLEMENT_OHNE_QUELLE | URL_UNKLAR
+    Spalten: kategorie (Befundtyp) + status (PASS/FAIL/WARN) — strikt getrennt.
+    Kategorien: KONSISTENZ | DEFEKTE_URL | SEMANTIK_UNSICHER | URL_UNKLAR | SUPPLEMENT_OHNE_QUELLE
+    Status: PASS (OK) | FAIL (Fehler) | WARN (Warnung/offen)
     """
     exp    = raw["export_derived"]
     rep    = raw["report_derived"]
@@ -671,7 +673,8 @@ def generate_findings_csv(raw: dict, workspace: Path) -> Path:
         rows.append({
             "sektion":     "C",
             "finding_id":  f"C{i}",
-            "typ":         c["verdict"],
+            "kategorie":   "KONSISTENZ",
+            "status":      "PASS" if c["verdict"] == "OK" else "FAIL",
             "quelle_soll": c["source_expected"],
             "quelle_ist":  c["source_actual"],
             "soll":        str(c["expected"]),
@@ -684,7 +687,8 @@ def generate_findings_csv(raw: dict, workspace: Path) -> Path:
         rows.append({
             "sektion":     "F",
             "finding_id":  f"F.1.{i}",
-            "typ":         "DEFEKTE_URL",
+            "kategorie":   "DEFEKTE_URL",
+            "status":      "FAIL",
             "quelle_soll": "v5_export",
             "quelle_ist":  "v5_export",
             "soll":        "live",
@@ -697,7 +701,8 @@ def generate_findings_csv(raw: dict, workspace: Path) -> Path:
         rows.append({
             "sektion":     "F",
             "finding_id":  f"F.2.{i}",
-            "typ":         "SEMANTIK_UNSICHER",
+            "kategorie":   "SEMANTIK_UNSICHER",
+            "status":      "WARN",
             "quelle_soll": "v5_link_report",
             "quelle_ist":  "v5_link_report",
             "soll":        "spezifischer Pfad",
@@ -710,7 +715,8 @@ def generate_findings_csv(raw: dict, workspace: Path) -> Path:
         rows.append({
             "sektion":     "F",
             "finding_id":  f"F.3.{i}",
-            "typ":         "URL_UNKLAR",
+            "kategorie":   "URL_UNKLAR",
+            "status":      "WARN",
             "quelle_soll": "v5_export",
             "quelle_ist":  "v5_export",
             "soll":        "live",
@@ -723,7 +729,8 @@ def generate_findings_csv(raw: dict, workspace: Path) -> Path:
         rows.append({
             "sektion":     "G",
             "finding_id":  f"G.{i}",
-            "typ":         "SUPPLEMENT_OHNE_QUELLE",
+            "kategorie":   "SUPPLEMENT_OHNE_QUELLE",
+            "status":      "WARN",
             "quelle_soll": "v5_export",
             "quelle_ist":  "v5_export",
             "soll":        "URL vorhanden",
@@ -732,8 +739,8 @@ def generate_findings_csv(raw: dict, workspace: Path) -> Path:
         })
 
     output_path = workspace / "quality_gate_findings.csv"
-    fieldnames = ["sektion", "finding_id", "typ", "quelle_soll", "quelle_ist",
-                  "soll", "ist", "beschreibung"]
+    fieldnames = ["sektion", "finding_id", "kategorie", "status", "quelle_soll",
+                  "quelle_ist", "soll", "ist", "beschreibung"]
     with open(output_path, "w", encoding="utf-8", newline="") as f:
         writer = csv.DictWriter(f, fieldnames=fieldnames)
         writer.writeheader()
@@ -1012,7 +1019,7 @@ def generate_quality_gate_md(raw: dict, workspace: Path) -> Path:
         ),
         "",
         f"*Erzeugt von quality_gate_validator.py v2.0 — {today}. "
-        f"Keine DB-Writes. Kein Commit. Kein Push. Kein Deploy.*",
+        f"Keine DB-Writes. Kein Deploy. Evidence Pack in evidence/ im Repo persistiert.*",
     ]
 
     output_path = workspace / "vitalwissen_datenabzug_2026-05-25_quality_gate.md"

@@ -1,45 +1,45 @@
-sektion,finding_id,typ,quelle_soll,quelle_ist,soll,ist,beschreibung
-C,C1,OK,SOLL,v5_export,60,60,LW Soll vs Export
-C,C2,OK,SOLL,v5_export,51,51,Supplements Soll vs Export
-C,C3,OK,SOLL,v5_export,221,221,Krankheiten Soll vs Export
-C,C4,OK,v5_link_report Zusammenfassung,v5_export,221,221,Krankheiten gesamt: Report-Zusammenfassung vs Export
-C,C5,OK,v5_link_report Zusammenfassung,v5_export,15,15,Supplements ohne URL: Report-Zusammenfassung vs Export
-C,C6,OK,v5_link_report Zusammenfassung,v5_export,36,36,Supplements mit URL: Report-Zusammenfassung vs Export
-C,C7,ABWEICHUNG,v5_link_report Zusammenfassung,v5_link_report Offene Punkte,15,17,Supplements ohne URL: Report-Offenliste Anzahl vs Report-Zusammenfassung
-C,C8,ABWEICHUNG,v5_export (mit URL),v5_link_report Offene Punkte,[],"['Echinacea (export: Echinacea)', 'Ginkgo (export: Ginkgo Biloba)', 'Mariendistel (export: Mariendistel)']",Report-Offenliste: keine Items mit URL fälschlich enthalten
-C,C9,ABWEICHUNG,v5_export (ohne URL),v5_link_report Offene Punkte,[],['NAC (N-Acetylcystein)'],Report-Offenliste: keine Items ohne URL vergessen
-C,C10,OK,v5_link_report Zusammenfassung,v5_export,133,133,Krankheiten ✅ live: Report-Zusammenfassung vs Export
-C,C11,OK,v5_link_report Zusammenfassung,v5_export,3,3,Krankheiten ⚠️ bare domain: Report-Zusammenfassung vs Export
-C,C12,OK,v5_link_report Zusammenfassung,v5_export,6,6,Krankheiten ❌ defekt: Report-Zusammenfassung vs Export
-C,C13,OK,v5_link_report Zusammenfassung,v5_export,5,5,Krankheiten ⚠️ intern: Report-Zusammenfassung vs Export
-C,C14,OK,v5_link_report Offene Punkte,v5_semantic_review,"['I10', 'K58', 'M05']","['I10', 'K58', 'M05']",Semantisch unsicher ICDs: Report vs Semantic Review
-C,C15,OK,SOLL,v5_url_inventory,221,221,URL Inventory Krankheiten-Zeilen vs SOLL
-C,C16,OK,v5_export (mit URL),v5_url_inventory,36,36,URL Inventory Supplement-Zeilen vs Export Supplements mit URL
-C,C17,OK,v5_link_report Zusammenfassung,"v5_export (nicht verlinkt + defekt, exkl. intern)",77,77,"Krankheiten ohne verlinkte Quelle: Report vs Export (nicht verlinkt + defekt, exkl. intern)"
-F,F.1.1,DEFEKTE_URL,v5_export,v5_export,live,Q20 defekt,"Q20 — Angeborener Herzfehler: ❌ URL defekt — v4-URL war 404, entfernt in v5"
-F,F.1.2,DEFEKTE_URL,v5_export,v5_export,live,J38 defekt,"J38 — Heiserkeit: ❌ URL defekt — v4-URL war 404, entfernt in v5"
-F,F.1.3,DEFEKTE_URL,v5_export,v5_export,live,M81 defekt,M81 — Osteoporose: ❌ URL defekt — Domain nicht erreichbar (2026-05-25)
-F,F.1.4,DEFEKTE_URL,v5_export,v5_export,live,O10 defekt,"O10 — Schwangerschaftshypertonie: ❌ URL defekt — v4-URL war 404, entfernt in v5"
-F,F.1.5,DEFEKTE_URL,v5_export,v5_export,live,N39 defekt,"N39 — Harnwegsinfektion: ❌ URL defekt — v4-URL war 404, entfernt in v5"
-F,F.1.6,DEFEKTE_URL,v5_export,v5_export,live,N41 defekt,"N41 — Prostatitis: ❌ URL defekt — v4-URL war 404, entfernt in v5"
-F,F.2.1,SEMANTIK_UNSICHER,v5_link_report,v5_link_report,spezifischer Pfad,M05 bare domain,M05 — Rheumatoide Arthritis: bare domain
-F,F.2.2,SEMANTIK_UNSICHER,v5_link_report,v5_link_report,spezifischer Pfad,I10 bare domain,I10 — Bluthochdruck: bare domain
-F,F.2.3,SEMANTIK_UNSICHER,v5_link_report,v5_link_report,spezifischer Pfad,K58 bare domain,K58 — Reizdarmsyndrom: bare domain
-F,F.3.1,URL_UNKLAR,v5_export,v5_export,live,R51 unklar,R51 — Kopfschmerzen: live-Status unklar
-F,F.3.2,URL_UNKLAR,v5_export,v5_export,live,R10 unklar,R10 — Bauchschmerzen: live-Status unklar
-F,F.3.3,URL_UNKLAR,v5_export,v5_export,live,T14 unklar,T14 — Verstauchung: live-Status unklar
-G,G.1,SUPPLEMENT_OHNE_QUELLE,v5_export,v5_export,URL vorhanden,kein URL,BCAA
-G,G.2,SUPPLEMENT_OHNE_QUELLE,v5_export,v5_export,URL vorhanden,kein URL,L-Arginin
-G,G.3,SUPPLEMENT_OHNE_QUELLE,v5_export,v5_export,URL vorhanden,kein URL,L-Glutamin
-G,G.4,SUPPLEMENT_OHNE_QUELLE,v5_export,v5_export,URL vorhanden,kein URL,NAC (N-Acetylcystein)
-G,G.5,SUPPLEMENT_OHNE_QUELLE,v5_export,v5_export,URL vorhanden,kein URL,Taurin
-G,G.6,SUPPLEMENT_OHNE_QUELLE,v5_export,v5_export,URL vorhanden,kein URL,CLA (Konjugierte Linolsäure)
-G,G.7,SUPPLEMENT_OHNE_QUELLE,v5_export,v5_export,URL vorhanden,kein URL,MCT-Öl
-G,G.8,SUPPLEMENT_OHNE_QUELLE,v5_export,v5_export,URL vorhanden,kein URL,Silizium
-G,G.9,SUPPLEMENT_OHNE_QUELLE,v5_export,v5_export,URL vorhanden,kein URL,Berberin
-G,G.10,SUPPLEMENT_OHNE_QUELLE,v5_export,v5_export,URL vorhanden,kein URL,Quercetin
-G,G.11,SUPPLEMENT_OHNE_QUELLE,v5_export,v5_export,URL vorhanden,kein URL,Resveratrol
-G,G.12,SUPPLEMENT_OHNE_QUELLE,v5_export,v5_export,URL vorhanden,kein URL,Alpha-Liponsäure
-G,G.13,SUPPLEMENT_OHNE_QUELLE,v5_export,v5_export,URL vorhanden,kein URL,Beta-Glucan
-G,G.14,SUPPLEMENT_OHNE_QUELLE,v5_export,v5_export,URL vorhanden,kein URL,Hyaluronsäure
-G,G.15,SUPPLEMENT_OHNE_QUELLE,v5_export,v5_export,URL vorhanden,kein URL,NADH
+sektion,finding_id,kategorie,status,quelle_soll,quelle_ist,soll,ist,beschreibung
+C,C1,KONSISTENZ,PASS,SOLL,v5_export,60,60,LW Soll vs Export
+C,C2,KONSISTENZ,PASS,SOLL,v5_export,51,51,Supplements Soll vs Export
+C,C3,KONSISTENZ,PASS,SOLL,v5_export,221,221,Krankheiten Soll vs Export
+C,C4,KONSISTENZ,PASS,v5_link_report Zusammenfassung,v5_export,221,221,Krankheiten gesamt: Report-Zusammenfassung vs Export
+C,C5,KONSISTENZ,PASS,v5_link_report Zusammenfassung,v5_export,15,15,Supplements ohne URL: Report-Zusammenfassung vs Export
+C,C6,KONSISTENZ,PASS,v5_link_report Zusammenfassung,v5_export,36,36,Supplements mit URL: Report-Zusammenfassung vs Export
+C,C7,KONSISTENZ,FAIL,v5_link_report Zusammenfassung,v5_link_report Offene Punkte,15,17,Supplements ohne URL: Report-Offenliste Anzahl vs Report-Zusammenfassung
+C,C8,KONSISTENZ,FAIL,v5_export (mit URL),v5_link_report Offene Punkte,[],"['Echinacea (export: Echinacea)', 'Ginkgo (export: Ginkgo Biloba)', 'Mariendistel (export: Mariendistel)']",Report-Offenliste: keine Items mit URL fälschlich enthalten
+C,C9,KONSISTENZ,FAIL,v5_export (ohne URL),v5_link_report Offene Punkte,[],['NAC (N-Acetylcystein)'],Report-Offenliste: keine Items ohne URL vergessen
+C,C10,KONSISTENZ,PASS,v5_link_report Zusammenfassung,v5_export,133,133,Krankheiten ✅ live: Report-Zusammenfassung vs Export
+C,C11,KONSISTENZ,PASS,v5_link_report Zusammenfassung,v5_export,3,3,Krankheiten ⚠️ bare domain: Report-Zusammenfassung vs Export
+C,C12,KONSISTENZ,PASS,v5_link_report Zusammenfassung,v5_export,6,6,Krankheiten ❌ defekt: Report-Zusammenfassung vs Export
+C,C13,KONSISTENZ,PASS,v5_link_report Zusammenfassung,v5_export,5,5,Krankheiten ⚠️ intern: Report-Zusammenfassung vs Export
+C,C14,KONSISTENZ,PASS,v5_link_report Offene Punkte,v5_semantic_review,"['I10', 'K58', 'M05']","['I10', 'K58', 'M05']",Semantisch unsicher ICDs: Report vs Semantic Review
+C,C15,KONSISTENZ,PASS,SOLL,v5_url_inventory,221,221,URL Inventory Krankheiten-Zeilen vs SOLL
+C,C16,KONSISTENZ,PASS,v5_export (mit URL),v5_url_inventory,36,36,URL Inventory Supplement-Zeilen vs Export Supplements mit URL
+C,C17,KONSISTENZ,PASS,v5_link_report Zusammenfassung,"v5_export (nicht verlinkt + defekt, exkl. intern)",77,77,"Krankheiten ohne verlinkte Quelle: Report vs Export (nicht verlinkt + defekt, exkl. intern)"
+F,F.1.1,DEFEKTE_URL,FAIL,v5_export,v5_export,live,Q20 defekt,"Q20 — Angeborener Herzfehler: ❌ URL defekt — v4-URL war 404, entfernt in v5"
+F,F.1.2,DEFEKTE_URL,FAIL,v5_export,v5_export,live,J38 defekt,"J38 — Heiserkeit: ❌ URL defekt — v4-URL war 404, entfernt in v5"
+F,F.1.3,DEFEKTE_URL,FAIL,v5_export,v5_export,live,M81 defekt,M81 — Osteoporose: ❌ URL defekt — Domain nicht erreichbar (2026-05-25)
+F,F.1.4,DEFEKTE_URL,FAIL,v5_export,v5_export,live,O10 defekt,"O10 — Schwangerschaftshypertonie: ❌ URL defekt — v4-URL war 404, entfernt in v5"
+F,F.1.5,DEFEKTE_URL,FAIL,v5_export,v5_export,live,N39 defekt,"N39 — Harnwegsinfektion: ❌ URL defekt — v4-URL war 404, entfernt in v5"
+F,F.1.6,DEFEKTE_URL,FAIL,v5_export,v5_export,live,N41 defekt,"N41 — Prostatitis: ❌ URL defekt — v4-URL war 404, entfernt in v5"
+F,F.2.1,SEMANTIK_UNSICHER,WARN,v5_link_report,v5_link_report,spezifischer Pfad,M05 bare domain,M05 — Rheumatoide Arthritis: bare domain
+F,F.2.2,SEMANTIK_UNSICHER,WARN,v5_link_report,v5_link_report,spezifischer Pfad,I10 bare domain,I10 — Bluthochdruck: bare domain
+F,F.2.3,SEMANTIK_UNSICHER,WARN,v5_link_report,v5_link_report,spezifischer Pfad,K58 bare domain,K58 — Reizdarmsyndrom: bare domain
+F,F.3.1,URL_UNKLAR,WARN,v5_export,v5_export,live,R51 unklar,R51 — Kopfschmerzen: live-Status unklar
+F,F.3.2,URL_UNKLAR,WARN,v5_export,v5_export,live,R10 unklar,R10 — Bauchschmerzen: live-Status unklar
+F,F.3.3,URL_UNKLAR,WARN,v5_export,v5_export,live,T14 unklar,T14 — Verstauchung: live-Status unklar
+G,G.1,SUPPLEMENT_OHNE_QUELLE,WARN,v5_export,v5_export,URL vorhanden,kein URL,BCAA
+G,G.2,SUPPLEMENT_OHNE_QUELLE,WARN,v5_export,v5_export,URL vorhanden,kein URL,L-Arginin
+G,G.3,SUPPLEMENT_OHNE_QUELLE,WARN,v5_export,v5_export,URL vorhanden,kein URL,L-Glutamin
+G,G.4,SUPPLEMENT_OHNE_QUELLE,WARN,v5_export,v5_export,URL vorhanden,kein URL,NAC (N-Acetylcystein)
+G,G.5,SUPPLEMENT_OHNE_QUELLE,WARN,v5_export,v5_export,URL vorhanden,kein URL,Taurin
+G,G.6,SUPPLEMENT_OHNE_QUELLE,WARN,v5_export,v5_export,URL vorhanden,kein URL,CLA (Konjugierte Linolsäure)
+G,G.7,SUPPLEMENT_OHNE_QUELLE,WARN,v5_export,v5_export,URL vorhanden,kein URL,MCT-Öl
+G,G.8,SUPPLEMENT_OHNE_QUELLE,WARN,v5_export,v5_export,URL vorhanden,kein URL,Silizium
+G,G.9,SUPPLEMENT_OHNE_QUELLE,WARN,v5_export,v5_export,URL vorhanden,kein URL,Berberin
+G,G.10,SUPPLEMENT_OHNE_QUELLE,WARN,v5_export,v5_export,URL vorhanden,kein URL,Quercetin
+G,G.11,SUPPLEMENT_OHNE_QUELLE,WARN,v5_export,v5_export,URL vorhanden,kein URL,Resveratrol
+G,G.12,SUPPLEMENT_OHNE_QUELLE,WARN,v5_export,v5_export,URL vorhanden,kein URL,Alpha-Liponsäure
+G,G.13,SUPPLEMENT_OHNE_QUELLE,WARN,v5_export,v5_export,URL vorhanden,kein URL,Beta-Glucan
+G,G.14,SUPPLEMENT_OHNE_QUELLE,WARN,v5_export,v5_export,URL vorhanden,kein URL,Hyaluronsäure
+G,G.15,SUPPLEMENT_OHNE_QUELLE,WARN,v5_export,v5_export,URL vorhanden,kein URL,NADH
