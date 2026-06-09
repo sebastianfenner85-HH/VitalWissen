@@ -1,3 +1,4 @@
+// Text format: UTF-8, LF, no bidirectional Unicode controls.
 const EXPECTED_PROJECT_REF = 'ejyrzxmtosrouwstiyws'
 const DEFAULT_SITE_URL = 'https://vitalwissen.netlify.app'
 const REQUEST_TIMEOUT_MS = 15_000
