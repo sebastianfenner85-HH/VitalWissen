@@ -401,10 +401,17 @@ function LwQuellenBox({ quellen }) {
   return (
     <div className="lw-quellenbox">
       <span className="lw-quellenbox-label">Quellen Referenzbereiche:</span>
+      {/* S1-QUELLENBOX-MICROCOPY-01: B3/B5-Fix — Quellencharakter explizit kommunizieren.
+           Die Links verweisen auf Fachgesellschafts-Homepages (Quellenbasis/Datenbasis),
+           nicht auf wertspezifische Testdokumente. B4-Fix: Jahr-Badge entfernt —
+           Jahr bereits im Link-Text enthalten (z. B. „DGKL 2023“). */}
+      <p className="lw-quellenbox-caveat">
+        Quellenbasis für Referenzbereiche und Einordnung. Die Links führen zu den Fachgesellschaften — noch nicht wertspezifisch vertieft.
+      </p>              
       <div className="lw-quellenbox-rows">
         {visible.map(q => (
           <div key={q.key} className="lw-quellenbox-row">
-            <span className="lw-quelle-typ-chip lw-quelle-typ-database">Datenbank</span>
+            <span className="lw-quelle-typ-chip lw-quelle-typ-database">Fachquelle</span>
             <span className="lw-quellenbox-region">{q.label}</span>
             <a
               href={q.quelle_url}
@@ -414,9 +421,6 @@ function LwQuellenBox({ quellen }) {
             >
               {q.quelle || q.label}
             </a>
-            {q.quelle_jahr && (
-              <span className="lw-quellenbox-jahr">({q.quelle_jahr})</span>
-            )}
           </div>
         ))}
       </div>
