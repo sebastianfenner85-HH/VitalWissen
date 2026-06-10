@@ -1,7 +1,20 @@
 import { useState, useEffect, useRef } from 'react'
-import { useNavigate } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import { sucheGlobal } from '../lib/queries'
 import './Home.css'
+
+const SEARCH_EXAMPLES = ['HbA1c', 'LDL', 'Vitamin D', 'Bluthochdruck', 'Metformin', 'Magnesium', 'Grapefruit', 'Mediterrane Ernährung']
+
+const ENTRY_CARDS = [
+  { icon: '🔬', title: 'Laborwert verstehen', text: 'Bezeichnungen, Einheiten und vorhandene Einordnungen verständlich nachlesen.', to: '/laborwerte', action: 'Laborwerte öffnen' },
+  { icon: '🩺', title: 'Krankheit einordnen', text: 'Vorhandene Themenartikel in mehreren Sprachebenen entdecken.', to: '/krankheiten', action: 'Krankheiten öffnen' },
+  { icon: '💊', title: 'Supplement prüfen', text: 'Quellenbasierte Profile und vorhandene Evidenzhinweise ansehen.', to: '/supplements', action: 'Supplements öffnen' },
+  { icon: '🧪', title: 'Wirkstoff nachschlagen', text: 'Vorhandene Wirkstoffprofile und Fachinformationen finden.', to: '/medikamente', action: 'Wirkstoffe öffnen' },
+  { icon: '🥦', title: 'Ernährung entdecken', text: 'Lebensmittel, Nährstoffe und Ernährungsmuster erkunden.', to: '/ernaehrung', action: 'Ernährung öffnen' },
+  { icon: '📚', title: 'Studien & Forschung', text: 'Forschungsbezüge in vorhandenen Themenartikeln ansehen.', to: '/krankheiten', action: 'Themen mit Studien öffnen' },
+  { icon: '📄', title: 'Arztbrief erklären lassen', text: 'Medizinische Begriffe im Arztbrief verständlicher machen.', to: '/arztbrief', action: 'Decoder Beta öffnen', badge: 'Beta' },
+  { icon: '✓', title: 'Vertrauen & Quellen', text: 'Erfahren, wie VitalWissen Quellen auswählt und Inhalte einordnet.', to: '/vertrauen', action: 'Transparenz ansehen' },
+]
 
 export default function Home() {
   const [query, setQuery] = useState('')
@@ -68,6 +81,11 @@ export default function Home() {
     navigate(path)
   }
 
+  function handleExampleSearch(example) {
+    setQuery(example)
+    setShowResults(false)
+  }
+
   return (
     <div className="home">
       <div className="home-hero">
@@ -89,7 +107,8 @@ export default function Home() {
             <input
               className="home-search-input"
               type="text"
-              placeholder="Symptom, Diagnose, Laborwert, Supplement, Wirkstoff…"
+              placeholder="Laborwert, Diagnose, Supplement oder Wirkstoff suchen…"
+              aria-label="VitalWissen durchsuchen"
               value={query}
               onChange={e => setQuery(e.target.value)}
               onFocus={() => hasResults && setShowResults(true)}
@@ -105,11 +124,18 @@ export default function Home() {
 
               {!error && !hasResults && (
                 <div className="home-search-empty">
-                  <p className="home-search-empty-text">Kein direkter Treffer für „{query}"</p>
+                  <p className="home-search-empty-title">Noch kein direkter Treffer.</p>
+                  <p className="home-search-empty-text">
+                    Versuche einen Laborwert, eine Diagnose, einen Wirkstoff oder ein Lebensmittel.
+                  </p>
+                  <div className="home-search-empty-examples" aria-label="Andere Suchbeispiele">
+                    {SEARCH_EXAMPLES.slice(0, 6).map(example => (
+                      <button key={example} onClick={() => handleExampleSearch(example)}>{example}</button>
+                    ))}
+                  </div>
                   <div className="home-search-fallback-links">
-                    <button onClick={() => handleFallbackNav('/krankheiten')}>Krankheiten durchsuchen →</button>
-                    <button onClick={() => handleFallbackNav('/laborwerte')}>Laborwerte durchsuchen →</button>
-                    <button onClick={() => handleFallbackNav('/supplements')}>Supplements durchsuchen →</button>
+                    <button onClick={() => handleFallbackNav('/laborwerte')}>Laborwerte ansehen</button>
+                    <button onClick={() => handleFallbackNav('/krankheiten')}>Krankheiten ansehen</button>
                   </div>
                 </div>
               )}
@@ -195,68 +221,51 @@ export default function Home() {
           )}
         </div>
 
+        <div className="home-search-help" aria-label="Suchbeispiele">
+          <span>Zum Beispiel:</span>
+          <div className="home-search-examples">
+            {SEARCH_EXAMPLES.map(example => (
+              <button key={example} onClick={() => handleExampleSearch(example)}>{example}</button>
+            ))}
+          </div>
+        </div>
+
         <p className="home-notfall-hint">
-          Notfall? Sofort <strong>112</strong> rufen — diese Plattform ersetzt keinen Arzt.
+          Notfall? Sofort <strong>112</strong> rufen — VitalWissen ersetzt keinen Arzt.
         </p>
-
-        <div className="home-quick-links">
-          <button className="home-quick-link" onClick={() => navigate('/krankheiten')}>
-            🩺 Krankheiten
-          </button>
-          <button className="home-quick-link" onClick={() => navigate('/laborwerte')}>
-            🔬 Laborwerte
-          </button>
-          <button className="home-quick-link" onClick={() => navigate('/supplements')}>
-            💊 Supplements
-          </button>
-          <button className="home-quick-link" onClick={() => navigate('/medikamente')}>
-            🧪 Medikamente
-          </button>
-          <button className="home-quick-link" onClick={() => navigate('/ernaehrung')}>
-            🥦 Ernährung
-          </button>
-        </div>
       </div>
 
-      <div className="home-pillars">
-        <div className="home-pillar-card" onClick={() => navigate('/krankheiten')}>
-          <div className="home-pillar-icon">🩺</div>
-          <h3>Krankheits-Lexikon</h3>
-          <p>221 Erkrankungen in drei Sprachebenen erklärt — von sehr einfach bis fachlich. Mit Symptomen, Diagnostik und Behandlung.</p>
-          <button className="home-pillar-btn" onClick={e => { e.stopPropagation(); navigate('/krankheiten') }}>Zu den Krankheiten →</button>
+      <section className="home-discovery" aria-labelledby="home-discovery-title">
+        <div className="home-section-heading">
+          <p className="home-section-kicker">Themen &amp; Werkzeuge</p>
+          <h2 id="home-discovery-title">Direkt einsteigen</h2>
+          <p>Wähle einen Bereich und finde schneller zu den vorhandenen Inhalten.</p>
         </div>
-        <div className="home-pillar-card" onClick={() => navigate('/laborwerte')}>
-          <div className="home-pillar-icon">🔬</div>
-          <h3>Laborwert-Lexikon</h3>
-          <p>60 Laborwerte mit Referenzbereichen aus DE, USA und Japan im Vergleich. Ursachen verstehen, Zusammenhänge erkennen.</p>
-          <button className="home-pillar-btn" onClick={e => { e.stopPropagation(); navigate('/laborwerte') }}>Zu den Laborwerten →</button>
+        <div className="home-entry-grid">
+          {ENTRY_CARDS.map(card => (
+            <Link className="home-entry-card" to={card.to} key={card.title}>
+              <div className="home-entry-card-top">
+                <span className="home-entry-icon" aria-hidden="true">{card.icon}</span>
+                {card.badge && <span className="home-entry-badge">{card.badge}</span>}
+              </div>
+              <h3>{card.title}</h3>
+              <p>{card.text}</p>
+              <span className="home-entry-action">{card.action} <span aria-hidden="true">→</span></span>
+            </Link>
+          ))}
         </div>
-        <div className="home-pillar-card" onClick={() => navigate('/supplements')}>
-          <div className="home-pillar-icon">💊</div>
-          <h3>Supplement-Kompass</h3>
-          <p>51 Supplements mit Evidenz-Ampel, Dosierung, Wirkform, Timing und Medikamenten-Interaktionen.</p>
-          <button className="home-pillar-btn" onClick={e => { e.stopPropagation(); navigate('/supplements') }}>Zu den Supplements →</button>
+      </section>
+
+      <section className="home-trust" aria-label="VitalWissen Grundsätze">
+        <div className="home-trust-copy">
+          <span className="home-trust-mark" aria-hidden="true">✓</span>
+          <div>
+            <h2>Wissen mit sichtbaren Quellen</h2>
+            <p>Werbefrei · Keine Affiliate-Links · Quellen sichtbar · Ersetzt keinen Arzt</p>
+          </div>
         </div>
-        <div className="home-pillar-card" onClick={() => navigate('/medikamente')}>
-          <div className="home-pillar-icon">🧪</div>
-          <h3>Medikamenten-Lexikon</h3>
-          <p>50 Wirkstoffe mit Dosierung, Nebenwirkungen, Wechselwirkungen und Zulassungsinformationen — von EMA und BfArM.</p>
-          <button className="home-pillar-btn" onClick={e => { e.stopPropagation(); navigate('/medikamente') }}>Zu den Medikamenten →</button>
-        </div>
-        <div className="home-pillar-card" onClick={() => navigate('/ernaehrung')}>
-          <div className="home-pillar-icon">🥦</div>
-          <h3>Ernährungskompass</h3>
-          <p>Evidenzbasierte Ernährungsmuster — mediterrane Ernährung, DASH und mehr. Mit Bezug zu Erkrankungen.</p>
-          <button className="home-pillar-btn" onClick={e => { e.stopPropagation(); navigate('/ernaehrung') }}>Zum Ernährungskompass →</button>
-        </div>
-        <div className="home-pillar-card home-pillar-card--beta" onClick={() => navigate('/arztbrief')}>
-          <div className="home-pillar-icon">📄</div>
-          <h3>Arztbrief-Decoder</h3>
-          <p>Befunde, Entlassbriefe und Arztschreiben verständlich erklärt — vollständig lokal im Browser, datenschutzkonform.</p>
-          <button className="home-pillar-btn" onClick={e => { e.stopPropagation(); navigate('/arztbrief') }}>Zum Arztbrief-Decoder →</button>
-          <span className="home-pillar-badge home-pillar-badge--beta">Beta</span>
-        </div>
-      </div>
+        <Link to="/vertrauen">So arbeitet VitalWissen <span aria-hidden="true">→</span></Link>
+      </section>
     </div>
   )
 }
