@@ -1,4 +1,3 @@
-# Text format: UTF-8, LF, no bidirectional Unicode controls.
 name: VitalWissen Healthcheck
 
 on:

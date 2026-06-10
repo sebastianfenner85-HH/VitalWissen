@@ -1,5 +1,3 @@
-<!-- Text format: UTF-8, LF, no bidirectional Unicode controls. -->
-
 # VitalWissen Healthcheck
 
 Der Workflow **VitalWissen Healthcheck** prueft taeglich um `07:00 UTC` sowie bei manuellem Start die Backend-Identitaet, zwei read-only Supabase-REST-Abfragen und die wichtigsten Live-Routen. Er fuehrt ausschliesslich HTTP-GET-Anfragen aus und loest weder Datenaenderungen noch Netlify-Deploys aus.
