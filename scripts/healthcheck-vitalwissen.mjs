@@ -1,6 +1,6 @@
 const EXPECTED_PROJECT_REF = 'ejyrzxmtosrouwstiyws'
 const DEFAULT_SITE_URL = 'https://vitalwissen.netlify.app'
-const REQUEST_TIMEOUT_MS = 15_000
+const REQUEST_TIMEOUT_MS = 15 * 1000
 
 const supabaseUrlInput = process.env.VITALWISSEN_SUPABASE_URL?.trim()
 const anonKey = process.env.VITALWISSEN_SUPABASE_ANON_KEY?.trim()
