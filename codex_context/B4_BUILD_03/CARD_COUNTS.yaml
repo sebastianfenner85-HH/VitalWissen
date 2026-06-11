@@ -1,0 +1,47 @@
+package_id: B4-BUILD-03
+source_commit: "7ce4db4745acdc2d48b715587f2d638ef30bf9e1"
+target_file: src/lib/laborwert_b4_actions_map.js
+verified_date: "2026-06-11"
+verification_method: "safetyLevel-count per LOINC-block in main@7ce4db4"
+
+loinc_counts:
+  "2089-1":
+    label: LDL-Cholesterin
+    current: 9
+    target: 9
+    action: do_not_touch
+  "4548-4":
+    label: HbA1c
+    current: 4
+    target: 6
+    action: migrate_to_15_fields
+  "2276-4":
+    label: Ferritin
+    current: 6
+    target: 6
+    action: migrate_to_15_fields
+  "14635-7":
+    label: Vitamin D 25-OH
+    current: 4
+    target: 6
+    action: migrate_to_15_fields
+  "1988-5":
+    label: CRP
+    current: 4
+    target: 6
+    action: migrate_to_15_fields
+
+total_current: 27
+total_target: 33
+
+spec_count_note:
+  status: corrected
+  note: "Spec §1.1 contained outdated counts (Ferritin: 5, VitD: 7, CRP: 7).
+    These counts are verified directly from main@7ce4db4 and are binding for Codex.
+    CARD_COUNTS.yaml overrides Spec §1.1 in case of conflict."
+
+safety_rules:
+  - rule: "Karte mit contraindicationsOrRedFlags ≠ null → safetyLevel mindestens medium"
+  - rule: "Karte mit contraindicationsOrRedFlags ≠ null → requiresDoctorDiscussion: true"
+  - example_psyllium: "safetyLevel: medium, requiresDoctorDiscussion: true"
+  - example_pflanzensterole: "requiresDoctorDiscussion: true"
