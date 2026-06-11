@@ -1,0 +1,96 @@
+name: CI
+
+on:
+  pull_request:
+    branches: ["main"]
+  push:
+    branches: ["main"]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  build-and-safety:
+    name: Build, lint, and text safety
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+          cache: "npm"
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Lint
+        run: npm run lint
+
+      - name: Build
+        run: npm run build
+
+      - name: Git diff whitespace check
+        run: git diff --check
+
+      - name: Text safety scan
+        run: |
+          python3 - <<'PY'
+          from pathlib import Path
+          import sys
+
+          roots_to_skip = {'.git', 'node_modules', 'dist', '.netlify'}
+          suffixes = {
+              '.js', '.jsx', '.ts', '.tsx', '.mjs', '.cjs',
+              '.yml', '.yaml', '.md', '.css', '.html', '.json', '.toml'
+          }
+          forbidden_unicode = {
+              'U+2028': '\u2028',
+              'U+2029': '\u2029',
+              'U+202A': '\u202a',
+              'U+202B': '\u202b',
+              'U+202C': '\u202c',
+              'U+202D': '\u202d',
+              'U+202E': '\u202e',
+              'U+2066': '\u2066',
+              'U+2067': '\u2067',
+              'U+2068': '\u2068',
+              'U+2069': '\u2069',
+          }
+
+          failures = []
+          scanned = 0
+
+          for path in Path('.').rglob('*'):
+              if not path.is_file():
+                  continue
+              if any(part in roots_to_skip for part in path.parts):
+                  continue
+              if path.suffix.lower() not in suffixes:
+                  continue
+
+              data = path.read_bytes()
+              scanned += 1
+              if data.startswith(b'\xef\xbb\xbf'):
+                  failures.append(f'{path}: BOM U+FEFF')
+              if b'\r\n' in data:
+                  failures.append(f'{path}: CRLF line endings')
+
+              text = data.decode('utf-8', errors='replace')
+              for label, char in forbidden_unicode.items():
+                  if char in text:
+                      failures.append(f'{path}: forbidden {label}')
+
+          print(f'Text safety scanned files: {scanned}')
+          if failures:
+              print('Text safety failures:')
+              for item in failures:
+                  print(f'- {item}')
+              sys.exit(1)
+          print('Text safety PASS')
+          PY
