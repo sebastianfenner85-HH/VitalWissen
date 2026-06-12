@@ -35,13 +35,27 @@ jobs:
       - name: Git diff whitespace check
         run: git diff --check
 
+      - name: List changed text files
+        env:
+          BASE_REF: ${{ github.base_ref }}
+          BEFORE_SHA: ${{ github.event.before }}
+        run: |
+          set -euo pipefail
+          if [ "$GITHUB_EVENT_NAME" = "pull_request" ] && [ -n "${BASE_REF:-}" ]; then
+            git diff --name-only --diff-filter=ACMRT "origin/${BASE_REF}...HEAD" > changed-files.txt
+          elif [ "$GITHUB_EVENT_NAME" = "push" ] && [ -n "${BEFORE_SHA:-}" ] && [ "$BEFORE_SHA" != "0000000000000000000000000000000000000000" ]; then
+            git diff --name-only --diff-filter=ACMRT "$BEFORE_SHA" "$GITHUB_SHA" > changed-files.txt
+          else
+            git ls-files > changed-files.txt
+          fi
+          cat changed-files.txt
+
       - name: Text safety scan
         run: |
           python3 - <<'PY'
           from pathlib import Path
           import sys
 
-          roots_to_skip = {'.git', 'node_modules', 'dist', '.netlify'}
           suffixes = {
               '.js', '.jsx', '.ts', '.tsx', '.mjs', '.cjs',
               '.yml', '.yaml', '.md', '.css', '.html', '.json', '.toml'
@@ -60,15 +74,22 @@ jobs:
               'U+2069': '\u2069',
           }
 
+          changed_file_list = Path('changed-files.txt')
+          if not changed_file_list.exists():
+              print('changed-files.txt missing')
+              sys.exit(1)
+
           failures = []
           scanned = 0
+          skipped = 0
 
-          for path in Path('.').rglob('*'):
-              if not path.is_file():
-                  continue
-              if any(part in roots_to_skip for part in path.parts):
+          for raw in changed_file_list.read_text(encoding='utf-8').splitlines():
+              path = Path(raw.strip())
+              if not raw.strip() or not path.exists() or not path.is_file():
+                  skipped += 1
                   continue
               if path.suffix.lower() not in suffixes:
+                  skipped += 1
                   continue
 
               data = path.read_bytes()
@@ -83,7 +104,8 @@ jobs:
                   if char in text:
                       failures.append(f'{path}: forbidden {label}')
 
-          print(f'Text safety scanned files: {scanned}')
+          print(f'Text safety scanned changed text files: {scanned}')
+          print(f'Text safety skipped files: {skipped}')
           if failures:
               print('Text safety failures:')
               for item in failures:
