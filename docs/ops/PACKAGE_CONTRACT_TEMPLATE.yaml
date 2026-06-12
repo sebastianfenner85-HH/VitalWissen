@@ -1,0 +1,184 @@
+# PACKAGE_CONTRACT_TEMPLATE.yaml
+# VitalWissen — Paket-Kontrakt-Vorlage
+# Kopieren und ausfüllen für jedes neue Paket.
+# Stand: VW-HYGIENE-05 (2026-05-26)
+
+package_id: "VW-XXXX-NN"           # z.B. VW-HYGIENE-06 oder S3-BUILD-02
+goal: "Kurze Beschreibung was das Paket erreicht"
+
+# Schreibzugriffe explizit erlauben
+allowed_write_paths:
+  - "06_QA_VALIDATION/"             # Beispiel: Guard-Scripts
+  - "09_AUDIT_EXPORTS/VW-XXXX-NN/"  # Immer: eigener Closure-Ordner
+  # - "01_PROJECT_SOURCES_CURRENT/"  # nur wenn Quellen-Arbeit
+  # - "PROJECT_STATE_CURRENT.yaml"   # nur wenn State-Update nötig
+
+# Bereiche explizit sperren (Nebeneffekte ausschließen)
+forbidden_write_paths:
+  - "00_REPO/"
+  - "CLAUDE.md"
+  - "AUDIT_CANON_CURRENT.md"
+  - "ACTIVE_STRANDS_CURRENT.md"
+  - "README_WORKSPACE.md"
+  - "README_AGENTS.md"
+  # Ergänzen nach Paket-Scope
+
+# Explizit verbotene Aktionen
+forbidden_actions:
+  - git_commit
+  - git_push
+  - git_fetch
+  - git_checkout
+  - supabase_write
+  - netlify_deploy
+  - external_http_request   # außer wenn explizit erlaubt (z.B. Chrome MCP)
+  - secret_output           # keine Credential-Werte in Output
+
+# Pflicht-Outputs (alle müssen im export_dir vorhanden sein)
+required_outputs:
+  export_dir: "09_AUDIT_EXPORTS/VW-XXXX-NN/"
+  files:
+    - "VW-XXXX-NN_CLOSURE.md"
+    - "FILES_CHANGED.md"
+    # Weitere Pflichtdateien ergänzen
+
+# Guards für Standard-Preflight (alle Pakete)
+# workspace_guard + secret_guard laufen immer — für Docs, Sources, QA, Code.
+preflight_guards:
+  - script: "06_QA_VALIDATION/workspace_guard.py"
+    expected: "PASS or PASS_WITH_WARNINGS"
+  - script: "06_QA_VALIDATION/secret_guard.py"
+    expected: "PASS or PASS_WITH_WARNINGS"
+
+# Zusätzliche Guards für Code-/Repo-/Git-/Commit-/PR-Pakete (conditional)
+# repo_guard ist NICHT Pflicht für reine Docs-/Workspace-/QA-/Sources-Pakete ohne Git-Operationen.
+# repo_guard FAIL wegen dirty vitalwissen_repo_current blockiert Code-/Git-/Commit-/PR-Pakete.
+# repo_guard FAIL blockiert NICHT automatisch reine Docs-/Workspace-/QA-Pakete.
+conditional_guards_for_code_repo_git_packages:
+  - script: "06_QA_VALIDATION/repo_guard.py"
+    expected: "PASS or PASS_WITH_WARNINGS"
+    required_for:
+      - "Code-Build-Pakete (Netlify, Frontend)"
+      - "Git-Commit-/PR-/Push-Pakete"
+    not_required_for:
+      - "Docs-/Workspace-/QA-/Sources-Pakete ohne Git-Operationen"
+      - "Supabase-Only-Pakete ohne Git"
+    note: >
+      Bekannter Dauerzustand: vitalwissen_repo_current ist dirty.
+      Code-Arbeit immer mit frischem Session-Clone in /sessions/.
+
+# Guards für Standard-Closure (alle Pakete)
+closure_guards:
+  - script: "06_QA_VALIDATION/deliverable_guard.py"
+    args: "--package-id VW-XXXX-NN --export-dir 09_AUDIT_EXPORTS/VW-XXXX-NN/ --required VW-XXXX-NN_CLOSURE.md,FILES_CHANGED.md"
+    expected: "PASS"
+  - script: "06_QA_VALIDATION/workspace_guard.py"
+    expected: "PASS or PASS_WITH_WARNINGS"
+  - script: "06_QA_VALIDATION/secret_guard.py"
+    expected: "PASS or PASS_WITH_WARNINGS"
+# repo_guard in Closure nur für Code-/Repo-/Git-Pakete (siehe conditional_guards oben).
+
+# Side Effects — Standardmäßig NEIN
+external_side_effects_allowed: false
+git_commit_allowed: false
+git_push_allowed: false
+supabase_write_allowed: false
+netlify_deploy_allowed: false
+external_http_requests_allowed: false  # auf true setzen wenn Chrome MCP nötig
+
+# Ausnahmen (nur wenn wirklich nötig, mit Begründung)
+exceptions: []
+# Beispiel:
+# - field: supabase_write_allowed
+#   value: true
+#   reason: "Content-Import 50 Rows — explizit freigegeben von Sebastian"
+
+# External Systems — Pflicht-Abschnitt ab VW-OPS-01
+# Standard: GH0/SB0/NF0 — kein externes System berühren.
+# Jede Stufe >0 braucht Begründung, Actor und Closure-Nachweis.
+# Vollständige Stufendefinitionen: 06_QA_VALIDATION/EXTERNAL_SYSTEMS_MATRIX.md
+external_systems:
+  github:
+    level: "GH0"  # GH0 none | GH1 local_status_read_only | GH2 fresh_clone_read_only | GH3 commit_to_branch | GH4 push_to_main | GH5 PR_create_or_merge
+    actor: "none"  # none | Cowork | Codex | Sebastian
+    allowed: false
+    scope: ""
+    required_evidence: []
+  supabase:
+    level: "SB0"  # SB0 none | SB1 read_only_select | SB2 content_write_existing_schema | SB3 schema_migration | SB4 secrets_env_management | SB5 destructive_or_bulk_operation
+    actor: "none"
+    allowed: false
+    tables: []
+    operation: ""
+    required_evidence: []
+  netlify:
+    level: "NF0"  # NF0 none | NF1 deploy_status_read | NF2 auto_deploy_verify_after_push | NF3 live_smoke_test | NF4 manual_deploy_or_redeploy | NF5 env_var_change
+    actor: "none"
+    allowed: false
+    scope: ""
+    required_evidence: []
+  notes: ""
+
+# Regeltext External Systems:
+# - Standard: GH0/SB0/NF0.
+# - Jede Stufe >0 braucht Begründung und Closure-Nachweis.
+# - GitHub/Supabase/Netlify-Writes bleiben ohne explizite Paketfreigabe verboten.
+# - external_side_effects_allowed bleibt false, außer Paket setzt es explizit mit Begründung auf true.
+# - Bei Konflikt gilt strengere Regel.
+
+# ChatGPT-Bundle — Pflicht-Abschnitt ab VW-HYGIENE-08A
+# Ausfüllen nach Paket-Scope. sync_mode: none | guard_only | dry_run | apply
+chatgpt_bundle:
+  affected: false
+  sync_required: false
+  sync_mode: "none"  # none | guard_only | dry_run | apply
+  upload_instruction_required: false
+  affected_files: []
+  notes: ""
+
+# Regel: Welche Dateien lösen sync_required: true + sync_mode: apply aus?
+# (aktualisiert VW-HYGIENE-09B: 4 neue Bundle-Quelldateien ergänzt)
+# - AUDIT_CANON_CURRENT.md
+# - ACTIVE_STRANDS_CURRENT.md
+# - PROJECT_STATE_CURRENT.yaml
+# - README_WORKSPACE.md
+# - README_AGENTS.md
+# - 06_QA_VALIDATION/GUARD_USAGE.md
+# - 06_QA_VALIDATION/PACKAGE_CONTRACT_TEMPLATE.yaml
+# - 10_CHATGPT_PROJECT_SOURCES_CURRENT/00_CORE_SET/CLAUDE_REDACTED_SHORT.md
+# - 01_PROJECT_SOURCES_CURRENT/VW_04_ENTSCHEIDUNGEN.md
+# - 01_PROJECT_SOURCES_CURRENT/P7D_ARCHITECTURE_RESET_FREEZE.md
+# - 01_PROJECT_SOURCES_CURRENT/AI_INTEGRATION_AND_PERSONAL_CONTEXT_FREEZE.md
+# - 01_PROJECT_SOURCES_CURRENT/VW_06_WEBSITE.md
+# Bei Änderung einer dieser Dateien: chatgpt_bundle_sync.py --apply ausführen.
+# Bei keiner Änderung: guard_only dokumentieren.
+# Upload (ChatGPT) bleibt immer manuell durch Sebastian.
+# Aktuelles Bundle: 12 Dateien (ab VW-HYGIENE-09B).
+
+# Supabase Data API Grants — Pflicht-Abschnitt ab VW-OPS-SUPABASE-GRANTS-01
+# Für alle Pakete, die neue Supabase-public-Tabellen anlegen oder Schema-Migrationen durchführen.
+# Bei reinen Docs-/Workspace-/QA-Paketen ohne DB-Berührung: explicit_data_api_grants_checked: not_applicable
+supabase_grants:
+  explicit_data_api_grants_checked: false  # true | false | not_applicable
+  # true = alle neuen Tabellen haben GRANT SELECT TO anon + authenticated dokumentiert
+  # false = BLOCKED — Paket darf nicht als abgeschlossen gelten
+  # not_applicable = kein DB-Schema-Touch in diesem Paket
+  new_tables: []       # Liste neuer Tabellen in diesem Paket
+  grant_type: ""       # public_read | private_internal | s9_personal_data | not_applicable
+  rls_enabled: false   # true wenn ALTER TABLE ... ENABLE ROW LEVEL SECURITY in Migration
+  policy_created: false # true wenn CREATE POLICY in Migration
+  smoke_test_done: false # true wenn anon SELECT-Check nach Migration durchgeführt
+  notes: ""
+# Pflicht-Referenz: 01_PROJECT_SOURCES_CURRENT/SUPABASE_DATA_API_GRANTS_FREEZE.md
+# Template öffentlich: 04_OPS_SQL/supabase_public_read_table_template.sql
+# Template privat:     04_OPS_SQL/supabase_private_table_template.sql
+# Audit-Skript:        04_OPS_SQL/supabase_data_api_grants_audit.sql
+# Keine neue public-Tabelle ohne explicit_data_api_grants_checked: true.
+
+# Validatoren (optionale manuelle Checks nach Abschluss)
+validators: []
+# Beispiel:
+# - id: V1
+#   check: "Exportordner existiert mit allen required_outputs"
+# - id: V2
+#   check: "workspace_guard PASS oder PASS_WITH_WARNINGS"

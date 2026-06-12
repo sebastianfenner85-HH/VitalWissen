@@ -1,0 +1,112 @@
+project:
+  name: VitalWissen
+  workspace_status: ops_supabase_grants_standard_established
+  current_phase: product_work_ready_plus_grants_ops_standard
+  last_completed_package: VW-AGENT-PHASE-B2_CODEX_SETUP
+  next_recommended_package: FIRST_CODEX_CODE_PACKAGE_OR_PRODUCT_PACKAGE
+
+workspace:
+  root_contract_status: pass_with_warnings
+  allowed_root_files:
+    - CLAUDE.md
+    - AUDIT_CANON_CURRENT.md
+    - ACTIVE_STRANDS_CURRENT.md
+    - README_WORKSPACE.md
+    - README_AGENTS.md
+    - PROJECT_STATE_CURRENT.yaml
+  allowed_root_folders:
+    - 00_REPO
+    - 01_PROJECT_SOURCES_CURRENT
+    - 02_PROJECT_SOURCES_ARCHIVE
+    - 03_LEGACY
+    - 04_OPS_SQL
+    - 05_EVIDENCE_EXPORTS
+    - 06_QA_VALIDATION
+    - 07_TEST_FIXTURES
+    - 07_AGENT_SYSTEM  # Phase-A-Agent-System, angelegt VW-AGENT-PHASE-B1_REGISTRY (2026-06-10)
+    - 08_DELIVERABLES
+    - 09_AUDIT_EXPORTS
+    - 10_CHATGPT_PROJECT_SOURCES_CURRENT
+    - DATEN_FUER_CHATGPT
+  tolerated_system_artifacts:
+    - .DS_Store
+  quarantine:
+    path: 09_AUDIT_EXPORTS/ZU_LOESCHEN_MANUELL_2026-05-25
+    status: retained_pending_guard_or_manual_review
+
+chatgpt_sources:
+  folder: 10_CHATGPT_PROJECT_SOURCES_CURRENT
+  status: expanded_12_upload_ready_after_vw_hygiene_09b
+  is_canon: false
+  reason: Core-Mirror-Dateien wurden geprüft, bereinigt und in DATEN_FUER_CHATGPT als Upload-Bundle bereitgestellt. Ab VW-HYGIENE-09B 12 Dateien (vorher 8).
+  mirror_contract: 09_AUDIT_EXPORTS/VW_HYGIENE_06/CHATGPT_MIRROR_CONTRACT.md
+  mirror_contract_addendum: 09_AUDIT_EXPORTS/VW_HYGIENE_06B/MIRROR_CONTRACT_ADDENDUM_06B.md
+  mirror_file_count_current: 12
+  mirror_file_count_target_next_expansion_max: 15
+  mirror_file_slot_reserve_minimum: 10
+  bundle_sync_framework: ready
+  bundle_guard: 06_QA_VALIDATION/chatgpt_bundle_guard.py
+  bundle_sync: 06_QA_VALIDATION/chatgpt_bundle_sync.py
+  upload_folder: DATEN_FUER_CHATGPT
+  upload_folder_status: ready_pending_user_upload_after_vw_hygiene_09b
+  upload_folder_file_count: 12
+  upload_ready: true
+  upload_ready_scope: core_operating_mirror_plus_4_strategic_sources
+  manual_upload_required: true
+  upload_instruction: Upload exactly the 12 files in DATEN_FUER_CHATGPT; do not upload ZIPs, audit files, raw evidence, or CLAUDE.md.
+  last_alignment_package: VW-HYGIENE-09B
+
+evidence:
+  v5_path: 05_EVIDENCE_EXPORTS/v5_2026-05-25
+  v5_status: not_fully_approved
+  v5_raw_chatgpt_upload: no_go
+  v5_status_summary_possible: go_with_restrictions_and_package
+  known_issue: Report/Export-Konsistenz FAIL wegen 3 Supplement-Abweichungen (Echinacea/Ginkgo/Mariendistel fälschlich in Offenliste; NAC vergessen)
+
+qa:
+  folder: 06_QA_VALIDATION
+  guard_scripts_built: true
+  guard_scripts:
+    workspace_guard: 06_QA_VALIDATION/workspace_guard.py
+    secret_guard: 06_QA_VALIDATION/secret_guard.py
+    repo_guard: 06_QA_VALIDATION/repo_guard.py
+    deliverable_guard: 06_QA_VALIDATION/deliverable_guard.py
+  package_contract_template: 06_QA_VALIDATION/PACKAGE_CONTRACT_TEMPLATE.yaml
+  guard_usage: 06_QA_VALIDATION/GUARD_USAGE.md
+  last_guard_build_package: VW-HYGIENE-06D
+  guard_governance_status: mirror_mode_ready_after_06d
+
+repo:
+  local_vitalwissen_repo_current_commit_allowed: false
+  reason: stale_dirty_clone
+  code_work_rule: fresh_or_clean_clone_only
+
+operations:
+  external_systems_matrix: 06_QA_VALIDATION/EXTERNAL_SYSTEMS_MATRIX.md
+  github_default_level: GH0
+  supabase_default_level: SB0
+  netlify_default_level: NF0
+  github_push_allowed_by_default: false
+  supabase_writes_allowed_by_default: false
+  netlify_deploy_allowed_by_default: false
+  code_work_rule: fresh_or_clean_clone_only
+  external_systems_contract_required: true
+
+go_no_go:
+  workspace_operating_rules_freeze: completed
+  guard_scripts_build: completed
+  guard_governance_finalization: completed
+  chatgpt_source_mirror: built_and_aligned_for_upload
+  chatgpt_bundle_guard_use: go
+  chatgpt_bundle_sync_use: go_with_package_contract
+  chatgpt_core_upload: go
+  chatgpt_v5_raw_mirror: no_go
+  chatgpt_v5_status_summary_mirror: go_with_restrictions_and_package
+  chatgpt_source_expansion: completed_core_12_after_09b
+  external_systems_matrix_use: go
+  github_default: GH0_unless_explicit_package_contract
+  supabase_default: SB0_unless_explicit_package_contract
+  netlify_default: NF0_unless_explicit_package_contract
+  new_sources_work: go_with_package_contract
+  code_build_work: go_only_with_fresh_clone
+  local_commits_from_vitalwissen_repo_current: no_go
