@@ -51,7 +51,7 @@ export default function LaborwerteListe() {
   if (loading) {
     return (
       <div className="lw-page">
-        <div style={{ padding: '80px 24px', textAlign: 'center', color: 'var(--text-muted)' }}>
+        <div className="lw-state-center">
           Laborwerte werden geladen…
         </div>
       </div>
@@ -61,8 +61,8 @@ export default function LaborwerteListe() {
   if (error) {
     return (
       <div className="lw-page">
-        <div style={{ padding: '80px 24px', textAlign: 'center' }}>
-          <p style={{ color: '#DC2626', marginBottom: 12 }}>{error}</p>
+        <div className="lw-state-center">
+          <p className="lw-error-msg">{error}</p>
           <button onClick={() => window.location.reload()}>Erneut versuchen</button>
         </div>
       </div>
@@ -128,7 +128,7 @@ export default function LaborwerteListe() {
 
         {gefiltert.length === 0 ? (
           <div className="lw-coming-soon">
-            <p style={{ textAlign: 'center', color: 'var(--text-muted)' }}>Keine Laborwerte gefunden.</p>
+            <p className="lw-empty-state-text">Keine Laborwerte gefunden.</p>
           </div>
         ) : (
           <div className="lw-grid">
