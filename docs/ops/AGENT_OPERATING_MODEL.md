@@ -2,7 +2,7 @@
 
 Status: active draft  
 Owner: Sebastian final GO/NO-GO  
-Source of truth: GitHub repository `sebastianfenner85-HH/VitalWissen`
+Source of truth: GitHub repository `sebastianfenner85-HH/VitalWissen`, branch `main`, folder `docs/`
 
 ## 1. Grundsatz
 
@@ -57,10 +57,19 @@ Einsetzen fuer:
 - Workspace-/Quellen-/Statusdokumentation
 - Browserchecks, Netlify-Preview, Supabase-/Dashboard-Pruefungen
 - Abschlussdokumentation nach Paketen
+- lokal ausfuehrbare Scripts fuer klar erlaubte GitHub-Docs-/Ops-Arbeit
+
+Pflicht:
+
+- GitHub nur bei explizit erlaubtem GH-Level im Paket
+- vorhandene `gh auth` des Nutzers verwenden
+- keinen GitHub PAT anfordern
+- keine rohe `CLAUDE.md` lesen oder ausgeben, ausser Sebastian gibt eine redaktierte Version frei
+- keine Produktcode-Aenderungen
 
 Nicht einsetzen fuer:
 
-- GitHub-CLI-Codearbeit ohne Browser
+- GitHub-CLI-Codearbeit ohne explizites GH-Level
 - grosse Codeaenderungen in isolierter Sandbox
 
 ## 3. Routing-Regel
@@ -82,7 +91,24 @@ Output:
 - Draft PR
 - kurze Closure im Chat
 
-### Route B: Codex lokal
+### Route B: Cowork lokale Scripts / Browser / Ops
+
+Nutzen fuer:
+
+- lokale Sicherung
+- Projekt-/Auditdokumente
+- Live-/Browserpruefung
+- externe Systemchecks
+- Statusspiegelung nach PR/Package
+- GitHub-Docs-/Ops-Arbeit nur bei explizitem GH-Level, bevorzugt als vom Nutzer ausfuehrbares Script
+
+Output:
+
+- Exportordner, Statusnotiz oder Draft PR
+- klare Closure
+- keine stillen Nebeneffekte
+
+### Route C: Codex lokal
 
 Nutzen fuer:
 
@@ -97,21 +123,6 @@ Output:
 - Commit(s)
 - Draft PR
 - kurze Closure
-
-### Route C: Cowork
-
-Nutzen fuer:
-
-- lokale Sicherung
-- Projekt-/Auditdokumente
-- Live-/Browserpruefung
-- externe Systemchecks
-- Statusspiegelung nach PR/Package
-
-Output:
-
-- Exportordner oder Statusnotiz
-- keine stillen Nebeneffekte
 
 ## 4. Pflichtregeln
 
@@ -139,3 +150,6 @@ Jeder PR muss enthalten:
 Dieses Modell ersetzt nicht die bestehenden Agenten, sondern ordnet sie operativ.
 
 GitHub bleibt Wahrheit. Lokale Kopien und Audit-Artefakte sind Spiegel, nicht Primaerquelle.
+---
+
+Aktualisiert durch VW-GITHUB-SOT-CLEANUP-01: Route A/B/C, Cowork-GitHub-Grenzen und GitHub `main` / `docs/` als kanonischer SOT klargestellt.
