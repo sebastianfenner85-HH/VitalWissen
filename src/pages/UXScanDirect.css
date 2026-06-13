@@ -1,0 +1,80 @@
+/* UX_SCAN_01 */
+.lw-detail {
+  max-width: 880px;
+  padding-top: 32px;
+}
+
+.lw-detail-header {
+  background: linear-gradient(180deg, rgba(255,255,255,0.96), rgba(248,250,252,0.92));
+  border: 1px solid var(--border);
+  border-radius: 18px;
+  padding: 28px 30px;
+  margin-bottom: 18px;
+  box-shadow: 0 10px 32px rgba(15, 23, 42, 0.04);
+}
+
+.lw-detail .detail-section {
+  border-radius: 18px;
+  padding: 26px;
+  margin-bottom: 18px;
+  box-shadow: 0 8px 26px rgba(15, 23, 42, 0.035);
+}
+
+.lw-detail .detail-section-title {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 15px;
+  margin-bottom: 18px;
+}
+
+.lw-detail .detail-section-title::before {
+  content: "";
+  width: 7px;
+  height: 7px;
+  border-radius: 999px;
+  background: var(--primary);
+  flex: 0 0 auto;
+}
+
+.lw-detail .referenz-item,
+.lw-detail .lw-einordnung-karte,
+.lw-detail .lw-b4a-karte,
+.lw-detail .lw-zt-item {
+  border-radius: 14px;
+}
+
+@media (max-width: 720px) {
+  .lw-detail {
+    padding: 22px 14px 34px;
+  }
+
+  .lw-detail-header {
+    padding: 22px 18px;
+    border-radius: 16px;
+  }
+
+  .lw-detail-title {
+    font-size: 34px;
+    line-height: 1.05;
+  }
+
+  .lw-detail-meta {
+    flex-wrap: wrap;
+  }
+
+  .lw-detail .detail-section {
+    padding: 18px;
+    border-radius: 16px;
+  }
+
+  .lw-detail .referenz-grid,
+  .lw-detail .ursachen-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .lw-detail .lw-zt-item-wert {
+    white-space: normal;
+    width: 100%;
+  }
+}
