@@ -11,7 +11,7 @@
 | Frontend | React + Vite | Nutzeroberfläche, SPA |
 | Routing | React Router DOM | Seitennavigation |
 | Hosting | Netlify | Auto-deploy aus GitHub |
-| Versionierung | GitHub (Repo: vitalwissen, privat) | Code-Speicher, Deployment-Trigger |
+| Versionierung | GitHub (Repo: sebastianfenner85-HH/VitalWissen, public) | Code-Speicher, Deployment-Trigger |
 | Datenbank | Supabase (PostgreSQL + pgvector) | Hauptdatenbank + semantische Suche |
 | Datenaggregation | Python + Requests | API-Calls, Pipelines |
 | Web-Scraping | BeautifulSoup | BfR, EFSA, Behörden-/PDF-Inhalte |

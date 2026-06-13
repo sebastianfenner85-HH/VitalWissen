@@ -37,7 +37,7 @@ Hosting:
 - frühes Mockup / Investorenvorschau: dapper-halva-d89717.netlify.app
 - Account: sebastianfenner85@gmail.com
 - Team: Sebastian Fenner Health
-- GitHub: sebastianfenner85-HH/VitalWissen (privat)
+- GitHub: sebastianfenner85-HH/VitalWissen (public)
 - Supabase: https://ejyrzxmtosrouwstiyws.supabase.co (Frankfurt)
 
 Grundsatz:
