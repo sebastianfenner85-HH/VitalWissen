@@ -47,8 +47,6 @@
 .stat-l {
   font-size: 12px;
   color: var(--text-muted);
-  text-transform: uppercase;
-  letter-spacing: 0.06em;
 }
 
 .lw-filter-row {
@@ -81,7 +79,9 @@
   outline: none;
   font-size: 14px;
   color: var(--text);
-  width: 200px;
+  flex: 1;
+  min-width: 120px;
+  width: auto;
 }
 
 .panel-filter {
@@ -361,6 +361,7 @@
   font-size: 16px;
   line-height: 1.7;
   color: var(--text-light);
+  margin-bottom: 24px;
 }
 
 .beschreibung-text strong { color: var(--text); }
@@ -818,8 +819,6 @@
   font-size: 13px;
   font-weight: 600;
   color: var(--text-light);
-  text-transform: uppercase;
-  letter-spacing: 0.04em;
   margin-bottom: 10px;
 }
 
@@ -1217,4 +1216,161 @@
   color: var(--text-muted);
   margin: 0 0 8px 0;
   line-height: 1.5;
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   UX_VISIBLE_PROGRESS_01 — Additions
+   ═══════════════════════════════════════════════════════════════════════════ */
+
+/* Inline-style cleanup: loading/error states */
+.lw-state-center {
+  padding: 80px 24px;
+  text-align: center;
+  color: var(--text-muted);
+}
+
+.lw-error-msg {
+  color: #DC2626;
+  margin-bottom: 12px;
+}
+
+/* Inline-style cleanup: disclaimer */
+.lw-disclaimer {
+  font-size: 13px;
+  color: var(--text-muted);
+  margin-top: 32px;
+  text-align: center;
+  line-height: 1.5;
+}
+
+/* Inline-style cleanup: empty state list */
+.lw-empty-state-text {
+  text-align: center;
+  color: var(--text-muted);
+}
+
+/* Inline-style cleanup: referenz-wert variants */
+.referenz-wert--geschlecht {
+  font-size: 14px;
+}
+
+.referenz-wert--geschlecht-w {
+  margin-top: 4px;
+}
+
+.referenz-wert--nodata {
+  color: var(--text-muted);
+  font-size: 13px;
+}
+
+/* Scroll anchor: offset for fixed nav bar */
+.lw-section-anchor {
+  scroll-margin-top: 72px;
+}
+
+/* Referenz-grid: mid-size breakpoint (was jumping 3→1 col at 640px) */
+@media (max-width: 768px) and (min-width: 641px) {
+  .referenz-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+/* Section Quick-Nav (Abschnitt-Schnellnavigation) */
+.lw-section-nav {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 20px;
+  flex-wrap: wrap;
+}
+
+.lw-section-nav-label {
+  font-size: 12px;
+  color: var(--text-muted);
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+
+.lw-section-nav-chips {
+  display: flex;
+  gap: 6px;
+  flex-wrap: wrap;
+}
+
+.lw-section-nav-chip {
+  background: var(--surface-2);
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  padding: 5px 12px;
+  font-size: 12px;
+  font-family: inherit;
+  color: var(--text-light);
+  cursor: pointer;
+  white-space: nowrap;
+  min-height: 32px;
+  transition: border-color 0.15s, color 0.15s, background 0.15s;
+}
+
+.lw-section-nav-chip:hover {
+  border-color: var(--primary);
+  color: var(--primary);
+  background: var(--primary-50);
+}
+
+/* Mobile: Section nav horizontal scroll */
+@media (max-width: 640px) {
+  .lw-section-nav {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 8px;
+    margin-bottom: 16px;
+  }
+
+  .lw-section-nav-chips {
+    width: 100%;
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    padding-bottom: 4px;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+  }
+
+  .lw-section-nav-chips::-webkit-scrollbar {
+    display: none;
+  }
+
+  .lw-section-nav-chip {
+    flex-shrink: 0;
+    min-height: 40px;
+  }
+}
+
+/* Mobile: Filter-row improvements (LaborwerteListe) */
+@media (max-width: 640px) {
+  .lw-filter-row {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 10px;
+  }
+
+  .lw-search-box {
+    width: 100%;
+  }
+
+  .panel-filter {
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    padding-bottom: 4px;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+  }
+
+  .panel-filter::-webkit-scrollbar {
+    display: none;
+  }
+
+  .panel-btn {
+    flex-shrink: 0;
+    min-height: 40px;
+  }
 }

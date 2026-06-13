@@ -116,9 +116,6 @@ function ZielwertBlock({ zielwerte, loincCode }) {
         <span>Referenzbereiche beschreiben, was bei gesunden Menschen üblich ist. Zielwerte sind Behandlungsziele — sie werden ärztlich individuell festgelegt.</span>
       </div>
 
-      {/* S1-BUILD-01b: LDL-Kontext-Microcopy — nur für LDL-Cholesterin (LOINC 2089-1).
-           Kein universeller Optimalwert: LDL-Zielwert ist risiko- und therapieabhängig.
-           Risikobasierte Tabelle ESC/EAS 2021: 116 / 100 / 70 / 55 mg/dL. */}
       {loincCode === '2089-1' && (
         <div className="lw-zt-hinweis">
           <span className="lw-zt-hinweis-icon">📌</span>
@@ -133,7 +130,6 @@ function ZielwertBlock({ zielwerte, loincCode }) {
         </p>
       )}
 
-      {/* ZT1 + ZT2: direkt sichtbar, aufklappbar */}
       {zt12.map((z, i) => renderItem(z, `zt12-${i}`))}
 
       {loincCode === '2089-1' && zt12.length > 0 && (
@@ -142,7 +138,6 @@ function ZielwertBlock({ zielwerte, loincCode }) {
         </p>
       )}
 
-      {/* ZT3 + ZT4: hinter Intent-Button */}
       {zt34.length > 0 && (
         <div className="lw-zt-intent-section">
           <button
@@ -159,8 +154,6 @@ function ZielwertBlock({ zielwerte, loincCode }) {
 }
 
 // [12] Einordnung des Wertes — Komponente (S8-BUILD-02, K3)
-// Strikt nach K3-Regeln: keine Diagnose, kein Personalisierungsframing.
-// "wird beobachtet bei" / "kann auftreten bei" — nie "bedeutet X" oder "du hast".
 function EinordnungBlock({ loincCode, slug }) {
   const eintraege =
     (loincCode && LABORWERT_K3_MAP[loincCode]) ||
@@ -222,8 +215,6 @@ function EinordnungBlock({ loincCode, slug }) {
   )
 }
 
-
-// B4-Kategorie Labels — erweitert (B4-BUILD-02, B4_DECISION_LOGIC_FREEZE)
 const B4_KATEGORIE = {
   standard:          { label: 'Gesprächspunkt',      cssKey: 'standard' },
   supporting:        { label: 'Ergänzend',            cssKey: 'supporting' },
@@ -236,7 +227,6 @@ const B4_KATEGORIE = {
   doctor_discussion: { label: 'Gespräch vorbereiten', cssKey: 'doctor' },
 }
 
-// Evidenz-Klartextlabels — §5.9 PATCH_01, B4_DECISION_LOGIC_FREEZE
 const B4_EVIDENCE_MATURITY = {
   established:  'Etabliert',
   supported:    'Gut untersucht',
@@ -247,8 +237,6 @@ const B4_EVIDENCE_MATURITY = {
 }
 
 // [12b] Was kann ich konkret tun? — Komponente (S8-BUILD-03, erweitert B4-BUILD-02)
-// Keine Diagnose, keine Therapieanweisung, keine Dosierungsangabe.
-// Backward-kompatibel: alte 8-Felder-Karten (HbA1c/Ferritin/VitD/CRP) weiter unterstützt.
 function B4ActionsBlock({ loincCode, slug }) {
   const data =
     (loincCode && LABORWERT_B4_ACTIONS_MAP[loincCode]) ||
@@ -260,7 +248,6 @@ function B4ActionsBlock({ loincCode, slug }) {
   if (high.length === 0 && low.length === 0) return null
 
   const renderKarte = (karte, idx) => {
-    // Backward-kompatible Feldauflösung (neu || alt)
     const measureCat = karte.measureCategory || karte.category || 'supporting'
     const kat = B4_KATEGORIE[measureCat] ?? B4_KATEGORIE.supporting
     const actionText = karte.whatCouldHelp || karte.whatHelps
@@ -380,18 +367,11 @@ function B4ActionsBlock({ loincCode, slug }) {
   )
 }
 
-
-// [4b] Q2-BUILD-02d: LwQuellenBox — Q2-konforme Quellenbox für S1 Referenzquellen
-// Ersetzt das bisherige Inline-Link-Rendering in Block [4b].
-// Input: quellenKontext-Array (key, label, quelle, quelle_url, quelle_jahr).
-// Regeln: Leer-Guard, max 2 initial, Typ-Chip "Datenbank", Name-Link, Jahr, Region.
-// Nur Einträge mit URL werden angezeigt.
+// [4b] Q2-BUILD-02d: LwQuellenBox
 function LwQuellenBox({ quellen }) {
   const [showAll, setShowAll] = useState(false)
 
   if (!quellen || quellen.length === 0) return null
-
-  // Sicherheitsfilter: nur Einträge mit URL rendern
   const filtered = quellen.filter(q => q.quelle_url)
   if (filtered.length === 0) return null
 
@@ -401,13 +381,9 @@ function LwQuellenBox({ quellen }) {
   return (
     <div className="lw-quellenbox">
       <span className="lw-quellenbox-label">Quellen Referenzbereiche:</span>
-      {/* S1-QUELLENBOX-MICROCOPY-01: B3/B5-Fix — Quellencharakter explizit kommunizieren.
-           Die Links verweisen auf Fachgesellschafts-Homepages (Quellenbasis/Datenbasis),
-           nicht auf wertspezifische Testdokumente. B4-Fix: Jahr-Badge entfernt —
-           Jahr bereits im Link-Text enthalten (z. B. „DGKL 2023“). */}
       <p className="lw-quellenbox-caveat">
-        Quellenbasis für Referenzbereiche und Einordnung. Die Links führen zu den Fachgesellschaften — noch nicht wertspezifisch vertieft.
-      </p>              
+        Quellenbasis für Referenzbereiche und Einordnung. Die Links führen zu den Fachgesellschaften — noch nicht wertspezifisch vertieft.
+      </p>
       <div className="lw-quellenbox-rows">
         {visible.map(q => (
           <div key={q.key} className="lw-quellenbox-row">
@@ -425,14 +401,33 @@ function LwQuellenBox({ quellen }) {
         ))}
       </div>
       {!showAll && hiddenCount > 0 && (
-        <button
-          className="lw-quellenbox-more"
-          onClick={() => setShowAll(true)}
-        >
+        <button className="lw-quellenbox-more" onClick={() => setShowAll(true)}>
           + {hiddenCount} weitere anzeigen
         </button>
       )}
     </div>
+  )
+}
+
+// [0] UX_VISIBLE_PROGRESS_01: Abschnitt-Schnellnavigation
+// Nur Abschnitte mit tatsächlich vorhandenen Daten. Kein medizinischer Inhalt.
+function LwSectionNav({ sections }) {
+  if (!sections || sections.length === 0) return null
+  const scroll = (id) => {
+    const el = document.getElementById(id)
+    if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' })
+  }
+  return (
+    <nav className="lw-section-nav" aria-label="Abschnitte">
+      <span className="lw-section-nav-label">Abschnitte:</span>
+      <div className="lw-section-nav-chips">
+        {sections.map(s => (
+          <button key={s.id} className="lw-section-nav-chip" onClick={() => scroll(s.id)}>
+            {s.label}
+          </button>
+        ))}
+      </div>
+    </nav>
   )
 }
 
@@ -459,17 +454,13 @@ export default function LaborwertDetail() {
   }, [code])
 
   if (loading) {
-    return (
-      <div style={{ padding: '80px 24px', textAlign: 'center', color: 'var(--text-muted)' }}>
-        Wird geladen…
-      </div>
-    )
+    return <div className="lw-state-center">Wird geladen…</div>
   }
 
   if (error || !lw) {
     return (
-      <div style={{ padding: '80px 24px', textAlign: 'center' }}>
-        <p style={{ color: 'var(--red)', marginBottom: 12 }}>{error || 'Laborwert nicht gefunden.'}</p>
+      <div className="lw-state-center">
+        <p className="lw-error-msg">{error || 'Laborwert nicht gefunden.'}</p>
         <button className="lw-detail-back" onClick={() => navigate('/laborwerte')}>← Zurück zur Liste</button>
       </div>
     )
@@ -497,17 +488,31 @@ export default function LaborwertDetail() {
     },
   }
 
-  // Defensive Array-Guards für alle JSONB-Felder
   const supplementEinfluss = Array.isArray(lw.supplement_einfluss) ? lw.supplement_einfluss : []
   const medEinfluss        = Array.isArray(lw.medikament_einfluss) ? lw.medikament_einfluss : []
   const ursachenHoch       = Array.isArray(lw.ursachen_hoch)    ? lw.ursachen_hoch    : (lw.ursachen_hoch    ? [lw.ursachen_hoch]    : [])
   const ursachenNiedrig    = Array.isArray(lw.ursachen_niedrig) ? lw.ursachen_niedrig : (lw.ursachen_niedrig ? [lw.ursachen_niedrig] : [])
   const zielwerte          = Array.isArray(lw.zielwerte) ? lw.zielwerte : []
 
-  // Quellenkontext: alle Länder die eine URL haben
   const quellenKontext = LEITLINIEN
     .map(l => ({ ...l, ...ref[l.key] }))
     .filter(l => l.quelle_url)
+
+  // UX_VISIBLE_PROGRESS_01: Abschnitte — nur bei vorhandenen Daten
+  const hasK3      = !!(LABORWERT_K3_MAP[lw.loinc_code] || LABORWERT_K3_MAP[lw.slug])
+  const hasB4      = !!(LABORWERT_B4_ACTIONS_MAP[lw.loinc_code] || LABORWERT_B4_ACTIONS_MAP[lw.slug])
+  const hasUrsa    = ursachenHoch.length > 0 || ursachenNiedrig.length > 0
+  const hasSuppMed = supplementEinfluss.length > 0 || medEinfluss.length > 0
+
+  const sections = [
+    { id: 'sec-referenz',   label: 'Referenzwerte' },
+    ...(zielwerte.length > 0 ? [{ id: 'sec-zielwerte',   label: 'Zielwerte' }]       : []),
+    ...(hasK3               ? [{ id: 'sec-einordnung',  label: 'Einordnung' }]        : []),
+    ...(hasB4               ? [{ id: 'sec-massnahmen',  label: 'Maßnahmen' }]         : []),
+    ...(hasUrsa             ? [{ id: 'sec-ursachen',    label: 'Ursachen' }]          : []),
+    ...(lw.wann_arzt        ? [{ id: 'sec-arzt',        label: 'Arzt aufsuchen' }]    : []),
+    ...(hasSuppMed          ? [{ id: 'sec-einfluss',    label: 'Einflussfaktoren' }]  : []),
+  ]
 
   return (
     <div className="lw-detail">
@@ -515,7 +520,7 @@ export default function LaborwertDetail() {
         ← Alle Laborwerte
       </button>
 
-      {/* [1] Notfall-Banner — immer wenn flag, ganz oben */}
+      {/* [1] Notfall-Banner */}
       {lw.notfall_flag && (
         <div className="notfall-banner">
           <strong>⚠ Notfallrelevant:</strong>&nbsp;Bei stark abweichenden Werten sofort ärztliche Hilfe
@@ -523,7 +528,7 @@ export default function LaborwertDetail() {
         </div>
       )}
 
-      {/* [2] Header — immer */}
+      {/* [2] Header */}
       <div className="lw-detail-header">
         <h1 className="lw-detail-title">{lw.name_de}</h1>
         {lw.vollname_de && lw.vollname_de !== lw.name_de && (
@@ -537,23 +542,22 @@ export default function LaborwertDetail() {
         </div>
       </div>
 
-      {/* [3] Beschreibung laienhaft — nur bei Daten */}
+      {/* [3] Beschreibung */}
       {lw.beschreibung_laienhaft && (
-        <p className="beschreibung-text" style={{ marginBottom: 24 }}>{lw.beschreibung_laienhaft}</p>
+        <p className="beschreibung-text">{lw.beschreibung_laienhaft}</p>
       )}
 
-      {/* [4] Referenzbereiche — immer sichtbar.
-           JP-Gate (S1-BUILD-01): JP-Karte nur rendern wenn Datenbasis vorhanden. */}
-      <div className="detail-section">
+      {/* [0] Abschnitt-Schnellnavigation — UX_VISIBLE_PROGRESS_01 */}
+      <LwSectionNav sections={sections} />
+
+      {/* [4] Referenzbereiche */}
+      <div id="sec-referenz" className="lw-section-anchor detail-section">
         <p className="detail-section-title">Referenzbereiche im Vergleich</p>
         <div className="referenz-grid">
           {LEITLINIEN.map(l => {
             const r = ref[l.key]
             const hatDaten = r.min != null || r.max != null || r.max_m != null || r.max_w != null
-
-            // JP-Gate: JP-Karte ausblenden wenn keine Daten vorhanden
             if (l.key === 'jp' && !hatDaten) return null
-
             return (
               <div key={l.key} className="referenz-item">
                 <span className="referenz-flag">{l.label}</span>
@@ -562,10 +566,10 @@ export default function LaborwertDetail() {
                   <>
                     {r.geschlechtsspezifisch ? (
                       <>
-                        <p className="referenz-wert" style={{ fontSize: 14 }}>
+                        <p className="referenz-wert referenz-wert--geschlecht">
                           ♂ {formatRef(r.min_m, r.max_m, r.einheit)}
                         </p>
-                        <p className="referenz-wert" style={{ fontSize: 14, marginTop: 4 }}>
+                        <p className="referenz-wert referenz-wert--geschlecht referenz-wert--geschlecht-w">
                           ♀ {formatRef(r.min_w, r.max_w, r.einheit)}
                         </p>
                       </>
@@ -575,35 +579,35 @@ export default function LaborwertDetail() {
                     {r.quelle && <p className="referenz-einheit">{r.quelle}</p>}
                   </>
                 ) : (
-                  <p className="referenz-wert" style={{ color: 'var(--text-muted)', fontSize: 13 }}>—</p>
+                  <p className="referenz-wert referenz-wert--nodata">—</p>
                 )}
               </div>
             )
           })}
         </div>
-
-        {/* [4b] Q2-BUILD-02d: LwQuellenBox — Q2-konforme Quellenbox, Leer-Guard intern */}
         <LwQuellenBox quellen={quellenKontext} />
       </div>
 
-      {/* [6] Zielwert-Block V3 — nur wenn zielwerte JSONB befüllt */}
-      {zielwerte.length > 0 && <ZielwertBlock zielwerte={zielwerte} loincCode={lw.loinc_code} />}
+      {/* [6] Zielwert-Block */}
+      {zielwerte.length > 0 && (
+        <div id="sec-zielwerte" className="lw-section-anchor">
+          <ZielwertBlock zielwerte={zielwerte} loincCode={lw.loinc_code} />
+        </div>
+      )}
 
-      {/* [12] Einordnung des Wertes — B4/K3 Block (S8-BUILD-02)
-           Position: zwischen Zielwerte und Mögliche Ursachen.
-           Nur bei kuratierten Laborwerten (LOINC in LABORWERT_K3_MAP).
-           No-data → Block vollständig absent. */}
-      <EinordnungBlock loincCode={lw.loinc_code} slug={lw.slug} />
+      {/* [12] Einordnung */}
+      <div id="sec-einordnung" className="lw-section-anchor">
+        <EinordnungBlock loincCode={lw.loinc_code} slug={lw.slug} />
+      </div>
 
-      {/* [12b] Was kann ich konkret tun? — B4 Actions Block (S8-BUILD-03)
-           Position: direkt nach EinordnungBlock.
-           Nur bei 5 MVP-Laborwerten (LOINC in LABORWERT_B4_ACTIONS_MAP).
-           No-data → Block vollständig absent. Keine Therapieempfehlung. */}
-      <B4ActionsBlock loincCode={lw.loinc_code} slug={lw.slug} />
+      {/* [12b] B4 Actions */}
+      <div id="sec-massnahmen" className="lw-section-anchor">
+        <B4ActionsBlock loincCode={lw.loinc_code} slug={lw.slug} />
+      </div>
 
-      {/* [8] Ursachen — nur bei Daten */}
+      {/* [8] Ursachen */}
       {(ursachenHoch.length > 0 || ursachenNiedrig.length > 0) && (
-        <div className="detail-section">
+        <div id="sec-ursachen" className="lw-section-anchor detail-section">
           <p className="detail-section-title">Mögliche Ursachen</p>
           <div className="ursachen-grid">
             {ursachenHoch.length > 0 && (
@@ -626,44 +630,46 @@ export default function LaborwertDetail() {
         </div>
       )}
 
-      {/* [11] Wann zum Arzt — nur bei Daten */}
+      {/* [11] Wann zum Arzt */}
       {lw.wann_arzt && (
-        <div className="detail-section">
+        <div id="sec-arzt" className="lw-section-anchor detail-section">
           <p className="detail-section-title">Wann zum Arzt?</p>
           <div className="wann-arzt-box">{lw.wann_arzt}</div>
         </div>
       )}
 
-      {/* [9] S2-Cross-Block "Supplement-Einfluss" — nur bei Daten */}
-      {supplementEinfluss.length > 0 && (
-        <div className="detail-section">
-          <p className="detail-section-title">Supplements, die diesen Wert beeinflussen</p>
-          <div className="zusammenhaenge-chips">
-            {supplementEinfluss.map((s, i) => (
-              <span key={i} className="zusammenhaenge-chip">
-                {typeof s === 'string' ? s : (s.name ?? s.name_de ?? '')}
-              </span>
-            ))}
-          </div>
+      {/* [9+10] Einflussfaktoren */}
+      {(supplementEinfluss.length > 0 || medEinfluss.length > 0) && (
+        <div id="sec-einfluss" className="lw-section-anchor">
+          {supplementEinfluss.length > 0 && (
+            <div className="detail-section">
+              <p className="detail-section-title">Supplements, die diesen Wert beeinflussen</p>
+              <div className="zusammenhaenge-chips">
+                {supplementEinfluss.map((s, i) => (
+                  <span key={i} className="zusammenhaenge-chip">
+                    {typeof s === 'string' ? s : (s.name ?? s.name_de ?? '')}
+                  </span>
+                ))}
+              </div>
+            </div>
+          )}
+          {medEinfluss.length > 0 && (
+            <div className="detail-section">
+              <p className="detail-section-title">Medikamente, die diesen Wert beeinflussen</p>
+              <div className="zusammenhaenge-chips">
+                {medEinfluss.map((m, i) => (
+                  <span key={i} className="zusammenhaenge-chip">
+                    {typeof m === 'string' ? m : (m.name ?? m.name_de ?? '')}
+                  </span>
+                ))}
+              </div>
+            </div>
+          )}
         </div>
       )}
 
-      {/* [10] S6-Cross-Block "Medikamenten-Einfluss" — nur bei Daten */}
-      {medEinfluss.length > 0 && (
-        <div className="detail-section">
-          <p className="detail-section-title">Medikamente, die diesen Wert beeinflussen</p>
-          <div className="zusammenhaenge-chips">
-            {medEinfluss.map((m, i) => (
-              <span key={i} className="zusammenhaenge-chip">
-                {typeof m === 'string' ? m : (m.name ?? m.name_de ?? '')}
-              </span>
-            ))}
-          </div>
-        </div>
-      )}
-
-      {/* [13] Disclaimer — immer letzter Block */}
-      <p style={{ fontSize: 13, color: 'var(--text-muted)', marginTop: 32, textAlign: 'center' }}>
+      {/* [13] Disclaimer */}
+      <p className="lw-disclaimer">
         Diese Informationen ersetzen keine ärztliche Diagnose. Laborwerte müssen immer im klinischen Kontext bewertet werden.
       </p>
     </div>
