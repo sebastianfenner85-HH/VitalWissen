@@ -16,15 +16,24 @@ Diese Datei gilt für alle Agenten und KI-Systeme, die im VitalWissen-Arbeitsord
 
 Vor jedem Paket sind `README_WORKSPACE.md` **und** diese Datei zu lesen.
 
+
+### 1A. Source-of-Truth- und Routenregel ab VW-GITHUB-SOT-CLEANUP-01
+
+- GitHub `main` / `docs/` ist der kanonische Source of Truth für finalisierte Docs, Specs, Freezes und Projektstatus.
+- Route A: ChatGPT GitHub Connector für kleine bis mittlere Docs-/Text-/Mapping-PRs.
+- Route B: Cowork für lokale Workspace-/Ops-/Browser-/Supabase-/Netlify-Prüfungen und bei GitHub-Bedarf für vom Nutzer ausführbare Scripts.
+- Route C: Codex für Produktcode, UI, Build, Tests und Code-PRs aus frischem Clone.
+- Kein Agent merged ohne explizites Sebastian-GO.
+
 ---
 
 ## 2. Rollen
 
 | Agent | Primäre Rolle |
 |-------|--------------|
-| **ChatGPT** | Controller, Reviewer, Prompt-Architekt. Plant Pakete, bewertet Ergebnisse, gibt Go/No-Go. Hat keinen direkten Dateisystem-Zugriff. Arbeitet mit dem ChatGPT-Spiegel (`10_CHATGPT_PROJECT_SOURCES_CURRENT/`). |
-| **Cowork** | Workspace-/Docs-/Quellen-/Ops-Hygiene. Liest und schreibt Dateien im Arbeitsordner. Führt Closures, Freezes, Strukturarbeiten aus. Kein Repo-Code, kein eigenständiger Supabase/Netlify-Write. |
-| **Codex** | Code-/Repo-/Test-/PR-Arbeit. Arbeitet ausschließlich aus einem frischen oder sicher sauberen Clone. Hat keine Workspace-Hygiene-Rolle. |
+| **ChatGPT** | Controller, Reviewer, Prompt-Architekt. Plant Pakete, bewertet Ergebnisse, prüft PR-Diffs und gibt Go/No-Go-Empfehlungen. Kann kleine bis mittlere Docs-/Text-/Mapping-PRs über den GitHub Connector vorbereiten. Kein Merge und keine finale Freigabe ohne Sebastian. Kein direkter lokaler Dateisystem-Zugriff. |
+| **Cowork** | Workspace-/Docs-/Quellen-/Ops-Hygiene, Browserchecks sowie Supabase-/Netlify-Prüfungen. Liest und schreibt Dateien im Arbeitsordner nur im Paket-Scope. GitHub nur bei explizit erlaubtem GH-Level und über vorhandene `gh auth`; kein PAT anfordern, keine rohe `CLAUDE.md` lesen/ausgeben. Kein Repo-Code, kein eigenständiger Supabase/Netlify-Write. |
+| **Codex** | Code-/Repo-/Test-/PR-Arbeit. Arbeitet ausschließlich aus einem frischen oder sicher sauberen Clone. Keine Docs-Kanon- oder Workspace-Hygiene-Rolle. Kein Merge ohne Sebastian-GO. |
 
 ---
 
@@ -41,7 +50,7 @@ Vor jedem Paket sind `README_WORKSPACE.md` **und** diese Datei zu lesen.
    - Go/No-Go für den nächsten Schritt
 7. **Scope eng halten.** Nur tun, was der Paketauftrag erlaubt. Kein Scope-Creep.
 8. **Beobachtung und Schlussfolgerung trennen.** Was direkt verifiziert wurde, von Annahmen unterscheiden.
-9. **Keine Strategiedrift.** Führende Projektdokumente (`01_PROJECT_SOURCES_CURRENT/`) haben immer Vorrang vor Altständen.
+9. **Keine Strategiedrift.** Für finalisierte Projektentscheidungen gilt GitHub `main` / `docs/` als Source of Truth. Lokale Spiegelstände (`01_PROJECT_SOURCES_CURRENT/`, `10_CHATGPT_PROJECT_SOURCES_CURRENT/`, `DATEN_FUER_CHATGPT/`) sind nicht kanonisch.
 
 ---
 
@@ -177,3 +186,4 @@ Diese Regel gilt ab sofort für alle Pakete mit DB-Schema-Berührung:
 *Aktualisiert durch VW-OPS-01 — External Systems Matrix Verweis ergänzt — 2026-05-26*
 *Aktualisiert durch VW-HYGIENE-09B — Bundle-Pflicht auf 12 Dateien erweitert, 4 neue Trigger-Dateien — 2026-05-26*
 *Aktualisiert durch VW-OPS-SUPABASE-GRANTS-01 — Supabase Data API Grants Agentenregel — 2026-05-28*
+*Aktualisiert durch VW-GITHUB-SOT-CLEANUP-01 — GitHub-SOT, Agentenrollen und Routen A/B/C klargestellt — 2026-06-13*

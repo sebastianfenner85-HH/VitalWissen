@@ -16,6 +16,19 @@ Er ist **nicht** automatisch eine Deployment-Quelle.
 
 Änderungen hier führen nicht automatisch zu einem Git-Commit, einem Netlify-Deploy oder einem Supabase-Write. Solche Aktionen brauchen immer eine explizite Freigabe.
 
+
+### 1A. Source-of-Truth-Regel ab VW-GITHUB-SOT-CLEANUP-01
+
+Der kanonische Source of Truth für finalisierte VitalWissen-Dokumente ist **GitHub `main` / `docs/`**.
+
+Der lokale Arbeitsordner ist ein **Staging-, Arbeits-, Mirror- und Exportbereich**. Er darf operative Vorbereitung, Spiegelstände und lokale Paketartefakte enthalten, ersetzt aber nicht den GitHub-Kanon.
+
+Konfliktregel:
+
+1. Für finalisierte Architektur-, Projektstatus-, Spec-, Freeze- und Ops-Dokumente gilt GitHub `main` / `docs/`.
+2. Lokale Ordner wie `01_PROJECT_SOURCES_CURRENT/`, `10_CHATGPT_PROJECT_SOURCES_CURRENT/` und `DATEN_FUER_CHATGPT/` sind Arbeits-/Mirror-/Upload-Bereiche.
+3. Bei Widerspruch zwischen lokalem Spiegel und GitHub-Kanon ist der GitHub-Stand führend, bis Sebastian explizit etwas anderes freigibt.
+
 ---
 
 ## 2. Root-Vertrag
@@ -60,8 +73,8 @@ Der Root dieses Arbeitsordners darf ausschließlich folgende Einträge enthalten
 
 | Ordner | Rolle |
 |--------|-------|
-| `00_REPO/` | Lokale Git-Clones. `vitalwissen_repo_current` ist der kanonische Clone, aber stale/dirty — Commits immer aus frischem Session-Clone. Kein Auto-Commit aus diesem Pfad. |
-| `01_PROJECT_SOURCES_CURRENT/` | **Führende Projektquellen.** Specs, Freezes, Closures, Status-Dokumente. Einzige Wahrheitsquelle für Architektur- und Sprint-Entscheidungen. |
+| `00_REPO/` | Lokale Git-Clones und Referenzkopien. `vitalwissen_repo_current` kann stale/dirty sein; Commits immer aus frischem oder sicher sauberem Clone. GitHub `main` / `docs/` bleibt kanonisch. |
+| `01_PROJECT_SOURCES_CURRENT/` | Lokale historische und operative Arbeitsquelle. Nutzbar für Vorbereitung, Spiegelung und Kontext, aber **nicht** alleinige oder primäre Wahrheitsquelle für finalisierte Entscheidungen. Bei Konflikt gilt GitHub `main` / `docs/`. |
 | `02_PROJECT_SOURCES_ARCHIVE/` | Abgelöste Quellen und historische Session-Logs. Nur Referenz, nicht führend. |
 | `03_LEGACY/` | Altmaterial (z. B. altes Supabase-Anbindungspaket P3). Nur als historische Referenz. |
 | `04_OPS_SQL/` | SQL- und Ops-Dateien, einmalig genutzte Migrations-Skripte. |
@@ -144,3 +157,4 @@ Der Ordner `09_AUDIT_EXPORTS/ZU_LOESCHEN_MANUELL_2026-05-25` enthält vorgemerkt
 *Aktualisiert durch VW-HYGIENE-08B — Bundle-Framework-Konsistenz-Patch — 2026-05-26*
 *Aktualisiert durch VW-OPS-01 — 06_QA_VALIDATION-Rollenbeschreibung aktualisiert — 2026-05-26*
 *Aktualisiert durch VW-HYGIENE-09B — DATEN_FUER_CHATGPT 8→12 Dateien, 4 neue Core-Quellen — 2026-05-26*
+*Aktualisiert durch VW-GITHUB-SOT-CLEANUP-01 — GitHub `main` / `docs/` als kanonischer Source of Truth klargestellt — 2026-06-13*

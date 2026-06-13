@@ -1,11 +1,22 @@
 project:
   name: VitalWissen
   workspace_status: ops_supabase_grants_standard_established
-  current_phase: product_work_ready_plus_grants_ops_standard
-  last_completed_package: VW-AGENT-PHASE-B2_CODEX_SETUP
-  next_recommended_package: FIRST_CODEX_CODE_PACKAGE_OR_PRODUCT_PACKAGE
+  current_phase: product_work_ready_after_github_docs_sot_cleanup
+  last_completed_package: VW-GITHUB-SOT-CLEANUP-01
+  next_recommended_package: PRODUCT_PROGRESS_NEXT_Q2_S1_OR_UX_COVERAGE
+
+source_of_truth:
+  canonical_location: GitHub main/docs
+  finalized_docs_canon: true
+  local_workspace_role: staging_work_mirror_export_not_primary_truth
+  project_sources_current_role: local_operational_reference_not_primary_truth
+  chatgpt_sources_role: upload_mirror_not_canon
+  daten_fuer_chatgpt_role: upload_bundle_not_canon
+  last_alignment_package: VW-GITHUB-SOT-CLEANUP-01
 
 workspace:
+  role: staging_work_mirror_export_not_canon
+  github_docs_canon: true
   root_contract_status: pass_with_warnings
   allowed_root_files:
     - CLAUDE.md
@@ -77,6 +88,7 @@ qa:
   guard_governance_status: mirror_mode_ready_after_06d
 
 repo:
+  github_main_docs_is_canon: true
   local_vitalwissen_repo_current_commit_allowed: false
   reason: stale_dirty_clone
   code_work_rule: fresh_or_clean_clone_only
@@ -110,3 +122,8 @@ go_no_go:
   new_sources_work: go_with_package_contract
   code_build_work: go_only_with_fresh_clone
   local_commits_from_vitalwissen_repo_current: no_go
+
+package_history:
+  source_of_truth_cleanup: completed
+  source_of_truth_cleanup_package: VW-GITHUB-SOT-CLEANUP-01
+  source_of_truth_cleanup_date: 2026-06-13
