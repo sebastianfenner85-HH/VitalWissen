@@ -216,6 +216,15 @@ export default function Home() {
             🥦 Ernährung
           </button>
         </div>
+
+        {/* Trust-Triad — TRUST_ENTRY_LAYER_01 */}
+        <div className="home-trust-triad" role="list">
+          <span className="home-trust-item" role="listitem">Werbefrei</span>
+          <span className="home-trust-sep" aria-hidden="true">·</span>
+          <span className="home-trust-item" role="listitem">Quellenbasiert</span>
+          <span className="home-trust-sep" aria-hidden="true">·</span>
+          <span className="home-trust-item" role="listitem">Ohne Registrierung</span>
+        </div>
       </div>
 
       <div className="home-pillars">
