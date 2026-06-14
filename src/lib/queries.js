@@ -26,11 +26,11 @@ export async function getLaborwerteListe() {
   return data
 }
 
-export async function getLaborwertByCode(loincCode) {
+export async function getLaborwertByCode(slug) {
   const { data, error } = await supabase
     .from('laborwerte')
     .select('*')
-    .eq('loinc_code', loincCode)
+    .eq('slug', slug)
     .single()
 
   if (error) throw error
