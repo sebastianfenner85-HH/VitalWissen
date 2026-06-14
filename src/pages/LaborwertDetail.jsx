@@ -409,6 +409,50 @@ function LwQuellenBox({ quellen }) {
   )
 }
 
+// [3b] TRUST_ENTRY_LAYER_01: Datenstand / Quellbasis
+// Leitet Quellinfos aus vorhandenen DB-Feldern ab. Kein DB-Write, kein Schema-Change.
+// Zeigt "Datenstand" nur wenn letzte_aktualisierung gesetzt. Andernfalls Quellbasis.
+// Rendert nichts wenn weder Datum noch Quellen vorhanden.
+function LwTrustMeta({ lw }) {
+  const formatDatum = (iso) => {
+    try {
+      const parts = iso.split('-')
+      const year  = parts[0]
+      const month = parseInt(parts[1], 10)
+      const monate = ['Januar','Februar','März','April','Mai','Juni',
+                      'Juli','August','September','Oktober','November','Dezember']
+      return `${monate[month - 1]} ${year}`
+    } catch { return iso }
+  }
+
+  const quellen = []
+  if (lw.ref_de_quelle)  quellen.push(lw.ref_de_quelle)
+  if (lw.ref_usa_quelle) quellen.push(lw.ref_usa_quelle)
+
+  const hatDatum  = !!lw.letzte_aktualisierung
+  const hatQuelle = quellen.length > 0
+
+  if (!hatDatum && !hatQuelle) return null
+
+  return (
+    <div className="lw-trust-meta">
+      {hatDatum && (
+        <span className="lw-trust-meta-item">
+          Datenstand: {formatDatum(lw.letzte_aktualisierung)}
+        </span>
+      )}
+      {hatDatum && hatQuelle && (
+        <span className="lw-trust-meta-sep" aria-hidden="true">·</span>
+      )}
+      {hatQuelle && (
+        <span className="lw-trust-meta-item">
+          Referenzbasis: {quellen.join(' · ')}
+        </span>
+      )}
+    </div>
+  )
+}
+
 // [0] UX_VISIBLE_PROGRESS_01: Abschnitt-Schnellnavigation
 // Nur Abschnitte mit tatsächlich vorhandenen Daten. Kein medizinischer Inhalt.
 function LwSectionNav({ sections }) {
@@ -546,6 +590,9 @@ export default function LaborwertDetail() {
       {lw.beschreibung_laienhaft && (
         <p className="beschreibung-text">{lw.beschreibung_laienhaft}</p>
       )}
+
+      {/* [3b] Datenstand / Quellbasis — TRUST_ENTRY_LAYER_01 */}
+      <LwTrustMeta lw={lw} />
 
       {/* [0] Abschnitt-Schnellnavigation — UX_VISIBLE_PROGRESS_01 */}
       <LwSectionNav sections={sections} />

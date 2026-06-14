@@ -375,3 +375,33 @@
     grid-template-columns: 1fr;
   }
 }
+
+/* ── TRUST_ENTRY_LAYER_01 ── home-trust-triad ──────────────────────────────── */
+.home-trust-triad {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+  gap: 4px;
+  margin-top: 20px;
+  font-size: 12px;
+  color: var(--text-muted);
+  letter-spacing: 0.01em;
+}
+
+.home-trust-item {
+  padding: 2px 0;
+}
+
+.home-trust-sep {
+  color: var(--border);
+  padding: 0 2px;
+  user-select: none;
+}
+
+@media (max-width: 400px) {
+  .home-trust-triad {
+    gap: 2px;
+    font-size: 11px;
+  }
+}
