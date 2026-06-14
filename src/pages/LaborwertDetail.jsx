@@ -539,8 +539,16 @@ export default function LaborwertDetail() {
   const zielwerte          = Array.isArray(lw.zielwerte) ? lw.zielwerte : []
 
   const quellenKontext = LEITLINIEN
-    .map(l => ({ ...l, ...ref[l.key] }))
-    .filter(l => l.quelle_url)
+    .map(l => {
+      const r = ref[l.key] || {}
+      return { ...l, ...r, quelle: r.quelle || l.quelle }
+    })
+    .filter(l => {
+      if (!l.quelle_url) return false
+      const r = ref[l.key] || {}
+      const hatDaten = r.min != null || r.max != null || r.max_m != null || r.max_w != null
+      return l.key === 'de' || hatDaten
+    })
 
   // UX_VISIBLE_PROGRESS_01: Abschnitte — nur bei vorhandenen Daten
   const hasK3      = !!(LABORWERT_K3_MAP[lw.loinc_code] || LABORWERT_K3_MAP[lw.slug])
@@ -604,7 +612,7 @@ export default function LaborwertDetail() {
           {LEITLINIEN.map(l => {
             const r = ref[l.key]
             const hatDaten = r.min != null || r.max != null || r.max_m != null || r.max_w != null
-            if (l.key === 'jp' && !hatDaten) return null
+            if ((l.key === 'jp' || l.key === 'usa') && !hatDaten) return null
             return (
               <div key={l.key} className="referenz-item">
                 <span className="referenz-flag">{l.label}</span>
