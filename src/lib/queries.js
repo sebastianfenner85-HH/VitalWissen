@@ -269,7 +269,7 @@ export async function getKrankheitenDetailMap(icdCodes) {
     .select('icd10_code, name_de, slug')
     .in('icd10_code', icdCodes)
   if (error) throw error
-  return Object.fromEntries((data || []).map(r => [r.icd10_code, { name_de: r.name_de, slug }]))
+  return Object.fromEntries((data || []).map(r => [r.icd10_code, { name_de: r.name_de, slug: r.slug }]))
 }
 
 // S5 → S18: Nährstoffe die einen ICD-10-Code in erkrankungs_bezug referenzieren
