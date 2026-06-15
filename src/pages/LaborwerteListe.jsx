@@ -134,9 +134,9 @@ export default function LaborwerteListe() {
           <div className="lw-grid">
             {gefiltert.map(lw => (
               <button
-                key={lw.loinc_code}
+                key={lw.slug || lw.loinc_code}
                 className="lw-card"
-                onClick={() => navigate(`/laborwerte/${lw.loinc_code}`)}
+                onClick={() => navigate(`/laborwerte/${lw.slug || lw.loinc_code}`)}
               >
                 {lw.notfall_flag && (
                   <span className="lw-notfall">⚠ Notfall</span>

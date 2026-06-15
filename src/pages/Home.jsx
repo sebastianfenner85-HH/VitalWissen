@@ -140,9 +140,9 @@ export default function Home() {
                   <p className="home-search-group-label">Laborwerte</p>
                   {results.laborwerte.map(lw => (
                     <button
-                      key={lw.loinc_code}
+                      key={lw.slug || lw.loinc_code}
                       className="home-search-item"
-                      onClick={() => handleSelect('laborwert', lw.loinc_code)}
+                      onClick={() => handleSelect('laborwert', lw.slug || lw.loinc_code)}
                     >
                       <span className="home-search-item-name">
                         {lw.name_de}
