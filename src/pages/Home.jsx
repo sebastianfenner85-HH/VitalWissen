@@ -237,7 +237,7 @@ export default function Home() {
         <div className="home-pillar-card" onClick={() => navigate('/laborwerte')}>
           <div className="home-pillar-icon">🔬</div>
           <h3>Laborwert-Lexikon</h3>
-          <p>60 Laborwerte mit Referenzbereichen aus DE, USA und Japan im Vergleich. Ursachen verstehen, Zusammenhänge erkennen.</p>
+          <p>90 Laborwerte mit Referenzbereichen aus DE, USA und Japan im Vergleich. Ursachen verstehen, Zusammenhänge erkennen.</p>
           <button className="home-pillar-btn" onClick={e => { e.stopPropagation(); navigate('/laborwerte') }}>Zu den Laborwerten →</button>
         </div>
         <div className="home-pillar-card" onClick={() => navigate('/supplements')}>
