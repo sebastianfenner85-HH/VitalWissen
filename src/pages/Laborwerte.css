@@ -1464,3 +1464,90 @@
     font-size: 13px;
   }
 }
+
+/* =========================================================
+   S1-LAB-LIST-STATUS-UX-01: Laborwerte-Liste Status-UX
+   Keine medizinischen Werte, nur Datenstatus aus vorhandenen Feldern.
+   ========================================================= */
+
+.lw-status-filter {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  width: 100%;
+  margin-top: 8px;
+}
+
+.lw-filter-status-btn {
+  min-height: 44px;
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  background: var(--surface-2);
+  color: var(--text-light);
+  padding: 8px 13px;
+  font-size: 13px;
+  font-weight: 500;
+  cursor: pointer;
+  white-space: nowrap;
+}
+
+.lw-filter-status-btn:hover,
+.lw-filter-status-btn.active {
+  color: var(--primary);
+  border-color: var(--primary);
+  background: var(--surface);
+}
+
+.lw-card-status-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin: 10px 0 2px;
+}
+
+.lw-card-status-chip {
+  display: inline-flex;
+  align-items: center;
+  min-height: 24px;
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  padding: 3px 8px;
+  font-size: 11px;
+  font-weight: 500;
+  line-height: 1.2;
+  color: var(--text-light);
+  background: var(--surface-2);
+}
+
+.lw-card-status-chip--reference-ok {
+  color: var(--primary);
+  border-color: color-mix(in srgb, var(--primary) 35%, var(--border));
+}
+
+.lw-card-status-chip--reference-pending {
+  color: var(--text-light);
+  border-style: dashed;
+}
+
+.lw-card-status-chip--target,
+.lw-card-status-chip--context,
+.lw-card-status-chip--actions {
+  color: var(--text);
+}
+
+@media (max-width: 640px) {
+  .lw-status-filter {
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    padding: 2px 0 8px;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  .lw-filter-status-btn {
+    flex: 0 0 auto;
+  }
+
+  .lw-card-status-row {
+    gap: 5px;
+  }
+}
