@@ -18,7 +18,12 @@ export async function getLaborwerteListe() {
       ref_de_max_m,
       ref_de_min_w,
       ref_de_max_w,
-      ref_de_einheit
+      ref_de_einheit,
+      ref_usa_min,
+      ref_usa_max,
+      ref_jp_min,
+      ref_jp_max,
+      zielwerte
     `)
     .order('name_de', { ascending: true })
 

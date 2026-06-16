@@ -1,6 +1,8 @@
 import { useState, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { getLaborwerteListe } from '../lib/queries'
+import { LABORWERT_K3_MAP } from '../lib/laborwert_k3_map'
+import { LABORWERT_B4_ACTIONS_MAP } from '../lib/laborwert_b4_actions_map'
 import './Laborwerte.css'
 
 export default function LaborwerteListe() {
@@ -8,6 +10,7 @@ export default function LaborwerteListe() {
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState(null)
   const [filterKategorie, setFilterKategorie] = useState('Alle')
+  const [filterStatus, setFilterStatus] = useState('Alle')
   const [suche, setSuche] = useState('')
   const navigate = useNavigate()
 
@@ -27,25 +30,74 @@ export default function LaborwerteListe() {
   }, [])
 
   const kategorien = ['Alle', ...new Set(laborwerte.map(lw => lw.panel || lw.kategorie).filter(Boolean))]
+  const statusFilter = ['Alle', 'Referenz vorhanden', 'Referenz in Prüfung', 'Zielwerte', 'Einordnung', 'Maßnahmen', 'Notfall']
+
+  const normalizeText = value => String(value ?? '').toLowerCase()
+
+  const hasDeReferenceValues = lw =>
+    lw.ref_de_min_m != null || lw.ref_de_max_m != null ||
+    lw.ref_de_min_w != null || lw.ref_de_max_w != null
+
+  const hasUsaReferenceValues = lw =>
+    lw.ref_usa_min != null || lw.ref_usa_max != null
+
+  const hasJpReferenceValues = lw =>
+    lw.ref_jp_min != null || lw.ref_jp_max != null
+
+  const hasAnyReferenceValues = lw =>
+    hasDeReferenceValues(lw) || hasUsaReferenceValues(lw) || hasJpReferenceValues(lw)
+
+  const hasZielwerte = lw =>
+    Array.isArray(lw.zielwerte) && lw.zielwerte.length > 0
+
+  const hasEinordnung = lw =>
+    !!(LABORWERT_K3_MAP[lw.loinc_code] || LABORWERT_K3_MAP[lw.slug])
+
+  const hasMassnahmen = lw =>
+    !!(LABORWERT_B4_ACTIONS_MAP[lw.loinc_code] || LABORWERT_B4_ACTIONS_MAP[lw.slug])
+
+  const matchStatusFilter = lw => {
+    if (filterStatus === 'Alle') return true
+    if (filterStatus === 'Referenz vorhanden') return hasAnyReferenceValues(lw)
+    if (filterStatus === 'Referenz in Prüfung') return !hasAnyReferenceValues(lw)
+    if (filterStatus === 'Zielwerte') return hasZielwerte(lw)
+    if (filterStatus === 'Einordnung') return hasEinordnung(lw)
+    if (filterStatus === 'Maßnahmen') return hasMassnahmen(lw)
+    if (filterStatus === 'Notfall') return !!lw.notfall_flag
+    return true
+  }
 
   const gefiltert = laborwerte.filter(lw => {
-    const matchKategorie = filterKategorie === 'Alle' || lw.panel === filterKategorie || lw.kategorie === filterKategorie
-    const matchSuche =
-      !suche ||
-      lw.name_de?.toLowerCase().includes(suche.toLowerCase()) ||
-      lw.vollname_de?.toLowerCase().includes(suche.toLowerCase()) ||
-      lw.beschreibung_laienhaft?.toLowerCase().includes(suche.toLowerCase())
-    return matchKategorie && matchSuche
+    const query = suche.trim().toLowerCase()
+    const matchKategorie =
+      filterKategorie === 'Alle' ||
+      lw.panel === filterKategorie ||
+      lw.kategorie === filterKategorie
+
+    const searchable = [
+      lw.name_de,
+      lw.vollname_de,
+      lw.beschreibung_laienhaft,
+      lw.loinc_code,
+      lw.slug,
+      lw.panel,
+      lw.kategorie,
+    ].map(normalizeText).join(' ')
+
+    const matchSuche = !query || searchable.includes(query)
+
+    return matchKategorie && matchStatusFilter(lw) && matchSuche
   })
 
   const formatRef = (lw) => {
     const min = lw.ref_de_min_m ?? lw.ref_de_min_w
     const max = lw.ref_de_max_m ?? lw.ref_de_max_w
-    const einheit = lw.ref_de_einheit
-    if (min != null && max != null) return `DE: ${min}–${max} ${einheit}`
-    if (max != null) return `DE: <${max} ${einheit}`
-    if (min != null) return `DE: >${min} ${einheit}`
-    return null
+    const einheit = lw.ref_de_einheit ? ` ${lw.ref_de_einheit}` : ''
+    if (min != null && max != null) return `DE: ${min}–${max}${einheit}`
+    if (max != null) return `DE: <${max}${einheit}`
+    if (min != null) return `DE: >${min}${einheit}`
+    if (hasAnyReferenceValues(lw)) return 'Referenz vorhanden'
+    return 'Referenz in Prüfung'
   }
 
   if (loading) {
@@ -78,7 +130,7 @@ export default function LaborwerteListe() {
             <div>
               <h1 className="lw-title">Laborwert-Lexikon</h1>
               <p className="lw-subtitle">
-                {laborwerte.length} Laborwerte erklärt — mit Referenzbereichen aus Deutschland, USA und Japan.
+                {laborwerte.length} Laborwerte verständlich erklärt — mit Referenzstatus, Zielwerten und Einordnung, soweit bereits quellengeprüft eingepflegt.
               </p>
             </div>
             <div className="lw-stats">
@@ -107,7 +159,7 @@ export default function LaborwerteListe() {
                 onChange={e => setSuche(e.target.value)}
               />
             </div>
-            <div className="panel-filter">
+            <div className="panel-filter" aria-label="Kategorie-Filter">
               {kategorien.map(k => (
                 <button
                   key={k}
@@ -115,6 +167,18 @@ export default function LaborwerteListe() {
                   onClick={() => setFilterKategorie(k)}
                 >
                   {k}
+                </button>
+              ))}
+            </div>
+
+            <div className="lw-status-filter" aria-label="Status-Filter">
+              {statusFilter.map(status => (
+                <button
+                  key={status}
+                  className={`lw-filter-status-btn ${filterStatus === status ? 'active' : ''}`}
+                  onClick={() => setFilterStatus(status)}
+                >
+                  {status}
                 </button>
               ))}
             </div>
@@ -156,6 +220,22 @@ export default function LaborwerteListe() {
                     {lw.beschreibung_laienhaft.substring(0, 120)}…
                   </div>
                 )}
+
+                <div className="lw-card-status-row" aria-label="Datenstatus">
+                  <span className={`lw-card-status-chip ${hasAnyReferenceValues(lw) ? 'lw-card-status-chip--reference-ok' : 'lw-card-status-chip--reference-pending'}`}>
+                    {hasAnyReferenceValues(lw) ? 'Referenz vorhanden' : 'Referenz in Prüfung'}
+                  </span>
+                  {hasZielwerte(lw) && (
+                    <span className="lw-card-status-chip lw-card-status-chip--target">Zielwerte</span>
+                  )}
+                  {hasEinordnung(lw) && (
+                    <span className="lw-card-status-chip lw-card-status-chip--context">Einordnung</span>
+                  )}
+                  {hasMassnahmen(lw) && (
+                    <span className="lw-card-status-chip lw-card-status-chip--actions">Maßnahmen</span>
+                  )}
+                </div>
+
                 <div className="lw-card-footer">
                   <span className="lw-ref-mini">{formatRef(lw) || ''}</span>
                   <span className="lw-arrow">→</span>
