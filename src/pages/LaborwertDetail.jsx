@@ -550,6 +550,22 @@ export default function LaborwertDetail() {
       return l.key === 'de' || hatDaten
     })
 
+  // S1-PENDING-REF-UI-01: Referenzwert-Präsenz-Flags
+  // Abgeleitet ausschließlich aus tatsächlich vorhandenen min/max-Werten.
+  // Keine Behauptung über fachliche Existenz — nur Datenstatus im DB-Stand.
+  const hasDeReferenceValues =
+    lw.ref_de_min_m != null || lw.ref_de_max_m != null ||
+    lw.ref_de_min_w != null || lw.ref_de_max_w != null
+
+  const hasUsaReferenceValues =
+    lw.ref_usa_min != null || lw.ref_usa_max != null
+
+  const hasJpReferenceValues =
+    lw.ref_jp_min != null || lw.ref_jp_max != null
+
+  const hasAnyReferenceValues =
+    hasDeReferenceValues || hasUsaReferenceValues || hasJpReferenceValues
+
   // UX_VISIBLE_PROGRESS_01: Abschnitte — nur bei vorhandenen Daten
   const hasK3      = !!(LABORWERT_K3_MAP[lw.loinc_code] || LABORWERT_K3_MAP[lw.slug])
   const hasB4      = !!(LABORWERT_B4_ACTIONS_MAP[lw.loinc_code] || LABORWERT_B4_ACTIONS_MAP[lw.slug])
@@ -608,39 +624,58 @@ export default function LaborwertDetail() {
       {/* [4] Referenzbereiche */}
       <div id="sec-referenz" className="lw-section-anchor detail-section">
         <p className="detail-section-title">Referenzbereiche im Vergleich</p>
-        <div className="referenz-grid">
-          {LEITLINIEN.map(l => {
-            const r = ref[l.key]
-            const hatDaten = r.min != null || r.max != null || r.max_m != null || r.max_w != null
-            if ((l.key === 'jp' || l.key === 'usa') && !hatDaten) return null
-            return (
-              <div key={l.key} className="referenz-item">
-                <span className="referenz-flag">{l.label}</span>
-                <p className="referenz-quelle">{l.quelle}</p>
-                {hatDaten ? (
-                  <>
-                    {r.geschlechtsspezifisch ? (
+
+        {hasAnyReferenceValues ? (
+          <>
+            <div className="referenz-grid">
+              {LEITLINIEN.map(l => {
+                const r = ref[l.key]
+                const hatDaten = r.min != null || r.max != null || r.max_m != null || r.max_w != null
+                if ((l.key === 'jp' || l.key === 'usa') && !hatDaten) return null
+                return (
+                  <div key={l.key} className="referenz-item">
+                    <span className="referenz-flag">{l.label}</span>
+                    <p className="referenz-quelle">{l.quelle}</p>
+                    {hatDaten ? (
                       <>
-                        <p className="referenz-wert referenz-wert--geschlecht">
-                          ♂ {formatRef(r.min_m, r.max_m, r.einheit)}
-                        </p>
-                        <p className="referenz-wert referenz-wert--geschlecht referenz-wert--geschlecht-w">
-                          ♀ {formatRef(r.min_w, r.max_w, r.einheit)}
-                        </p>
+                        {r.geschlechtsspezifisch ? (
+                          <>
+                            <p className="referenz-wert referenz-wert--geschlecht">
+                              ♂ {formatRef(r.min_m, r.max_m, r.einheit)}
+                            </p>
+                            <p className="referenz-wert referenz-wert--geschlecht referenz-wert--geschlecht-w">
+                              ♀ {formatRef(r.min_w, r.max_w, r.einheit)}
+                            </p>
+                          </>
+                        ) : (
+                          <p className="referenz-wert">{formatRef(r.min, r.max, r.einheit)}</p>
+                        )}
+                        {r.quelle && <p className="referenz-einheit">{r.quelle}</p>}
                       </>
                     ) : (
-                      <p className="referenz-wert">{formatRef(r.min, r.max, r.einheit)}</p>
+                      <p className="referenz-wert referenz-wert--nodata">—</p>
                     )}
-                    {r.quelle && <p className="referenz-einheit">{r.quelle}</p>}
-                  </>
-                ) : (
-                  <p className="referenz-wert referenz-wert--nodata">—</p>
-                )}
-              </div>
-            )
-          })}
-        </div>
-        <LwQuellenBox quellen={quellenKontext} />
+                  </div>
+                )
+              })}
+            </div>
+            <LwQuellenBox quellen={quellenKontext} />
+          </>
+        ) : (
+          /* S1-PENDING-REF-UI-01: Pending-State wenn keine Referenzwerte eingepflegt */
+          <div className="lw-ref-pending-karte">
+            <span className="lw-ref-pending-icon" aria-hidden="true">📋</span>
+            <p className="lw-ref-pending-text">
+              Referenzbereiche werden quellengeprüft ergänzt. Laborwerte können je nach Labor,
+              Methode, Alter, Geschlecht, Schwangerschaft, Einheit und klinischem Kontext
+              unterschiedlich bewertet werden. VitalWissen zeigt hier erst Werte an, wenn
+              Quelle, Einheit und Bewertungslogik sauber geprüft sind.
+            </p>
+            <a href="/vertrauen" className="lw-ref-pending-link">
+              Warum Quellenprüfung wichtig ist →
+            </a>
+          </div>
+        )}
       </div>
 
       {/* [6] Zielwert-Block */}

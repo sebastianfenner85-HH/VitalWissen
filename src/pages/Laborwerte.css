@@ -1403,3 +1403,64 @@
     margin-bottom: 14px;
   }
 }
+
+/* =========================================================
+   S1-PENDING-REF-UI-01: Pending-State Referenzbereiche
+   Prefix: lw-ref-pending-*
+   Zeigt eine ruhige Info-Karte wenn keine min/max-Werte
+   für diesen Laborwert eingepflegt sind.
+   Kein Alarmismus, kein Diagnose-/Therapieinhalt.
+   ========================================================= */
+.lw-ref-pending-karte {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  background: var(--surface-2);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 20px;
+}
+
+.lw-ref-pending-icon {
+  font-size: 20px;
+  line-height: 1;
+}
+
+.lw-ref-pending-text {
+  font-size: 14px;
+  line-height: 1.65;
+  color: var(--text-light);
+  margin: 0;
+}
+
+.lw-ref-pending-link {
+  display: inline-flex;
+  align-items: center;
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--primary);
+  text-decoration: none;
+  min-height: 44px;
+  padding: 4px 0;
+  width: fit-content;
+}
+
+.lw-ref-pending-link:hover {
+  text-decoration: underline;
+}
+
+@media (max-width: 640px) {
+  .lw-ref-pending-karte {
+    padding: 16px;
+    gap: 10px;
+  }
+
+  .lw-ref-pending-text {
+    font-size: 13px;
+  }
+
+  .lw-ref-pending-link {
+    min-height: 44px;
+    font-size: 13px;
+  }
+}
