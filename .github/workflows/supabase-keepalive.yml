@@ -14,11 +14,11 @@ jobs:
           STATUS=$(curl -s -o /dev/null -w "%{http_code}" \
             "https://ejyrzxmtosrouwstiyws.supabase.co/auth/v1/health")
           echo "Auth health HTTP: ${STATUS}"
-          if [ "${STATUS}" != "200" ]; then
+          if [ "${STATUS}" != "200" ] && [ "${STATUS}" != "401" ]; then
             echo "Auth health: unerwarteter Status ${STATUS}"
             exit 1
           fi
-          echo "Auth health OK"
+          echo "Auth health OK (HTTP ${STATUS} -- 200=public/401=auth-required, beides akzeptiert)"
 
       - name: Ping Supabase REST (read-only, anon)
         env:
