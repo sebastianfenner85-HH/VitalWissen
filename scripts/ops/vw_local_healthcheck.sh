@@ -54,9 +54,9 @@ curl -fsSI "$VW_LIVE_URL" | head -n 1 | grep -E "HTTP/[0-9.]+ 200|HTTP/2 200" >/
 echo "=== secret scan ==="
 SECRET_HITS="$(
   {
-    grep -R "VW_SUPABASE_DB_URL=" -n . --exclude-dir=.git --exclude-dir=node_modules --exclude-dir=.netlify || true
-    grep -R "NETLIFY_AUTH_TOKEN=" -n . --exclude-dir=.git --exclude-dir=node_modules --exclude-dir=.netlify || true
-    grep -R "postgresql://" -n . --exclude-dir=.git --exclude-dir=node_modules --exclude-dir=.netlify | grep -v './pipelines/.env.example:.*DEIN_PASSWORT' || true
+    grep -R "VW_SUPABASE_DB_URL=" -n . --exclude-dir=.git --exclude-dir=node_modules --exclude-dir=.netlify --exclude=vw_local_healthcheck.sh || true
+    grep -R "NETLIFY_AUTH_TOKEN=" -n . --exclude-dir=.git --exclude-dir=node_modules --exclude-dir=.netlify --exclude=vw_local_healthcheck.sh || true
+    grep -R "postgresql://" -n . --exclude-dir=.git --exclude-dir=node_modules --exclude-dir=.netlify --exclude=vw_local_healthcheck.sh | grep -v './pipelines/.env.example:.*DEIN_PASSWORT' || true
   }
 )"
 [ -z "$SECRET_HITS" ] && pass "no real credential pattern found" || { echo "$SECRET_HITS"; fail "possible secret hit"; }
