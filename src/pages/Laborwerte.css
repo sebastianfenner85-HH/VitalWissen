@@ -1551,3 +1551,17 @@
     gap: 5px;
   }
 }
+
+
+/* Checkup-Builder CTA (S1-CHECKUP-BUILDER-BASE-01) */
+.lw-checkup-link {
+  display: inline-block;
+  margin-top: 14px;
+  color: var(--primary);
+  font-size: 14px;
+  font-weight: 600;
+  text-decoration: none;
+  min-height: 40px;
+  line-height: 40px;
+}
+.lw-checkup-link:hover { text-decoration: underline; }
