@@ -1,6 +1,6 @@
 # CODEX_NEXT_PROMPT — S1-CHECKUP-BUILDER-BASE-01
 
-**Version:** 1.1
+**Version:** 1.2
 **Stand:** 2026-06-25
 **Freigabe durch Sebastian erforderlich vor Ausführung**
 
@@ -22,14 +22,14 @@ SCHRITT 0 — REMOTE/UMGEBUNGS-CHECK (vor jedem Produktschritt)
    a) Wenn origin FEHLT:
       - Setze einmalig: git remote add origin https://github.com/sebastianfenner85-HH/VitalWissen.git
       - Prüfe erneut: git remote get-url origin
-      - Wenn immer noch kein origin -> STOPP, Befund melden
-   b) Wenn origin auf ein ANDERES Repo zeigt -> STOPP, nicht überschreiben, Befund melden
-   c) Wenn Working Tree UNERWARTET DIRTY ist -> STOPP, Befund melden
+      - Wenn immer noch kein origin → STOPP, Befund melden
+   b) Wenn origin auf ein ANDERES Repo zeigt → STOPP, nicht überschreiben, Befund melden
+   c) Wenn Working Tree UNERWARTET DIRTY ist → STOPP, Befund melden
    Gib niemals Credential-Werte, Tokens oder PAT-Strings aus.
 
 2. Kontext-Ordner prüfen:
    - Prüfe: ls codex_context/S1-CHECKUP-BUILDER-BASE-01/
-   - Wenn Ordner fehlt -> STOPP mit BLOCKED_MISSING_CONTEXT
+   - Wenn Ordner fehlt → STOPP mit BLOCKED_MISSING_CONTEXT
 
 3. Branch erstellen (vor dem ersten Commit):
    git checkout -b feat/s1-checkup-builder-base-01
@@ -38,9 +38,15 @@ SCHRITT 0 — REMOTE/UMGEBUNGS-CHECK (vor jedem Produktschritt)
 
 ARBEITSORT
 
-Klone das Repo frisch:
-  git clone https://<PAT>@github.com/sebastianfenner85-HH/VitalWissen.git /tmp/vw-checkup-build
+Klone das Repo frisch (sichere Authentifizierung):
+  git clone https://github.com/sebastianfenner85-HH/VitalWissen.git /tmp/vw-checkup-build
   cd /tmp/vw-checkup-build
+
+  Auth-Regeln:
+  - Nutze GitHub-App, gh-Connector, gh auth oder Git Credential Helper der Codex-Umgebung.
+  - PATs/Tokens dürfen NICHT in Clone-URL, Shell-Befehlen, Logs, Commit, PR oder Handoff erscheinen.
+  - Kein Credential-Wert in die Remote-URL schreiben.
+  - Wenn Auth fehlt oder unzureichend: STOPP und Befund melden.
 
 Dann SCHRITT 0 ausführen (oben).
 
@@ -57,7 +63,9 @@ Alle Panel/Thema-Daten kommen aus einer neuen Config-Datei.
 NEUE DATEIEN (CREATE)
 
 1. src/lib/checkup_builder_config.js
-   - TIER-Konstanten: STANDARD, OPTIONAL, SPEZIAL, NUR_FACHPERSON
+   - TIER-Konstanten: STANDARD, OPTIONAL, SPEZIAL, NUR_FACHPERSON, NICHT_TEIL_DES_GROSSEN_BLUTBILDS
+     NICHT_TEIL_DES_GROSSEN_BLUTBILDS: Werte, die nicht Bestandteil des großen Blutbilds sind,
+     aber in thematischen Gesprächslisten erscheinen können. Kein Diagnose-Framing.
    - PANELS-Objekt:
      'kleines-blutbild': Items mit loinc, slug, name_de, tier, reasoning
      'grosses-blutbild': Kleines Blutbild + Differentialblutbild
@@ -112,7 +120,7 @@ NEUE DATEIEN (CREATE)
    - Schritt 1: Panel-Auswahl (kleines Blutbild / großes Blutbild)
    - Schritt 2: Themen-Auswahl (Entzündung / Müdigkeit / Schilddrüse / HKS)
    - Schritt 3: Ergebnisliste (LOINC-dedupliziert, nach tier gruppiert)
-     Tier-Reihenfolge: standard -> optional -> spezial -> nur_fachperson
+     Tier-Reihenfolge: standard → optional → spezial → nur_fachperson → nicht_teil_des_grossen_blutbilds
      Je Item: name_de + Link /laborwerte/:slug + tier-badge + reasoning
    - Disclaimer prominent (3 Pflicht-Sätze, s.u.)
    - Kein "du brauchst", kein "bestimmen lassen", kein Diagnose-Framing
@@ -146,7 +154,7 @@ ZU ÄNDERNDE DATEIEN (MODIFY)
 
 6. src/pages/LaborwerteListe.jsx
    - Im Header-Bereich (nach dem h1, ca. Zeile 131):
-     Einen Link/Button ergänzen: "Checkup vorbereiten →" -> /laborwerte/checkup-builder
+     Einen Link/Button ergänzen: "Checkup vorbereiten →" → /laborwerte/checkup-builder
    - Klasse: lw-checkup-link (in Laborwerte.css ergänzen — 3-5 Zeilen CSS)
    - SONST NICHTS ändern — keine Logik-Änderung
 
@@ -199,7 +207,9 @@ Closure-Bericht:
 - Dateien geändert: exakte Liste
 - DB-Write: NEIN
 - PR-Link
-- Deploy: Netlify Auto-Deploy erst nach Merge (kein manueller Deploy)
+- Deploy: Ein PR kann automatisch eine Netlify Deploy Preview auslösen — das ist kein Production Deploy.
+  Kein manueller Netlify Deploy. Kein Netlify Production Deploy ohne Merge/main und ohne explizites Go.
+  Production Deploy erfolgt erst nach freigegebenem Merge auf main via Netlify Auto-Publishing.
 ```
 
 ---
@@ -209,7 +219,7 @@ Closure-Bericht:
 1. **Retikulozyten-LOINC:** `31112-6` (verifiziert in Live-DB) — nicht `17849-1` (Altstand).
 
 2. **Remote-Umgebung:** Codex muss origin selbst prüfen und ggf. setzen (SCHRITT 0).
-   PAT kommt aus Sebastians Codex-Secrets — niemals im Prompt ausschreiben.
+   Auth kommt aus der Codex-Umgebung (GitHub-App/gh auth/Credential Helper) — niemals PAT im Prompt oder URL ausschreiben.
 
 3. **Healthcheck:** `scripts/healthcheck-vitalwissen.mjs` (Node.js) — FAIL bei fehlenden
    ENV-Vars ist in Codex-Umgebung ohne Supabase-Verbindung erwartetes Verhalten.
@@ -222,4 +232,4 @@ Closure-Bericht:
 
 ---
 
-*Version 1.1 | 2026-06-25 | Freigabe durch Sebastian erforderlich*
+*Version 1.2 | 2026-06-25 | Freigabe durch Sebastian erforderlich*
