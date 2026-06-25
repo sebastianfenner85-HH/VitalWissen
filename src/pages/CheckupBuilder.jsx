@@ -4,8 +4,8 @@ import { PANELS, THEMEN, TIER, DISCLAIMER } from '../lib/checkup_builder_config'
 import './CheckupBuilder.css'
 
 const TIER_ORDER = [TIER.STANDARD, TIER.OPTIONAL, TIER.SPEZIAL, TIER.NUR_FACHPERSON, TIER.NICHT_TEIL_DES_GROSSEN_BLUTBILDS]
-const TIER_LABEL = { [TIER.STANDARD]: 'Standard', [TIER.OPTIONAL]: 'Optionaler Zusatzwert', [TIER.SPEZIAL]: 'Spezialwert', [TIER.NUR_FACHPERSON]: 'Nur nach fachlicher Einordnung', [TIER.NICHT_TEIL_DES_GROSSEN_BLUTBILDS]: 'Thematischer Wert' }
-const TIER_GROUP_TITLE = { [TIER.STANDARD]: 'Basiswerte', [TIER.OPTIONAL]: 'Optionale Zusatzwerte', [TIER.SPEZIAL]: 'Spezialwerte', [TIER.NUR_FACHPERSON]: 'Nur nach fachlicher Einordnung', [TIER.NICHT_TEIL_DES_GROSSEN_BLUTBILDS]: 'Weitere Themenwerte' }
+const TIER_LABEL = { [TIER.STANDARD]: 'Standardwert', [TIER.OPTIONAL]: 'Optionaler Zusatzwert', [TIER.SPEZIAL]: 'Spezialwert', [TIER.NUR_FACHPERSON]: 'Nur nach fachlicher Einordnung', [TIER.NICHT_TEIL_DES_GROSSEN_BLUTBILDS]: 'Nicht Teil des großen Blutbilds' }
+const TIER_GROUP_TITLE = { [TIER.STANDARD]: 'Standardwerte', [TIER.OPTIONAL]: 'Optionale Zusatzwerte', [TIER.SPEZIAL]: 'Spezialwerte', [TIER.NUR_FACHPERSON]: 'Nur nach fachlicher Einordnung', [TIER.NICHT_TEIL_DES_GROSSEN_BLUTBILDS]: 'Nicht Teil des großen Blutbilds' }
 
 export default function CheckupBuilder() {
   const [selectedPanel, setSelectedPanel] = useState(null)
