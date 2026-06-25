@@ -13,17 +13,17 @@
 | **A1** | Route `/laborwerte/checkup-builder` erreichbar, kein 404 | Browser-Aufruf |
 | **A2** | Panel-Auswahl Kleines/Großes Blutbild funktioniert | Interaktion |
 | **A3** | Alle 4 Themen wählbar (Entzündung / Müdigkeit / Schilddrüse / HKS) | Interaktion |
-| **A4** | Ergebnisliste zeigt tier-gruppierte Werte mit Badges (standard / optional / nur_fachperson) | Sichtprüfung |
+| **A4** | Ergebnisliste zeigt tier-gruppierte Werte mit Badges (standard / optional / nur_fachperson / nicht_teil_des_grossen_blutbilds) | Sichtprüfung |
 | **A5** | Alle Items verlinken korrekt auf `/laborwerte/:slug` | Link-Check |
 | **A6** | Deduplikation: TSH (3016-3) erscheint bei Auswahl Müdigkeit + Schilddrüse genau einmal | Interaktion + Sichtprüfung |
-| **A7** | Kein Diagnose-Framing, kein "du brauchst", kein "lass bestimmen" in UI-Texten und Config-Datei | Text-Audit |
+| **A7** | Kein Diagnose-Framing, kein „du brauchst", kein „lass bestimmen" in UI-Texten und Config-Datei | Text-Audit |
 | **A8** | Disclaimer mit allen 3 Pflicht-Sätzen vorhanden und prominent | Sichtprüfung |
 | **A9** | Mobile-first: Tap-Targets >= 40px, Layout <= 640px responsiv | CSS/DevTools |
 | **A10** | CSS-Klassen-Audit: alle `className=` in `CheckupBuilder.jsx` sind in `CheckupBuilder.css` definiert | Grep + CSS-Review |
 | **A11** | Kein DB-Write, kein Schema-Change, `queries.js` unverändert | Diff-Check |
 | **A12** | Route in `App.jsx` steht VOR `/laborwerte/:code` | Code-Review |
 | **A13** | Entry-Point in `LaborwerteListe.jsx` sichtbar (Link/Button "Checkup vorbereiten →") | Sichtprüfung |
-| **A14** | `checkup_builder_config.js` enthält Sprach-No-Go-Kommentarblock am Dateianfang | Code-Review |
+| **A14** | `checkup_builder_config.js` enthält Sprach-No-Go-Kommentarblock am Dateianfang + alle 5 TIER-Konstanten (STANDARD, OPTIONAL, SPEZIAL, NUR_FACHPERSON, NICHT_TEIL_DES_GROSSEN_BLUTBILDS) | Code-Review |
 | **A15** | Build-Fehler: keine (`npm run build` sauber) | Build-Log |
 | **A16** | Handoff-Datei `docs/review_handoffs/S1_CHECKUP_BUILDER_BASE_01/CHATGPT_HANDOFF.md` erstellt | Datei-Prüfung |
 | **A17** | Feature-Branch verwendet — kein direkter Push auf `main` | `git log --oneline main` + Branch-Check |
@@ -35,9 +35,9 @@
 
 Folgende 3 Sätze müssen exakt (oder inhaltlich gleichwertig) in der UI stehen:
 
-1. "Dies ist keine medizinische Empfehlung und kein Diagnose-Instrument."
-2. "Welche Laborwerte im Einzelfall sinnvoll sind, entscheidet ausschließlich eine Fachperson."
-3. "Die Ergebnisliste dient der Vorbereitung eines Gesprächs — nicht der Selbstdiagnose."
+1. „Dies ist keine medizinische Empfehlung und kein Diagnose-Instrument."
+2. „Welche Laborwerte im Einzelfall sinnvoll sind, entscheidet ausschließlich eine Fachperson."
+3. „Die Ergebnisliste dient der Vorbereitung eines Gesprächs — nicht der Selbstdiagnose."
 
 ---
 
