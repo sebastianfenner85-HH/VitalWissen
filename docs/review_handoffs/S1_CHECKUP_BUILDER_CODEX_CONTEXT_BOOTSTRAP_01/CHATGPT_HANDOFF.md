@@ -1,84 +1,58 @@
-# CHATGPT_HANDOFF — S1-CHECKUP-BUILDER-CODEX-CONTEXT-BOOTSTRAP-01
+# ChatGPT Handoff — S1-CHECKUP-BUILDER-CODEX-CONTEXT-BOOTSTRAP-01
 
 **Paket-ID:** S1-CHECKUP-BUILDER-CODEX-CONTEXT-BOOTSTRAP-01
 **Datum:** 2026-06-25
-**Erstellt von:** Cowork (Claude/Anthropic)
-**Zweck:** Allein ausreichende Übergabe an ChatGPT zur Prüfung des Bootstrap-Pakets
+**Erstellt von:** Claude (Cowork-Modus)
+**Zweck:** Review durch ChatGPT vor Merge in main
 
 ---
 
-## 1. Paket-ID
+## 1. Was wurde gebaut
 
-| Feld | Wert |
-|------|------|
-| Paket | S1-CHECKUP-BUILDER-CODEX-CONTEXT-BOOTSTRAP-01 |
-| Typ | Docs/Kontext — kein Produktcode |
-| Repo | github.com/sebastianfenner85-HH/VitalWissen |
-| Branch | `codex-context/s1-checkup-builder-base-01` |
-| Folgepaket | S1-CHECKUP-BUILDER-BASE-01 (Codex-Produkt-Build — noch nicht ausgeführt) |
+Kein Produktcode. Nur Codex-Kontext-Dateien.
+
+Dieser PR fügt einen Kontext-Ordner ins Repo ein, damit Codex den S1-Checkup-Builder bauen kann.
+Bisher scheiterte Codex an zwei Blockern:
+- `BLOCKED_MISSING_CONTEXT`: `codex_context/S1-CHECKUP-BUILDER-BASE-01/` fehlte im Repo
+- `BLOCKED_WRONG_REMOTE`: Codex fand kein `origin` remote
 
 ---
 
-## 2. Was wurde erstellt?
-
-Fünf neue Dateien im Repo (ausschließlich Docs/Kontext):
+## 2. Neue Dateien (alle Docs/Context, kein Produktcode)
 
 | Datei | Zweck |
 |-------|-------|
-| `codex_context/S1-CHECKUP-BUILDER-BASE-01/README.md` | Paket-Überblick, Hinweise für Codex (Remote, Branch, Tabu) |
-| `codex_context/S1-CHECKUP-BUILDER-BASE-01/CODEX_NEXT_PROMPT.md` | Vollständiger Codex-Arbeitsauftrag (inkl. SCHRITT 0 Remote-Check) |
-| `codex_context/S1-CHECKUP-BUILDER-BASE-01/ACCEPTANCE_CRITERIA.md` | AC A1–A18 mit Prüfmethode |
+| `codex_context/S1-CHECKUP-BUILDER-BASE-01/README.md` | Überblick + kritische Hinweise für Codex |
+| `codex_context/S1-CHECKUP-BUILDER-BASE-01/CODEX_NEXT_PROMPT.md` | Vollständiger Codex-Arbeitsauftrag |
+| `codex_context/S1-CHECKUP-BUILDER-BASE-01/ACCEPTANCE_CRITERIA.md` | AC A1–A18 |
 | `codex_context/S1-CHECKUP-BUILDER-BASE-01/SAFETY_AND_SCOPE.md` | Verboten/Erlaubt-Scope |
 | `docs/review_handoffs/S1_CHECKUP_BUILDER_CODEX_CONTEXT_BOOTSTRAP_01/CHATGPT_HANDOFF.md` | Diese Datei |
 
 ---
 
-## 3. Warum war der Bootstrap nötig?
+## 3. Geänderte Dateien
 
-Codex wurde beim vorherigen Anlauf (S1-CHECKUP-BUILDER-BASE-01) mit zwei Blockern beendet:
-
-| Blocker-Code | Ursache |
-|-------------|--------|
-| `BLOCKED_MISSING_CONTEXT` | `codex_context/S1-CHECKUP-BUILDER-BASE-01/` fehlte im Repo |
-| `BLOCKED_WRONG_REMOTE` | `git remote get-url origin` → `No such remote 'origin'` |
-
-Codex hat korrekt blockiert — kein Produktcode wurde geändert, kein Commit, kein PR.
-
-Dieser Bootstrap-Commit:
-- Legt den Kontext-Ordner mit Prompt, AC, Safety an
-- Enthält in `CODEX_NEXT_PROMPT.md` eine SCHRITT-0-Remote-Check-Regel (origin prüfen/setzen)
-- Löst beide Blocker für den nächsten Codex-Start
+**Keine** — dieser PR ändert keine bestehenden Dateien.
 
 ---
 
-## 4. Geänderte Dateien
+## 4. Produktcode
 
-| Datei | Aktion | Typ |
-|-------|--------|-----|
-| `codex_context/S1-CHECKUP-BUILDER-BASE-01/README.md` | CREATE | Docs |
-| `codex_context/S1-CHECKUP-BUILDER-BASE-01/CODEX_NEXT_PROMPT.md` | CREATE | Docs |
-| `codex_context/S1-CHECKUP-BUILDER-BASE-01/ACCEPTANCE_CRITERIA.md` | CREATE | Docs |
-| `codex_context/S1-CHECKUP-BUILDER-BASE-01/SAFETY_AND_SCOPE.md` | CREATE | Docs |
-| `docs/review_handoffs/S1_CHECKUP_BUILDER_CODEX_CONTEXT_BOOTSTRAP_01/CHATGPT_HANDOFF.md` | CREATE | Docs |
-
-Produktionsdateien geändert: **KEINE**
-`src/` unverändert: **JA**
+**NEIN** — kein `src/`-Touch, kein `App.jsx`, kein `CheckupBuilder.jsx`, kein `queries.js`.
 
 ---
 
-## 5. GitHub/PR-Status
+## 5. Commit-History (PR #27)
 
-| Feld | Wert |
-|------|------|
-| Branch | `codex-context/s1-checkup-builder-base-01` |
-| Commit-Message | `docs: add Codex context for S1 checkup builder` |
-| PR-Titel | `Docs: Codex context for S1 checkup builder` |
-| PR-Status | Draft (kein Auto-Merge) |
-| `main` | Unverändert |
+Commit: `docs: add Codex context for S1 checkup builder`
+Commit: `docs: tighten S1 checkup Codex context before build` (K1/K2/K3-Patch)
+
+Branch: `codex-context/s1-checkup-builder-base-01`
+PR: Draft — kein Merge ohne Sebastian/ChatGPT-Go
 
 ---
 
-## 6. Supabase
+## 6. DB / Supabase
 
 **NEIN** — kein DB-Write, kein Schema-Change, kein Supabase-Zugriff in diesem Paket.
 
@@ -92,8 +66,10 @@ Produktionsdateien geändert: **KEINE**
 
 ## 8. Automatische Netlify Preview
 
-**Möglich/unbekannt** — GitHub PRs können automatisch eine Netlify Deploy Preview auslösen.
-Das wäre kein Production Deploy. Ergebnis im PR sichtbar, falls ausgelöst.
+**Möglich/unbekannt** — Ein PR kann automatisch eine Netlify Deploy Preview auslösen.
+Diese Preview ist kein Production Deploy.
+Kein manueller Netlify Deploy. Kein Netlify Production Deploy ohne Merge/main und ohne explizites Go.
+Production Deploy erfolgt erst nach freigegebenem Merge auf main via Netlify Auto-Publishing.
 
 ---
 
@@ -115,9 +91,12 @@ Das wäre kein Production Deploy. Ergebnis im PR sichtbar, falls ausgelöst.
 
 3. **SAFETY_AND_SCOPE.md:** Sind Verboten/Erlaubt-Listen lückenlos für dieses Paket?
 
-4. **Sprach-No-Gos:** Sind alle medizinischen Sicherheitsgrenzen korrekt formuliert?
+4. **Kategorien:** Sind alle 5 TIER-Werte korrekt (STANDARD, OPTIONAL, SPEZIAL, NUR_FACHPERSON, NICHT_TEIL_DES_GROSSEN_BLUTBILDS)?
+   `nicht_teil_des_grossen_blutbilds` = Werte außerhalb großes Blutbild, in thematischen Listen erlaubt, kein Diagnose-Framing.
 
-5. **Branch/PR/Go-Workflow:** Ist die Regel für Codex klar genug, um main-Push zu verhindern?
+5. **Sprach-No-Gos:** Sind alle medizinischen Sicherheitsgrenzen korrekt formuliert?
+
+6. **Branch/PR/Go-Workflow:** Ist die Regel für Codex klar genug, um main-Push zu verhindern?
 
 ### Vollständigkeit
 
@@ -135,7 +114,7 @@ Voraussetzungen:
 1. Dieser PR ist gemergt (Sebastian/ChatGPT-Go)
 2. Branch `codex-context/s1-checkup-builder-base-01` ist in `main`
 3. `codex_context/S1-CHECKUP-BUILDER-BASE-01/` ist im Repo verfügbar
-4. Codex-Secrets (PAT) sind in Codex-Umgebung gesetzt
+4. Codex-Auth ist in Codex-Umgebung konfiguriert (GitHub-App/gh auth/Credential Helper)
 
 Dann kann Codex starten mit:
 - `CODEX_NEXT_PROMPT.md` aus diesem Ordner als Prompt
