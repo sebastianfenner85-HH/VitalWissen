@@ -9,8 +9,8 @@
 // ============================================================
 
 export const TIER = {
-  STANDARD: 'standardwert',
-  OPTIONAL: 'optional_zusatzwert',
+  STANDARD: 'standard',
+  OPTIONAL: 'optional',
   SPEZIAL: 'spezialwert',
   NUR_FACHPERSON: 'nur_fachperson',
   NICHT_TEIL_DES_GROSSEN_BLUTBILDS: 'nicht_teil_des_grossen_blutbilds',
