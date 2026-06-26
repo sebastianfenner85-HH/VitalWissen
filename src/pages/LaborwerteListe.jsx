@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react'
-import { useNavigate } from 'react-router-dom'
+import { useNavigate, Link } from 'react-router-dom'
 import { getLaborwerteListe } from '../lib/queries'
 import { LABORWERT_K3_MAP } from '../lib/laborwert_k3_map'
 import { LABORWERT_B4_ACTIONS_MAP } from '../lib/laborwert_b4_actions_map'
@@ -132,6 +132,9 @@ export default function LaborwerteListe() {
               <p className="lw-subtitle">
                 {laborwerte.length} Laborwerte verständlich erklärt — mit Referenzstatus, Zielwerten und Einordnung, soweit bereits quellengeprüft eingepflegt.
               </p>
+              <Link to="/laborwerte/checkup-builder" className="lw-checkup-link">
+                Checkup vorbereiten →
+              </Link>
             </div>
             <div className="lw-stats">
               <div className="stat">

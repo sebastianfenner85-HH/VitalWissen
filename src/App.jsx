@@ -18,6 +18,7 @@ import Arztbrief from "./pages/Arztbrief";
 import MedikamenteListe from "./pages/MedikamenteListe";
 import MedikamentDetail from "./pages/MedikamentDetail";
 import Vertrauen from "./pages/Vertrauen";
+import CheckupBuilder from "./pages/CheckupBuilder";
 import "./styles/global.css";
 import "./components/Footer.css";
 
@@ -30,6 +31,7 @@ export default function App() {
           <Routes>
             <Route path="/" element={<Home />} />
             <Route path="/laborwerte" element={<LaborwerteListe />} />
+            <Route path="/laborwerte/checkup-builder" element={<CheckupBuilder />} />
             <Route path="/laborwerte/:code" element={<LaborwertDetail />} />
             <Route path="/supplements" element={<SupplementsListe />} />
             <Route path="/supplements/:slug" element={<SupplementDetail />} />
