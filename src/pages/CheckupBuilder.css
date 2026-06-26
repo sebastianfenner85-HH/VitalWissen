@@ -88,3 +88,205 @@
   .cb-item-main { flex-direction: column; align-items: flex-start; gap: 6px; }
   .cb-disclaimer { flex-direction: column; gap: 8px; }
 }
+
+
+/* UX-01 additions */
+.cb-panel-explanation {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 12px;
+  margin-top: 16px;
+}
+
+.cb-panel-erklaerung,
+.cb-panel-nicht-enthalten {
+  border-radius: 12px;
+  padding: 16px 18px;
+  line-height: 1.55;
+}
+
+.cb-panel-erklaerung {
+  background: var(--surface-2, #f8fafc);
+  border: 1px solid var(--border);
+}
+
+.cb-panel-nicht-enthalten {
+  background: #fffbeb;
+  border: 1px solid #fde68a;
+}
+
+.cb-panel-erklaerung strong,
+.cb-panel-nicht-enthalten strong {
+  display: block;
+  font-size: 13px;
+  color: var(--text-dark);
+  margin-bottom: 4px;
+}
+
+.cb-panel-erklaerung p,
+.cb-panel-nicht-enthalten p {
+  margin: 0;
+  font-size: 14px;
+  color: var(--text-light);
+}
+
+.cb-panel-nicht-enthalten p { color: #78350f; }
+
+.cb-empty-state {
+  background: var(--surface-2, #f8fafc);
+  border: 1px dashed var(--border);
+  border-radius: 12px;
+  padding: 18px 20px;
+}
+
+.cb-empty-state-text {
+  margin: 0;
+  font-size: 14px;
+  color: var(--text-light);
+  line-height: 1.6;
+}
+
+.cb-result-group {
+  margin-bottom: 32px;
+  border-left: 3px solid var(--border);
+  padding-left: 16px;
+}
+
+.cb-result-group--blood_count { border-left-color: var(--primary, #16a34a); }
+.cb-result-group--not_blood_count { border-left-color: #f59e0b; }
+.cb-result-group--topic { border-left-color: #64748b; }
+.cb-result-group--specialist { border-left-color: #4f46e5; }
+
+.cb-result-group-title {
+  font-family: 'DM Sans', system-ui, sans-serif;
+  font-size: 16px;
+  font-weight: 700;
+  color: var(--text-dark);
+  margin-bottom: 4px;
+}
+
+.cb-result-group-note {
+  font-size: 13px;
+  color: var(--text-light);
+  line-height: 1.5;
+  margin: 0 0 12px;
+}
+
+.cb-gespraechsliste {
+  margin-top: 40px;
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  background: var(--bg, white);
+  padding: 18px;
+}
+
+.cb-gespraechsliste-head {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  margin-bottom: 14px;
+}
+
+.cb-gespraechsliste-title {
+  font-family: 'DM Sans', system-ui, sans-serif;
+  font-size: 18px;
+  font-weight: 700;
+  color: var(--text-dark);
+  margin: 0 0 4px;
+}
+
+.cb-gespraechsliste-hint {
+  font-size: 13px;
+  color: var(--text-light);
+  line-height: 1.5;
+  margin: 0;
+}
+
+.cb-gespraechsliste-actions {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.cb-btn-copy,
+.cb-btn-print {
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 12px 16px;
+  min-height: 44px;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.cb-btn-copy {
+  background: var(--primary);
+  color: white;
+  border-color: var(--primary);
+}
+
+.cb-btn-print {
+  background: white;
+  color: var(--text-dark);
+}
+
+.cb-btn-copy:hover,
+.cb-btn-print:hover { opacity: 0.88; }
+
+.cb-copy-status {
+  margin: 0 0 10px;
+  font-size: 13px;
+  color: var(--primary, #16a34a);
+  font-weight: 600;
+}
+
+.cb-copy-status--error { color: #b45309; }
+
+.cb-gespraechsliste-text {
+  width: 100%;
+  min-height: 260px;
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 14px;
+  font: 13px/1.55 ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+  color: var(--text-dark);
+  background: var(--surface-2, #f8fafc);
+  resize: vertical;
+}
+
+@media (min-width: 720px) {
+  .cb-panel-explanation { grid-template-columns: 1fr 1fr; }
+  .cb-gespraechsliste-head { flex-direction: row; align-items: flex-start; justify-content: space-between; }
+  .cb-gespraechsliste-actions { flex-direction: row; flex-shrink: 0; }
+}
+
+@media print {
+  .cb-hero,
+  .cb-step-label,
+  .cb-panel-grid,
+  .cb-thema-grid,
+  .cb-cta-row,
+  .cb-gespraechsliste-actions,
+  .cb-results-footer,
+  .cb-back-link {
+    display: none !important;
+  }
+
+  .cb-content { padding: 0; }
+  .cb-section { margin-bottom: 24px; }
+  .cb-section--results { border-top: 0; padding-top: 0; }
+  .cb-disclaimer,
+  .cb-panel-explanation,
+  .cb-result-group,
+  .cb-gespraechsliste {
+    break-inside: avoid;
+    box-shadow: none;
+  }
+
+  .cb-gespraechsliste-text {
+    min-height: auto;
+    max-height: none;
+    overflow: visible;
+    white-space: pre-wrap;
+  }
+}
