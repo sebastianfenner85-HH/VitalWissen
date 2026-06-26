@@ -25,4 +25,4 @@ Die UI bleibt im Rahmen: Information, Orientierung, Gesprächsvorbereitung. Kein
 
 ## Finales Urteil
 
-`PASS_WITH_WARNINGS`, bis der lokale Grep und der Build nach Patch-Anwendung bestätigt sind.
+`PASS_WITH_WARNINGS` — lokaler Build und Medical-Safety-Grep sind bestätigt; visueller Preview-Test steht noch aus.

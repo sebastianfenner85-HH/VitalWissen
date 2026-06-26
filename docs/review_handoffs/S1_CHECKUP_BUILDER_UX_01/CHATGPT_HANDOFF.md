@@ -3,7 +3,7 @@
 **Paket-ID:** S1-CHECKUP-BUILDER-UX-01
 **Arbeitsort:** `/Users/sebastian/VitalWissen_DEV/00_REPO/vitalwissen_ship`
 **Branch:** `feature/s1-checkup-builder-ux-01-terminal`
-**Status:** Patch erstellt; Build, Commit, Push und Draft PR lokal ausstehend.
+**Status:** Build PASS, Commit erstellt, Branch gepusht, Draft PR #29 erstellt. Review durch ChatGPT ausstehend.
 
 ## Geänderte Dateien
 
@@ -39,13 +39,13 @@
 - Frontend: React/CSS ohne neue Libraries.
 - QA/Handoff: lokale Checks nach Patch-Anwendung erforderlich.
 
-## Noch lokal zu prüfen
+## Lokale Prüfungen
 
-- `npm run build`
-- `git diff --check`
-- Medical-Safety-Grep
-- `bash scripts/ops/vw_local_healthcheck.sh`
-- Draft PR nach Push
+- `npm run build`: PASS
+- `git diff --check`: PASS
+- Medical-Safety-Grep: PASS, keine Treffer in UI/Config
+- `bash scripts/ops/vw_local_healthcheck.sh`: PASS mit erwarteten Feature-Branch-Hinweisen vor Commit
+- Draft PR: erstellt (#29)
 
 ## DB/Supabase/Netlify
 
@@ -55,4 +55,4 @@
 
 ## Review-Empfehlung
 
-`PASS_WITH_WARNINGS`, bis Build, Healthcheck und Draft PR lokal bestätigt sind.
+`PASS_WITH_WARNINGS` — technische Checks sind bestätigt; visueller Preview-, Copy- und Print-Test stehen noch aus.

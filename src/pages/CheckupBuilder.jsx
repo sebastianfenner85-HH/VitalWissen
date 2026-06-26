@@ -69,7 +69,7 @@ function buildGespraechslisteText({ selectedPanel, selectedThemen, groupedItems 
   lines.push(DISCLAIMER.zeile3)
   lines.push('Quelle: vitalwissen.netlify.app')
 
-  return lines.join('\\n')
+  return lines.join('\n')
 }
 
 export default function CheckupBuilder() {
