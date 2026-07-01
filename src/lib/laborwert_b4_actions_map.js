@@ -40,6 +40,7 @@ export const LABORWERT_B4_ACTIONS_MAP = {
       'LDL-Cholesterin wird immer im Zusammenhang mit dem gesamten Herz-Kreislauf-Risiko bewertet. Welcher Zielwert gilt, hängt vom individuellen Risikoprofil ab — 116 mg/dL ist kein universeller Optimalwert. Die folgenden Punkte sind Gesprächs- und Orientierungsbausteine — keine individuelle Therapieempfehlung.',
     high: [
       {
+        loincCode: '2089-1',
         title: 'Gesamtrisiko und persönlichen Zielwert einordnen',
         measureCategory: 'doctor_discussion',
         evidenceMaturity: 'established',
@@ -67,6 +68,7 @@ export const LABORWERT_B4_ACTIONS_MAP = {
         sourceRequirement: 'Leitlinie — ESC/EAS 2021 Dyslipidämien',
       },
       {
+        loincCode: '2089-1',
         title: 'Ballaststoffreiche Ernährung',
         measureCategory: 'lifestyle',
         evidenceMaturity: 'supported',
@@ -94,6 +96,7 @@ export const LABORWERT_B4_ACTIONS_MAP = {
           'Gut untersucht — Cochrane Review Soluble Dietary Fibre (McRorie 2017) + EFSA-Stellungnahme Beta-Glucan',
       },
       {
+        loincCode: '2089-1',
         title: 'Vollständiges Lipidprofil bestimmen lassen',
         measureCategory: 'standard',
         evidenceMaturity: 'established',
@@ -119,6 +122,7 @@ export const LABORWERT_B4_ACTIONS_MAP = {
         sourceRequirement: 'Etabliert — ESC/EAS 2021 Dyslipidämien §4',
       },
       {
+        loincCode: '2089-1',
         title: 'Lipidsenker als Gesprächspunkt vorbereiten',
         measureCategory: 'doctor_discussion',
         evidenceMaturity: 'established',
@@ -138,7 +142,7 @@ export const LABORWERT_B4_ACTIONS_MAP = {
           'Schwangerschaft, schwere Lebererkrankung: Statine kontraindiziert. Muskelschmerzen unter Statinen zeitnah ärztlich klären.',
         monitoring: 'LDL, CK und Leberwerte (GOT/GPT) nach 4–8 Wochen; langfristig jährlich.',
         doctorDiscussion:
-          '"Was wäre ein realistisches LDL-Ziel für mein Risikoprofil?" / "Welches Statin ist geeignet und welche Dosis?" / "Was tun bei Muskelbeschwerden?"',
+          '"Was wäre ein realistisches LDL-Ziel für mein Risikoprofil?" / "Was tun bei Muskelbeschwerden?"',
         notToConfuseWith:
           'Statine sind kein Ersatz für Lebensstiländerungen — sie wirken additiv. Eine Entscheidung über Statine liegt ausschließlich bei Ärztin oder Arzt.',
         safetyLevel: 'high',
@@ -146,6 +150,7 @@ export const LABORWERT_B4_ACTIONS_MAP = {
         sourceRequirement: 'Etabliert — ESC/EAS 2021 Dyslipidämien',
       },
       {
+        loincCode: '2089-1',
         title: 'Lösliche Ballaststoffe: Flohsamenschalen (Psyllium)',
         measureCategory: 'supportive',
         evidenceMaturity: 'supported',
@@ -155,13 +160,13 @@ export const LABORWERT_B4_ACTIONS_MAP = {
         targetGroup:
           'Menschen mit mäßig erhöhtem LDL, die Ernährungsmaßnahmen ergänzen möchten; kein Ersatz für ärztliche Beurteilung bei hohem Risiko',
         whatCouldHelp:
-          'Flohsamenschalen (Psyllium, 10–15 g täglich, in Wasser oder Joghurt eingerührt) können als ergänzende Maßnahme besprochen werden.',
+          'Flohsamenschalen (Psyllium) können als ergänzende Maßnahme ärztlich oder ernährungsfachlich besprochen werden; Menge und Anwendung sollten individuell festgelegt werden.',
         expectedBenefit:
           'LDL-Senkung um ~5–7 % in mehreren RCTs; zusätzlich positiver Effekt auf Blutzucker und Darmgesundheit.',
         uncertaintyReason:
           'Kein aktiver Leitlinienstandard für Flohsamenschalen — gut belegte unterstützende Evidenz (mehrere RCTs), aber kein klinischer Konsens als Primärtherapie.',
         risksAndCautions:
-          'Ausreichend Flüssigkeit trinken (mindestens 1–2 Gläser Wasser pro Einnahme). Langsam einschleichen bei empfindlichem Verdauungstrakt.',
+          'Ausreichend Flüssigkeit trinken und bei empfindlichem Verdauungstrakt vorsichtig beginnen.',
         contraindicationsOrRedFlags:
           'Zeitversetzt zu Medikamenten einnehmen (mind. 30–60 Min. Abstand), da Psyllium die Aufnahme einiger Wirkstoffe verzögern kann.',
         monitoring: 'LDL-Kontrolle nach 6–12 Wochen bei regelmäßiger Anwendung.',
@@ -169,24 +174,25 @@ export const LABORWERT_B4_ACTIONS_MAP = {
           '"Kann Psyllium in meinem Fall sinnvoll sein?" / "Gibt es Wechselwirkungen mit meinen aktuellen Medikamenten?"',
         notToConfuseWith:
           'Nicht verwechseln mit unlöslichen Ballaststoffen (z. B. Weizenkleie) — diese haben keine vergleichbare LDL-senkende Wirkung. Kein Ersatz für Statine bei klinisch relevantem Risiko.',
-        safetyLevel: 'low',
-        requiresDoctorDiscussion: false,
+        safetyLevel: 'medium',
+        requiresDoctorDiscussion: true,
         sourceRequirement:
           'Gut untersucht — Cochrane Review Soluble Dietary Fibre 2016 + EFSA Health Claim Psyllium',
       },
       {
+        loincCode: '2089-1',
         title: 'Pflanzensterole und -stanole',
         measureCategory: 'supportive',
         evidenceMaturity: 'supported',
         evidenceType: 'meta_analysis',
         whyShown:
-          'Gezeigt, weil: Pflanzensterole/-stanole hemmen die Cholesterinaufnahme im Darm — EFSA-anerkannter Health Claim bei 2–3 g täglich',
+          'Gezeigt, weil: Pflanzensterole/-stanole hemmen die Cholesterinaufnahme im Darm — EFSA-anerkannter Health Claim für definierte Tagesmengen',
         targetGroup:
           'Menschen mit erhöhtem LDL, die ergänzende Ernährungsmaßnahmen suchen; nicht bei Schwangerschaft oder Stillzeit ohne ärztliche Rücksprache',
         whatCouldHelp:
-          'Pflanzensterole/-stanole sind in angereicherten Margarine- und Joghurtprodukten erhältlich. 2–3 g täglich zu einer Hauptmahlzeit können LDL messbar senken.',
+          'Pflanzensterole/-stanole sind in angereicherten Margarine- und Joghurtprodukten erhältlich; Einsatz und geeignete Menge sollten ärztlich oder ernährungsfachlich eingeordnet werden.',
         expectedBenefit:
-          'LDL-Senkung um 7–12 % bei 2–3 g Pflanzensterolen täglich — belegt durch Meta-Analysen und EFSA Health Claim.',
+          'LDL-Senkung in Meta-Analysen und EFSA Health Claim belegt; langfristige klinische Endpunkte bleiben weniger klar.',
         uncertaintyReason:
           'Langzeitdaten zur Reduktion kardiovaskulärer Ereignisse fehlen — Surrogatmarker (LDL) gut belegt, klinischer Endpunkt weniger klar.',
         risksAndCautions:
@@ -199,11 +205,12 @@ export const LABORWERT_B4_ACTIONS_MAP = {
         notToConfuseWith:
           'Pflanzensterole senken LDL — reduzieren aber keine bereits vorhandenen Gefäßablagerungen. Kein Ersatz für Statine bei hohem Risiko.',
         safetyLevel: 'medium',
-        requiresDoctorDiscussion: false,
+        requiresDoctorDiscussion: true,
         sourceRequirement:
           'Gut untersucht — EFSA Health Claim Phytosterols 2010 + Meta-Analyse Demonty et al. 2009',
       },
       {
+        loincCode: '2089-1',
         title: 'Omega-3-Fettsäuren als LDL-Senker',
         measureCategory: 'avoid',
         evidenceMaturity: 'avoid',
@@ -218,7 +225,7 @@ export const LABORWERT_B4_ACTIONS_MAP = {
           'Kein relevanter LDL-senkender Effekt in Meta-Analysen und Leitlinien für diesen Kontext.',
         uncertaintyReason: null,
         risksAndCautions:
-          'Hochdosierte Omega-3-Präparate (> 3 g/Tag): erhöhtes Blutungsrisiko. Wechselwirkungen mit Blutgerinnungshemmern möglich.',
+          'Hochdosierte Omega-3-Präparate können das Blutungsrisiko erhöhen. Wechselwirkungen mit Blutgerinnungshemmern möglich.',
         contraindicationsOrRedFlags: null,
         monitoring: null,
         doctorDiscussion: null,
@@ -230,6 +237,7 @@ export const LABORWERT_B4_ACTIONS_MAP = {
           'Eher vermeiden (für LDL-Senkung) — REDUCE-IT Trial + ESC/EAS 2021 §6 + Cochrane Omega-3 Lipide 2020',
       },
       {
+        loincCode: '2089-1',
         title: 'Verlaufskontrolle: Lipidprofil',
         measureCategory: 'monitoring',
         evidenceMaturity: 'established',
@@ -257,6 +265,7 @@ export const LABORWERT_B4_ACTIONS_MAP = {
     ],
     low: [
       {
+        loincCode: '2089-1',
         title: 'Bestehende lipidsenkende Therapie einordnen lassen',
         measureCategory: 'standard',
         evidenceMaturity: 'established',
@@ -288,337 +297,664 @@ export const LABORWERT_B4_ACTIONS_MAP = {
     intro:
       'HbA1c spiegelt den durchschnittlichen Blutzucker der vergangenen 2–3 Monate wider. Die folgenden Punkte sind Gesprächs- und Orientierungsbausteine — keine individuelle Therapieempfehlung.',
     high: [
-      {
-        title: 'Blutzucker-Einstellung ärztlich bewerten lassen',
-        category: 'standard',
-        evidence: 'Leitlinie — DDG/AkdÄ NVL Diabetes mellitus Typ 2, ADA Standards of Care 2024',
-        whyShown:
-          'Ein erhöhter HbA1c zeigt, dass der Blutzucker in den vergangenen Monaten anhaltend erhöht war. Er ist ein wichtiger Verlaufsparameter bei Diabetes.',
-        whatHelps:
-          'Besprich den Wert im Kontext deiner aktuellen Therapie, des Nüchternblutzuckers und deiner Alltagsgewohnheiten mit deiner Ärztin oder deinem Arzt.',
-        expectedEffect:
-          'Einordnung, ob eine Therapieanpassung oder intensivere Begleitung sinnvoll ist.',
-        cautions:
-          'HbA1c allein ist kein Diagnosetest für Diabetes — dafür sind Nüchternblutzucker und ggf. ein oraler Glukosetoleranztest notwendig.',
-        monitoring:
-          'Nüchternblutzucker, Gewicht, Blutdruck, Nierenwerte (Kreatinin, eGFR).',
-        safetyLevel: 'high',
-        requiresDoctorDiscussion: true,
-      },
-      {
-        title: 'Ernährung und Bewegungsgewohnheiten besprechen',
-        category: 'standard',
-        evidence: 'Leitlinie — DDG NVL, ESC/EASD 2023',
-        whyShown:
-          'Ernährungsweise und körperliche Aktivität haben direkten Einfluss auf die Blutzuckerkontrolle und damit auf den HbA1c.',
-        whatHelps:
-          'Besonders relevant: Kohlenhydratqualität (ballaststoffreiche Kost statt schnell verfügbarer Kohlenhydrate), Gewichtsmanagement, regelmäßige körperliche Aktivität. Eine Diabetes- oder Ernährungsberatung kann konkrete Maßnahmen unterstützen.',
-        expectedEffect:
-          'Lebensstilmaßnahmen können HbA1c messbar senken — besonders wirksam in der Frühphase von Typ-2-Diabetes.',
-        cautions:
-          'Bei bekanntem Typ-1-Diabetes sind Insulindosierung und Kohlenhydratmanagement zentral — ärztliche Begleitung ist unerlässlich.',
-        monitoring:
-          'Kontrolle nach 3 Monaten empfohlen (entspricht der biologischen Halbwertszeit von HbA1c).',
-        safetyLevel: 'medium',
-        requiresDoctorDiscussion: false,
-      },
-      {
-        title: 'Individuelle Therapieziele abklären',
-        category: 'standard',
-        evidence: 'Leitlinie — DDG NVL, ADA Standards of Care 2024',
-        whyShown:
-          'HbA1c-Zielwerte sind individuell und hängen von Alter, Begleiterkrankungen, Therapieform und Lebensqualität ab.',
-        whatHelps:
-          'Frage nach dem für dich persönlich geltenden HbA1c-Zielwert und was eine Überschreitung in deinem Fall bedeutet.',
-        expectedEffect:
-          'Besseres Verständnis, ob und welche Maßnahmen sinnvoll oder dringend sind.',
-        cautions:
-          'Zu aggressive Blutzuckersenkung (Hypoglykämien) kann bei bestimmten Gruppen — z. B. älteren Patienten — schädlicher sein als ein leicht erhöhter HbA1c.',
-        monitoring: null,
-        safetyLevel: 'high',
-        requiresDoctorDiscussion: true,
-      },
+        {
+          loincCode: '4548-4',
+          title: 'Zielwert und Behandlungskonzept einordnen lassen',
+          measureCategory: 'doctor_discussion',
+          evidenceMaturity: 'established',
+          evidenceType: 'guideline',
+          whyShown:
+            'Gezeigt, weil: HbA1c-Wert liegt im Diagnose- oder Therapie-Monitoring-Bereich — individuelle Zielwert-Besprechung laut DDG/AWMF Leitlinie empfohlen',
+          targetGroup:
+            'Alle Personen mit HbA1c ≥ 5,7 % oder bekanntem Diabetes; besonders relevant wenn neu diagnostiziert oder Wert sich verändert',
+          whatCouldHelp:
+            'Der richtige Zielwert hängt von Alter, Komorbiditäten, Hypoglykämierisiko und Lebensqualitäts-Präferenzen ab — gemeinsam festlegen laut DDG-Leitlinie 2022',
+          expectedBenefit: 'Individuell passendes Therapieziel — vermeidet sowohl Über- als auch Untertherapie',
+          uncertaintyReason: null,
+          risksAndCautions:
+            'HbA1c allein reicht nicht zur Diagnose bei Hämoglobin-Varianten oder Anämie — in diesen Fällen Blutzucker-Direktmessung nötig',
+          contraindicationsOrRedFlags: 'HbA1c > 10 %: zeitnahe medizinische Vorstellung dringend empfohlen',
+          monitoring: 'HbA1c alle 3 Monate bei Anpassung, alle 6 Monate bei stabiler Einstellung (DDG 2022)',
+          doctorDiscussion:
+            '\'Was ist mein individuelles HbA1c-Ziel?\' / \'Wie verläuft mein Wert in den letzten Messungen?\' / \'Brauche ich eine Therapieanpassung?\'',
+          notToConfuseWith: 'HbA1c ist kein Tagesblutezucker — er spiegelt den Durchschnittswert der letzten 2–3 Monate',
+          safetyLevel: 'medium',
+          requiresDoctorDiscussion: true,
+          sourceRequirement: 'DDG/AWMF Nationale Versorgungsleitlinie Typ-2-Diabetes 2022 — doi.org/10.6101/AZQ/000475',
+        },
+        {
+          loincCode: '4548-4',
+          title: 'Strukturierte körperliche Bewegung',
+          measureCategory: 'lifestyle',
+          evidenceMaturity: 'established',
+          evidenceType: 'meta_analysis',
+          whyShown:
+            'Gezeigt, weil: Körperliche Aktivität senkt HbA1c nachweislich — Standardmaßnahme der DDG/AWMF-Leitlinie',
+          targetGroup:
+            'Menschen mit Typ-2-Diabetes oder Prädiabetes (HbA1c 5,7–6,4 %); besonders wirksam bei Übergewicht',
+          whatCouldHelp:
+            'Mindestens 150 Minuten moderate Ausdauerbelastung pro Woche (z. B. Gehen, Radfahren, Schwimmen) plus 2× Krafttraining pro Woche — gemäß DDG/ADA-Empfehlung',
+          expectedBenefit:
+            'HbA1c-Senkung um durchschnittlich 0,5–0,7 % in Meta-Analysen; messbar nach 12 Wochen bei konsequenter Umsetzung',
+          uncertaintyReason: null,
+          risksAndCautions:
+            'Bei Insulintherapie: Hypoglykämierisiko nach Sport beachten — Blutzucker vor/nach Sport kontrollieren',
+          contraindicationsOrRedFlags: 'Bekannte kardiovaskuläre Erkrankung oder Neuropathie: Belastungstest vor Sportbeginn empfohlen',
+          monitoring:
+            'HbA1c + Nüchternblutzucker nach 3 Monaten regelmäßiger Aktivität; Blutdruck parallel kontrollieren',
+          doctorDiscussion:
+            '\'Welche Sportform ist bei meinem Status sicher?\' / \'Muss ich bei Medikation etwas beachten?\'',
+          notToConfuseWith: 'Kein Ersatz für Medikation bei manifest erhöhtem HbA1c — wirkt additiv zur Pharmakotherapie',
+          safetyLevel: 'medium',
+          requiresDoctorDiscussion: true,
+          sourceRequirement:
+            'DDG NVL Typ-2-Diabetes 2022 + Cochrane Review Aerobic Exercise T2DM (Umpierre et al., JAMA 2011)',
+        },
+        {
+          loincCode: '4548-4',
+          title: 'Kohlenhydratbewusste Ernährung',
+          measureCategory: 'lifestyle',
+          evidenceMaturity: 'supported',
+          evidenceType: 'meta_analysis',
+          whyShown:
+            'Gezeigt, weil: Ernährungsqualität und Kohlenhydratlast beeinflussen HbA1c direkt — mehrere Meta-Analysen mit konsistentem Effekt',
+          targetGroup:
+            'Menschen mit Typ-2-Diabetes oder Prädiabetes; vor allem bei kohlenhydratreicher Ernährung im Alltag',
+          whatCouldHelp:
+            'Reduktion schnell verfügbarer Kohlenhydrate (Weißbrot, Süßgetränke, Weißreis) und Ersatz durch ballaststoffreiche Alternativen; Mediterrane Kost zeigt in RCTs konsistente HbA1c-Reduktion',
+          expectedBenefit:
+            'HbA1c-Senkung um 0,3–0,6 % bei konsequenter Ernährungsumstellung; Effekt nach 3–6 Monaten messbar',
+          uncertaintyReason:
+            'Optimale Kohlenhydratmenge und -qualität wird in Leitlinien unterschiedlich bewertet — individuelle Ernährungsberatung empfohlen',
+          risksAndCautions:
+            'Sehr niedrige Kohlenhydratzufuhr bei Insulintherapie: Hypoglykämierisiko — ärztliche Abstimmung nötig',
+          contraindicationsOrRedFlags: null,
+          monitoring: 'HbA1c nach 3 Monaten; Gewichtsverlauf als indirekter Marker',
+          doctorDiscussion:
+            '\'Macht eine Ernährungsberatung in meinem Fall Sinn?\' / \'Gibt es eine spezifische Diätempfehlung für meinen Wert?\'',
+          notToConfuseWith:
+            'Nicht verwechseln mit \'Diabetiker-Ernährung\' als starrem Regelwerk — gemeint ist Gesamtqualität der Ernährung, nicht Verbotslisten',
+          safetyLevel: 'low',
+          requiresDoctorDiscussion: false,
+          sourceRequirement: 'Schwingshackl et al. Cochrane 2018 (Mediterranean Diet T2DM) + DDG Ernährungsempfehlungen 2021',
+        },
+        {
+          loincCode: '4548-4',
+          title: 'Blutzucker-Verlaufsmessung und HbA1c-Kontrolle',
+          measureCategory: 'monitoring',
+          evidenceMaturity: 'established',
+          evidenceType: 'guideline',
+          whyShown:
+            'Gezeigt, weil: HbA1c erfordert regelmäßige Kontrolle zur Therapiebewertung — Messintervall laut DDG/AWMF Leitlinie definiert',
+          targetGroup: 'Alle Personen mit bekanntem Diabetes oder Prädiabetes',
+          whatCouldHelp:
+            'HbA1c alle 3 Monate bei Therapieanpassung, alle 6 Monate bei stabiler Einstellung; Nüchternblutzucker ergänzend je nach Therapieform',
+          expectedBenefit: 'Frühzeitige Erkennung von Therapieverlusten und Hypoglykämierisiken',
+          uncertaintyReason: null,
+          risksAndCautions: 'CGM-Systeme können HbA1c nicht ersetzen — ergänzend, nicht alternativ',
+          contraindicationsOrRedFlags: null,
+          monitoring: 'HbA1c + Nüchternblutzucker + ggf. Lipidprofil + Nierenwerte (eGFR) als Komorbiditäts-Screening',
+          doctorDiscussion:
+            '\'In welchem Abstand sollte ich meinen HbA1c kontrollieren lassen?\' / \'Brauche ich zusätzliche Blutzuckerselbstmessung?\'',
+          notToConfuseWith: 'HbA1c misst Langzeitverlauf — Tagesmessungen (Glukometer, CGM) liefern andere Information',
+          safetyLevel: 'low',
+          requiresDoctorDiscussion: false,
+          sourceRequirement: 'DDG NVL Typ-2-Diabetes 2022, Kapitel Monitoring',
+        },
+        {
+          loincCode: '4548-4',
+          title: 'Gewichtsreduktion bei Übergewicht',
+          measureCategory: 'lifestyle',
+          evidenceMaturity: 'established',
+          evidenceType: 'meta_analysis',
+          whyShown:
+            'Gezeigt, weil: Übergewicht ist zentraler Risikofaktor für erhöhten HbA1c — Gewichtsreduktion senkt HbA1c nachweislich bei Typ-2-Diabetes',
+          targetGroup:
+            'Personen mit HbA1c-Erhöhung und gleichzeitigem BMI ≥ 25 — wirksamstes Lifestyle-Instrument in dieser Gruppe',
+          whatCouldHelp:
+            'Strukturiertes, alltagstaugliches Gewichtsmanagement mit Ernährungsanpassung und körperlicher Aktivität; Ziele und Vorgehen sollten individuell und nachhaltig geplant werden.',
+          expectedBenefit:
+            '5 % Gewichtsverlust reduziert HbA1c um ~0,5–1,0 % in Meta-Analysen; größere Reduktion (≥10 %) kann zu Teilremission führen',
+          uncertaintyReason: 'Langzeit-Gewichtserhalt nach intensiven Programmen schwierig — Rückfallrisiko in Studien hoch',
+          risksAndCautions:
+            'Sehr niedrige Kalorienzufuhr nur unter ärztlicher Aufsicht; bei Insulintherapie: Hypoglykämierisiko bei Gewichtsabnahme.',
+          contraindicationsOrRedFlags: 'Essstörungsanamnese — keine Kalorienreduktionsprogramme ohne psychologische Unterstützung',
+          monitoring: 'Gewicht monatlich + HbA1c alle 3 Monate',
+          doctorDiscussion:
+            '\'Wie viel Gewichtsreduktion ist für meinen HbA1c realistisch?\' / \'Gibt es ein strukturiertes Programm das ich nutzen kann?\'',
+          notToConfuseWith: 'Nicht verwechseln mit kurzfristiger Diät — Effekt hängt vom nachhaltigen Gewichtserhalt ab',
+          safetyLevel: 'medium',
+          requiresDoctorDiscussion: true,
+          sourceRequirement: 'Look AHEAD Trial (NEJM 2013) + ADA Standards of Medical Care 2024',
+        },
+        {
+          loincCode: '4548-4',
+          title: 'Schlafqualität und zirkadiane Rhythmik',
+          measureCategory: 'promising',
+          evidenceMaturity: 'promising',
+          evidenceType: 'cohort_study',
+          whyShown:
+            'Gezeigt, weil: Schlechter Schlaf ist mit erhöhtem HbA1c assoziiert — mehrere Kohortenstudien, mechanistisch plausibel (Kortisol/Insulinresistenz)',
+          targetGroup:
+            'Personen mit bekannten Schlafproblemen und gleichzeitig erhöhtem HbA1c — keine isolierte Maßnahme, sondern im Kontext',
+          whatCouldHelp:
+            'Regelmäßiger Schlafrhythmus (7–8h), Vermeidung von Blaulicht und schwerem Essen vor dem Schlafen; Schlafapnoe abklären lassen wenn Schnarchen/Tagesmüdigkeit',
+          expectedBenefit:
+            'Verbesserter Schlaf kann Insulinsensitivität verbessern — Effektstärke auf HbA1c noch nicht ausreichend belegt',
+          uncertaintyReason:
+            'Kausalität unklar — ob Schlafverbesserung direkt HbA1c senkt ist nicht durch RCTs belegt; könnte Confounder (Lebensstil) sein',
+          risksAndCautions: null,
+          contraindicationsOrRedFlags: null,
+          monitoring:
+            'Subjektive Schlafqualität (Schlaftagebuch oder App); ggf. Polysomnographie bei Verdacht auf Schlafapnoe',
+          doctorDiscussion:
+            '\'Sollte ich auf Schlafapnoe untersucht werden?\' / \'Kann schlechter Schlaf meinen HbA1c beeinflussen?\'',
+          notToConfuseWith:
+            'Nicht als Alternative zu Ernährung und Bewegung kommunizieren — ergänzender Ansatz im Gesamtkontext',
+          safetyLevel: 'low',
+          requiresDoctorDiscussion: false,
+          sourceRequirement: 'Reutrakul & Van Cauter, Diabetes Care 2018 (Review) + NHANES Kohortendaten',
+        },
     ],
-    low: [
-      {
-        title: 'Hämatologische Ursachen abklären lassen',
-        category: 'supporting',
-        evidence: 'Klinisch etabliert',
-        whyShown:
-          'Ein niedriger HbA1c kann auf eine verkürzte Lebensdauer der roten Blutkörperchen hinweisen — etwa bei Anämien oder hämolytischen Erkrankungen.',
-        whatHelps:
-          'Besprich mit deiner Ärztin oder deinem Arzt, ob ein Blutbild und Anämieparameter (Hämoglobin, Ferritin) sinnvoll sind.',
-        expectedEffect:
-          'Einordnung, ob HbA1c als verlässlicher Verlaufsparameter für Blutzuckerkontrolle geeignet ist.',
-        cautions:
-          'Ein niedrigerer HbA1c bei Anämie ist kein Hinweis auf gute Blutzuckerkontrolle — andere Messmethoden (z. B. Fruktosamin) können dann besser geeignet sein.',
-        monitoring:
-          'Hämoglobin, Ferritin, ggf. Retikulozyten.',
-        safetyLevel: 'medium',
-        requiresDoctorDiscussion: true,
-      },
-    ],
+    low: [],
   },
 
-  // ─── Ferritin — LOINC 2276-4 ─────────────────────────────────────────────
   '2276-4': {
     title: 'Was kann ich bei auffälligem Ferritin besprechen?',
     intro:
       'Ferritin ist ein Eisenspeicherprotein, das auch bei Entzündungen ansteigt. Die folgenden Punkte sind Gesprächs- und Orientierungsbausteine — keine individuelle Therapieempfehlung.',
     high: [
-      {
-        title: 'Entzündungskontext ärztlich einordnen lassen',
-        category: 'standard',
-        evidence: 'Klinisch etabliert — AWMF-Leitlinie Eisenmangel 025-021',
-        whyShown:
-          'Ferritin ist ein Akut-Phase-Protein und steigt bei Entzündungen an — auch ohne Überladung der Eisenspeicher. Ein erhöhter Wert muss immer im Kontext von Entzündungsmarkern (CRP) betrachtet werden.',
-        whatHelps:
-          'Besprich, ob CRP und weitere Entzündungsparameter parallel bestimmt wurden oder werden sollten.',
-        expectedEffect:
-          'Einordnung, ob das erhöhte Ferritin entzündungsbedingt oder eisenspeicherbezogen ist.',
-        cautions:
-          'Erhöhtes Ferritin schließt einen gleichzeitigen Eisenmangel nicht aus (sogenannter funktioneller Eisenmangel).',
-        monitoring:
-          'CRP, Transferrinsättigung, ggf. löslicher Transferrinrezeptor.',
-        safetyLevel: 'medium',
-        requiresDoctorDiscussion: true,
-      },
-      {
-        title: 'Leberwerte im Kontext beurteilen lassen',
-        category: 'supporting',
-        evidence: 'Klinisch relevant — DGVS',
-        whyShown:
-          'Ferritin wird in Leberzellen gespeichert. Lebererkrankungen wie Fettleber oder Hepatitis können Ferritin erhöhen, ohne dass die Eisenspeicher überfüllt sind.',
-        whatHelps:
-          'Frage nach Leberwerten (GOT/GPT/GGT), falls diese nicht parallel bestimmt wurden.',
-        expectedEffect:
-          'Einordnung, ob eine Leberursache für das erhöhte Ferritin relevant ist.',
-        cautions: null,
-        monitoring:
-          'GOT (AST), GPT (ALT), GGT.',
-        safetyLevel: 'medium',
-        requiresDoctorDiscussion: true,
-      },
-      {
-        title: 'Vollständigen Eisenstatus bestimmen lassen',
-        category: 'standard',
-        evidence: 'Klinisch etabliert — AWMF-Leitlinie Eisenmangel',
-        whyShown:
-          'Für eine vollständige Einordnung des Eisenstoffwechsels ist Ferritin allein nicht ausreichend — Transferrinsättigung und Serumeisen ergänzen das Bild.',
-        whatHelps:
-          'Bitte um einen vollständigen Eisenstatus (Ferritin, Transferrin, Transferrinsättigung, Serumeisen) wenn dieser noch nicht bestimmt wurde.',
-        expectedEffect:
-          'Einordnung, ob eine Eisenüberladung (z. B. Hämochromatose) oder eine andere Ursache vorliegt.',
-        cautions:
-          'Hämochromatose ist selten — häufigere Ursachen für erhöhtes Ferritin sind Entzündungen und Lebererkrankungen.',
-        monitoring:
-          'Transferrinsättigung; bei begründetem Verdacht: HFE-Gentest (Hämochromatose).',
-        safetyLevel: 'medium',
-        requiresDoctorDiscussion: true,
-      },
+        {
+          loincCode: '2276-4',
+          title: 'Ursache klären — vor jeder Supplementierung',
+          measureCategory: 'doctor_discussion',
+          evidenceMaturity: 'established',
+          evidenceType: 'guideline',
+          whyShown:
+            'Gezeigt, weil: Ferritin unter 30 µg/L — Ursachenklärung ist laut AWMF-Leitlinie Eisenmangel (021-025) zwingend vor jeder Supplementierung',
+          targetGroup: 'Alle Personen mit niedrigem Ferritin — unabhängig ob mit oder ohne Symptome',
+          whatCouldHelp:
+            'Ursachen können sein: Ernährungsmangel, okkulter Blutverlust (GI-Trakt, Gynäkologie), Resorptionsproblem (Zöliakie, Gastritis), erhöhter Bedarf (Schwangerschaft, Leistungssport). Diagnose entscheidet über Therapieweg.',
+          expectedBenefit: 'Gezielte Therapie verhindert Maskierung einer ernsthaften Grunderkrankung',
+          uncertaintyReason: null,
+          risksAndCautions:
+            'Eisensupplementierung ohne Diagnose kann bei unerkannter Hämochromatose oder Polyzythämie gefährlich sein',
+          contraindicationsOrRedFlags:
+            'Ferritin < 12 µg/L oder Hämoglobin erniedrigt oder schwere Symptome (Herzrasen, Kurzatmigkeit): zeitnahe ärztliche Vorstellung dringend',
+          monitoring: 'Blutbild + Ferritin + Transferrinsättigung + CRP (Entzündungsausschluss) + ggf. Retikulozyten',
+          doctorDiscussion:
+            '\'Was könnte der Grund für meinen niedrigen Ferritin sein?\' / \'Brauche ich eine GI-Abklärung?\' / \'Orale Supplementierung oder Infusion?\'',
+          notToConfuseWith:
+            'Ferritin ist kein direktes Maß für Hämoglobin — Eisenmangel-Anämie ist ein Folgezustand, kein Synonym für niedrigen Ferritin',
+          safetyLevel: 'medium',
+          requiresDoctorDiscussion: true,
+          sourceRequirement: 'AWMF-Leitlinie Eisenmangel und Eisenmangelanämie 021-025 (2023)',
+        },
+        {
+          loincCode: '2276-4',
+          title: 'Eisenreiche Ernährung optimieren',
+          measureCategory: 'lifestyle',
+          evidenceMaturity: 'supported',
+          evidenceType: 'guideline',
+          whyShown:
+            'Gezeigt, weil: Ernährungsbedingte Eisenzufuhr ist erster Ansatz bei leichtem Ferritin-Mangel ohne Blutungsverdacht',
+          targetGroup:
+            'Leichter Mangel (Ferritin 12–30 µg/L) ohne schwere Symptome, kein Blutungsverdacht, vegetarische/vegane Ernährung als mögliche Ursache',
+          whatCouldHelp:
+            'Häm-Eisen (Fleisch, Fisch) hat 3-fach höhere Bioverfügbarkeit als Nicht-Häm-Eisen (Hülsenfrüchte, Spinat, Tofu). Vitamin-C-reiche Lebensmittel gleichzeitig erhöhen Nicht-Häm-Eisenaufnahme.',
+          expectedBenefit:
+            'Ferritin-Anstieg um 10–20 µg/L bei konsequenter Anpassung nach 8–12 Wochen — nur bei ernährungsbedingtem Mangel',
+          uncertaintyReason: 'Ernährungsanpassung allein reicht bei schwerem Mangel oder Resorptionsproblem nicht aus',
+          risksAndCautions:
+            'Kaffee, schwarzer Tee, Kalzium und Polyphenole hemmen Eisenresorption — zeitversetzt konsumieren (mind. 1h Abstand)',
+          contraindicationsOrRedFlags: null,
+          monitoring: 'Ferritin + Transferrinsättigung nach 3 Monaten konsequenter Ernährungsumstellung',
+          doctorDiscussion:
+            '\'Kann ich meinen Bedarf über Ernährung decken oder brauche ich Supplements?\' / \'Wie hoch ist mein täglicher Eisenbedarf?\'',
+          notToConfuseWith:
+            'Spinat enthält zwar Eisen, aber auch Oxalat, das die Aufnahme hemmt — kein idealer Eisenlieferant',
+          safetyLevel: 'low',
+          requiresDoctorDiscussion: false,
+          sourceRequirement: 'DGE-Empfehlungen Eisen 2021 + AWMF-Leitlinie Eisenmangel 021-025',
+        },
+        {
+          loincCode: '2276-4',
+          title: 'Orale Eisensupplementierung (nach ärztlicher Diagnose)',
+          measureCategory: 'standard',
+          evidenceMaturity: 'established',
+          evidenceType: 'guideline',
+          whyShown:
+            'Gezeigt, weil: Orale Eisentherapie ist Standardbehandlung bei ernährungsbedingtem oder leichtem Eisenmangel — nach Ausschluss von Kontraindikationen',
+          targetGroup:
+            'Personen mit diagnostiziertem Eisenmangel (nicht nur Ferritin-Mangel), keine Hämochromatose, kein schwerer Blutverlust der sofortige Infusion erfordert',
+          whatCouldHelp:
+            'Orale Eisenpräparate können nach ärztlicher Diagnose besprochen werden; Präparat, Form, Menge und Dauer legt die Ärztin oder der Arzt fest.',
+          expectedBenefit:
+            'Ferritin-Normalisierung nach 3–6 Monaten bei oraler Therapie; Hämoglobin-Anstieg nach 4–8 Wochen messbar',
+          uncertaintyReason: null,
+          risksAndCautions:
+            'Häufige Nebenwirkungen: Übelkeit, Verstopfung, dunkler Stuhl. Nicht zusammen mit Kaffee, Tee, Milchprodukten, Antazida einnehmen.',
+          contraindicationsOrRedFlags:
+            'Hämochromatose: absolute Kontraindikation. Chronisch entzündliche Erkrankungen (CED, RA): orale Therapie oft weniger wirksam — parenterale Alternative besprechen.',
+          monitoring: 'Ferritin + Hämoglobin + Transferrinsättigung nach 4 Wochen und nach Abschluss der Therapie',
+          doctorDiscussion:
+            '\'Welches Eisenpräparat ist für mich am besten verträglich?\' / \'Wie lange muss ich supplementieren?\' / \'Wann ist eine Infusion besser?\'',
+          notToConfuseWith:
+            'Orales Eisen ist nicht für alle Ursachen ausreichend — bei starkem Blutverlust oder Resorptionsproblem ist intravenöses Eisen nötig',
+          safetyLevel: 'medium',
+          requiresDoctorDiscussion: true,
+          sourceRequirement: 'AWMF-Leitlinie Eisenmangel 021-025 (2023) + Cochrane Review Oral Iron Supplementation (2022)',
+        },
+        {
+          loincCode: '2276-4',
+          title: 'Erhöhtes Ferritin: Ursachen abklären lassen',
+          measureCategory: 'doctor_discussion',
+          evidenceMaturity: 'established',
+          evidenceType: 'guideline',
+          whyShown:
+            'Gezeigt, weil: Ferritin über 300 µg/L (Männer) / 200 µg/L (Frauen) kann auf Hämochromatose, akute Entzündung oder Fettlebererkrankung hinweisen',
+          targetGroup:
+            'Personen mit deutlich erhöhtem Ferritin — besonders relevant bei gleichzeitig normalen oder niedrigen Transferrin-Werten',
+          whatCouldHelp:
+            'Differenzierung: Ferritin als Akutphasenprotein (Entzündung) vs. Eisenüberladung (Hämochromatose) vs. Lebererkrankung. CRP + Transferrinsättigung + Leberwerte helfen einzuordnen.',
+          expectedBenefit:
+            'Klärung ob Eisenüberladung, Entzündungsreaktion oder Leberproblem vorliegt — grundlegend unterschiedliche Therapien',
+          uncertaintyReason: null,
+          risksAndCautions:
+            'Erhöhter Ferritin bei Hämochromatose und gleichzeitiger Eisensupplementierung: Organschäden (Leber, Herz, Pankreas) möglich',
+          contraindicationsOrRedFlags:
+            'Ferritin > 1000 µg/L: zeitnahe Abklärung dringend erforderlich. Absolute Kontraindikation: kein Eisen supplementieren bei erhöhtem Ferritin ohne Diagnose.',
+          monitoring: 'Transferrinsättigung + Leberwerte (GOT, GPT, GGT) + CRP + ggf. HFE-Gentest',
+          doctorDiscussion:
+            '\'Warum ist mein Ferritin erhöht?\' / \'Sollte ich auf Hämochromatose getestet werden?\' / \'Ist meine Leber betroffen?\'',
+          notToConfuseWith:
+            'Erhöhtes Ferritin bedeutet nicht automatisch zu viel Eisen — Entzündungen können Ferritin stark erhöhen ohne echte Eisenüberladung',
+          safetyLevel: 'high',
+          requiresDoctorDiscussion: true,
+          sourceRequirement: 'AWMF-Leitlinie Hämochromatose 040-017 + EASL-Guideline Genetic Liver Diseases 2022',
+        },
+        {
+          loincCode: '2276-4',
+          title: 'Intravenöse Eisengabe bei Resorptionsproblem',
+          measureCategory: 'standard',
+          evidenceMaturity: 'established',
+          evidenceType: 'guideline',
+          whyShown:
+            'Gezeigt, weil: Bestimmte Patientengruppen sprechen auf orale Eisentherapie nicht ausreichend an — parenterale Therapie laut Leitlinie in diesen Fällen Standard',
+          targetGroup:
+            'Personen mit CED (Morbus Crohn, Colitis ulcerosa), nach bariatrischer OP, schwangere Frauen mit schwerem Mangel, Dialysepatienten, Herzinsuffizienz-Patienten',
+          whatCouldHelp:
+            'Intravenöse Eisenpräparate (z. B. Eisencarboxymaltose) umgehen Resorptionsproblem und korrigieren Ferritin schneller als orale Therapie',
+          expectedBenefit:
+            'Ferritin-Normalisierung innerhalb von 2–4 Wochen bei i.v. Therapie — deutlich schneller als oral',
+          uncertaintyReason: null,
+          risksAndCautions:
+            'Infusionsreaktionen möglich (selten aber ernst) — nur unter medizinischer Aufsicht; erstes Mal immer mit Überwachungszeit',
+          contraindicationsOrRedFlags:
+            'Erste Trimester Schwangerschaft: i.v. Eisen nur bei absolutem Bedarf; bakterielle Infekte aktiv: kein i.v. Eisen',
+          monitoring: 'Ferritin + Hämoglobin 4 Wochen nach Infusion',
+          doctorDiscussion:
+            '\'Ist eine Infusion in meinem Fall sinnvoller als Tabletten?\' / \'Welches Präparat ist geeignet und wie wird es überwacht?\'',
+          notToConfuseWith:
+            'i.v. Eisen ist keine Lifestyle-Maßnahme sondern medizinische Therapie — nicht selbst initiierbar',
+          safetyLevel: 'high',
+          requiresDoctorDiscussion: true,
+          sourceRequirement: 'AWMF-Leitlinie Eisenmangel 021-025 (2023) + ECCO-Guideline CED-Eisenmangel',
+        },
+        {
+          loincCode: '2276-4',
+          title: 'Verlaufskontrolle nach Eisentherapie',
+          measureCategory: 'monitoring',
+          evidenceMaturity: 'established',
+          evidenceType: 'guideline',
+          whyShown:
+            'Gezeigt, weil: Ferritin und Hämoglobin müssen nach Therapiebeginn kontrolliert werden — Therapieerfolg und Überdosierungsrisiko prüfen',
+          targetGroup: 'Alle Personen in Eisentherapie (oral oder i.v.)',
+          whatCouldHelp:
+            'Blutbild + Ferritin + Transferrinsättigung: 4 Wochen nach Therapiebeginn; nach Abschluss nochmals zur Therapie-Validierung',
+          expectedBenefit: 'Therapieerfolg sichern und Übertherapie (Ferritin > 300 µg/L) verhindern',
+          uncertaintyReason: null,
+          risksAndCautions:
+            'Ferritin als Akutphasenprotein: bei Infekten kurzfristig erhöht — Kontrollmessung nicht während akuter Erkrankung',
+          contraindicationsOrRedFlags: null,
+          monitoring: 'Ferritin + Hämoglobin + Transferrinsättigung: 4 Wochen nach Therapiebeginn, dann nach Abschluss',
+          doctorDiscussion:
+            '\'Wann sollte ich meinen Ferritin-Wert wieder kontrollieren?\' / \'Wann kann ich die Supplementierung beenden?\'',
+          notToConfuseWith: null,
+          safetyLevel: 'low',
+          requiresDoctorDiscussion: false,
+          sourceRequirement: 'AWMF-Leitlinie Eisenmangel 021-025 (2023)',
+        },
     ],
-    low: [
-      {
-        title: 'Eisenstatus vollständig abklären lassen',
-        category: 'standard',
-        evidence: 'Leitlinie — AWMF-Leitlinie Eisenmangel 025-021',
-        whyShown:
-          'Niedriges Ferritin gilt als zuverlässiger Marker für erschöpfte Eisenspeicher — auch dann, wenn Hämoglobin noch normal ist (latenter Eisenmangel).',
-        whatHelps:
-          'Besprich mit deiner Ärztin oder deinem Arzt, ob Hämoglobin, Transferrinsättigung und eine Ursachenklärung sinnvoll sind.',
-        expectedEffect:
-          'Einordnung, ob ein latenter Eisenmangel, eine manifeste Eisenmangelanämie oder eine andere Ursache vorliegt.',
-        cautions:
-          'Bei gleichzeitiger Entzündung (erhöhtem CRP) kann Ferritin trotz Eisenmangel normal oder sogar erhöht erscheinen.',
-        monitoring:
-          'Hämoglobin, Transferrinsättigung, CRP.',
-        safetyLevel: 'medium',
-        requiresDoctorDiscussion: true,
-      },
-      {
-        title: 'Ursache des Eisenmangels klären lassen',
-        category: 'standard',
-        evidence: 'Klinisch etabliert — AWMF',
-        whyShown:
-          'Niedriges Ferritin hat verschiedene mögliche Ursachen: unzureichende Zufuhr, Resorptionsstörungen (z. B. Zöliakie, Morbus Crohn) oder chronische Blutverluste.',
-        whatHelps:
-          'Besprich potenzielle Ursachen: Ernährungsgewohnheiten, gastrointestinale Beschwerden, Menstruationsstärke (bei Frauen) oder bekannte Grunderkrankungen.',
-        expectedEffect:
-          'Zielgerichtete Behandlung der Ursache ist dauerhaft wirksamer als alleinige Supplementierung.',
-        cautions:
-          'Eisensupplementation ohne Ursachenklärung kann eine Diagnose verzögern.',
-        monitoring: null,
-        safetyLevel: 'medium',
-        requiresDoctorDiscussion: true,
-      },
-      {
-        title: 'Eisenreiche Ernährungsgewohnheiten besprechen',
-        category: 'supporting',
-        evidence: 'Klinisch etabliert — DGE Referenzwerte',
-        whyShown:
-          'Ernährungsgewohnheiten beeinflussen die Eisenaufnahme — sowohl die Menge als auch die Bioverfügbarkeit.',
-        whatHelps:
-          'Besprich mit Arzt oder Ernährungsberatung: Quellen für gut verfügbares Eisen, die Kombination mit Vitamin-C-reichen Speisen und häufige Hemmfaktoren (z. B. Kaffee, Tee oder calciumreiche Speisen zur selben Mahlzeit).',
-        expectedEffect:
-          'Ernährungsanpassungen können die Eisenaufnahme verbessern — besonders bei leichtem Mangel ohne Resorptionsstörung.',
-        cautions:
-          'Bei nachgewiesenem Eisenmangel reichen Ernährungsmaßnahmen allein oft nicht aus — ärztliche Beurteilung bleibt notwendig.',
-        monitoring: null,
-        safetyLevel: 'low',
-        requiresDoctorDiscussion: false,
-      },
-    ],
+    low: [],
   },
 
-  // ─── Vitamin D 25-OH — LOINC 14635-7 ─────────────────────────────────────
   '14635-7': {
     title: 'Was kann ich bei auffälligem Vitamin-D-Spiegel besprechen?',
     intro:
       'Vitamin D 25-OH ist der wichtigste Labormarker für den Vitamin-D-Versorgungsstatus. Die folgenden Punkte sind Gesprächs- und Orientierungsbausteine — keine individuelle Supplementierungsempfehlung.',
     high: [
-      {
-        title: 'Aktuelle Supplementierung ärztlich einordnen lassen',
-        category: 'standard',
-        evidence: 'Klinisch etabliert — DGE, AWMF',
-        whyShown:
-          'Sehr hohe Vitamin-D-Werte entstehen fast ausschließlich durch hochdosierte Supplementierung. Eine Überdosierung kann langfristig zu erhöhten Kalziumspiegeln führen.',
-        whatHelps:
-          'Falls du Vitamin-D-Präparate einnimmst, besprich die aktuelle Dosierung und Einnahmedauer mit deiner Ärztin oder deinem Arzt.',
-        expectedEffect:
-          'Anpassung der Supplementierung auf einen sicheren Bereich.',
-        cautions:
-          'Sonnenexposition allein führt nicht zu Vitamin-D-Toxizität — das Risiko entsteht ausschließlich durch übermäßige Supplementierung.',
-        monitoring:
-          'Kalzium im Blut (bei stark erhöhten Werten), Nierenfunktion.',
-        safetyLevel: 'high',
-        requiresDoctorDiscussion: true,
-      },
+        {
+          loincCode: '14635-7',
+          title: 'Vitamin-D-Einnahme ärztlich einordnen lassen',
+          measureCategory: 'doctor_discussion',
+          evidenceMaturity: 'established',
+          evidenceType: 'guideline',
+          whyShown:
+            'Gezeigt, weil: 25-OH-Vitamin-D niedrig sein kann — eine Supplementierung muss anhand von Ausgangswert, Risiko und Begleitwerten eingeordnet werden',
+          targetGroup: 'Alle Personen mit nachgewiesenem Vitamin-D-Mangel (< 50 nmol/L)',
+          whatCouldHelp:
+            'Ob und wie supplementiert wird, sollte anhand von Ausgangswert, Begleitwerten, Risiko für Überversorgung und möglicher Ursache ärztlich festgelegt werden.',
+          expectedBenefit: 'Vermeidung von Unter- (wirkungslos) und Übertherapie (Hyperkalzämie-Risiko)',
+          uncertaintyReason: null,
+          risksAndCautions:
+            'Einnahmeform und Kontrollintervall sollten ärztlich festgelegt werden; hochdosierte Selbst-Supplementierung ohne Kontrolle vermeiden.',
+          contraindicationsOrRedFlags:
+            'Sarkoidose, Williams-Syndrom, primärer Hyperparathyreoidismus: Vitamin-D-Supplementierung kontraindiziert ohne Facharzt',
+          monitoring: '25-OH-Vitamin-D nach 3 Monaten Supplementierung; Kalzium + Phosphat wenn Hochdosierung',
+          doctorDiscussion: '\'Wie lange soll ich supplementieren?\' / \'Brauche ich Kalzium zusätzlich?\'',
+          notToConfuseWith:
+            'Vitamin D2 (Ergocalciferol) ist in Studien weniger effektiv als D3 (Cholecalciferol) — D3 bevorzugt',
+          safetyLevel: 'medium',
+          requiresDoctorDiscussion: true,
+          sourceRequirement: 'Endocrine Society Clinical Practice Guideline Vitamin D 2024 + DGE-Stellungnahme Vitamin D',
+        },
+        {
+          loincCode: '14635-7',
+          title: 'Sonnenlicht und UV-B-Exposition',
+          measureCategory: 'lifestyle',
+          evidenceMaturity: 'established',
+          evidenceType: 'guideline',
+          whyShown:
+            'Gezeigt, weil: Über 90 % der körpereigenen Vitamin-D-Synthese erfolgt über UV-B-Bestrahlung der Haut',
+          targetGroup:
+            'Alle Personen mit Vitamin-D-Mangel; besonders in Herbst/Winter (Oktober–April in Deutschland: keine ausreichende UV-B-Intensität)',
+          whatCouldHelp:
+            'Sommer (April–September): 10–30 Min. direkte Sonneneinstrahlung auf Arme/Beine zwischen 11–15 Uhr ausreichend für Tagesbedarf. Winter: Sonnenlicht nicht ausreichend in Deutschland.',
+          expectedBenefit: 'Ausreichende körpereigene Synthese im Sommer möglich — reduziert Supplementierungsbedarf',
+          uncertaintyReason: null,
+          risksAndCautions:
+            'Sonnenbrennschutz ab SPF 15 reduziert Vitamin-D-Synthese um ~95 % — Abwägung mit Hautkrebs-Prävention notwendig',
+          contraindicationsOrRedFlags:
+            'Dunkle Hautfarbe, hohes Alter, Adipositas: Syntheserate reduziert — Supplementierung auch im Sommer notwendig prüfen',
+          monitoring: '25-OH-Vitamin-D im Herbst kontrollieren (nach Sommerperiode: Spiegel in der Regel am höchsten)',
+          doctorDiscussion: '\'Kann ich meinen Bedarf im Sommer über Sonne decken?\'',
+          notToConfuseWith: 'Solarium ist kein Vitamin-D-Ersatz — erhöht Hautkrebs-Risiko ohne sicheren Vitamin-D-Nutzen',
+          safetyLevel: 'medium',
+          requiresDoctorDiscussion: true,
+          sourceRequirement: 'RKI Vitamin D 2020 + DGE-Stellungnahme Vitamin D 2020',
+        },
+        {
+          loincCode: '14635-7',
+          title: 'Vitamin D3-Supplementierung',
+          measureCategory: 'supportive',
+          evidenceMaturity: 'supported',
+          evidenceType: 'guideline',
+          whyShown:
+            'Gezeigt, weil: Vitamin-D-Supplementierung bei nachgewiesenem Mangel leitlinienbasiert ärztlich eingeordnet werden kann',
+          targetGroup:
+            'Personen mit nachgewiesenem 25-OH-Vitamin-D-Mangel (< 50 nmol/L); besonders relevant für ältere Erwachsene, dunkle Hautfarbe, begrenzte Sonnenexposition',
+          whatCouldHelp:
+            'Vitamin D3 (Cholecalciferol) kann bei nachgewiesenem Mangel ärztlich besprochen werden; Form, Dauer und Menge richten sich nach Ausgangswert, Risikoprofil und Begleitwerten.',
+          expectedBenefit:
+            'Normalisierung 25-OH-Vitamin-D-Spiegel nach 3 Monaten; nachgewiesener Effekt auf Knochen- und Muskelgesundheit, Sturzprävention bei Älteren',
+          uncertaintyReason:
+            'Nicht-Knochen-Effekte (Immunsystem, Krebs, Herzerkrankungen, Depression) werden intensiv diskutiert — aktuelle Meta-Analysen zeigen keine konsistente Reduktion von Krebsinzidenz oder kardiovaskulärem Risiko',
+          risksAndCautions:
+            'Vitamin D ist fettlöslich: Überversorgung möglich. Hochdosierte Einnahme nur nach ärztlicher Festlegung und Kontrolle. Warnzeichen einer Überversorgung ärztlich abklären.',
+          contraindicationsOrRedFlags: 'Sarkoidose, Hyperkalzämie, schwere Nierenerkrankung: kontraindiziert ohne Facharzt',
+          monitoring: '25-OH-Vitamin-D nach 3 Monaten; bei Hochdosis: Kalzium + Phosphat',
+          doctorDiscussion: '\'Brauche ich auch Kalzium?\'',
+          notToConfuseWith:
+            'Vitamin D aus Nahrungsmitteln allein (Fisch, Eier) reicht selten für Mangel-Korrektur — Supplementierung ergänzend',
+          safetyLevel: 'medium',
+          requiresDoctorDiscussion: true,
+          sourceRequirement: 'Endocrine Society Guideline Vitamin D 2024 + DGE-Stellungnahme Vitamin D 2020',
+        },
+        {
+          loincCode: '14635-7',
+          title: 'Kalzium-Zufuhr bei Knochen-Indikation',
+          measureCategory: 'supportive',
+          evidenceMaturity: 'supported',
+          evidenceType: 'guideline',
+          whyShown:
+            'Gezeigt, weil: Vitamin D ohne ausreichend Kalzium kann Knochen-Wirkung nicht vollständig entfalten — kombinierte Indikation bei Osteoporose-Risiko',
+          targetGroup:
+            'Personen mit Vitamin-D-Mangel und gleichzeitigem Osteoporose-Risiko (Postmenopause, > 70 Jahre, Steroid-Langzeittherapie)',
+          whatCouldHelp:
+            'Kalziumzufuhr bevorzugt über Ernährung (Milchprodukte, Hülsenfrüchte, Brokkoli); Supplementierung nur besprechen, wenn die Ernährungszufuhr nicht ausreicht.',
+          expectedBenefit:
+            'Kombiniert mit Vitamin D: Sturzrate und Frakturrisiko bei Älteren reduziert (NNT ~67 für Hüftfrakturen)',
+          uncertaintyReason:
+            'Kalziumsupplementierung ohne Mangel-Indikation umstritten wegen möglichem Kardiovaskulärem Risiko — nur bei nachgewiesenem Bedarf',
+          risksAndCautions:
+            'Kalzium-Supplementierung kann Nierensteine begünstigen; mögliche kardiovaskuläre Risiken werden diskutiert. Nur bei nachgewiesenem Bedarf einordnen lassen.',
+          contraindicationsOrRedFlags: 'Hyperkalzämie, Kalziumsteine in der Anamnese: Supplementierung kontraindiziert',
+          monitoring: 'Kalzium im Serum + Parathormon (PTH) + Kreatinin bei Supplementierung',
+          doctorDiscussion: '\'Brauche ich Kalzium zusätzlich zu Vitamin D?\' / \'Habe ich Osteoporose-Risiko?\'',
+          notToConfuseWith:
+            'Kalzium-Supplementierung allein ohne Vitamin D hat schwächeren Effekt auf Knochen — Kombination leitlinienbasiert',
+          safetyLevel: 'medium',
+          requiresDoctorDiscussion: true,
+          sourceRequirement: 'DVO-Leitlinie Osteoporose 2023 + Cochrane Review Calcium + Vitamin D 2022',
+        },
+        {
+          loincCode: '14635-7',
+          title: 'Immunsystem, Krebs, Herzerkrankung: was die Forschung zeigt',
+          measureCategory: 'promising',
+          evidenceMaturity: 'uncertain',
+          evidenceType: 'meta_analysis',
+          whyShown:
+            'Gezeigt, weil: Vitamin D wird häufig für viele Wirkungen beworben — einige davon sind gut belegt, andere nicht',
+          targetGroup:
+            'Personen die Vitamin D primär wegen Immunschutz, Krebsprävention oder Herzgesundheit supplementieren',
+          whatCouldHelp:
+            'Was belegt ist: Knochen, Muskelgesundheit, Sturzprävention bei Älteren. Was nicht konsistent belegt ist: Krebsincidenz, kardiovaskuläre Ereignisse, Infektionsprävention, Depression.',
+          expectedBenefit:
+            'Für Knochen-/Muskelgesundheit: klarer Nutzen. Für Nicht-Knochen-Effekte: keine konsistente Wirkung in großen RCTs (VITAL-Studie, D-HEALTH).',
+          uncertaintyReason:
+            'Große RCTs (VITAL 2019, D-HEALTH 2022) zeigen keinen konsistenten Effekt von Vitamin-D-Supplementierung auf Krebsinzidenz, kardiovaskuläre Ereignisse oder Gesamtmortalität bei Personen ohne definiertem Mangel',
+          risksAndCautions: null,
+          contraindicationsOrRedFlags: null,
+          monitoring: null,
+          doctorDiscussion: '\'Sollte ich Vitamin D primär wegen [Immunsystem / Krebs] nehmen?\'',
+          notToConfuseWith:
+            'Assoziation (niedrige Vitamin-D-Spiegel bei Erkrankten) ≠ Kausalität (Supplementierung schützt). Vitamin-D-Mangel kann Begleitzustand sein, nicht Ursache.',
+          safetyLevel: 'low',
+          requiresDoctorDiscussion: false,
+          sourceRequirement:
+            'VITAL Study (Manson et al., NEJM 2019) + D-HEALTH Trial (Scragg et al., Lancet Diabetes Endocrinol 2022)',
+        },
+        {
+          loincCode: '14635-7',
+          title: 'Verlaufskontrolle 25-OH-Vitamin-D',
+          measureCategory: 'monitoring',
+          evidenceMaturity: 'established',
+          evidenceType: 'guideline',
+          whyShown: 'Gezeigt, weil: Vitamin D ist fettlöslich — Verlaufskontrolle verhindert Über- und Untertherapie',
+          targetGroup: 'Alle Personen in Vitamin-D-Supplementierung',
+          whatCouldHelp:
+            '25-OH-Vitamin-D-Kontrolle nach 3 Monaten Supplementierung; Zielwert > 50 nmol/L (75 nmol/L bei Osteoporose-Indikation)',
+          expectedBenefit:
+            'Sicherstellen dass Zielwert erreicht und Toxizitätswerte (> 250 nmol/L) nicht überschritten werden',
+          uncertaintyReason: null,
+          risksAndCautions: 'Aktive Form (1,25-OH) ist für Monitoring ungeeignet — immer 25-OH-Vitamin-D messen',
+          contraindicationsOrRedFlags: null,
+          monitoring: '25-OH-Vitamin-D nach 3 Monaten; Kalzium + Phosphat bei Hochdosierung',
+          doctorDiscussion: '\'Wann muss ich meinen Wert kontrollieren lassen?\' / \'Bin ich im Zielbereich?\'',
+          notToConfuseWith:
+            '1,25-OH-Vitamin-D (aktive Form) ist ein anderer Laborwert — für Supplementierungs-Monitoring nicht geeignet',
+          safetyLevel: 'low',
+          requiresDoctorDiscussion: false,
+          sourceRequirement: 'Endocrine Society Guideline Vitamin D 2024',
+        },
     ],
-    low: [
-      {
-        title: 'Ursache und Ausgangssituation besprechen',
-        category: 'standard',
-        evidence: 'Klinisch etabliert — AWMF, DGE',
-        whyShown:
-          'Niedrige Vitamin-D-Werte sind in Deutschland häufig — besonders in den Wintermonaten. Hauptursachen sind geringe Sonnenexposition, dunkler Hauttyp und wenig Freiluftaufenthalt.',
-        whatHelps:
-          'Besprich mit deiner Ärztin oder deinem Arzt, ob Sonnenlichtexposition und Ernährungsgewohnheiten Verbesserungspotenzial bieten und ob eine Supplementierung sinnvoll ist.',
-        expectedEffect:
-          'Einordnung, ob und wie ein Mangel therapeutisch angegangen werden sollte.',
-        cautions:
-          'Nicht jeder niedrige Vitamin-D-Wert erfordert hochdosierte Supplementierung — eine ärztliche Einschätzung ist sinnvoll.',
-        monitoring:
-          'Kontrollmessung nach 3–6 Monaten bei laufender Supplementierung.',
-        safetyLevel: 'medium',
-        requiresDoctorDiscussion: true,
-      },
-      {
-        title: 'Supplementierung mit Arzt besprechen',
-        category: 'standard',
-        evidence: 'Klinisch etabliert — DGE Referenzwerte, AWMF',
-        whyShown:
-          'Bei nachgewiesenem Mangel ist eine Supplementierung in Leitlinien empfohlen. Dosierung, Dauer und Form sollten individuell festgelegt werden.',
-        whatHelps:
-          'Lass dich ärztlich beraten, ob eine Supplementierung sinnvoll ist — und in welcher Dosierung und Einnahmeform.',
-        expectedEffect:
-          'Anhebung des Vitamin-D-Spiegels in den gewünschten Zielbereich.',
-        cautions:
-          'Selbstständige Hochdosierung ohne ärztliche Kontrolle ist nicht empfohlen — Vitamin D ist fettlöslich und kann sich im Körper anreichern.',
-        monitoring:
-          'Kontrollmessung nach 3–6 Monaten.',
-        safetyLevel: 'medium',
-        requiresDoctorDiscussion: true,
-      },
-      {
-        title: 'Knochengesundheit im Kontext einordnen lassen',
-        category: 'supporting',
-        evidence: 'Klinisch relevant — AWMF Osteoporose-Leitlinie',
-        whyShown:
-          'Vitamin D ist wichtig für die Kalziumresorption und Knochengesundheit. Anhaltender Mangel erhöht das Risiko für Knochenschwund (Osteopenie/Osteoporose).',
-        whatHelps:
-          'Wenn niedriges Vitamin D mit weiteren Risikofaktoren zusammentrifft (hohes Alter, Immobilität, familiäre Osteoporose), kann eine umfassendere Knochengesundheits-Abklärung sinnvoll sein.',
-        expectedEffect:
-          'Früherkennung von Knochensubstanzverlust und ggf. gezielte Prävention möglich.',
-        cautions: null,
-        monitoring:
-          'Kalzium, Phosphat, ggf. PTH (Parathormon).',
-        safetyLevel: 'medium',
-        requiresDoctorDiscussion: true,
-      },
-    ],
+    low: [],
   },
 
-  // ─── CRP — LOINC 1988-5 ──────────────────────────────────────────────────
   '1988-5': {
     title: 'Was kann ich bei erhöhtem CRP besprechen?',
     intro:
       'CRP ist ein unspezifischer Entzündungsmarker — er zeigt, dass eine Entzündungsreaktion stattfindet, aber nicht wo oder warum. Die folgenden Punkte sind Gesprächs- und Orientierungsbausteine — keine individuelle Therapieempfehlung.',
     high: [
-      {
-        title: 'Akutsymptome und Verlauf ärztlich einordnen lassen',
-        category: 'standard',
-        evidence: 'Klinisch etabliert — breiter medizinischer Konsens',
-        whyShown:
-          'Ein erhöhtes CRP allein sagt noch nichts über Ursache oder Schwere einer Entzündung aus — der klinische Kontext (Symptome, Krankheitsverlauf) ist für die Einordnung entscheidend.',
-        whatHelps:
-          'Beschreibe deiner Ärztin oder deinem Arzt alle aktuellen oder zurückliegenden Symptome: Fieber, Schmerzen, Müdigkeit, lokale Entzündungszeichen.',
-        expectedEffect:
-          'Einordnung, ob eine akute Infektion, ein chronisch-entzündlicher Prozess oder ein anderer Auslöser vorliegt.',
-        cautions:
-          'Selbstbehandlung ohne ärztliche Diagnose ist bei unklarem CRP-Anstieg nicht empfohlen.',
-        monitoring:
-          'Blutbild (Leukozyten, Differentialblutbild), ggf. Procalcitonin bei Infektionsverdacht.',
-        safetyLevel: 'high',
-        requiresDoctorDiscussion: true,
-      },
-      {
-        title: 'Entzündungsursache gezielt klären lassen',
-        category: 'standard',
-        evidence: 'Klinisch etabliert',
-        whyShown:
-          'CRP steigt bei sehr verschiedenen Ursachen an — von kurzfristigen Infektionen bis hin zu chronisch-entzündlichen Erkrankungen. Die Ursache bestimmt die notwendige Reaktion.',
-        whatHelps:
-          'Bitte um ergänzende Diagnostik, wenn die Ursache unklar ist: z. B. Differentialblutbild, Nierenparameter, Urinstatus oder Autoimmunmarker — je nach klinischem Verdacht.',
-        expectedEffect:
-          'Zielgerichtete Behandlung ist möglich, wenn die Ursache bekannt ist.',
-        cautions: null,
-        monitoring:
-          'Verlaufskontrolle CRP nach 1–2 Wochen, um das Therapieansprechen einzuschätzen.',
-        safetyLevel: 'high',
-        requiresDoctorDiscussion: true,
-      },
-      {
-        title: 'Verlaufskontrolle nach Behandlung besprechen',
-        category: 'standard',
-        evidence: 'Klinisch etabliert — Monitoring-Standard',
-        whyShown:
-          'CRP wird als Verlaufsmarker genutzt — ein Absinken unter Therapie zeigt das Ansprechen auf Antibiotika oder entzündungshemmende Medikamente an.',
-        whatHelps:
-          'Frage nach dem geplanten Kontroll-Zeitpunkt und welche Werte dann gemessen werden sollen.',
-        expectedEffect:
-          'Einordnung, ob die Therapie anschlägt oder eine Anpassung notwendig ist.',
-        cautions: null,
-        monitoring: null,
-        safetyLevel: 'medium',
-        requiresDoctorDiscussion: true,
-      },
-      {
-        title: 'Chronisch erhöhtes CRP als Risikofaktor einordnen lassen',
-        category: 'supporting',
-        evidence: 'Klinisch relevant — Forschungskonsens',
-        whyShown:
-          'Anhaltend leicht erhöhtes CRP (Low-Grade-Inflammation) wird in der Forschung mit erhöhtem kardiovaskulären Risiko assoziiert.',
-        whatHelps:
-          'Wenn CRP bei mehreren Messungen leicht erhöht ist ohne klare akute Ursache, besprich mit deiner Ärztin oder deinem Arzt, ob eine weiterführende Abklärung sinnvoll ist.',
-        expectedEffect:
-          'Ggf. frühere Erkennung eines kardiovaskulären oder chronisch-entzündlichen Risikos.',
-        cautions:
-          'Leicht erhöhtes CRP kann auch durch viele alltägliche Faktoren bedingt sein — z. B. eine kürzliche Infektion oder intensive körperliche Anstrengung.',
-        monitoring: null,
-        safetyLevel: 'medium',
-        requiresDoctorDiscussion: true,
-      },
+        {
+          loincCode: '1988-5',
+          title: 'CRP einordnen — Ursache klären',
+          measureCategory: 'doctor_discussion',
+          evidenceMaturity: 'established',
+          evidenceType: 'guideline',
+          whyShown:
+            'Gezeigt, weil: Erhöhter CRP-Wert ist kein Diagnose-Marker sondern Hinweis auf Entzündungsprozess — Ursache muss klinisch eingeordnet werden',
+          targetGroup: 'Alle Personen mit erhöhtem CRP (> 5 mg/L) — unabhängig ob leicht oder stark erhöht',
+          whatCouldHelp:
+            'Kontextualisierung: akute Infektion (häufigste Ursache, CRP > 100 mg/L typisch bei bakteriell), chronische Entzündung (CRP 10–50 mg/L), metabolisches Syndrom (CRP 2–10 mg/L — hsCRP), Autoimmunerkrankung. Klinisches Bild entscheidend.',
+          expectedBenefit: 'Gezielte Diagnostik statt blinder Therapie',
+          uncertaintyReason: null,
+          risksAndCautions: null,
+          contraindicationsOrRedFlags:
+            'CRP > 100 mg/L: zeitnahe medizinische Abklärung, mögliche bakterielle Infektion. CRP > 300 mg/L: notfallmäßige Abklärung.',
+          monitoring:
+            'Verlaufs-CRP (24–72h) bei akuter Infektion zur Therapiebewertung; hsCRP bei kardiovaskulärem Risiko-Screening',
+          doctorDiscussion:
+            '\'Warum ist mein CRP erhöht?\' / \'Brauche ich eine Infektionssuche?\' / \'Was bedeutet das für mein kardiovaskuläres Risiko?\'',
+          notToConfuseWith:
+            'CRP misst Entzündung — nicht welche Erkrankung vorliegt. Hohes CRP bedeutet nicht automatisch Autoimmunerkrankung oder Krebs.',
+          safetyLevel: 'medium',
+          requiresDoctorDiscussion: true,
+          sourceRequirement: 'AWMF-Leitlinie Sepsis-Diagnostik + ESC-Guideline Cardiovascular Risk (hsCRP)',
+        },
+        {
+          loincCode: '1988-5',
+          title: 'Chronische low-grade-Entzündung: Lebensstil-Ansätze',
+          measureCategory: 'lifestyle',
+          evidenceMaturity: 'supported',
+          evidenceType: 'meta_analysis',
+          whyShown:
+            'Gezeigt, weil: Leicht chronisch erhöhter CRP (2–10 mg/L) ohne akuten Infekt ist häufig mit Übergewicht, Bewegungsmangel und Ernährungsqualität assoziiert',
+          targetGroup:
+            'Personen mit persistierend leicht erhöhtem CRP (2–10 mg/L), kein akuter Infekt, keine bekannte Autoimmunerkrankung',
+          whatCouldHelp:
+            'Kombiniert wirksam: Anti-inflammatorische Ernährung (Mittelmeer-Muster), regelmäßige moderate Bewegung, Gewichtsreduktion bei Übergewicht, Rauchstopp',
+          expectedBenefit:
+            'hsCRP-Senkung um 20–40 % bei konsequenten Lebensstilmaßnahmen über 3–6 Monate in Interventionsstudien',
+          uncertaintyReason: 'Unklar ob CRP-Senkung direkt kardiovaskuläres Outcome verbessert oder nur Marker ist',
+          risksAndCautions: null,
+          contraindicationsOrRedFlags: null,
+          monitoring: 'hsCRP (hochsensitives CRP) nach 3–6 Monaten Lebensstilintervention',
+          doctorDiscussion:
+            '\'Ist mein erhöhter CRP auf Lebensstil zurückzuführen?\' / \'Sollte ich ein kardiovaskuläres Risiko-Screening machen?\'',
+          notToConfuseWith:
+            'Leicht erhöhtes CRP ohne Symptome ist ein Risikosignal, keine Erkrankung. Anti-inflammatorische Maßnahmen ergänzen, ersetzen nicht medizinische Abklärung.',
+          safetyLevel: 'low',
+          requiresDoctorDiscussion: false,
+          sourceRequirement: 'Ridker et al. NEJM 2008 (JUPITER Trial) + Cochrane Review Mediterranean Diet Inflammation 2022',
+        },
+        {
+          loincCode: '1988-5',
+          title: 'Anti-inflammatorische Ernährung (Mittelmeer-Muster)',
+          measureCategory: 'lifestyle',
+          evidenceMaturity: 'supported',
+          evidenceType: 'meta_analysis',
+          whyShown:
+            'Gezeigt, weil: Ernährungsqualität beeinflusst hsCRP nachweislich — Mittelmeer-Ernährung am besten belegt',
+          targetGroup:
+            'Personen mit chronisch erhöhtem hsCRP (> 2 mg/L) ohne akuten Infekt; besonders relevant bei kardiovaskulärem Risikoprofil',
+          whatCouldHelp:
+            'Mittelmeer-Muster: Olivenöl, Fisch (2× wöchentlich), Hülsenfrüchte, Nüsse, Gemüse, Vollkorn. Reduktion: rotes/verarbeitetes Fleisch, Zuckerzusätze, Transfette.',
+          expectedBenefit:
+            'hsCRP-Senkung um 20–30 % bei konsequenter Mittelmeer-Ernährung in mehreren RCTs; kardiovaskuläres Risiko parallel gesenkt',
+          uncertaintyReason: null,
+          risksAndCautions: null,
+          contraindicationsOrRedFlags: null,
+          monitoring: 'hsCRP nach 3 Monaten; Lipidprofil + Glukose parallel sinnvoll',
+          doctorDiscussion: '\'Welche Ernährungsumstellung würde in meinem Fall am meisten bringen?\'',
+          notToConfuseWith:
+            'Anti-inflammatorische Ernährung ist kein Ersatz für Antibiotika oder Immunsuppressiva bei echter Entzündungserkrankung',
+          safetyLevel: 'low',
+          requiresDoctorDiscussion: false,
+          sourceRequirement:
+            'PREDIMED Study (Estruch et al. NEJM 2013) + Meta-Analyse Mediterranean Diet hsCRP (Schwingshackl 2017)',
+        },
+        {
+          loincCode: '1988-5',
+          title: 'Regelmäßige moderate körperliche Aktivität',
+          measureCategory: 'lifestyle',
+          evidenceMaturity: 'supported',
+          evidenceType: 'meta_analysis',
+          whyShown:
+            'Gezeigt, weil: Moderate Bewegung senkt hsCRP nachweislich — Mechanismus über Zytokin-Regulation und Adipositas-Reduktion',
+          targetGroup: 'Personen mit chronisch erhöhtem hsCRP und Bewegungsmangel oder Übergewicht',
+          whatCouldHelp:
+            '150 Minuten moderate Ausdauerbelastung pro Woche (Gehen, Schwimmen, Radfahren) — zu intensive Belastung kann CRP kurzfristig erhöhen (Übertraining-Effekt)',
+          expectedBenefit: 'hsCRP-Senkung um 0,5–1,5 mg/L bei regelmäßiger moderater Bewegung nach 12 Wochen',
+          uncertaintyReason:
+            'Effekt größer wenn gleichzeitig Gewichtsverlust eintritt — isolierter Bewegungseffekt auf CRP geringer als kombinierter Effekt',
+          risksAndCautions:
+            'Sehr intensive Belastung (z. B. Marathon, extreme HIIT) erhöht CRP kurzfristig — kein Zeichen einer Erkrankung',
+          contraindicationsOrRedFlags: null,
+          monitoring: 'hsCRP nach 12 Wochen regelmäßiger Aktivität',
+          doctorDiscussion: '\'Gibt es einen Belastungstest den ich machen sollte bevor ich intensiver trainiere?\'',
+          notToConfuseWith:
+            'Akuter Muskelkater oder Übertraining erhöhen CRP kurzfristig — nicht mit chronischer Entzündung verwechseln',
+          safetyLevel: 'low',
+          requiresDoctorDiscussion: false,
+          sourceRequirement:
+            'Fedewa et al. Sports Med 2017 (Meta-Analyse Exercise CRP) + AHA Physical Activity Guidelines 2018',
+        },
+        {
+          loincCode: '1988-5',
+          title: 'hsCRP als kardiovaskulärer Risikomarker einordnen',
+          measureCategory: 'monitoring',
+          evidenceMaturity: 'supported',
+          evidenceType: 'guideline',
+          whyShown:
+            'Gezeigt, weil: Hochsensitives CRP (hsCRP) ist ein eigenständiger kardiovaskulärer Risikomarker — ESC-Leitlinie nennt hsCRP als ergänzenden Risikofaktor',
+          targetGroup:
+            'Personen mit hsCRP 2–10 mg/L und kardiovaskulärem Risikoprofil (Lipide, Blutdruck, Diabetes, Rauchen)',
+          whatCouldHelp:
+            'hsCRP > 3 mg/L ist laut ESC-SCORE2 ein Modifier für höheres kardiovaskuläres Risiko — kann Behandlungsintensivierung begründen (z. B. Statin-Indikation nach JUPITER-Studie)',
+          expectedBenefit: 'Genauere Risikoklassifizierung als alleiniges Lipidprofil — ermöglicht gezieltere Prävention',
+          uncertaintyReason:
+            'hsCRP als eigenständiger Kausal-Faktor vs. Entzündungsmarker wird weiter diskutiert. ESC-Leitlinie empfiehlt hsCRP als optionalen Modifier, nicht als Primärmarker.',
+          risksAndCautions:
+            'hsCRP im Rahmen akuter Infektion nicht für kardiovaskuläres Screening verwenden — Wert erst nach Genesung messen',
+          contraindicationsOrRedFlags: null,
+          monitoring: 'hsCRP im infektfreien Intervall messen; 2-fach Messung für Baseline-Einordnung empfohlen',
+          doctorDiscussion:
+            '\'Sollte mein hsCRP-Wert in meine kardiovaskuläre Risikoeinschätzung einfließen?\' / \'Verändert das meinen Behandlungsplan?\'',
+          notToConfuseWith:
+            'Standard-CRP und hsCRP sind dasselbe Protein — hsCRP ist eine sensitivere Messmethode für den Niedrigbereich (< 10 mg/L)',
+          safetyLevel: 'low',
+          requiresDoctorDiscussion: false,
+          sourceRequirement: 'ESC Guideline Cardiovascular Prevention 2021 (§hsCRP) + JUPITER Trial Ridker 2008',
+        },
+        {
+          loincCode: '1988-5',
+          title: 'Rauchstopp',
+          measureCategory: 'lifestyle',
+          evidenceMaturity: 'established',
+          evidenceType: 'meta_analysis',
+          whyShown:
+            'Gezeigt, weil: Rauchen erhöht CRP chronisch — Rauchstopp ist die Einzelmaßnahme mit dem stärksten Effekt auf chronische low-grade-Entzündung',
+          targetGroup: 'Rauchende Personen mit erhöhtem hsCRP',
+          whatCouldHelp:
+            'Rauchstopp reduziert hsCRP um 30–50 % innerhalb von 3–6 Monaten; kombiniert mit Nikotinersatz- oder Verhaltenstherapie höchste Erfolgsrate',
+          expectedBenefit:
+            'Direkte Reduktion pro-inflammatorischer Zytokine; kardiovaskuläres Risiko langfristig stark gesenkt',
+          uncertaintyReason: null,
+          risksAndCautions:
+            'Nikotinersatztherapie (Pflaster, Kaugummi) ist sicherer als Rauchen — nicht gegenläufiger Effekt',
+          contraindicationsOrRedFlags: null,
+          monitoring: 'hsCRP nach 6 Monaten Rauchfreiheit; Lungenfunktion langfristig',
+          doctorDiscussion:
+            '\'Gibt es Unterstützungsangebote für einen Rauchstopp?\' / \'Welche Nikotinersatz-Option passt zu mir?\'',
+          notToConfuseWith:
+            'E-Zigaretten sind nicht rauchfrei im klassischen Sinne — Entzündungseffekte noch nicht ausreichend erforscht',
+          safetyLevel: 'low',
+          requiresDoctorDiscussion: false,
+          sourceRequirement: 'Barnoya & Glantz, Circulation 2005 + Cochrane Review Smoking Cessation 2023',
+        },
     ],
     low: [],
-  },
+  }
 }
