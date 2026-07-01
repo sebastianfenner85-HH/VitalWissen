@@ -127,7 +127,7 @@ print('FAIL: CRLF' if b'\r\n' in content else 'PASS')
 # Bidi-Override (U+202A–U+202E, U+2066–U+2069):
 python3 -c "
 content = open('$FILE', 'r', encoding='utf-8').read()
-bidi = [c for c in content if '‪' <= c <= '‮' or '⁦' <= c <= '⁩']
+bidi = [c for c in content if '' <= c <= '' or '' <= c <= '']
 print('FAIL: Bidi-Override gefunden' if bidi else 'PASS')
 "
 ```
