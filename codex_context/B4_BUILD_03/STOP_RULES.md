@@ -19,6 +19,42 @@ Bei Hard Stop: Ausgang mit Fehlercode dokumentieren, keinen Commit erstellen.
 
 ---
 
+## CODEX_CLOUD_MODE for B4-BUILD-03
+
+- Dieser Kontext unterstützt `CODEX_CLOUD_MODE`.
+- `origin` darf in Codex Cloud fehlen.
+- In Codex Cloud nicht ausführen:
+  - `git clone`
+  - `git ls-remote`
+  - `git remote add`
+  - `git push`
+- Stattdessen vor Arbeitsbeginn prüfen:
+  1. `pwd` muss `/workspace/VitalWissen` oder eindeutig VitalWissen-Workspace sein
+  2. `git rev-parse HEAD` muss `a5d26049a5f962b56edd0c3fd0aaec913383a7a7` sein, sofern kein neuerer Auftrag ausdrücklich einen anderen HEAD nennt
+  3. `git status --short` muss clean sein
+  4. `codex_context/B4_BUILD_03/` muss vorhanden sein
+  5. `src/lib/laborwert_b4_actions_map.js` muss vorhanden sein
+  6. erlaubte Datei bleibt ausschließlich `src/lib/laborwert_b4_actions_map.js`
+  7. Codex muss im Abschlussbericht berichten:
+     - Workspace
+     - HEAD
+     - Zielbranch
+     - PR-Zielrepo
+     - geänderte Dateien
+     - finaler `git status --short`
+- Branch-Ziel bleibt:
+  `feature/b4-build-03`
+- Wenn Codex intern zunächst Branch `work` nutzt, ist das nur zulässig, wenn Codex am Ende einen PR gegen `sebastianfenner85-HH/VitalWissen` mit Zielbranch `feature/b4-build-03` oder klar dokumentiertem Codex-PR-Branch erzeugt.
+- Wenn PR-Ziel unklar bleibt: `BLOCKED_CLOUD_PR_TARGET_UNCLEAR`.
+- Alle B4-Safety-Regeln bleiben unverändert.
+- Alle V1–V12-Validatoren bleiben unverändert.
+- `node --check`, Text-Safety, `git diff --check`, `npm run build` bleiben vor Commit/PR Pflicht.
+- Keine medizinischen Werte erfinden.
+- Keine Diagnose-/Therapie-/Dosierungsaussagen.
+- Keine anderen Dateien ändern.
+
+---
+
 ## Validatoren (alle PASS vor Commit)
 
 | # | Validator | Prüfmethode | Erwartung |

@@ -49,6 +49,71 @@ Bei jedem Hard Stop: Ausgang dokumentieren, keine Codezeile schreiben.
 
 ---
 
+## Codex Operating Modes
+
+### LOCAL_TERMINAL_MODE
+
+Gilt für:
+- lokales Terminal
+- Cowork-Terminal
+- frischer lokaler Clone
+- klassische Git-Arbeit
+
+Regeln:
+- `git remote get-url origin` muss auf `sebastianfenner85-HH/VitalWissen` zeigen.
+- Wenn `origin` fehlt oder falsch ist: `BLOCKED_WRONG_REMOTE`.
+- Frischer Clone bleibt Pflicht, sofern Auftrag nichts anderes sagt.
+- Feature-Branch bleibt Pflicht.
+- Kein main-Push.
+- Kein Merge ohne Sebastian-Go.
+
+### CODEX_APP_LOCAL_WORKTREE_MODE
+
+Gilt für:
+- Codex App
+- Codex IDE Extension mit lokalem Worktree
+- Codex CLI/local
+
+Regeln:
+- gleiche Remote-/Origin-Pflicht wie `LOCAL_TERMINAL_MODE`.
+- Wenn `origin` fehlt oder falsch ist: `BLOCKED_WRONG_REMOTE`.
+- Zusätzlich lokalen Pfad prüfen, damit nicht im Legacy-Klon gearbeitet wird.
+- Feature-Branch bleibt Pflicht.
+- Kein main-Push.
+- Kein Merge ohne Sebastian-Go.
+
+### CODEX_CLOUD_MODE
+
+Gilt für:
+- Codex Browser/Web/Cloud Tasks
+- `/workspace/<repo>` Container-Checkout
+- Codex-Agentenphase mit standardmäßig eingeschränktem Internetzugriff
+
+Regeln:
+- Fehlender `origin` ist in diesem Modus allein KEIN Hard Stop.
+- Kein Agent-seitiges `git clone`.
+- Kein Agent-seitiges `git ls-remote`.
+- Kein Agent-seitiges `git remote add`.
+- Kein Agent-seitiges `git push`.
+- Repository-Nachweis erfolgt über:
+  1. Workspace-Pfad enthält `/workspace/VitalWissen`
+  2. `git rev-parse HEAD` entspricht dem erwarteten, zuletzt verifizierten GitHub-main-HEAD oder einem im Auftrag ausdrücklich erlaubten Nachfolge-Commit
+  3. `codex_context/<PAKET-ID>/` ist vorhanden
+  4. erlaubte Dateiliste ist eindeutig
+  5. `git status --short` ist vor Arbeitsbeginn clean
+  6. Zielbranch/PR-Zielrepo werden im Auftrag und im Codex-Abschlussbericht ausdrücklich dokumentiert
+- Wenn HEAD nicht passt: `BLOCKED_UNEXPECTED_HEAD`
+- Wenn Workspace nicht eindeutig VitalWissen ist: `BLOCKED_WRONG_WORKSPACE`
+- Wenn Kontext fehlt: `BLOCKED_MISSING_CONTEXT`
+- Wenn erlaubte Dateiliste fehlt: `BLOCKED_MISSING_ALLOWED_FILE_LIST`
+- Wenn Working Tree dirty ist: `BLOCKED_DIRTY_CLONE`
+- Wenn Codex kein PR-Zielrepo/Branch berichten kann: `BLOCKED_CLOUD_PR_TARGET_UNCLEAR`
+- Wenn Codex Dateien außerhalb der erlaubten Liste ändert: `BLOCKED_UNEXPECTED_FILE_CHANGE`
+
+Wichtig: Sicherheitsziel von HS-5 bleibt erhalten. Nur der technische Nachweis wird für Codex Cloud angepasst.
+
+---
+
 ## 4. Frischer Clone — Pflicht
 
 Codearbeit NUR aus frischem Clone. Niemals aus gespeicherten Workspace-Ordnern oder Archiv-Clones.
