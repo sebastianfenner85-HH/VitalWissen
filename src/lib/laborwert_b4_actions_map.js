@@ -40,7 +40,6 @@ export const LABORWERT_B4_ACTIONS_MAP = {
       'LDL-Cholesterin wird immer im Zusammenhang mit dem gesamten Herz-Kreislauf-Risiko bewertet. Welcher Zielwert gilt, hängt vom individuellen Risikoprofil ab — 116 mg/dL ist kein universeller Optimalwert. Die folgenden Punkte sind Gesprächs- und Orientierungsbausteine — keine individuelle Therapieempfehlung.',
     high: [
       {
-        loincCode: '2089-1',
         title: 'Gesamtrisiko und persönlichen Zielwert einordnen',
         measureCategory: 'doctor_discussion',
         evidenceMaturity: 'established',
@@ -68,7 +67,6 @@ export const LABORWERT_B4_ACTIONS_MAP = {
         sourceRequirement: 'Leitlinie — ESC/EAS 2021 Dyslipidämien',
       },
       {
-        loincCode: '2089-1',
         title: 'Ballaststoffreiche Ernährung',
         measureCategory: 'lifestyle',
         evidenceMaturity: 'supported',
@@ -96,7 +94,6 @@ export const LABORWERT_B4_ACTIONS_MAP = {
           'Gut untersucht — Cochrane Review Soluble Dietary Fibre (McRorie 2017) + EFSA-Stellungnahme Beta-Glucan',
       },
       {
-        loincCode: '2089-1',
         title: 'Vollständiges Lipidprofil bestimmen lassen',
         measureCategory: 'standard',
         evidenceMaturity: 'established',
@@ -122,7 +119,6 @@ export const LABORWERT_B4_ACTIONS_MAP = {
         sourceRequirement: 'Etabliert — ESC/EAS 2021 Dyslipidämien §4',
       },
       {
-        loincCode: '2089-1',
         title: 'Lipidsenker als Gesprächspunkt vorbereiten',
         measureCategory: 'doctor_discussion',
         evidenceMaturity: 'established',
@@ -150,7 +146,6 @@ export const LABORWERT_B4_ACTIONS_MAP = {
         sourceRequirement: 'Etabliert — ESC/EAS 2021 Dyslipidämien',
       },
       {
-        loincCode: '2089-1',
         title: 'Lösliche Ballaststoffe: Flohsamenschalen (Psyllium)',
         measureCategory: 'supportive',
         evidenceMaturity: 'supported',
@@ -180,7 +175,6 @@ export const LABORWERT_B4_ACTIONS_MAP = {
           'Gut untersucht — Cochrane Review Soluble Dietary Fibre 2016 + EFSA Health Claim Psyllium',
       },
       {
-        loincCode: '2089-1',
         title: 'Pflanzensterole und -stanole',
         measureCategory: 'supportive',
         evidenceMaturity: 'supported',
@@ -210,7 +204,6 @@ export const LABORWERT_B4_ACTIONS_MAP = {
           'Gut untersucht — EFSA Health Claim Phytosterols 2010 + Meta-Analyse Demonty et al. 2009',
       },
       {
-        loincCode: '2089-1',
         title: 'Omega-3-Fettsäuren als LDL-Senker',
         measureCategory: 'avoid',
         evidenceMaturity: 'avoid',
@@ -237,7 +230,6 @@ export const LABORWERT_B4_ACTIONS_MAP = {
           'Eher vermeiden (für LDL-Senkung) — REDUCE-IT Trial + ESC/EAS 2021 §6 + Cochrane Omega-3 Lipide 2020',
       },
       {
-        loincCode: '2089-1',
         title: 'Verlaufskontrolle: Lipidprofil',
         measureCategory: 'monitoring',
         evidenceMaturity: 'established',
@@ -265,7 +257,6 @@ export const LABORWERT_B4_ACTIONS_MAP = {
     ],
     low: [
       {
-        loincCode: '2089-1',
         title: 'Bestehende lipidsenkende Therapie einordnen lassen',
         measureCategory: 'standard',
         evidenceMaturity: 'established',
@@ -464,7 +455,37 @@ export const LABORWERT_B4_ACTIONS_MAP = {
     intro:
       'Ferritin ist ein Eisenspeicherprotein, das auch bei Entzündungen ansteigt. Die folgenden Punkte sind Gesprächs- und Orientierungsbausteine — keine individuelle Therapieempfehlung.',
     high: [
-        {
+{
+          loincCode: '2276-4',
+          title: 'Erhöhtes Ferritin: Ursachen abklären lassen',
+          measureCategory: 'doctor_discussion',
+          evidenceMaturity: 'established',
+          evidenceType: 'guideline',
+          whyShown:
+            'Gezeigt, weil: Ferritin über 300 µg/L (Männer) / 200 µg/L (Frauen) kann auf Hämochromatose, akute Entzündung oder Fettlebererkrankung hinweisen',
+          targetGroup:
+            'Personen mit deutlich erhöhtem Ferritin — besonders relevant bei gleichzeitig normalen oder niedrigen Transferrin-Werten',
+          whatCouldHelp:
+            'Differenzierung: Ferritin als Akutphasenprotein (Entzündung) vs. Eisenüberladung (Hämochromatose) vs. Lebererkrankung. CRP + Transferrinsättigung + Leberwerte helfen einzuordnen.',
+          expectedBenefit:
+            'Klärung ob Eisenüberladung, Entzündungsreaktion oder Leberproblem vorliegt — grundlegend unterschiedliche Therapien',
+          uncertaintyReason: null,
+          risksAndCautions:
+            'Erhöhter Ferritin bei Hämochromatose und gleichzeitiger Eisensupplementierung: Organschäden (Leber, Herz, Pankreas) möglich',
+          contraindicationsOrRedFlags:
+            'Ferritin > 1000 µg/L: zeitnahe Abklärung dringend erforderlich. Absolute Kontraindikation: kein Eisen supplementieren bei erhöhtem Ferritin ohne Diagnose.',
+          monitoring: 'Transferrinsättigung + Leberwerte (GOT, GPT, GGT) + CRP + ggf. HFE-Gentest',
+          doctorDiscussion:
+            '\'Warum ist mein Ferritin erhöht?\' / \'Sollte ich auf Hämochromatose getestet werden?\' / \'Ist meine Leber betroffen?\'',
+          notToConfuseWith:
+            'Erhöhtes Ferritin bedeutet nicht automatisch zu viel Eisen — Entzündungen können Ferritin stark erhöhen ohne echte Eisenüberladung',
+          safetyLevel: 'high',
+          requiresDoctorDiscussion: true,
+          sourceRequirement: 'AWMF-Leitlinie Hämochromatose 040-017 + EASL-Guideline Genetic Liver Diseases 2022',
+        }
+    ],
+    low: [
+{
           loincCode: '2276-4',
           title: 'Ursache klären — vor jeder Supplementierung',
           measureCategory: 'doctor_discussion',
@@ -490,7 +511,7 @@ export const LABORWERT_B4_ACTIONS_MAP = {
           requiresDoctorDiscussion: true,
           sourceRequirement: 'AWMF-Leitlinie Eisenmangel und Eisenmangelanämie 021-025 (2023)',
         },
-        {
+{
           loincCode: '2276-4',
           title: 'Eisenreiche Ernährung optimieren',
           measureCategory: 'lifestyle',
@@ -517,7 +538,7 @@ export const LABORWERT_B4_ACTIONS_MAP = {
           requiresDoctorDiscussion: false,
           sourceRequirement: 'DGE-Empfehlungen Eisen 2021 + AWMF-Leitlinie Eisenmangel 021-025',
         },
-        {
+{
           loincCode: '2276-4',
           title: 'Orale Eisensupplementierung (nach ärztlicher Diagnose)',
           measureCategory: 'standard',
@@ -545,35 +566,7 @@ export const LABORWERT_B4_ACTIONS_MAP = {
           requiresDoctorDiscussion: true,
           sourceRequirement: 'AWMF-Leitlinie Eisenmangel 021-025 (2023) + Cochrane Review Oral Iron Supplementation (2022)',
         },
-        {
-          loincCode: '2276-4',
-          title: 'Erhöhtes Ferritin: Ursachen abklären lassen',
-          measureCategory: 'doctor_discussion',
-          evidenceMaturity: 'established',
-          evidenceType: 'guideline',
-          whyShown:
-            'Gezeigt, weil: Ferritin über 300 µg/L (Männer) / 200 µg/L (Frauen) kann auf Hämochromatose, akute Entzündung oder Fettlebererkrankung hinweisen',
-          targetGroup:
-            'Personen mit deutlich erhöhtem Ferritin — besonders relevant bei gleichzeitig normalen oder niedrigen Transferrin-Werten',
-          whatCouldHelp:
-            'Differenzierung: Ferritin als Akutphasenprotein (Entzündung) vs. Eisenüberladung (Hämochromatose) vs. Lebererkrankung. CRP + Transferrinsättigung + Leberwerte helfen einzuordnen.',
-          expectedBenefit:
-            'Klärung ob Eisenüberladung, Entzündungsreaktion oder Leberproblem vorliegt — grundlegend unterschiedliche Therapien',
-          uncertaintyReason: null,
-          risksAndCautions:
-            'Erhöhter Ferritin bei Hämochromatose und gleichzeitiger Eisensupplementierung: Organschäden (Leber, Herz, Pankreas) möglich',
-          contraindicationsOrRedFlags:
-            'Ferritin > 1000 µg/L: zeitnahe Abklärung dringend erforderlich. Absolute Kontraindikation: kein Eisen supplementieren bei erhöhtem Ferritin ohne Diagnose.',
-          monitoring: 'Transferrinsättigung + Leberwerte (GOT, GPT, GGT) + CRP + ggf. HFE-Gentest',
-          doctorDiscussion:
-            '\'Warum ist mein Ferritin erhöht?\' / \'Sollte ich auf Hämochromatose getestet werden?\' / \'Ist meine Leber betroffen?\'',
-          notToConfuseWith:
-            'Erhöhtes Ferritin bedeutet nicht automatisch zu viel Eisen — Entzündungen können Ferritin stark erhöhen ohne echte Eisenüberladung',
-          safetyLevel: 'high',
-          requiresDoctorDiscussion: true,
-          sourceRequirement: 'AWMF-Leitlinie Hämochromatose 040-017 + EASL-Guideline Genetic Liver Diseases 2022',
-        },
-        {
+{
           loincCode: '2276-4',
           title: 'Intravenöse Eisengabe bei Resorptionsproblem',
           measureCategory: 'standard',
@@ -601,7 +594,7 @@ export const LABORWERT_B4_ACTIONS_MAP = {
           requiresDoctorDiscussion: true,
           sourceRequirement: 'AWMF-Leitlinie Eisenmangel 021-025 (2023) + ECCO-Guideline CED-Eisenmangel',
         },
-        {
+{
           loincCode: '2276-4',
           title: 'Verlaufskontrolle nach Eisentherapie',
           measureCategory: 'monitoring',
@@ -624,9 +617,8 @@ export const LABORWERT_B4_ACTIONS_MAP = {
           safetyLevel: 'low',
           requiresDoctorDiscussion: false,
           sourceRequirement: 'AWMF-Leitlinie Eisenmangel 021-025 (2023)',
-        },
+        }
     ],
-    low: [],
   },
 
   '14635-7': {
@@ -634,32 +626,34 @@ export const LABORWERT_B4_ACTIONS_MAP = {
     intro:
       'Vitamin D 25-OH ist der wichtigste Labormarker für den Vitamin-D-Versorgungsstatus. Die folgenden Punkte sind Gesprächs- und Orientierungsbausteine — keine individuelle Supplementierungsempfehlung.',
     high: [
-        {
+{
           loincCode: '14635-7',
-          title: 'Vitamin-D-Einnahme ärztlich einordnen lassen',
+          title: 'Sehr hohe Vitamin-D-Werte ärztlich einordnen lassen',
           measureCategory: 'doctor_discussion',
           evidenceMaturity: 'established',
           evidenceType: 'guideline',
           whyShown:
-            'Gezeigt, weil: 25-OH-Vitamin-D niedrig sein kann — eine Supplementierung muss anhand von Ausgangswert, Risiko und Begleitwerten eingeordnet werden',
-          targetGroup: 'Alle Personen mit nachgewiesenem Vitamin-D-Mangel (< 50 nmol/L)',
+            'Gezeigt, weil: Sehr hohe 25-OH-Vitamin-D-Werte meist durch Supplementierung entstehen und wegen Hyperkalzämie-Risiko ärztlich eingeordnet werden sollten',
+          targetGroup: 'Personen mit sehr hohen 25-OH-Vitamin-D-Werten oder laufender hochdosierter Supplementierung',
           whatCouldHelp:
-            'Ob und wie supplementiert wird, sollte anhand von Ausgangswert, Begleitwerten, Risiko für Überversorgung und möglicher Ursache ärztlich festgelegt werden.',
-          expectedBenefit: 'Vermeidung von Unter- (wirkungslos) und Übertherapie (Hyperkalzämie-Risiko)',
+            'Aktuelle Präparate, Einnahmedauer und Begleitwerte ärztlich prüfen lassen; eigenständige weitere Einnahme bei Verdacht auf Überversorgung nicht fortsetzen, bis die Einordnung erfolgt ist.',
+          expectedBenefit: 'Reduktion des Risikos für Überversorgung, Hyperkalzämie und Folgeprobleme durch kontrollierte Anpassung.',
           uncertaintyReason: null,
           risksAndCautions:
-            'Einnahmeform und Kontrollintervall sollten ärztlich festgelegt werden; hochdosierte Selbst-Supplementierung ohne Kontrolle vermeiden.',
+            'Vitamin D ist fettlöslich: Überversorgung kann zu erhöhten Kalziumwerten führen. Symptome wie Übelkeit, Schwäche, starker Durst oder Nierensteinbeschwerden ärztlich abklären.',
           contraindicationsOrRedFlags:
-            'Sarkoidose, Williams-Syndrom, primärer Hyperparathyreoidismus: Vitamin-D-Supplementierung kontraindiziert ohne Facharzt',
-          monitoring: '25-OH-Vitamin-D nach 3 Monaten Supplementierung; Kalzium + Phosphat wenn Hochdosierung',
-          doctorDiscussion: '\'Wie lange soll ich supplementieren?\' / \'Brauche ich Kalzium zusätzlich?\'',
+            'Hyperkalzämie, Nierensteine, schwere Nierenerkrankung, Sarkoidose oder primärer Hyperparathyreoidismus: Supplementierung nur fachärztlich einordnen.',
+          monitoring: '25-OH-Vitamin-D, Kalzium, Phosphat und Nierenfunktion; Verlauf nach ärztlicher Festlegung.',
+          doctorDiscussion: '\'Ist mein Wert zu hoch?\' / \'Soll ich meine Supplementierung pausieren?\' / \'Welche Begleitwerte sollten geprüft werden?\'',
           notToConfuseWith:
             'Vitamin D2 (Ergocalciferol) ist in Studien weniger effektiv als D3 (Cholecalciferol) — D3 bevorzugt',
           safetyLevel: 'medium',
           requiresDoctorDiscussion: true,
           sourceRequirement: 'Endocrine Society Clinical Practice Guideline Vitamin D 2024 + DGE-Stellungnahme Vitamin D',
-        },
-        {
+        }
+    ],
+    low: [
+{
           loincCode: '14635-7',
           title: 'Sonnenlicht und UV-B-Exposition',
           measureCategory: 'lifestyle',
@@ -684,7 +678,7 @@ export const LABORWERT_B4_ACTIONS_MAP = {
           requiresDoctorDiscussion: true,
           sourceRequirement: 'RKI Vitamin D 2020 + DGE-Stellungnahme Vitamin D 2020',
         },
-        {
+{
           loincCode: '14635-7',
           title: 'Vitamin D3-Supplementierung',
           measureCategory: 'supportive',
@@ -711,7 +705,7 @@ export const LABORWERT_B4_ACTIONS_MAP = {
           requiresDoctorDiscussion: true,
           sourceRequirement: 'Endocrine Society Guideline Vitamin D 2024 + DGE-Stellungnahme Vitamin D 2020',
         },
-        {
+{
           loincCode: '14635-7',
           title: 'Kalzium-Zufuhr bei Knochen-Indikation',
           measureCategory: 'supportive',
@@ -738,7 +732,7 @@ export const LABORWERT_B4_ACTIONS_MAP = {
           requiresDoctorDiscussion: true,
           sourceRequirement: 'DVO-Leitlinie Osteoporose 2023 + Cochrane Review Calcium + Vitamin D 2022',
         },
-        {
+{
           loincCode: '14635-7',
           title: 'Immunsystem, Krebs, Herzerkrankung: was die Forschung zeigt',
           measureCategory: 'promising',
@@ -765,7 +759,7 @@ export const LABORWERT_B4_ACTIONS_MAP = {
           sourceRequirement:
             'VITAL Study (Manson et al., NEJM 2019) + D-HEALTH Trial (Scragg et al., Lancet Diabetes Endocrinol 2022)',
         },
-        {
+{
           loincCode: '14635-7',
           title: 'Verlaufskontrolle 25-OH-Vitamin-D',
           measureCategory: 'monitoring',
@@ -787,9 +781,8 @@ export const LABORWERT_B4_ACTIONS_MAP = {
           safetyLevel: 'low',
           requiresDoctorDiscussion: false,
           sourceRequirement: 'Endocrine Society Guideline Vitamin D 2024',
-        },
+        }
     ],
-    low: [],
   },
 
   '1988-5': {
