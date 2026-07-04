@@ -33,7 +33,21 @@ jobs:
         run: npm run build
 
       - name: Git diff whitespace check
-        run: git diff --check
+        env:
+          BASE_REF: ${{ github.base_ref }}
+          BEFORE_SHA: ${{ github.event.before }}
+        run: |
+          set -euo pipefail
+
+          ZERO_SHA="0000000000000000000000000000000000000000"
+
+          if [ -n "${BASE_REF}" ]; then
+            git diff --check "origin/${BASE_REF}...HEAD"
+          elif [ -n "${BEFORE_SHA}" ] && [ "${BEFORE_SHA}" != "${ZERO_SHA}" ]; then
+            git diff --check "${BEFORE_SHA}" "${GITHUB_SHA}"
+          else
+            git diff --check
+          fi
 
       - name: List changed text files
         env:
