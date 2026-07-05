@@ -1,6 +1,6 @@
 # AUDIT_CANON_CURRENT — VitalWissen Projektkanon (Schnellzugriff)
 
-**Stand:** 14.05.2026 (S3-BUILD-01, Commit `97f07e8`)  
+**Stand:** 05.07.2026 — VW-GITHUB-SOT-CLOSEOUT-01 (verifizierte Baseline vor Closeout: `ce9de260`)  
 **Typ:** Meta-Datei — Verdichtung, kein Ersatz für Einzeldokumente  
 **Pflege:** Bei jedem Paket-Abschluss mitziehen  
 
@@ -13,7 +13,7 @@ Diese Datei ist die **Audit-Einstiegsdatei** für Claude, GPT und externe Review
 **Was diese Datei IST:**
 - Schnellzugriff auf Kanon-Hierarchie und Gesamtstand
 - Verdichtung für Kontextweitergabe (z. B. neuer Chat, GPT-Session)
-- Pflicht-Bestandteil jeder Doppelpflege ab 21.04.2026
+- Zentrale GitHub-SOT-Statusdatei; bei SOT-relevanten Paketen nach der in §3a beschriebenen Sync-Regel aktualisieren
 
 **Was diese Datei NICHT IST:**
 - Ersatz für Einzeldokumente (Freeze-, Spec-, Closure-, Status-Dateien)
@@ -24,26 +24,57 @@ Diese Datei ist die **Audit-Einstiegsdatei** für Claude, GPT und externe Review
 
 ## 2. SOURCE-OF-TRUTH-HIERARCHIE
 
-Wenn Dokumente widersprechen, gilt folgende Priorität:
+Der kanonische Repository-Zustand ist GitHub `main`. Für finalisierte Projekt-, Status-, Architektur-, Spec- und Governance-Dokumentation ist GitHub `main/docs` führend. Lokale Workspace-Dateien, Closures und Audit-Exporte sind Arbeits-/Evidence-Schichten und werden erst durch einen geprüften GitHub-Sync kanonisch.
+
+Wenn kanonische GitHub-Dokumente widersprechen, gilt folgende Priorität:
 
 | Priorität | Dokument | Führend für |
 |-----------|----------|-------------|
-| 1 | Aktives Strang-Dokument (neuestes Freeze/Closure/Status je Paket) | Paket-spezifischer IST-Stand |
-| 2 | `VW_03_STATUS.md` | Operativer Sprint-Status aller Säulen |
-| 3 | `VW_04_ENTSCHEIDUNGEN.md` | Getroffene Grundsatzentscheidungen |
-| 4 | `P7D_ARCHITECTURE_RESET_FREEZE.md` | Architektur, Kernobjekte, Querschichten, Phasenlogik |
-| 5 | `VW_05_SAEULEN.md` | Säulen-Scope und Datenlogik |
-| 6 | `VW_06_WEBSITE.md` | Website-Konzept, Einstiegspfade, UX-Logik |
-| 7 | `CLAUDE.md` | Projektkontext, Stack, Credentials, Verhaltensregeln |
-| 8 | Ältere Audit-/Dossier-Dateien | Nur als Historik, nicht führend |
+| 1 | Neuestes einschlägiges, finalisiertes Strang-Dokument auf GitHub `main/docs` | Paket-spezifischer IST-Stand |
+| 2 | `docs/project_base/VW_03_STATUS.md` | Operativer Status aller Säulen |
+| 3 | `docs/decisions/VW_04_ENTSCHEIDUNGEN.md` | Getroffene Grundsatzentscheidungen |
+| 4 | Aktuelle Architektur-Freezes auf GitHub `main/docs` | Architektur, Kernobjekte, Querschichten, Phasenlogik |
+| 5 | `docs/project_base/VW_05_SAEULEN.md` | Säulen-Scope und Datenlogik |
+| 6 | `docs/project_base/VW_06_WEBSITE.md` | Website-Konzept, Einstiegspfade, UX-Logik |
+| 7 | Ältere GitHub-Audit-/Dossier-Dateien | Nur als Historik, nicht führend |
 
-**Goldene Regel:** Neuere operative Freeze-/Closure-Dateien überschreiben ältere Zusammenfassungen. `WEBSITE_PROJECT_MASTER_DOSSIER.md` und frühes Strategie-Reassessment (18.04.2026) sind **nicht führend** für aktuelle Zahlen und Architekturentscheidungen — diese sind durch `P7D_ARCHITECTURE_RESET_FREEZE.md` und operative Closure-Dokumente abgelöst.
+**Separate technische Kanons:** Root-`AGENTS.md` ist bindend für Codex-Ausführungsregeln; `.github/workflows/` ist bindend für CI. Beides wird nicht durch lokale Workspace-Dokumente überschrieben.
 
-**Widersprüche:** Diese Datei darf Widersprüche nicht glätten, sondern muss sie markieren. Bei Widerspruch: Einzeldokument lesen und diesen Stand hier korrigieren.
+**Lokale Evidence-Regel:** Eine neuere lokale Closure oder Statusdatei kann einen veralteten GitHub-Stand als Drift belegen, überschreibt ihn aber nicht automatisch. Sie muss über einen geprüften PR in den GitHub-Kanon integriert werden.
+
+**Goldene Regel:** Neuere kanonische GitHub-Freezes/-Closures überschreiben ältere Zusammenfassungen. `WEBSITE_PROJECT_MASTER_DOSSIER.md` und frühes Strategie-Reassessment (18.04.2026) sind **nicht führend** für aktuelle Zahlen und Architekturentscheidungen — diese wurden durch neuere kanonische Architektur- und operative Dokumente abgelöst.
+
+**Widersprüche:** Diese Datei darf Widersprüche nicht glätten, sondern muss sie markieren. Bei Widerspruch: einschlägiges kanonisches GitHub-Dokument und konkrete PR-/Commit-Evidence prüfen und diesen Stand über den geregelten SOT-Sync korrigieren.
 
 ---
 
-## 3. AKTUELLER GESAMTSTAND (14.05.2026 — S3-BUILD-01)
+## 3. AKTUELLER GESAMTSTAND (05.07.2026 — Migration-Closeout / Produktarbeit wieder freigegeben)
+
+### 3a. GitHub-Governance-Migration + Closeout (VW-GITHUB-SOT-CLOSEOUT-01, Baseline 04.07.2026)
+
+**Migration:** Kernmechanismus technisch bestätigt und live bewiesen. Branch Protection auf `main` aktiv, Required Check `Build and safety gates` gebunden. Enforcement-Historie: PR #35 (historischer Fehlversuch, `STOP_CHECK_DID_NOT_TURN_RED`) → PR #36 (CI-Diff-Check-Fix) → PR #37 (erfolgreicher ROT→GRÜN-Nachweis; PR #37 selbst nicht gemerged, main unverändert, Testbranch gelöscht) — **nicht erneut testen**. Codex Cloud operativ bestätigt als primärer Codex-Ausführungsweg (insbesondere PR #31, #33 und #36).
+
+**Closeout-Baseline main HEAD:** `ce9de2607c43ec38a022162e730a815a8875d766` (Merge PR #36) — verifizierte GitHub-Baseline unmittelbar vor diesem Closeout-PR, **kein** dauerhaft aktueller HEAD nach Merge oder späteren Commits.
+
+**Supabase Read-Health:** In diesem Abschlussaudit **nicht erneut verifiziert** (SB0 — keine Supabase-Berührung in diesem Docs-only-Paket). Keine Aussage "aktuell PASS" oder "aktuell FAIL" möglich.
+
+**Netlify Live-Smoke (Stand 04.07.2026, Quelle: `VW-GITHUB-SOT-CURRENT-STATE-CONSOLIDATION-01`):** Bestätigt: Startseite, Laborwerte-Liste, Checkup Builder (`/laborwerte/checkup-builder`), Vertrauen-Seite. **Nicht abschliessend verifiziert:** eine Laborwert-Detailseite (kein Regressionsbeleg, aber auch kein positiver Nachweis in diesem Lauf). Es wird **nicht** behauptet, dass alle Kernrouten PASS sind.
+
+**Produktstand (live-belegt, nicht Gegenstand dieses Docs-Pakets selbst):**
+- B4-BUILD-03: ✅ abgeschlossen (PR #31)
+- B4-BUILD-04 Wave 1: ✅ abgeschlossen (PR #32 + #33)
+- Nächste B4-Welle: offen, nicht spezifiziert
+- S1 Checkup Builder: ✅ abgeschlossen, live bestätigt
+- S1-BUILD-02: teilweise über lokalen DB-Rollout (`S1_BUILD_02_USA_BACKFILL_BT2_ROLLOUT_30_01`) vorangetrieben — Abgleich mit GitHub-Stand offen (S1-BUILD-02-Reconciliation)
+- `UX_SCAN_01`: unklar — Codex-Context vorhanden (PR #12), kein Folge-Produktergebnis gefunden
+- UI-REFRESH-04: offen, nicht begonnen, kein Blocker
+- S3-BUILD-02: optional/offen, kein Altauftrag
+
+**SOT-Sync-Regel (neu, bindend):** siehe `README_AGENTS.md` §1A und `docs/ops/AGENT_OPERATING_MODEL.md` — jedes SOT-relevante Paket braucht vor einem fachlich nicht zusammenhängenden Folgepaket einen GitHub-Sync (im selben PR oder unmittelbar folgendem Docs-Sync-PR).
+
+**Cleanup-Baseline 04.07.2026:** PR #8 war als Draft-Test-PR offen; zusätzlich waren mehrere bereits gemergte Head-Branches aufräumbar. Das ist eine zeitgebundene Baseline, keine dauerhaft aktuelle Bestandszahl. Unklare Branches niemals blind löschen. Details in lokaler Evidence (`CLEANUP_CANDIDATES.md`).
+
+---
 
 ### Live-Module
 
@@ -55,7 +86,7 @@ Wenn Dokumente widersprechen, gilt folgende Priorität:
 | S4 Arztbrief-Decoder | ✅ Beta Freeze | kein DB-Touch | `519f2d9` (P7-05) |
 | S6 Medikamenten-Erklärer | ✅ **Q2-BUILD-02b (06.05.2026):** MedQuellenBox live. + **Q2-MAPPING-PATCH (07.05.2026): `patient_info`-Eintrag in MED_QUELLEN_TYP** (teal, kein CSS-Touch) | 50 Wirkstoffe | `27b3fb6` (Q2-MAPPING-PATCH) |
 | S18 Ernährungskompass | ✅ **S18-Build-05 abgeschlossen (23.04.2026)** — Alle 4 Kernobjekte vollständig: K8a Nährstoffe (41) + K8b Lebensmittel (24) + K8c Muster (4) + K8d Zusatzstoffe (35) | 4 Muster + 41 Nährstoffe + 24 Lebensmittel + **35 Zusatzstoffe** | `9941a3f` (S18-Build-05) |
-| S8 B4 Nächste Schritte | ✅ **B4-BUILD-03_SPEC abgeschlossen (10.06.2026):** 24-Karten-Spec für HbA1c/Ferritin/VitD/CRP (15-Felder-Schema) bereit für Codex. Kein Code, kein Commit. Vorgänger: B4-SAFETY-PATCH `8f19256` (07.05.2026). B4-BUILD-02 (25.04.2026): LDL-Journey live (9 Karten, 15-Felder). | `naechste_schritte` JSONB (5 Krankheiten) | `8f19256` (B4-SAFETY-PATCH, letzter Code-Commit) |
+| S8 B4 Nächste Schritte | ✅ **B4-BUILD-03 + B4-BUILD-04 Wave 1 abgeschlossen** (PR #31, #32, #33 — live via GitHub-PR-Ledger verifiziert, 04.07.2026; Karteninhalt selbst in diesem Docs-Paket nicht erneut inhaltlich geprüft). Vorgänger: B4-BUILD-03_SPEC (10.06.2026, Spec-Paket), B4-SAFETY-PATCH `8f19256` (07.05.2026), B4-BUILD-02 (25.04.2026, LDL-Journey live). Nächste B4-Welle: offen, nicht spezifiziert. | `naechste_schritte` JSONB (Feldanzahl **nicht direkt verifiziert** in diesem Paket) | PR #33 (letzter bekannter B4-Code-PR, Commit-Hash nicht einzeln in diesem Docs-Audit nachgeschlagen) |
 
 ### DB-Tabellen (13.05.2026)
 
@@ -75,11 +106,11 @@ Wenn Dokumente widersprechen, gilt folgende Priorität:
 
 ### Repo & Hosting
 
-- Letzter Commit auf `main`: `2e8cad9` (Supabase Keepalive Workflow, 14.05.2026) — Code-Commit: `27b3fb6` (Q2-MAPPING-PATCH)
-- **Keepalive-Workflow** (`supabase-keepalive.yml`): ✅ **LIVE** — Commit `2e8cad9`, Secret `SUPABASE_ANON_KEY` gesetzt, Run #1 PASS (HTTP 200, 14.05.2026). Läuft automatisch Mo/Mi/Fr 08:00 UTC.
+- Verifizierte GitHub-Baseline vor dem Closeout-PR: `ce9de2607c43ec38a022162e730a815a8875d766` (Merge PR #36, 04.07.2026). Kein dauerhaft aktueller HEAD nach Merge dieses Closeout-PRs; aktuellen Stand immer live gegen GitHub prüfen.
+- **Keepalive-Workflow** (`supabase-keepalive.yml`): ✅ **LIVE** — Commit `2e8cad9`, Secret `Supabase-Anon-Konfiguration` gesetzt, Run #1 PASS (HTTP 200, 14.05.2026). Läuft automatisch Mo/Mi/Fr 08:00 UTC.
 - Netlify: Auto-Publishing AN, live unter `https://vitalwissen.netlify.app`
 - GitHub: `sebastianfenner85-HH/VitalWissen` (public)
-- MISTRAL_API_KEY: in Netlify gesetzt (Production, S4-Proxy)
+- LLM-Provider-Konfiguration: in Netlify gesetzt (Production, S4-Proxy)
 
 ### Architektur-Phasenzuordnung
 
@@ -166,7 +197,7 @@ Keine Ausnahmen. Dauerhaft bindend.
 
 ### P7 / S4 — Arztbrief-Decoder
 **Status:** ✅ Beta Freeze (P7-FINAL, 20.04.2026). Strang formal geschlossen.  
-Letzter Commit: `519f2d9`. Mistral stateless API (ZDR bestätigt). E07/E08 eingefroren.  
+Letzter Commit: `519f2d9`. LLM-Provider stateless API (ZDR bestätigt). E07/E08 eingefroren.  
 Nächster Schritt: P7-06 als separates Spec-Paket (kein sofortiger Build-Auftrag).  
 Führend: `P7_FINAL_FREEZE_CLOSURE.md`
 
@@ -181,9 +212,9 @@ Nächster Schritt: S18-Build-05 (E-Nummern K8d) oder S6-06 — eigenständiger C
 Führend: **`S18_BUILD04_LEBENSMITTEL_CLOSURE.md`** (inkl. Anhang S18-Build-04a)
 
 ### S8 / B4 — B4 Ableitungslogik
-**Status:** ✅ **B4-BUILD-03_SPEC abgeschlossen (10.06.2026)** — 24-Karten-Spezifikation für HbA1c/Ferritin/VitD/CRP (15-Felder-Schema) vollständig. 12 Validatoren, MedQA-Anforderungen, UX-Hierarchie, spezifische No-Gos. Kein Code, kein Commit, kein DB-Write. Bereit für Codex. ✅ B4-SAFETY-PATCH (07.05.2026): safetyLevel + requiresDoctorDiscussion. ✅ B4-BUILD-02 (25.04.2026): LDL-Journey live. ✅ S8-BUILD-01/02/02b/02c/03. ✅ B4-DECISION-LOGIC-FREEZE + PATCH-01.  
-Nächster Schritt: **B4-BUILD-03 Code (Codex)** → `laborwert_b4_actions_map.js` nach Spec migrieren → Review V1–V12 → Go Sebastian → Commit.  
-Führend: **`01_PROJECT_SOURCES_CURRENT/B4_BUILD_03_SPEC.md`** (10.06.2026) · **`01_PROJECT_SOURCES_CURRENT/B4_BUILD_02_LDL_JOURNEY_CLOSURE.md`** · **`01_PROJECT_SOURCES_CURRENT/B4_DECISION_LOGIC_FREEZE.md`**
+**Status:** ✅ **B4-BUILD-03 und B4-BUILD-04 Wave 1 abgeschlossen** (PR #31, #32, #33). Die frühere B4-BUILD-03_SPEC ist umgesetzt; Wave 1 ergänzte sechs weitere Laborwerte. Der Abschluss ist über GitHub-PR-Historie belegt; die Karteninhalte wurden in diesem Docs-Closeout nicht erneut fachlich geprüft.  
+Nächster Schritt: **nächste B4-Welle neu spezifizieren** — kein belastbarer Altauftrag für Wave 2 gefunden; nicht aus alten Chats rekonstruieren.  
+Führend für die aktuelle Abschlusslage: GitHub PR #31/#32/#33. Historische Grundlagen: `01_PROJECT_SOURCES_CURRENT/B4_BUILD_03_SPEC.md` · `01_PROJECT_SOURCES_CURRENT/B4_BUILD_02_LDL_JOURNEY_CLOSURE.md` · `01_PROJECT_SOURCES_CURRENT/B4_DECISION_LOGIC_FREEZE.md`
 
 ### P7D / Discovery / Architektur
 **Status:** ✅ Architecture Reset Freeze (P7D-01, 18.04.2026). Discovery-Basis-Build live (P7D-02). S3-Freeze abgeschlossen (P7D-03). S18-Freeze+Reset abgeschlossen (P7D-04/04a).  
@@ -237,7 +268,7 @@ Führend: `01_PROJECT_SOURCES_CURRENT/Q2_BUILD_02D_S1_QUELLENBOX_CLOSURE.md`
 |--------|-----------|-----------------|
 | FULL_AUDIT_2026-05 Befund #2 — B4-actions-map HbA1c/Ferritin/VitD/CRP ohne safetyLevel+requiresDoctorDiscussion | ✅ GESCHLOSSEN | B4-SAFETY-PATCH abgeschlossen (07.05.2026), Commit `8f19256` |
 | FULL_AUDIT_2026-05 Befund #3 — S1 ohne QuellenBox | ✅ GESCHLOSSEN | Q2-BUILD-02d abgeschlossen (07.05.2026), Commit `fab4374` — alle 3 FULL_AUDIT_2026-05-Befunde geschlossen |
-| Mistral DPA-Vertragsklausel offen | NIEDRIG | Sebastian: Compliance-Nachtrag bei Mistral anfordern |
+| LLM-Provider DPA-Vertragsklausel offen | NIEDRIG | Sebastian: Compliance-Nachtrag beim LLM-Provider anfordern |
 | S4 ST-1a/b/c (Performance nach P7-04d) ausstehend | OFFEN | Sebastian manuell — kein Blocker |
 | S4 ST-P705-4 (UX nach P7-05) ausstehend | OFFEN | Sebastian manuell — kein Blocker |
 | S6 supp_interaktionen: nur 19/50 Wirkstoffe befüllt | INFO | Slice 2 — kein Slice-1-Blocker |
@@ -310,7 +341,7 @@ Aktualisierung bedeutet mindestens: Tabellen in §3 (DB-Stand, Live-Module), §7
 *Aktualisiert: 07.05.2026 — S3-PIPELINE-SPEC ✅ Vollständige Pipeline-Spec Studienkompass C.1 abgeschlossen (Sections A–S). ICD→MeSH-Mapping (5 Cluster: I10/E11/F32/E03/D50, je Primary/Secondary/Tertiary), zweistufige Suchstrategie (Quick-Pass + Deep-Pass), Quellen-Prioritätskette (OpenAlex→PubMed→Crossref→EuropePMC→DOI.org; Cochrane/Semantic Scholar ROT bindend), Pipeline-Phasen P0–P8 (vollständig manuell C.1, kein Automatismus), Curation-Queue-Format, Gates K.1–K.4 (Hard Stop bei Retraction/Flagging), Coverage-/Findability-/Empty-State-Regeln, API-/Rate-/Secrets-Regeln (OpenAlex mailto, PubMed tool+email, Crossref dynamische Header), K6-Feldmapping J.1–J.5 (OpenAlex/PubMed/Crossref→DB + manuell-only), 15 Validatoren PASS. Kein Code, kein DB-Write, kein Commit, kein Deploy. §7 S3-Strang nachgezogen (S3-PIPELINE-SPEC ✅, Nächster Schritt: S3-UX-SPEC).*
 *Aktualisiert: 13.05.2026 — S3-SCHEMA-MIGRATION-PREFLIGHT ✅ P.0-Sequenz vollständig (4/4). SQL-Entwurf `sql/s3_k6_research_entries_preflight.sql` erstellt (kein Apply). 3 ENUMs + 46-Feld-Tabelle `studien` + 15 Indexes + Trigger + RLS E29 + Gate-K.4-Constraint. `studien`-Tabelle NICHT in DB. 10/10 Validatoren PASS. Kein Commit, kein DB-Write, kein Deploy. §7 S3-Strang (PREFLIGHT ✅, Nächster Schritt: SQL Apply → Curation-Queue → S3-BUILD-01) nachgezogen. Doppelpflege vollständig.*  
 *Aktualisiert: 13.05.2026 — AI-INTEGRATION-AND-PERSONAL-CONTEXT-FREEZE ✅ KI-/Google-Integrations-Strategie verbindlich eingefroren. VitalWissen = Trust-, Kontext- und Handlungsschicht. Google/Gemini = Benchmark + Kanal + optionale Integrationsschicht (nicht Kernbesitz). 3 Modi (Schnellantwort / Tiefen-Trustansicht / Persönlicher Kontext). 5 Google-Pfade eingeordnet. Datenklassifikation 1–5 (Klassen 3–5 externe KI NEIN). Auswirkungen auf S3/S6/S8/S9/S18/Q2/Q4/Q5/Q9 beschrieben. 7/7 Akzeptanzkriterien PASS. Kein Code, kein DB-Write, kein Commit, kein Deploy. §7 Strang + §5 No-Gos um KI-spezifische Grenzen erweitert. Führend: `01_PROJECT_SOURCES_CURRENT/AI_INTEGRATION_AND_PERSONAL_CONTEXT_FREEZE.md`*  
-*Aktualisiert: 14.05.2026 — S3-CURATION-QUEUE-01-WRITE ✅ 20 Rows in `studien` geschrieben (curation_status=review, visibility=draft, retraction_status=nicht_retracted, retraction_checked_at=2026-05-14). DB-Write: JA (5 Batches × 4, Dashboard-JWT). 9-Checkpoint-Validation PASS. Enum-Substitutionen: candidate→review, private→draft, not_retracted→nicht_retracted. RLS: anon 0 Rows ✅. Kein Code, kein Commit, kein Deploy. §3 studien 0→20 + §7 S3-Strang (DB-Write JA, nächster Schritt: Freigabe → approved/public → S3-BUILD-01) nachgezogen. Doppelpflege vollständig.*  
-*Nächste Pflicht-Aktualisierung: bei S3-BUILD-01, Q2-BUILD-02c-P2B, S8-BUILD-02d, B4-BUILD-03, UI-REFRESH-04 oder jedem anderen Paket-Abschluss*
+*Aktualisiert: 14.05.2026 — S3-CURATION-QUEUE-01-WRITE ✅ 20 Rows in `studien` geschrieben (curation_status=review, visibility=draft, retraction_status=nicht_retracted, retraction_checked_at=2026-05-14). DB-Write: JA (5 Batches × 4, authentifizierte Dashboard-Sitzung). 9-Checkpoint-Validation PASS. Enum-Substitutionen: candidate→review, private→draft, not_retracted→nicht_retracted. RLS: anon 0 Rows ✅. Kein Code, kein Commit, kein Deploy. §3 studien 0→20 + §7 S3-Strang (DB-Write JA, nächster Schritt: Freigabe → approved/public → S3-BUILD-01) nachgezogen. Doppelpflege vollständig.*  
+*Nächste Pflicht-Aktualisierung: bei jedem SOT-relevanten Paketabschluss; vor einem fachlich nicht zusammenhängenden Folgepaket muss der GitHub-SOT-Sync erfolgt sein.*
 
 *Aktualisiert: 14.05.2026 — S3-BUILD-01 abgeschlossen. Block [15] "Was sagt die Forschung?" auf 5 Pilot-Krankheitsseiten live. Commit 97f07e8. Naechster Schritt: S3-BUILD-02 (Hub) oder parallele Pakete. → 01_PROJECT_SOURCES_CURRENT/S3_BUILD_01_CLOSURE.md*
