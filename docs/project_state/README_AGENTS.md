@@ -1,8 +1,8 @@
 # README_AGENTS — VitalWissen Arbeitsordner
 
 > **Gültig ab:** 2026-05-26 (VW-HYGIENE-04)
-> **Paket-ID:** VW-HYGIENE-04
-> **Status:** Operating Rules Freeze
+> **Zuletzt aktualisiert:** 2026-07-05 (VW-GITHUB-SOT-CLOSEOUT-01)
+> **Status:** Operating Rules Freeze — PR-only-Governance und Codex-Cloud-Betrieb präzisiert
 
 ---
 
@@ -22,8 +22,11 @@ Vor jedem Paket sind `README_WORKSPACE.md` **und** diese Datei zu lesen.
 - GitHub `main` / `docs/` ist der kanonische Source of Truth für finalisierte Docs, Specs, Freezes und Projektstatus.
 - Route A: ChatGPT GitHub Connector für kleine bis mittlere Docs-/Text-/Mapping-PRs.
 - Route B: Cowork für lokale Workspace-/Ops-/Browser-/Supabase-/Netlify-Prüfungen und bei GitHub-Bedarf für vom Nutzer ausführbare Scripts.
-- Route C: Codex für Produktcode, UI, Build, Tests und Code-PRs aus frischem Clone.
+- Route C: Codex Cloud primär für Produktcode, UI, Build, Tests und Code-PRs; Codex lokal nur bei echtem lokalen Worktree-/Toolchain-Bedarf.
 - Kein Agent merged ohne explizites Sebastian-GO.
+- **Kein direkter Push auf `main`.** Produktive Änderungen laufen immer über Feature-Branch und PR — auch für kleine Docs-/CI-Fixes.
+- **Normaler Workflow:** Paket oder Issue → Feature-Branch → PR → Required Checks (`Build and safety gates`) → Review → Sebastian-GO → Merge.
+- **Draft-PR:** nur solange die Arbeit noch nicht review-ready ist — kein pauschaler Draft-Zwang für fertige PRs.
 
 ---
 
@@ -31,9 +34,9 @@ Vor jedem Paket sind `README_WORKSPACE.md` **und** diese Datei zu lesen.
 
 | Agent | Primäre Rolle |
 |-------|--------------|
-| **ChatGPT** | Controller, Reviewer, Prompt-Architekt. Plant Pakete, bewertet Ergebnisse, prüft PR-Diffs und gibt Go/No-Go-Empfehlungen. Kann kleine bis mittlere Docs-/Text-/Mapping-PRs über den GitHub Connector vorbereiten. Kein Merge und keine finale Freigabe ohne Sebastian. Kein direkter lokaler Dateisystem-Zugriff. |
-| **Cowork** | Workspace-/Docs-/Quellen-/Ops-Hygiene, Browserchecks sowie Supabase-/Netlify-Prüfungen. Liest und schreibt Dateien im Arbeitsordner nur im Paket-Scope. GitHub nur bei explizit erlaubtem GH-Level und über vorhandene `gh auth`; kein PAT anfordern, keine rohe `CLAUDE.md` lesen/ausgeben. Kein Repo-Code, kein eigenständiger Supabase/Netlify-Write. |
-| **Codex** | Code-/Repo-/Test-/PR-Arbeit. Arbeitet ausschließlich aus einem frischen oder sicher sauberen Clone. Keine Docs-Kanon- oder Workspace-Hygiene-Rolle. Kein Merge ohne Sebastian-GO. |
+| **ChatGPT** | Controller, Reviewer, Prompt-Architekt. Plant Pakete, bewertet Ergebnisse, prüft PR-Diffs und gibt Go/No-Go-Empfehlungen. Kann kleine bis mittlere Docs-/Text-/Mapping-PRs über den GitHub Connector vorbereiten sowie kleine, klar begrenzte GitHub-Routineaktionen ausführen, sofern der konkrete Connector die Aktion tatsächlich unterstützt und der Auftrag sie explizit erlaubt. Kein Merge ohne ausdrückliches Sebastian-Go, keine Branch-Protection-Änderung als Routineaktion. Kein direkter lokaler Dateisystem-Zugriff. |
+| **Cowork** | Workspace-/Docs-/Quellen-/Ops-Hygiene, Browserchecks sowie Supabase-/Netlify-Prüfungen. Liest und schreibt Dateien im Arbeitsordner nur im Paket-Scope. GitHub nur bei explizit erlaubtem GH-Level und über vorhandene `gh auth`; kein PAT anfordern, keine rohe `CLAUDE.md` lesen/ausgeben. **Maximal GH2 (remote read-only).** Kein normaler Code-Agent, kein normaler GitHub-Write-/PR-Agent. Kein Repo-Code, kein eigenständiger Supabase/Netlify-Write. |
+| **Codex** | Code-/Repo-/Test-/PR-Arbeit. **Codex Cloud ist der primäre Ausführungsweg** für Produktcode, Build, Tests, Branch, Commit und PR (operativ bestätigt insbesondere durch PR #31, #33 und #36). **Codex lokal** ist Sekundärmodus für interaktive lokale Fehlersuche, spezielle Toolchains oder echten lokalen Worktree-Bedarf. Preflight immer modusgerecht nach Root-`AGENTS.md`: Cloud über verifizierten Workspace/HEAD, lokal über frischen oder sicher sauberen Clone/Worktree. Keine Docs-Kanon- oder Workspace-Hygiene-Rolle. Kein Merge ohne Sebastian-GO, kein direkter `main`-Push. |
 
 ---
 
@@ -57,10 +60,10 @@ Vor jedem Paket sind `README_WORKSPACE.md` **und** diese Datei zu lesen.
 ## 4. Codex-Regeln
 
 1. **Codex nur für Code/Repo/Test/PR.** Keine Workspace-Hygiene-Aufgaben.
-2. **Codearbeit nur aus frischem oder sicher sauberem Clone.** Der lokale Clone `00_REPO/vitalwissen_repo_current` ist stale/dirty und darf nicht direkt committet werden.
+2. **Preflight ist modusabhängig und Root-`AGENTS.md` ist bindend.** Codex Cloud prüft Workspace-Pfad, erwarteten HEAD, erlaubte Dateiliste und sauberen Status; Codex lokal arbeitet nur aus frischem oder sicher sauberem Clone/Worktree. Der lokale Clone `00_REPO/vitalwissen_repo_current` ist stale/dirty und darf nicht direkt committet werden.
 3. **Immer dokumentieren:** Diff, Build/Test-Ergebnis, geänderte Dateien, Commit-Hash.
 4. **Keine Supabase-/Netlify-Writes ohne Freigabe.** Auch nicht aus dem Repo-Code heraus.
-5. **Kein Push auf `main`** ohne explizite Go-Freigabe im laufenden Auftrag.
+5. **Kein direkter Push auf `main`.** Produktive Änderungen laufen über Feature-Branch und PR; Merge nur nach explizitem Sebastian-Go.
 
 ---
 
@@ -80,7 +83,7 @@ Jedes Paket braucht künftig folgende Mindeststruktur:
 | **Closure** | Was muss am Ende dokumentiert werden? |
 | **Go/No-Go** | Freigabeentscheidung für den nächsten Schritt |
 
-**Empfangsregel:** Pakete sollten eine ENDE-Zeile als Vollständigkeitsprüfung enthalten. Wenn die letzte Zeile nicht sichtbar ist: sofort stoppen, keine Dateien ändern, `BLOCKED_INCOMPLETE_TASK_PROMPT` melden.
+**Empfangsregel:** Vollständige Agentenaufträge enden exakt mit `ENDE_AUFTRAG`. Fehlt diese letzte Zeile oder ist der Auftrag erkennbar abgeschnitten: sofort stoppen, keine Dateien ändern und `BLOCKED_INCOMPLETE_TASK_PROMPT` melden. Für Codex gelten zusätzlich die Hard Stops der Root-`AGENTS.md`.
 
 ---
 
@@ -141,7 +144,7 @@ Am Ende jedes Pakets prüft Cowork die ChatGPT-Bundle-Relevanz:
 
 ## 10. External Systems Matrix
 
-Für GitHub, Supabase und Netlify gilt **`06_QA_VALIDATION/EXTERNAL_SYSTEMS_MATRIX.md`** als bindendes Regelwerk.
+Für GitHub, Supabase und Netlify gilt **`docs/ops/EXTERNAL_SYSTEMS_MATRIX.md`** (GitHub-kanonischer Pfad) als bindendes Regelwerk. Die lokale Kopie `06_QA_VALIDATION/EXTERNAL_SYSTEMS_MATRIX.md` ist Arbeitsspiegel, nicht bindender GitHub-Pfad.
 
 **Kernregeln:**
 - Standard ist **GH0 / SB0 / NF0** — kein externes System wird berührt.
@@ -152,7 +155,7 @@ Für GitHub, Supabase und Netlify gilt **`06_QA_VALIDATION/EXTERNAL_SYSTEMS_MATR
 - Closure muss GitHub, Supabase und Netlify getrennt dokumentieren.
 - `repo_guard.py` nur bei GH1+ oder Code-/Repo-Paketen — nicht für reine Docs-/Workspace-/Mirror-Pakete.
 
-Stufen: **GH0–GH5** (GitHub) · **SB0–SB5** (Supabase) · **NF0–NF5** (Netlify) — vollständige Definitionen in `06_QA_VALIDATION/EXTERNAL_SYSTEMS_MATRIX.md`.
+Stufen: **GH0–GH5** (GitHub, PR-only-Modell: none / local_status_read_only / remote_read_only / feature_branch_write / pr_lifecycle_write / approved_pr_merge) · **SB0–SB5** (Supabase) · **NF0–NF5** (Netlify) — vollständige Definitionen in `docs/ops/EXTERNAL_SYSTEMS_MATRIX.md`.
 
 ---
 
@@ -180,6 +183,17 @@ Diese Regel gilt ab sofort für alle Pakete mit DB-Schema-Berührung:
 
 ---
 
+## 12. SOT-Sync-Regel (ab VW-GITHUB-SOT-CLOSEOUT-01)
+
+GitHub `main` bleibt der kanonische Repository-Zustand; `docs/` darin ist die kanonische finalisierte Projekt-/Governance-Dokumentation. Jedes **SOT-relevante** Paket (schliesst/eröffnet einen Produktstrang, ändert Priorität/Architektur/Governance/Agentenbetrieb oder Build-/Rollout-Status wesentlich) muss vor einem fachlich nicht zusammenhängenden Folgepaket einen GitHub-SOT-Sync erhalten:
+
+1. Statusänderung im selben geeigneten PR dokumentieren, **oder**
+2. unmittelbar folgender, klar verlinkter Docs-/SOT-Sync-PR.
+
+**Nicht erlaubt:** mehrere Wochen rein lokaler Fortschritt ohne GitHub-Status-Sync, zwei parallele Wahrheiten, stilles Weiterarbeiten mit veraltetem GitHub-Kanon. Hintergrund und Beleg: `docs/project_state/PROJECT_STATE_CURRENT.yaml` (`github_governance.sot_sync_rule`), `docs/project_state/AUDIT_CANON_CURRENT.md` §3a.
+
+---
+
 *Erstellt durch VW-HYGIENE-04 — Operating Rules Freeze — 2026-05-26*
 *Aktualisiert durch VW-HYGIENE-07B — DATEN_FUER_CHATGPT Upload-Bundle — 2026-05-26*
 *Aktualisiert durch VW-HYGIENE-08A — chatgpt_bundle_sync Framework + Bundle-Pflicht — 2026-05-26*
@@ -187,3 +201,4 @@ Diese Regel gilt ab sofort für alle Pakete mit DB-Schema-Berührung:
 *Aktualisiert durch VW-HYGIENE-09B — Bundle-Pflicht auf 12 Dateien erweitert, 4 neue Trigger-Dateien — 2026-05-26*
 *Aktualisiert durch VW-OPS-SUPABASE-GRANTS-01 — Supabase Data API Grants Agentenregel — 2026-05-28*
 *Aktualisiert durch VW-GITHUB-SOT-CLEANUP-01 — GitHub-SOT, Agentenrollen und Routen A/B/C klargestellt — 2026-06-13*
+*Aktualisiert durch VW-GITHUB-SOT-CLOSEOUT-01 — Direkt-Push-Verbot explizit gemacht, Normal-Workflow (Branch→PR→Checks→Review→GO→Merge) benannt, Codex-Cloud als primärer Ausführungsweg + Codex-lokal als Sekundärmodus präzisiert, ChatGPT-Spielraum für kleine reversible GitHub-Aktionen benannt, Cowork-GH-Obergrenze (GH2) explizit gemacht, External-Systems-Matrix-Verweis auf `docs/ops/`-Pfad korrigiert, neue SOT-Sync-Regel (§12) ergänzt — 2026-07-05.*
