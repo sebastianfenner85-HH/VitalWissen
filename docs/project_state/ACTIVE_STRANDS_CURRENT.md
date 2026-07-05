@@ -1,6 +1,6 @@
 # ACTIVE_STRANDS_CURRENT — Operative Strang-Übersicht VitalWissen
 
-**Stand:** 14.05.2026 (S3-BUILD-01, Commit `97f07e8`)  
+**Stand:** 05.07.2026 — **VW-GITHUB-SOT-CLOSEOUT-01** (verifizierte Baseline vor Closeout: `ce9de260`)  
 **Typ:** Meta-Datei — operative Schnellübersicht, kein Ersatz für Einzeldokumente  
 **Pflege:** Bei jedem neuen Paket prüfen und nachziehen  
 
@@ -10,11 +10,42 @@
 
 Diese Datei gibt den schnellen Überblick über alle aktiven und zuletzt bewegten Stränge: was ist der aktuelle Stand, was ist der nächste zulässige Schritt, welche Dokumente führen.
 
-**Kein Ersatz** für Einzeldokumente. Wenn Details benötigt werden: immer führendes Strang-Dokument lesen.
+**Kein Ersatz** für Einzeldokumente. Wenn Details benötigt werden: immer das einschlägige finalisierte Dokument auf GitHub `main/docs` lesen. Historische Verweise auf lokale `01_PROJECT_SOURCES_CURRENT/*`-Dateien dokumentieren die damalige Provenienz; sie sind seit dem GitHub-SOT-Closeout keine parallele kanonische Quelle.
+
+**Historische Workflow-Hinweise:** Ältere Einträge mit Direkt-Push-/`origin/main`-Abläufen dokumentieren frühere Praxis. Sie sind keine aktuelle Erlaubnis. Für neue Arbeit gilt ausschließlich der PR-only-Workflow im Governance-Abschnitt unten.
 
 ---
 
 ## 2. AKTIVE / ZULETZT RELEVANTE STRÄNGE
+
+---
+
+### GITHUB-GOVERNANCE-MIGRATION — SOT-Closeout (VW-GITHUB-SOT-CLOSEOUT-01)
+**Status:** ✅ **Kernmigration technisch bestätigt und live bewiesen — formaler Docs-/Governance-Abschluss mit diesem Paket**
+**Letzter Stand:** Branch Protection auf `main` aktiv (live verifiziert). Required Check `Build and safety gates` gebunden. ROT→GRÜN-Enforcement-Nachweis vollständig: PR #35 (historischer Fehlversuch — Check schlug nicht rot an, `STOP_CHECK_DID_NOT_TURN_RED`) → PR #36 (CI-Diff-Check-Root-Cause-Fix) → PR #37 (erfolgreicher Nachweis: ROT-Blockade Phase A + GRÜN-Freigabe Phase B des normalen Mergewegs). PR #37 selbst **nicht gemerged**, Testbranch gelöscht, `main` durch PR #37 unverändert — **nicht erneut testen**. Codex Cloud als primärer Codex-Ausführungsweg für Produktcode operativ bestätigt (insbesondere PR #31, #33 und #36). PR-only-Governance im geprüften Migrations-/Governance-Workflow eingehalten; kein Direktpush auf `main` in diesem verifizierten Workflow.
+**Closeout-Baseline main HEAD:** `ce9de2607c43ec38a022162e730a815a8875d766` (Merge PR #36) — verifizierte GitHub-Baseline unmittelbar vor diesem Closeout-PR. **Kein** dauerhaft aktueller `main`-HEAD nach Merge — für den jeweils aktuellen Stand immer live gegen GitHub prüfen.
+**SOT-Sync-Regel (neu, bindend ab diesem Paket):** Statusrelevante Arbeit darf künftig nicht mehr wochenlang ausschliesslich lokal fortgeschrieben werden, ohne GitHub `docs/project_state/*` nachzuziehen. Vor jedem fachlich nicht zusammenhängenden Folgepaket ist ein GitHub-SOT-Sync erforderlich (Doku-Sync im selben PR oder unmittelbar folgender, klar verlinkter Docs-Sync-PR). Kein Aufbau zweier paralleler Wahrheiten.
+**Bekannte Drift, mit diesem Paket geschlossen:** `docs/project_state/*` + `docs/project_base/VW_03_STATUS.md` waren seit PR #11 (13.06.2026) inhaltlich eingefroren, während der lokale Cowork-Workspace weiter fortgeschrieben wurde (Detail: `VW-GITHUB-SOT-CURRENT-STATE-CONSOLIDATION-01`, `SOT_DRIFT_REPORT.md` — lokale Evidence, nicht auf GitHub). Dieser Closeout-PR patcht genau die 7 dafür vorgesehenen Dateien, keine Vollresynchronisation des gesamten lokalen Standes.
+**DB-Write:** NEIN
+**Letzte führende Dokumente:**
+- Audit-Evidence (lokal, nicht kanonisch): `09_AUDIT_EXPORTS/VW_GITHUB_SOT_CURRENT_STATE_CONSOLIDATION_01/` — Nachweisgrundlage des Migrationsurteils
+- GitHub-Kanon nach Merge: diese Datei und die übrigen finalisierten Closeout-Dokumente auf `main/docs`
+
+**Nächste zulässige Schritte:** PR #8 schliessen + Branch-Cleanup (separat, kein PR nötig, siehe lokale `CLEANUP_CANDIDATES.md`), danach S1-BUILD-02-Reconciliation (siehe Zeile unten in §5).
+**Strang formal geschlossen:** JA, mit Merge dieses PRs — Governance-Migration technisch bereits vollständig bewiesen, unabhängig vom Merge-Zeitpunkt.
+
+---
+
+### PRODUKT-STAND — Nicht direkt in diesem Docs-Paket bearbeitet, hier nur referenziert
+**Status:** Live-belegter Stand aus `VW-GITHUB-SOT-CURRENT-STATE-CONSOLIDATION-01` (04.07.2026), **nicht direkt verifiziert** durch dieses Docs-Paket selbst — Quelle ist GitHub-PR-Historie, nicht lokale Ordnersichtung.
+- **B4-BUILD-03:** ✅ abgeschlossen (PR #31, gemerged)
+- **B4-BUILD-04 Wave 1:** ✅ abgeschlossen (PR #32 Codex-Context + PR #33 Code, 6 B4-Lab-Action-Einträge, gemerged)
+- **Nächste B4-Welle:** offen, **nicht spezifiziert** — kein Altauftrag gefunden, echtes neues Backlog-Item
+- **S1 Checkup Builder:** ✅ abgeschlossen und live (PR #27–#29, bestätigt unter `/laborwerte/checkup-builder`)
+- **S1-BUILD-02-Reconciliation:** offen — lokaler Ordner `09_AUDIT_EXPORTS/S1_BUILD_02_USA_BACKFILL_BT2_ROLLOUT_30_01/` (rein Supabase-seitiger BT2/USA-Backfill-Rollout, kein GitHub-Code-PR) muss gegen den ursprünglichen S1-BUILD-02-Scope abgeglichen werden, bevor ein neuer S1-BUILD-02-Auftrag gestartet wird
+- **`UX_SCAN_01`:** unklar — Codex-Context-Ordner + Branch `codex/ux-scan-01-context` vorhanden, kein erkennbares Folge-Produktergebnis gefunden
+- **UI-REFRESH-04:** offen, seit UI-REFRESH-03 (24.04.2026) nicht fortgeführt — **nicht automatisch NOW**, kein Blocker
+- **S3-BUILD-02:** optional/offen — Studienkompass-Hub `/studien`, kein Altauftrag, kein Hinweis auf Überholung durch neue Architekturentscheidung
 
 ---
 
@@ -42,7 +73,7 @@ Diese Datei gibt den schnellen Überblick über alle aktiven und zuletzt bewegte
 **Letzte führende Dokumente:**
 - **`01_PROJECT_SOURCES_CURRENT/S3_APPROVAL_REVIEW_01_CLOSURE.md`** — **führend** (14.05.2026)
 
-**Nächste zulässige Schritte:** S3-BUILD-02 (Studien-Hub /studien, optional), B4-BUILD-03, S8-BUILD-02d, Q2-BUILD-02c-P2B, S1-BUILD-02 — je eigenständiger Chat, je explizite Freigabe.  
+**Nächste zulässige Schritte:** S3-BUILD-02 (Studien-Hub `/studien`, optional), S1-BUILD-02-Reconciliation, nächste B4-Welle neu spezifizieren, S8-BUILD-02d oder Q2-BUILD-02c-P2B — je eigenständiger Auftrag und explizite Freigabe.  
 **Strang formal geschlossen:** JA
 
 ---
@@ -57,7 +88,7 @@ Diese Datei gibt den schnellen Überblick über alle aktiven und zuletzt bewegte
 - `01_PROJECT_SOURCES_CURRENT/Q2_BUILD_02A_S5_QUELLENBOX_CLOSURE.md` — S5-Basis
 - `01_PROJECT_SOURCES_CURRENT/Q2_BUILD_02B_S6_QUELLENBOX_CLOSURE.md` — S6-Basis
 
-**Nächste zulässige Schritte:** Q2-BUILD-02c-P2B, B4-BUILD-03, S8-BUILD-02d, UI-REFRESH-04, S1-BUILD-02 (je eigenständiger Chat)  
+**Nächste zulässige Schritte:** Q2-BUILD-02c-P2B, S8-BUILD-02d, UI-REFRESH-04, S1-BUILD-02-Reconciliation oder Spezifikation der nächsten B4-Welle (je eigenständiger Auftrag).  
 **Strang formal geschlossen:** JA
 
 ---
@@ -227,20 +258,19 @@ Diese Datei gibt den schnellen Überblick über alle aktiven und zuletzt bewegte
 ---
 
 ### S8 / B4 — Entscheidungslogik + B4 Actions (Laborwert-/Krankheitsseiten)
-**Status:** ✅ **B4-BUILD-03_SPEC abgeschlossen (10.06.2026)** — Spec für HbA1c/Ferritin/VitD/CRP 15-Felder-Migration bereit für Codex
-**Letzter Stand (B4-BUILD-03_SPEC):** Vollständige Karten-Spezifikation für alle 4 Laborwerte. 24 Karten total (HbA1c 6, Ferritin 6, VitD 6, CRP 6). 15-Felder-Schema, 12 Validatoren, MedQA-Anforderungen, UX-Hierarchie, spezifische No-Gos. Scope: ausschließlich `laborwert_b4_actions_map.js`. Kein JSX, kein CSS, kein DB-Write. → `01_PROJECT_SOURCES_CURRENT/B4_BUILD_03_SPEC.md`  
-**Vorgänger (B4-SAFETY-PATCH, 07.05.2026):** Commit `8f19256`. safetyLevel + requiresDoctorDiscussion für 4 Blöcke nachgerüstet.
-**Letzter Commit:** `8f19256` (B4-SAFETY-PATCH, 07.05.2026) — auf `origin/main`
+**Status:** ✅ **B4-BUILD-03 und B4-BUILD-04 Wave 1 abgeschlossen** — PR #31 (B4-BUILD-03) sowie PR #32/#33 (Wave-1-Kontext + Code) gemerged.
+**Letzter belegter Stand:** B4-BUILD-03 migrierte die zuvor spezifizierten HbA1c/Ferritin/VitD/CRP-Actions. B4-BUILD-04 Wave 1 ergänzte sechs weitere Laborwerte. Der Abschluss ist über GitHub-PR-Historie belegt; die Karteninhalte wurden in diesem Docs-Closeout nicht erneut fachlich geprüft.
+**Vorgänger:** B4-BUILD-03_SPEC (10.06.2026), B4-SAFETY-PATCH (07.05.2026), B4-BUILD-02 LDL-Journey (25.04.2026).
 **DB-Write:** NEIN
-**Letzte führende Dokumente:**
-- **`01_PROJECT_SOURCES_CURRENT/B4_BUILD_03_SPEC.md`** — **führend** (10.06.2026, Spec für Codex)
-- **`01_PROJECT_SOURCES_CURRENT/B4_SAFETY_PATCH_CLOSURE.md`** — Vorgänger (07.05.2026)
-- **`01_PROJECT_SOURCES_CURRENT/B4_BUILD_02_LDL_JOURNEY_CLOSURE.md`** — Referenzimplementierung (25.04.2026)
-- **`01_PROJECT_SOURCES_CURRENT/B4_DECISION_LOGIC_FREEZE.md`** — Spec-Grundlage (gepatcht, bindend)
-- `01_PROJECT_SOURCES_CURRENT/S8_BUILD_03_CLOSURE.md` — B4ActionsBlock Foundation
+**Belegquellen:**
+- GitHub PR #31 — B4-BUILD-03
+- GitHub PR #32 — Codex-Kontext für B4-BUILD-04 Wave 1
+- GitHub PR #33 — B4-BUILD-04 Wave-1-Code
+- `01_PROJECT_SOURCES_CURRENT/B4_BUILD_03_SPEC.md` — historische Spec-Grundlage
+- `01_PROJECT_SOURCES_CURRENT/B4_DECISION_LOGIC_FREEZE.md` — bindende Entscheidungslogik
 
-**Nächster zulässiger Schritt:** **B4-BUILD-03 Code (Codex)** → `laborwert_b4_actions_map.js` nach `B4_BUILD_03_SPEC.md` migrieren → Review/V1–V12 → Go Sebastian → Commit/Push
-**Strang formal geschlossen:** NEIN — Build (Codex) ausstehend
+**Nächster zulässiger Schritt:** **nächste B4-Welle neu spezifizieren** — kein belastbarer Altauftrag für Wave 2 gefunden; nicht aus alten Chats rekonstruieren.
+**Strang formal geschlossen:** JA für B4-BUILD-03 und B4-BUILD-04 Wave 1; neue Welle ist ein eigener zukünftiger Strang.
 
 ---
 
@@ -454,11 +484,11 @@ KI-Prompt-Export (Modus 3a) = Phase-C-Feature ohne S9 spezifiziert.
 
 ---
 
-## 4. OPS / PERSISTENZLAGE (13.05.2026)
+## 4. OPS / PERSISTENZLAGE (historische Basis 13.05.2026; GitHub-Baseline aktualisiert 04.07.2026)
 
 | Dimension | Status |
 |-----------|--------|
-| Git HEAD (`origin/main`) | `97f07e8` — S3-BUILD-01 (14.05.2026) — 5 Dateien, 651 Insertions |
+| GitHub-Baseline vor Closeout | `ce9de2607c43ec38a022162e730a815a8875d766` — Merge PR #36 (04.07.2026); kein dauerhaft aktueller HEAD nach Merge dieses Closeout-PRs |
 | Netlify | Auto-Publishing AN — letzter Build-Deploy `main@fab4374` — kein neues Deploy heute |
 | Supabase DB | **`studien` 20** (S3-CURATION-QUEUE-01-WRITE, 14.05.2026 — curation_status=review, visibility=draft), `zusatzstoffe` 35, `lebensmittel` 24, `wirkstoffe` 50, `krankheiten` 221 (+`naechste_schritte` JSONB: 5 befüllt), **`laborwerte` 60 (+8 Felder, 5 mit `zielwerte`)**, **`supplements` 51 (+`quellen` JSONB: 31/51 mit NIH-ODS-Quellen)**, `ernaehrungsmuster` 4, `naehrstoffe` 41 |
 | MISTRAL_API_KEY | in Netlify gesetzt (Production, S4-Proxy aktiv) |
@@ -489,11 +519,14 @@ Nur echte, aktuell freigegebene nächste Schritte (keine Ideenliste):
 | S1 Zielwert-Rollout + V2-Kontext | **S1-BUILD-02** | S1-BUILD-01 ✅ abgeschlossen (24.04.2026) — Rollout auf alle 60 Werte, V2-Kontext Alter/Schwangerschaft, S1↔S5/S6-Crosslinks, eigenständiger Chat | MITTEL |
 | S6 weiterer Ausbau | **S6-07** | Eigenständiger Chat — S6-06 + Q2-BUILD-02b + Q2-BUILD-02d abgeschlossen ✅ | MITTEL |
 | S18 Querlinks / neues Paket | **S18-nächstes** | Eigenständiger Chat — alle 4 Kernobjekte abgeschlossen ✅ | MITTEL |
-| B4 Actions Rollout weitere LW | **B4-BUILD-03** | B4-SAFETY-PATCH ✅ abgeschlossen (07.05.2026) — B4 Actions Map um weitere LW ergänzen, eigenständiger Chat | MITTEL |
+| Nächste B4-Welle (unspezifiziert) | **B4-BUILD-WAVE-2-SPEC** | B4-BUILD-03 ✅ + B4-BUILD-04 Wave 1 ✅ beide abgeschlossen (PR #31, #32, #33) — kein Altauftrag für Wave 2 gefunden, neu zu planen, eigenständiger Chat | MITTEL |
 | S8 B4/K3 Rollout Kalium/Natrium | **S8-BUILD-02d** | S8-BUILD-02c ✅ abgeschlossen — Kalium (2823-3) + Natrium (2951-2) in K3-Map ergänzen, eigenständiger Chat | NIEDRIG |
 | S4 weitere Features | **P7-06** | Separates Spec-Paket + explizite Freigabe zuerst | NIEDRIG |
-| S3 → approved + Build-Freigabe | **S3-CURATION-QUEUE-01-WRITE** | ✅ 20 Rows in `studien` (review/draft, 14.05.2026). Nächster Schritt: explizite Freigabe Sebastian → curation_status review→approved + visibility draft→public (für jeden genehmigten Eintrag) → S3-BUILD-01 | HOCH |
-| S3 BUILD | **S3-BUILD-01** | ≥20 approved+public Einträge in `studien` + explizite Build-Freigabe in eigenständigem Chat | NIEDRIG |
+| S3-Content-Freigabe | **S3-APPROVAL-REVIEW-01** | ✅ abgeschlossen (14.05.2026) — 20/20 Rows approved/public, 14/14 Validatoren PASS | — (erledigt) |
+| S3 BUILD | **S3-BUILD-01** | ✅ abgeschlossen (14.05.2026, Commit `97f07e8`) — Block [15] live auf 5 Pilot-Seiten | — (erledigt) |
+| S3-BUILD-02 (optionaler Studien-Hub `/studien`) | **S3-BUILD-02** | S3-BUILD-01 ✅ abgeschlossen und live (14.05.2026, Commit `97f07e8`) — optional, kein Altauftrag, nicht dringend, eigenständiger Chat nach expliziter Freigabe | NIEDRIG |
+| PR #8 schliessen + Branch-Cleanup | **PR8-AND-BRANCH-CLEANUP** | Kein Code-Risiko, jederzeit trivial erledigbar — Sebastian oder ChatGPT (kleine GitHub-Aktion), separat, kein PR nötig | HOCH |
+| `UX_SCAN_01`-Status klären | **UX-SCAN-01-KLAERUNG** | Sebastian-Entscheidung (abgeschlossen / ruhend / verwaist), danach ggf. Cowork-Archivierung | NIEDRIG |
 
 **S6-07-Kandidaten (nicht beauftragt):** S2→S6 Cross-Block (Supplement-Chips auf SupplementDetail.jsx), S6-Filter-Erweiterungen, S1→S6 Cross-Block (Laborwerte → Wirkstoffe — aufwändiges LOINC-Mapping).
 
@@ -553,6 +586,8 @@ Nur wenn ausnahmsweise nicht nötig: explizit begründen.
 *Aktualisiert: 13.05.2026 — S3-SCHEMA-MIGRATION-PREFLIGHT ✅ P.0-Sequenz vollständig (4/4). SQL-Entwurf `sql/s3_k6_research_entries_preflight.sql` erstellt (kein Apply). 3 ENUMs + 46-Feld-Tabelle + 15 Indexes + Trigger + RLS E29 + Gate-K.4-Constraint. 10/10 Validatoren PASS. Kein Commit, kein DB-Write, kein Deploy. §2 P7D-Strang (Nächster Schritt: SQL Apply → Curation-Queue → S3-BUILD-01) + §5 Nächste Schritte (PREFLIGHT entfernt, SQL-Apply + S3-BUILD-01 ergänzt) nachgezogen. Doppelpflege vollständig.*
 *Aktualisiert: 13.05.2026 — AI-INTEGRATION-AND-PERSONAL-CONTEXT-FREEZE ✅ KI-/Google-Integrations-Strategie verbindlich eingefroren. VitalWissen = Trust-, Kontext- und Handlungsschicht. Google/Gemini = Benchmark + Kanal + optionale Integrationsschicht (nicht Kernbesitz). 3 Modi (Schnellantwort / Tiefen-Trustansicht / Persönlicher Kontext), 5 Google-/Gemini-Pfade eingeordnet (AI-Readable Website jetzt / KI-Prompt-Export Phase C / Gemini API Phase D / Google Health API Phase D–E / BYO-AI Q9 Phase D–E), Datenklassifikation 1–5 (Klassen 3–5 strukturell kein externer KI-Abfluss). Q2/Q4/Q5/Q9/S3/S6/S8/S9/S18 Strangauswirkungen beschrieben. 7/7 Akzeptanzkriterien PASS. Kein Code, kein DB-Write, kein Commit, kein Deploy. §2 P7D-Strang (neues Freeze-Dokument) + §5 Nächste Schritte nachgezogen. Doppelpflege vollständig. Führend: `01_PROJECT_SOURCES_CURRENT/AI_INTEGRATION_AND_PERSONAL_CONTEXT_FREEZE.md`*
 *Aktualisiert: 14.05.2026 — S3-CURATION-QUEUE-01-WRITE ✅ 20 Rows in `studien` geschrieben (review/draft/nicht_retracted). DB-Write: JA (5 Batches × 4, Dashboard-JWT). 9-Checkpoint-Validation PASS. Enum-Substitutionen dokumentiert (candidate→review, private→draft, not_retracted→nicht_retracted). Kein Code, kein Commit, kein Deploy. §2 P7D-Strang (Nächster Schritt: S3-BUILD-01 nach Freigabe) + §3 aktuelles Paket + §4 Ops (studien 0→20) + §5 (CURATION-QUEUE → S3-CURATION-QUEUE-01-WRITE mit neuem Status) nachgezogen. Doppelpflege vollständig.*
-*Nächste Pflicht-Aktualisierung: bei S3-BUILD-01, B4-BUILD-03, Q2-BUILD-02c-P2B, S8-BUILD-02d, S1-BUILD-02, UI-REFRESH-04 oder jedem anderen Paket-Abschluss*
+*Nächste Pflicht-Aktualisierung: bei jedem SOT-relevanten Paketabschluss; vor einem fachlich nicht zusammenhängenden Folgepaket muss der GitHub-SOT-Sync erfolgt sein.*
 
 *Aktualisiert: 14.05.2026 — S3-BUILD-01 abgeschlossen. Block [15] "Was sagt die Forschung?" auf 5 Pilot-Krankheitsseiten live. Commit 97f07e8. Git HEAD = 97f07e8. Naechste Schritte: S3-BUILD-02, B4-BUILD-03, S8-BUILD-02d (je eigenstaendiger Chat). → S3_BUILD_01_CLOSURE.md*
+
+*Aktualisiert: 2026-07-04 (Baseline-Datum Closeout-Audit) — VW-GITHUB-SOT-CLOSEOUT-01: GitHub-Governance-Migration formal dokumentiert (Branch Protection, Required Check, PR #35→#36→#37, SOT-Sync-Regel neu eingeführt). §2 neuer Top-Strang "GITHUB-GOVERNANCE-MIGRATION" + "PRODUKT-STAND"-Referenzblock ergänzt. §5 S3-/B4-Zeilen aktualisiert (S3-BUILD-01 + S3-APPROVAL-REVIEW-01 als erledigt markiert, S3-BUILD-02 als optional/offen, nächste B4-Welle als unspezifiziert, PR-#8-Cleanup + UX_SCAN_01-Klärung ergänzt). Kein Produktcode, kein DB-Write, kein Deploy. Quelle: `09_AUDIT_EXPORTS/VW_GITHUB_SOT_CURRENT_STATE_CONSOLIDATION_01/` (lokale Evidence).*
