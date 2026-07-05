@@ -1,8 +1,8 @@
 # VitalWissen Agent Operating Model
 
-Status: active  
-Owner: Sebastian final GO/NO-GO  
-Repository canon: GitHub repository `sebastianfenner85-HH/VitalWissen`, branch `main`  
+Status: active
+Owner: Sebastian final GO/NO-GO
+Repository canon: GitHub repository `sebastianfenner85-HH/VitalWissen`, branch `main`
 Finalized project/governance docs canon: `main/docs/`
 
 ## 1. Grundsatz
