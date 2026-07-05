@@ -1,18 +1,32 @@
 project:
   name: VitalWissen
   workspace_status: ops_supabase_grants_standard_established
-  current_phase: product_work_ready_after_github_docs_sot_cleanup
-  last_completed_package: VW-GITHUB-SOT-CLEANUP-01
-  next_recommended_package: PRODUCT_PROGRESS_NEXT_Q2_S1_OR_UX_COVERAGE
+  governance_status: github_governance_hardened_branch_protection_enforced
+  current_phase: migration_complete_product_work_ready
+  last_completed_package: VW-GITHUB-SOT-CLOSEOUT-01
+  next_recommended_package: S1-BUILD-02-RECONCILIATION-01
+  phase_note: >-
+    current_phase gilt ab Merge dieses Closeout-PRs (VW-GITHUB-SOT-CLOSEOUT-01). Die Kernmigration (Branch Protection,
+    Required Check, PR-Workflow, Codex Cloud) ist bereits vor Merge live
+    bewiesen (siehe github_governance-Block unten) — dieser PR schliesst
+    ausschliesslich den Docs-/Governance-Sync formal ab.
 
 source_of_truth:
+  repository_canon: GitHub main
   canonical_location: GitHub main/docs
   finalized_docs_canon: true
   local_workspace_role: staging_work_mirror_export_not_primary_truth
   project_sources_current_role: local_operational_reference_not_primary_truth
   chatgpt_sources_role: upload_mirror_not_canon
   daten_fuer_chatgpt_role: upload_bundle_not_canon
-  last_alignment_package: VW-GITHUB-SOT-CLEANUP-01
+  last_alignment_package: VW-GITHUB-SOT-CLOSEOUT-01
+  sot_sync_note: >-
+    docs/project_state/* war seit PR #11 (2026-06-13) inhaltlich
+    eingefroren, waehrend der lokale Cowork-Workspace weiter fortgeschrieben
+    wurde (Detail: VW-GITHUB-SOT-CURRENT-STATE-CONSOLIDATION-01,
+    SOT_DRIFT_REPORT.md). Dieser Closeout-PR ist der einmalige Sync, der
+    diesen Rueckstand fuer die 7 unten genannten Dateien schliesst. Ab jetzt
+    gilt die SOT-Sync-Regel (siehe github_governance.sot_sync_rule).
 
 workspace:
   role: staging_work_mirror_export_not_canon
@@ -87,21 +101,74 @@ qa:
   last_guard_build_package: VW-HYGIENE-06D
   guard_governance_status: mirror_mode_ready_after_06d
 
+github_governance:
+  branch_protection_status: enforced_and_live_verified
+  required_check: "Build and safety gates"
+  enforcement_history:
+    - pr: 35
+      role: historical_failed_enforcement_test
+      verdict: STOP_CHECK_DID_NOT_TURN_RED
+    - pr: 36
+      role: ci_diff_check_root_cause_fix
+      verdict: PASS
+    - pr: 37
+      role: successful_final_rot_to_gruen_enforcement_proof
+      verdict: PASS
+      merged: false
+      note: >-
+        PR #37 bewies ROT-Blockade (Phase A) und GRUEN-Freigabe (Phase B) des
+        normalen Mergewegs. PR #37 selbst wurde nicht gemerged, Testbranch
+        wurde geloescht, main durch PR #37 unveraendert.
+  closeout_baseline_main_head: "ce9de2607c43ec38a022162e730a815a8875d766"
+  closeout_baseline_main_head_note: >-
+    Verifizierte GitHub-Baseline unmittelbar vor diesem Closeout-PR (Merge
+    PR #36). Kein dauerhaft aktueller main-HEAD nach Merge dieses PRs oder
+    danach folgender Commits — fuer den jeweils aktuellen HEAD immer live
+    gegen GitHub pruefen, nicht aus dieser Datei ableiten.
+  open_pr_count_at_baseline: 1
+  open_pr_list_at_baseline:
+    - number: 8
+      title: "[VW-CHATGPT-CONNECTOR-ACCESS-TEST-01] Verify ChatGPT GitHub connector write path"
+      status: open_draft_cleanup_candidate
+  sot_sync_rule: >-
+    Jedes SOT-relevante Paket (schliesst/eroeffnet einen Produktstrang,
+    aendert Prioritaet/Architektur/Governance/Agentenbetrieb oder
+    Build-/Rollout-Status wesentlich) muss vor einem fachlich nicht
+    zusammenhaengenden Folgepaket einen
+    GitHub-SOT-Sync erhalten (im selben PR oder unmittelbar folgendem,
+    klar verlinktem Docs-Sync-PR). Kein wochenlanges rein lokales
+    Fortschreiben ohne GitHub-Sync, keine zwei parallelen Wahrheiten.
+
 repo:
-  github_main_docs_is_canon: true
+  github_main_is_repository_canon: true
+  github_main_docs_is_finalized_docs_canon: true
   local_vitalwissen_repo_current_commit_allowed: false
   reason: stale_dirty_clone
-  code_work_rule: fresh_or_clean_clone_only
+  code_work_rule: mode_aware_preflight_per_AGENTS_md
+
+product_status_baseline:
+  note: >-
+    Live-belegter Produktstand zum Zeitpunkt dieses Closeout-PRs
+    (VW-GITHUB-SOT-CURRENT-STATE-CONSOLIDATION-01, 2026-07-04). Kein neuer
+    fachlicher Fortschritt in diesem Docs-only-Paket selbst.
+  b4_build_03: completed
+  b4_build_04_wave1: completed
+  next_b4_wave: not_yet_specified
+  s1_checkup_builder: completed
+  s1_build_02_reconciliation: open
+  ux_scan_01: unclear
+  ui_refresh_04: open_not_auto_prioritized
+  s3_build_02: optional_open
 
 operations:
-  external_systems_matrix: 06_QA_VALIDATION/EXTERNAL_SYSTEMS_MATRIX.md
+  external_systems_matrix: docs/ops/EXTERNAL_SYSTEMS_MATRIX.md
   github_default_level: GH0
   supabase_default_level: SB0
   netlify_default_level: NF0
   github_push_allowed_by_default: false
   supabase_writes_allowed_by_default: false
   netlify_deploy_allowed_by_default: false
-  code_work_rule: fresh_or_clean_clone_only
+  code_work_rule: mode_aware_preflight_per_AGENTS_md
   external_systems_contract_required: true
 
 go_no_go:
@@ -120,10 +187,13 @@ go_no_go:
   supabase_default: SB0_unless_explicit_package_contract
   netlify_default: NF0_unless_explicit_package_contract
   new_sources_work: go_with_package_contract
-  code_build_work: go_only_with_fresh_clone
+  code_build_work: go_only_with_mode_specific_preflight_per_AGENTS_md
   local_commits_from_vitalwissen_repo_current: no_go
+  sot_sync_before_unrelated_package: go_with_package_contract
 
 package_history:
   source_of_truth_cleanup: completed
   source_of_truth_cleanup_package: VW-GITHUB-SOT-CLEANUP-01
   source_of_truth_cleanup_date: 2026-06-13
+  docs_sot_closeout_package: VW-GITHUB-SOT-CLOSEOUT-01
+  docs_sot_closeout_status: completed_on_merge
